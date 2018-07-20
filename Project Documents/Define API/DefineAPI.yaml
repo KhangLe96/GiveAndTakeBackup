@@ -1,0 +1,603 @@
+swagger: '2.0'
+info:
+  title: Give and Receive
+  description: ' Define API for "Give and Receive" Application '
+  version: 1.0.0
+host: to-be-define
+schemes:
+  - http
+basePath: /
+produces:
+  - application/json
+paths:
+  /user:
+    get:
+      summary: Retrieve a user's public profile information
+      description: >-
+        Get information of a user via their Facebook/Google account 
+      parameters:
+        - in: body
+          name: user
+          description: Retrieve UserProfile object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+        - User
+      responses:
+        '200':
+          description: Successfully retrieved user's public profile
+          schema:
+            $ref: '#/definitions/User'
+  /user/{userId}:
+    put:
+      summary: Update a user's public profile information
+      description: >
+        Update a user's public profile information. Only those fields present
+        will be updated. This means to clear a value, one must send an
+        empty-valued parameter.
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user that needs to be update
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: user
+          description: Update UserProfile object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+        - User
+      responses:
+        '200':
+          description: return new user information which is similar as user response when user login. It contains new token
+        '400':
+          description: Invalid user supplied. Bad Request
+        '404':
+          description: User not found
+  /user/uploadAvatar:
+    post:
+      summary: Update a user's avatar
+      description: Don't need userId. Return new avatar url
+      operationId: uploadUserAvatar
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData
+          description: file to upload
+          required: false
+          type: file
+      tags:
+        - User
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              avatarUrl:
+                type: string
+  /user/logout:
+    get:
+      summary: Logs out current logged in session
+      description: ....
+      parameters: []
+      tags:
+        - User
+      responses:
+        default:
+          description: Logout successfully 
+  /user/setRole/{userId}:
+    put:
+      summary: Set Role for a user 
+      description: ....
+      parameters: 
+      - name: userId
+        in: path
+        description: ID of the user that need to update the role
+        required: true
+        type: integer
+        format: int64
+      - name: role
+        in: query
+        required: true  
+        type: array
+        items:
+          type: string
+          enum: 
+          - Moderator
+          - Normal User
+      tags: 
+        - User
+      responses:
+        200:
+          description: Successfully
+          schema:
+            $ref: '#/definitions/User'
+  /post:
+    post:
+      summary: Create new post
+      description: >-
+      parameters:
+        - in: body
+          name: post
+          description: Create new Post object
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      tags:
+        - Post
+      responses:
+        default:
+          description: Create post successfully
+          schema:
+            $ref: '#/definitions/Post'
+  /post/uploadImageForAPost:
+    post:
+      summary: Update a user's avatar
+      description: Return image url
+      operationId: uploadPostImage
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData
+          description: file to upload
+          required: false
+          type: file
+      tags:
+        - Post
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              imageUrl:
+                type: string
+  /post/{postId}:
+    put:
+      summary: Edit a post
+      description: >-
+      parameters:
+        - name: postId
+          in: path
+          description: ID of the post that needs to be edit
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: post
+          description: Edit a post
+          required: true
+          schema:
+            $ref: '#/definitions/Post'
+      tags:
+        - Post
+      responses:
+        '200':
+          description: OK
+    delete:
+      summary: Delete a post
+      description: '=> See above /post/:id'
+      parameters:
+        - name: postId
+          in: path
+          description: ID of the post that needs to be deleted
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Post
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Comment not found
+  /post/findByStatus:
+    get:
+      summary: Find post by status
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findPostByStatus
+      parameters: 
+      - name: postStatus
+        in: query
+        required: true  
+        type: array
+        items:
+          type: string
+          enum: 
+          - Sent
+          - Available
+      tags: 
+        - Post
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Post'
+  /post/findByCategoryId:
+    get:
+      summary: Find post by category
+      description: ....
+      operationId: findPostByCategoryId
+      parameters: 
+      - name: categoryId
+        in: query
+        required: true
+        type: array
+        items:
+          type: integer
+          format: int64
+        collectionFormat: multi
+      tags: 
+        - Post
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Post'
+        '400':
+          description: Invalid category ID
+  /post/findByCategoryName:
+    get:
+      summary: Find post by category
+      description: ....
+      operationId: findPostByCategoryName
+      parameters: 
+      - name: categoryName
+        in: query
+        required: true
+        type: array
+        items:
+          type: string
+        collectionFormat: multi
+      tags: 
+        - Post
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Post'
+        '400':
+          description: Invalid category value
+  /post/findByAddress:
+    get:
+      summary: Find post by address 
+      description: ....
+      operationId: findPostByAddress
+      parameters: 
+      - name: addressId
+        in: query 
+        required: true
+        type: integer
+        format: int64 
+      tags: 
+        - Post
+      responses:
+        '200':
+          description: OK
+  /comment/{postId}:
+    post:
+      summary: Create new comment to a post
+      description: >-
+      operationId: createComment
+      parameters:
+        - name: postId
+          in: path
+          description: ID of the post that needs to be deleted
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: comment
+          description: Post Information
+          required: true
+          schema:
+            $ref: '#/definitions/Comment'
+      tags:
+        - Comment
+      responses:
+        default:
+          description: Comment successfully
+          schema:
+            $ref: '#/definitions/Comment'
+  /comment/{commentId}/edit:
+    put:
+      summary: Edit a comment
+      description: ....See above
+      operationId: editComment
+      parameters:
+        - name: commentId
+          in: path
+          description: ID of the comment that needs to be edit
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: comment
+          description: Edit a comment
+          required: true
+          schema:
+            $ref: '#/definitions/Comment'
+      tags:
+        - Comment
+      responses:
+        default:
+          description: Comment successfully
+          schema:
+            $ref: '#/definitions/Comment'
+  /comment/{commentId}/delete:
+    delete:
+      summary: Delete a comment
+      description: ....
+      parameters:
+        - name: commentId
+          in: path
+          description: ID of the comment that needs to be deleted
+          required: true
+          type: integer
+          format: int64
+      tags:
+        - Comment
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Comment not found
+  /categories:
+    post:
+      tags:
+        - Categories
+      operationId: createCategories
+      summary: Create category
+      description: => See above. One more API for upload image for category.
+      parameters:
+        - in: body
+          name: category
+          description: Create category object
+          required: true
+          schema:
+            $ref: '#/definitions/Categories'
+      responses:
+        '200':
+          description: Create successfully
+          schema:
+            $ref: '#/definitions/Categories'
+  /categories/uploadCategoryImage:
+    post:
+      summary: Update Category Example Image
+      description: Return new avatar url
+      operationId: uploadCategoryImage
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData
+          description: file to upload
+          required: false
+          type: file
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              avatarUrl:
+                type: string
+  /categories/{categoryId}:
+    put:
+      tags:
+        - Categories
+      operationId: editCategories
+      summary: Edit Category
+      description: ....
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: category
+          description: Edit category object
+          required: true
+          schema:
+            $ref: '#/definitions/Categories'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Categories
+      operationId: deleteCategories
+      summary: Delete category
+      description: ....
+      parameters:
+        - in: path
+          required: true
+          name: categoryId
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+  /request/{postId}:
+    post:
+      tags:
+        - Request
+      summary: Request for an post
+      description: >-
+      parameters:
+        - name: postId
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - in: body
+          name: request
+          description: Request for an item
+          required: true
+          schema:
+            $ref: '#/definitions/Request'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Request'
+  /request/{requestId}/edit:
+    put:
+      tags:
+        - Request
+      summary: Request for an post
+      description: >-
+      parameters:
+        - name: requestId
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - in: body
+          name: request
+          description: Edit request
+          required: true
+          schema:
+            $ref: '#/definitions/Request'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Request'
+  /request/{requestId}/cancel:
+    delete:
+      tags:
+        - Request
+      summary: Cancel a request
+      description: See above
+      parameters:
+        - name: requestId
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          description: Deleted!
+  /feedback:
+    post:
+      summary: Create Feedback
+      description: ....
+      operationId: createFeedback
+      parameters: 
+        - in: body
+          name: feedback
+          required: true
+          schema:
+            $ref: '#/definitions/Feedback'
+      tags: 
+        - Feedback
+      responses:
+        '200':
+          description: Create feedback successfully
+          schema:
+            $ref: '#/definitions/Feedback'
+definitions:
+  User:
+    type: object
+    properties:
+      fristName:
+        type: string
+      lastName:
+        type: string
+      birthDay:
+        type: string
+        format: date-time
+      avatarUrl:
+        type: string
+      phoneNumber:
+        type: string
+      userAddress:
+        type: string
+      description:
+        type: string
+      role:
+        type: array
+        items:
+          $ref: '#/definitions/Role'
+  Post:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      address:
+        type: string
+      postImageUrl:
+        type: string
+      category:
+        type: array
+        items:
+          $ref: '#/definitions/Categories'
+  Categories:
+    type: object
+    properties:
+      categoryName:
+        type: string
+      categoryImageUrl:
+        type: string
+  Request:
+    type: object
+    properties:
+      requestMessage:
+        type: string
+      status:
+        type: string
+        enum:
+          - Accept
+          - Decline
+      dateRequest:
+        type: string
+        format: date-time
+  Comment:
+    type: object
+    properties:
+      comment:
+        type: string
+      dateComment:
+        type: string
+        format: date-time
+  Feedback:
+    type: object
+    properties:
+      title:
+        type: string
+      message:
+        type: string
+      dateCreated:
+        type: string
+        format: date-time
+  Role:
+    type: object
+    properties:
+      name:
+        type: array
+        items:
+          type: string
+          enum: 
+          - Admin
+          - Moderator
+          - Normal User
