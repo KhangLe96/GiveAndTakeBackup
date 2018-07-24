@@ -1,0 +1,19 @@
+@import "../../../themes/default";
+
+.highlight_button_container{
+  :global{
+    .ant-btn{
+      background: @orange !important;
+      color: white !important;
+      border-color: @orange;
+    }
+    .ant-btn:hover{
+      background: @orange-5 !important;
+      border-color: @orange-5;
+    }
+    .ant-btn-clicked:after {
+      border-color: @orange;
+      color: @orange;
+    }
+  }
+}
