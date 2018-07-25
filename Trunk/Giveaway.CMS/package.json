@@ -51,6 +51,7 @@
     "react-draft-wysiwyg": "^1.12.7",
     "react-feather": "^1.0.7",
     "react-fittext": "^1.0.0",
+    "react-google-login-component": "^0.9.3",
     "react-number-format": "^3.1.4",
     "react-webcam": "^0.4.3",
     "start": "^5.1.0",
