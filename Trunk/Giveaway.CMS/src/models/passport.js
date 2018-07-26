@@ -96,6 +96,7 @@ export default {
         payload: false,
       });
       if (response && response.access_token) {
+        window.alert("successful");
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('currentUser', JSON.stringify(response));
         yield put({
@@ -112,6 +113,9 @@ export default {
         });
 
         yield put(routerRedux.push('/dashboard'));
+      }
+      else {
+        window.alert("Wrong Username or Password");
       }
       yield put({
         type: 'saveLoginError',
@@ -181,11 +185,11 @@ export default {
     },
     * logout(_, { call, put }) {
       yield put({
-        type: 'modals/changeLoading',
+        type: 'modals/changeLoading',           //spin
         payload: true,
       });
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('currentUser');
+      localStorage.removeItem('isLoggedIn');    //clear login status
+      localStorage.removeItem('currentUser');   //clear current User login_tokken
 
       yield put({
         type: 'notifications/resetFetchingStatusInterval',
@@ -194,8 +198,11 @@ export default {
       yield put({
         type: 'notifications/resetNotificationStates',
       });
-
-      yield put(routerRedux.push('/'));
+      yield put({
+        type: 'modals/changeLoading',           //spin
+        payload: false,
+      });
+      yield put(routerRedux.push('/auth/login'));
       yield put({
         type: 'saveLogin',
         payload: {},

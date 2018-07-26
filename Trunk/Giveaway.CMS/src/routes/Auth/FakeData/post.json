@@ -1,0 +1,36 @@
+{
+    "users": [
+        {
+            "postId" : "001",
+            "title" : "admin",
+            "description" : "admin",
+            "postAddress" : "admin",
+            "postImageUrl" : "admin",
+            "category" : "admin"
+        },
+        {
+            "postId" : "002",
+            "title" : "admin",
+            "description" : "admin",
+            "postAddress" : "admin",
+            "postImageUrl" : "admin",
+            "category" : "admin"
+        },
+        {
+            "postId" : "003",
+            "title" : "admin",
+            "description" : "admin",
+            "postAddress" : "admin",
+            "postImageUrl" : "admin",
+            "category" : "admin"
+        },
+        {
+            "postId" : "004",
+            "title" : "admin",
+            "description" : "admin",
+            "postAddress" : "admin",
+            "postImageUrl" : "admin",
+            "category" : "admin"
+        }
+    ]
+}

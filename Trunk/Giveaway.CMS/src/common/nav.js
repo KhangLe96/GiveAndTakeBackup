@@ -20,6 +20,12 @@ export const getNavData = app => [
         icon: 'dashboard',
         component: dynamicWrapper(app, ['dashboard'], () => import('../routes/Dashboard')),
       },
+      {
+        name: 'Post Management',
+        path: 'postmanagement',
+        icon: 'data',
+        component: dynamicWrapper(app, ['dashboard'], () => import('../routes/Dashboard/postmanagement')),
+      },
     ],
   },
   {

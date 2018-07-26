@@ -85,6 +85,22 @@ export default function request(url, options) {
       return error;
     });
 }
+export function fakelogin(username, password){
+  let data = require('../routes/Auth/FakeData/users.json');
+  let users = data.users;
+  for (let index = 0; index < users.length; index++) {
+    const user = users[index];
+    if (user.username == username && user.password == password)
+    {
+      return (
+        {
+          access_token  : 'asdkjxklcj12asdlsd',
+        }
+      )
+    }
+  }
+  return false;
+}
 
 export function requestUpload(url, options) {
   url = prepare_api_url_upload(url);
