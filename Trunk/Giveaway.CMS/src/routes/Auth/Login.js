@@ -112,15 +112,6 @@ export default class Login extends PureComponent {
                 Đăng nhập
               </Button>
             </div>
-            <div className="login_facebook_row">
-              <div className="fb-login-button" data-width="398" data-max-rows="1" data-size="large"
-                   data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false"
-                   data-use-continue-as="false"></div>
-
-            </div>
-            <div className="login_facebook_row">
-              <div className="g-signin2" data-onsuccess="onSignIn" data-width="398" data-height="200" data-max-rows="1" data-longtitle="true"></div>
-            </div>
           </Form>
         </div>
       </Spin>
