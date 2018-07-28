@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Giveaway.API.DB;
 using Giveaway.API.Shared.Authorization.Handlers;
 using Giveaway.API.Shared.Extensions;
@@ -14,13 +13,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json;
 using SharpRaven.Core.Configuration;
 using Swashbuckle.AspNetCore.Swagger;
 using Giveaway.Data.EF;
-using Giveaway.Data.EF.Utils;
 using Giveaway.Util.Utils;
 
 namespace Giveaway.API
@@ -52,7 +49,8 @@ namespace Giveaway.API
             services.AddMvc(ConfigureMvc)
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
+
                 });
             services.AddMvc().AddJsonOptions(
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
