@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 
@@ -23,6 +23,10 @@ export default class ForgotPassword extends PureComponent {
   state = {
     isSendCodeToEmail: false,
     email: null,
+  }
+  
+  componentDidMount(){
+    message.info(this.props.match.params.id);
   }
 
   handleSubmit = (e) => {

@@ -21,10 +21,21 @@ export const getNavData = app => [
         component: dynamicWrapper(app, ['dashboard'], () => import('../routes/Dashboard')),
       },
       {
-        name: 'Post Management',
-        path: 'postmanagement',
+        name: 'Report Management',
+        path: 'reportmanagement',
         icon: 'data',
-        component: dynamicWrapper(app, ['dashboard'], () => import('../routes/Dashboard/postmanagement')),
+        children: [
+          {
+            name: 'report',
+            path: '',
+            component: dynamicWrapper(app, ['reportmanagement'], () => import('../routes/Reportmanagement')),
+          },
+          {
+            name: 'Detail',
+            path: 'report/:id',
+            component: dynamicWrapper(app, ['passport'], () => import('../routes/Auth/ForgotPassword')),
+          },
+        ],
       },
     ],
   },
