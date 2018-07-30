@@ -3,8 +3,8 @@ import { Alert, Button, Form, Icon, Input, Spin } from 'antd';
 import { connect } from 'dva';
 import { GoogleLogin } from 'react-google-login-component';
 import { Link } from 'dva/router';
-
-
+import styles from './Login.less';
+import cx from 'classnames';
 const FormItem = Form.Item;
 
 @connect(({ passport, global, modals }) => ({
@@ -47,34 +47,23 @@ export default class Login extends PureComponent {
   };
 
   validateForm = () => {
-    if (this.state.userName && this.state.password && this.state.userName.length > 3 && this.state.password.length > 6) {
-      this.setState({ isLoginEnable: true });
-    }
+
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const { loginErrors } = this.props;
 
-    const renderError = () => {
-      if (loginErrors.message && loginErrors.type) {
-        return (<div style={{ margin: '25px 0' }}>
-          <Alert message={loginErrors.message} type="error" />
-        </div>);
-      }
-    };
-
     return (
       <Spin spinning={this.props.loading}>
         <div className="login_container">
           <Form onSubmit={this.handleSubmit} className="login-form">
-            <div className="content_center ">
+            <div className={cx('content_center')}>
               <img
                 style={{ width: '400px', height: '135px', zIndex: '10', marginBottom: '50px' }}
                 src="/images/img_logo_login.png"
               />
             </div>
-            {renderError()}
             <span>
               Tên đăng nhập
             </span>

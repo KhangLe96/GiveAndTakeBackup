@@ -17,7 +17,7 @@ class BlankLayout extends React.PureComponent {
 
   componentDidMount() {
     if (localStorage.getItem('currentUser')) {
-      this.props.dispatch(routerRedux.push('/dashboard'));
+      this.props.dispatch(routerRedux.push('/post-management'));
     }
   }
 
