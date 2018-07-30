@@ -21,8 +21,8 @@ namespace Giveaway.API.Controllers
     {
         #region Private Fields
 
-        private readonly IAuthService authService;
-        private readonly DbService.IUserService userService;
+        private readonly IAuthService _authService;
+        private readonly DbService.IUserService _userService;
 
         #endregion
 
@@ -33,8 +33,8 @@ namespace Giveaway.API.Controllers
             IAuthService authService,
             DbService.IUserService userService)
         {
-            this.authService = authService;
-            this.userService = userService;
+            _authService = authService;
+            _userService = userService;
         }
 
         #endregion
@@ -46,7 +46,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public LoginResponse Login([FromBody]LoginRequest request)
         {
-            return authService.Login(request);
+            return _authService.Login(request);
         }
 
         [Authorize]
@@ -54,7 +54,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public void UpdateAvatar(IFormFile file)
         {
-            authService.UpdateAvatar(User.GetUserId(), file);
+            _authService.UpdateAvatar(User.GetUserId(), file);
         }
 
 
@@ -68,11 +68,11 @@ namespace Giveaway.API.Controllers
         public bool Logout()
         {
             var userId = User.GetUserId();
-            var user = userService.Find(userId);
+            var user = _userService.Find(userId);
             if (user != null)
             {
                 user.AllowTokensSince = DateTimeOffset.UtcNow;
-                var isUpdated = userService.Update(user);
+                var isUpdated = _userService.Update(user);
 
                 return isUpdated;
             }
@@ -89,7 +89,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public RegisterResponse Register([FromBody]RegisterRequest request)
         {
-            return authService.Register(request);
+            return _authService.Register(request);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Giveaway.API.Controllers
         public UserProfileResponse GetProfile()
         {
             var userId = User.GetUserId();
-            return authService.GetUserProfile(userId);
+            return _authService.GetUserProfile(userId);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public UserProfileResponse GetProfileById(Guid userId)
         {
-            return authService.GetUserProfile(userId);
+            return _authService.GetUserProfile(userId);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Giveaway.API.Controllers
         public UserProfileResponse UpdateProfile([FromBody]UserProfileRequest request)
         {
             var userId = User.GetUserId();
-            return authService.UpdateUserProfile(userId, request);
+            return _authService.UpdateUserProfile(userId, request);
         }
 
         #endregion

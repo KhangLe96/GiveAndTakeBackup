@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Giveaway.API.Shared.Responses;
-using Giveaway.Service.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Giveaway.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Giveaway.API.Controllers
@@ -17,11 +11,11 @@ namespace Giveaway.API.Controllers
     [Route("api/v1/Category")]
     public class CategoryController : Controller
     {
-        private readonly ICategoryService categoryService;
+        private readonly ICategoryService _categoryService;
 
         public CategoryController(ICategoryService categoryService)
         {
-            this.categoryService = categoryService;
+            _categoryService = categoryService;
         }
     }
 }

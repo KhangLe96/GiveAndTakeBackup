@@ -28,11 +28,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     {
         #region Private Fields
 
-        private readonly DbService.IAdminService adminService;
-        private readonly DbService.ISuperAdminService superAdminService;
-        private readonly DbService.IUserService userService;
-        private readonly DbService.ISettingService settingService;
-        private readonly IHostingEnvironment environment;
+        private readonly DbService.IAdminService _adminService;
+        private readonly DbService.ISuperAdminService _superAdminService;
+        private readonly DbService.IUserService _userService;
+        private readonly DbService.ISettingService _settingService;
+        private readonly IHostingEnvironment _environment;
 
 
         //private readonly IFacebookService _facebookService;
@@ -49,12 +49,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             //IFacebookService facebookService
             )
         {
-            this.adminService = adminService;
-            this.superAdminService = superAdminService;
-            this.userService = userService;
-            this.settingService = settingService;
+            this._adminService = adminService;
+            this._superAdminService = superAdminService;
+            this._userService = userService;
+            this._settingService = settingService;
             //_facebookService = facebookService;
-            this.environment = environment;
+            this._environment = environment;
         }
 
         #endregion
@@ -63,7 +63,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public LoginResponse Login(LoginRequest request)
         {
-            var validateResult = userService.ValidateLogin(request);
+            var validateResult = _userService.ValidateLogin(request);
 
             if (validateResult.StatusCode != HttpStatusCode.OK)
             {
@@ -75,17 +75,17 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public RegisterResponse Register(RegisterRequest request)
         {
-            var resultRegister = userService.ValidateRegister(request);
+            var resultRegister = _userService.ValidateRegister(request);
 
             if (resultRegister.StatusCode != HttpStatusCode.OK)
             {
                 throw resultRegister.ToException();
             }
 
-            var user = userService.CreateUser(request);
+            var user = _userService.CreateUser(request);
             //user.IsActivated = user.Role == Const.UserRoles.Student;
             user.IsActivated = true;
-            var createdUser = userService.Create(user, out var isSaved);
+            var createdUser = _userService.Create(user, out var isSaved);
 
             if (!isSaved)
             {
@@ -97,7 +97,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public UserProfileResponse GetUserProfile(Guid userId)
         {
-            var currentUser = userService.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
+            var currentUser = _userService.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
 
             if (currentUser == null)
             {
@@ -118,7 +118,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request)
         {
-            var user = userService.Find(userId);
+            var user = _userService.Find(userId);
 
             var validateRequest = ValidateProfileRequest(user, request);
 
@@ -144,7 +144,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 throw new BadRequestException("Bạn chưa được kích hoạt");
             }
 
-            var webRoot = environment.WebRootPath;
+            var webRoot = _environment.WebRootPath;
             using (var stream = new MemoryStream())
             {
                 file.CopyTo(stream);
@@ -160,7 +160,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private User GetCurrentUser(Guid userId)
         {
-            var currentUser = userService.Include(m => m.AvatarUrl).Include(m => m.Address).FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
+            var currentUser = _userService.Include(m => m.AvatarUrl).Include(m => m.Address).FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
 
             if (currentUser == null)
             {
@@ -216,7 +216,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
             user.PhoneNumber = request.Mobilephone;
 
-            var isUpdated = userService.Update(user);
+            var isUpdated = _userService.Update(user);
 
             if (!isUpdated)
             {

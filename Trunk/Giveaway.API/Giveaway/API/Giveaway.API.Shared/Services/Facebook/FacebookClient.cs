@@ -11,23 +11,23 @@ namespace Giveaway.API.Shared.Services.Facebook
 	{
 		public const string FacebookApiUrl = "https://graph.facebook.com/v2.11/";
 
-		private readonly HttpClient httpClient;
+		private readonly HttpClient _httpClient;
 
 		public FacebookClient()
 		{
-			httpClient = new HttpClient
+			_httpClient = new HttpClient
 			{
 				BaseAddress = new Uri(FacebookApiUrl)
 			};
 
-			httpClient.DefaultRequestHeaders
+			_httpClient.DefaultRequestHeaders
 				.Accept
 				.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 		}
 
 		public async Task<T> GetAsync<T>(string accessToken, string endpoint, string args = null)
 		{
-			var response = await httpClient.GetAsync($"{endpoint}?access_token={accessToken}&{args}");
+			var response = await _httpClient.GetAsync($"{endpoint}?access_token={accessToken}&{args}");
 
 			if (!response.IsSuccessStatusCode)
 			{
@@ -42,7 +42,7 @@ namespace Giveaway.API.Shared.Services.Facebook
 		public async Task PostAsync(string accessToken, string endpoint, object data, string args = null)
 		{
 			var payload = GetPayload(data);
-			await httpClient.PostAsync($"{endpoint}?access_token={accessToken}&{args}", payload);
+			await _httpClient.PostAsync($"{endpoint}?access_token={accessToken}&{args}", payload);
 		}
 
 		private static StringContent GetPayload(object data)

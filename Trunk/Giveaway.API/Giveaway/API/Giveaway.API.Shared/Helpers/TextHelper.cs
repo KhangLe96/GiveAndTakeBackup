@@ -6,11 +6,11 @@ namespace Giveaway.API.Shared.Helpers
 {
 	public static class TextHelper
 	{
-		private static string vnCharactersWithTones = "áàảãạâấầẩẫậăắằẳẵặđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ";
-		private static string replaceCharacters = "aaaaaaaaaaaaaaaaadeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyy";
+		private static string _vnCharactersWithTones = "áàảãạâấầẩẫậăắằẳẵặđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ";
+		private static string _replaceCharacters = "aaaaaaaaaaaaaaaaadeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyy";
 
-		private static readonly string VnCharactersWithTonesUppercase = vnCharactersWithTones.ToUpper();
-		private static readonly string ReplaceCharactersUppercase = replaceCharacters.ToUpper();
+		private static readonly string VnCharactersWithTonesUppercase = _vnCharactersWithTones.ToUpper();
+		private static readonly string ReplaceCharactersUppercase = _replaceCharacters.ToUpper();
 
 		/// <summary>
 		/// Convert Vietnamese string to lower, no tones setence.
@@ -25,11 +25,11 @@ namespace Giveaway.API.Shared.Helpers
 			}
 
 			int i;
-			while ((i = vnCharactersWithTones.IndexOfAny(input.ToCharArray())) != -1)
+			while ((i = _vnCharactersWithTones.IndexOfAny(input.ToCharArray())) != -1)
 			{
 				if (i != -1)
 				{
-					input = input.Replace(vnCharactersWithTones[i], replaceCharacters[i]);
+					input = input.Replace(_vnCharactersWithTones[i], _replaceCharacters[i]);
 				}
 			}
 
@@ -46,7 +46,7 @@ namespace Giveaway.API.Shared.Helpers
 
 		public static bool IsVietnameseWithTones(this string input)
 		{
-			return input.IndexOfAny(vnCharactersWithTones.ToCharArray()) != -1 || input.IndexOfAny(VnCharactersWithTonesUppercase.ToCharArray()) != -1;
+			return input.IndexOfAny(_vnCharactersWithTones.ToCharArray()) != -1 || input.IndexOfAny(VnCharactersWithTonesUppercase.ToCharArray()) != -1;
 		}
 
 		public static string JoinList(string separator, List<string> list)

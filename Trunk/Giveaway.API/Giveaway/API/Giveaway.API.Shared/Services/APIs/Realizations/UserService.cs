@@ -14,33 +14,33 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     /// <inheritdoc />
     public class UserService : IUserService
     {
-        private readonly DbService.IUserService userService;
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly DbService.IUserService _userService;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public UserService(DbService.IUserService userService, IHostingEnvironment hostingEnvironment)
         {
-            this.userService = userService;
-            this.hostingEnvironment = hostingEnvironment;
+            this._userService = userService;
+            this._hostingEnvironment = hostingEnvironment;
         }
 
         public IQueryable<User> GetUsers()
         {
-            return userService.All();
+            return _userService.All();
         }
 
         public bool UpdateUser(User user)
         {
-            return userService.Update(user);
+            return _userService.Update(user);
         }
 
         public User GetUser(Guid id)
         {
-            return userService.Find(id);
+            return _userService.Find(id);
         }
 
         public bool DeleteUser(Guid id)
         {
-            userService.Delete(x => x.Id == id, out var isSaved);
+            _userService.Delete(x => x.Id == id, out var isSaved);
             return isSaved;
         }
     }
