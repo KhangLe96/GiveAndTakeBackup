@@ -15,25 +15,29 @@ export const getNavData = app => [
     path: '',
     children: [
       {
-        name: 'Thống kê',
-        path: 'dashboard',
-        icon: 'dashboard',
-        component: dynamicWrapper(app, ['dashboard'], () => import('../routes/Dashboard')),
-      },
-      {
-        name: 'Report Management',
-        path: 'reportmanagement',
+        name: 'Post Management',
+        path: 'post-management', // should use format report-management to have friendly url
         icon: 'data',
         children: [
           {
-            name: 'report',
+            name: 'List post',
             path: '',
-            component: dynamicWrapper(app, ['reportmanagement'], () => import('../routes/Reportmanagement')),
+            component: dynamicWrapper(app, ['postManagement'], () => import('../routes/PostManagement')),
           },
           {
             name: 'Detail',
-            path: 'report/:id',
-            component: dynamicWrapper(app, ['passport'], () => import('../routes/Auth/ForgotPassword')),
+            path: 'detail/:id',
+            component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Detail')),
+          },
+          {
+            name: 'Create',
+            path: 'create',
+            component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Create')),
+          },
+          {
+            name: 'Edit',
+            path: 'edit/:id',
+            component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Edit')),
           },
         ],
       },

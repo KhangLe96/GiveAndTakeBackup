@@ -85,18 +85,18 @@ export default function request(url, options) {
       return error;
     });
 }
-export function fakelogin(username, password){
-  let data = require('../routes/Auth/FakeData/users.json');
-  let users = data.users;
+export function fakelogin(username, password) {
+  const data = require('../routes/Auth/FakeData/users.json');
+  const users = data.users;
   for (let index = 0; index < users.length; index++) {
     const user = users[index];
-    if (user.username == username && user.password == password)
+    if (user.username == username && user.password == password) // Review: should use === instead of ==
     {
       return (
         {
-          access_token  : 'asdkjxklcj12asdlsd',
+          access_token: 'asdkjxklcj12asdlsd',
         }
-      )
+      );
     }
   }
   return false;

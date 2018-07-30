@@ -421,7 +421,7 @@ class BasicLayout extends React.PureComponent {
               }]}
               copyright={
                 <div>
-                  Copyright <Icon type="copyright"/> 2018 Smart Attendance
+                  Copyright <Icon type="copyright"/> 2018 ChoVaNhan
                 </div>
               }
             />
