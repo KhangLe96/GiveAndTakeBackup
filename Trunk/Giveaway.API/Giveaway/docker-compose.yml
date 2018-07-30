@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  rollcall.api.upload:
+    image: rollcall.api.upload
+    build:
+      context: .
+      dockerfile: RollCall.API.Upload/Dockerfile
