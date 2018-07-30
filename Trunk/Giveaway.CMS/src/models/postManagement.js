@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
 
 export default {
-  namespace: 'postmanagement', /* should be the same with file name */
+  namespace: 'postManagement', /* should be the same with file name   //Review: make attention with the way to named, it should clear to anyone understand easily */
 
   state: {
     data: {
