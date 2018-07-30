@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{ED0CD21C-4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Giveaway.Data", "Giveaway.Data\Giveaway.Data.csproj", "{E5818350-D344-4969-BE33-27F560EB2594}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Giveaway.Data.EF", "Giveaway.Data,EF\Giveaway.Data.EF.csproj", "{6AED13D2-FF41-4D36-B1F4-0697401B7F2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Giveaway.Data.EF", "Giveaway.Data.EF\Giveaway.Data.EF.csproj", "{6AED13D2-FF41-4D36-B1F4-0697401B7F2D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Util", "Util", "{2D8069F5-62C9-4117-BC19-972C678C08EC}"
 EndProject
