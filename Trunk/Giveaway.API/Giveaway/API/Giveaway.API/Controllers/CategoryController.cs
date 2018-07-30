@@ -1,4 +1,5 @@
-﻿using Giveaway.Service.Services;
+﻿using Giveaway.Data.Models;
+using Giveaway.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Giveaway.API.Controllers
@@ -16,6 +17,12 @@ namespace Giveaway.API.Controllers
         public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
+        }
+
+        [HttpGet]
+        public ResponseMessage GetAllCategories()
+        {
+            return _categoryService.GetAllCategories();
         }
     }
 }
