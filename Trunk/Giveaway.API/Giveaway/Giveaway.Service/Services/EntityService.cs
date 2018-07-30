@@ -180,7 +180,7 @@ namespace Giveaway.Service.Services
         }
 
         #region IDisposable
-        private bool _isDisposed;
+        private bool isDisposed;
 
         ~EntityService()
         {
@@ -195,10 +195,10 @@ namespace Giveaway.Service.Services
 
         private void Dispose(bool isDisposed)
         {
-            if (!isDisposed || _isDisposed) return;
+            if (!isDisposed || this.isDisposed) return;
             if (Repository == null) return;
 
-            _isDisposed = true;
+            this.isDisposed = true;
             Repository.Dispose();
             Repository = null;
         }

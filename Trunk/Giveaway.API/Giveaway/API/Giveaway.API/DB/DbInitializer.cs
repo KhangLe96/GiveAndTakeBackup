@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Giveaway.Service.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,101 @@ namespace Giveaway.API.DB
         {
             SeedSuperAdmin(services);
             SeedAdmin(services);
+            SeedCategories(services);
+        }
+
+        private static void SeedCategories(IServiceProvider services)
+        {
+            var categoryService = services.GetService<ICategoryService>();
+            if (!categoryService.All().Any())
+            {
+                categoryService.CreateMany(CategoryInit(), out var isSaved);
+            }
+        }
+
+        public static List<Category> CategoryInit()
+        {
+            var categories = new List<Category>
+            {
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "Tất cả danh mục",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "bất động sản",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "Xe cộ",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "đồ điện tử",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "mẹ và bé",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "Thời trang, đồ dùng cá nhân",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "Nội ngoại thất, đồ gia dụng",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "Giải trí, thể thao, sở thích",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "Thú cưng",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "Đồ dùng văn phòng, công nông nghiệp",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CategoryName = "Dịch vụ, du lịch",
+                    CreatedTime = DateTimeOffset.UtcNow,
+                    UpdatedTime = DateTimeOffset.UtcNow
+                }
+            };
+            return categories;
         }
 
         private static void SeedSuperAdmin(IServiceProvider services)
@@ -34,9 +130,9 @@ namespace Giveaway.API.DB
                     LastName = "Admin",
                     PasswordSalt = securePassword.Salt,
                     PasswordHash = securePassword.Hash,
-                    Role = Const.UserRoles.SuperAdmin,
+                    Role = Role.SuperAdmin,
                     PhoneNumber = "01672734732",
-                    Dob = new DateTime(1990, 1, 1),
+                    BirthDate = new DateTime(1990, 1, 1),
                     Address = String.Empty,
                     CreatedTime = DateTimeOffset.Now,
                     UpdatedTime = DateTimeOffset.Now
@@ -67,6 +163,7 @@ namespace Giveaway.API.DB
                 }
             }
         }
+
         private static void SeedAdmin(IServiceProvider services)
         {
             var userService = services.GetService<IUserService>();
@@ -75,7 +172,7 @@ namespace Giveaway.API.DB
             if (!adminService.All().Any())
             {
                 var securePassword = userService.GenerateSecurePassword(Const.DefaultAdminPassword);
-                var user = new Giveaway.Data.Models.Database.User()
+                var user = new User
                 {
                     UserName = "admin",
                     Email = "admin@gmail.com",
@@ -84,9 +181,9 @@ namespace Giveaway.API.DB
                     Address = String.Empty,
                     PasswordSalt = securePassword.Salt,
                     PasswordHash = securePassword.Hash,
-                    Role = Const.UserRoles.Admin,
+                    Role = Role.Admin,
                     PhoneNumber = "01672734732",
-                    Dob = new DateTime(1990, 1, 1),
+                    BirthDate = new DateTime(1990, 1, 1),
                     CreatedTime = DateTimeOffset.Now,
                     UpdatedTime = DateTimeOffset.Now
                 };

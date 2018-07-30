@@ -28,11 +28,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     {
         #region Private Fields
 
-        private readonly DbService.IAdminService _adminService;
-        private readonly DbService.ISuperAdminService _superAdminService;
-        private readonly DbService.IUserService _userService;
-        private readonly DbService.ISettingService _settingService;
-        private readonly IHostingEnvironment _environment;
+        private readonly DbService.IAdminService adminService;
+        private readonly DbService.ISuperAdminService superAdminService;
+        private readonly DbService.IUserService userService;
+        private readonly DbService.ISettingService settingService;
+        private readonly IHostingEnvironment environment;
 
 
         //private readonly IFacebookService _facebookService;
@@ -49,12 +49,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             //IFacebookService facebookService
             )
         {
-            _adminService = adminService;
-            _superAdminService = superAdminService;
-            _userService = userService;
-            _settingService = settingService;
+            this.adminService = adminService;
+            this.superAdminService = superAdminService;
+            this.userService = userService;
+            this.settingService = settingService;
             //_facebookService = facebookService;
-            _environment = environment;
+            this.environment = environment;
         }
 
         #endregion
@@ -63,7 +63,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public LoginResponse Login(LoginRequest request)
         {
-            var validateResult = _userService.ValidateLogin(request);
+            var validateResult = userService.ValidateLogin(request);
 
             if (validateResult.StatusCode != HttpStatusCode.OK)
             {
@@ -75,17 +75,17 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public RegisterResponse Register(RegisterRequest request)
         {
-            var resultRegister = _userService.ValidateRegister(request);
+            var resultRegister = userService.ValidateRegister(request);
 
             if (resultRegister.StatusCode != HttpStatusCode.OK)
             {
                 throw resultRegister.ToException();
             }
 
-            var user = _userService.CreateUser(request);
-            user.IsActivated = user.Role == Const.UserRoles.Student;
+            var user = userService.CreateUser(request);
+            //user.IsActivated = user.Role == Const.UserRoles.Student;
             user.IsActivated = true;
-            var createdUser = _userService.Create(user, out var isSaved);
+            var createdUser = userService.Create(user, out var isSaved);
 
             if (!isSaved)
             {
@@ -97,7 +97,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public UserProfileResponse GetUserProfile(Guid userId)
         {
-            var currentUser = _userService.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
+            var currentUser = userService.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
 
             if (currentUser == null)
             {
@@ -118,7 +118,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request)
         {
-            var user = _userService.Find(userId);
+            var user = userService.Find(userId);
 
             var validateRequest = ValidateProfileRequest(user, request);
 
@@ -144,7 +144,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 throw new BadRequestException("Bạn chưa được kích hoạt");
             }
 
-            var webRoot = _environment.WebRootPath;
+            var webRoot = environment.WebRootPath;
             using (var stream = new MemoryStream())
             {
                 file.CopyTo(stream);
@@ -160,7 +160,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private User GetCurrentUser(Guid userId)
         {
-            var currentUser = _userService.Include(m => m.Avatar).Include(m => m.Address).FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
+            var currentUser = userService.Include(m => m.AvatarUrl).Include(m => m.Address).FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
 
             if (currentUser == null)
             {
@@ -210,13 +210,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             user.FirstName = request.GivenName;
             user.LastName = request.FamilyName;
             user.Gender = request.Gender;
-            user.Dob = request.BirthDate;
+            user.BirthDate = request.BirthDate;
             user.Email = request.Email;
             user.Address = request.Address;
 
             user.PhoneNumber = request.Mobilephone;
 
-            var isUpdated = _userService.Update(user);
+            var isUpdated = userService.Update(user);
 
             if (!isUpdated)
             {
@@ -228,7 +228,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private RegisterResponse GenerateRegisterResponse(User user)
         {
-            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role);
+            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role.ToString());
 
             return new RegisterResponse()
             {
@@ -238,7 +238,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private LoginResponse GenerateLoginResponse(User user)
         {
-            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role);
+            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role.ToString());
 
             var response = new LoginResponse()
             {
@@ -260,15 +260,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 FamilyName = user.LastName,
                 GivenName = user.FirstName,
                 Username = user.UserName,
-                BirthDate = user.Dob,
+                BirthDate = user.BirthDate,
                 Gender = user.Gender.ToString(),
                 Mobilephone = user.PhoneNumber,
                 Address = user.Address,
                 Email = user.Email,
-                Role = user.Role,
+                Role = user.Role.ToString(),
                 Status = user.IsActivated,
                 LastLogin = user.LastLogin,
-                Avatar = Mapper.Map<Avatar>(user.Avatar),
+                AvatarUrl = user.AvatarUrl,
                 JoinedAt = user.CreatedTime
             };
 
@@ -277,7 +277,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private FacebookConnectResponse GenerateFacebookConnectResponse(User user)
         {
-            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role);
+            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role.ToString());
             var response = new FacebookConnectResponse()
             {
                 Profile = GenerateUserProfileResponse(user)

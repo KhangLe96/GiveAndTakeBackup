@@ -8,25 +8,25 @@ namespace Giveaway.API.Shared.Enumerators
 	internal class EnumEnumerable<T> : IEnumerable<T>
 		where T : struct, IConvertible
 	{
-		private readonly Enum _filter;
-		private readonly IEnumerable<Enum> _allValues;
+		private readonly Enum filter;
+		private readonly IEnumerable<Enum> allValues;
 
 		public EnumEnumerable(T? filter = null)
 		{
 			CheckType<T>();
-			_filter = filter.HasValue
+			this.filter = filter.HasValue
 				? (Enum)(object)filter
 				: null;
-			_allValues = Enum.GetValues(typeof(T)).Cast<Enum>();
+			allValues = Enum.GetValues(typeof(T)).Cast<Enum>();
 		}
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			var result = _allValues;
+			var result = allValues;
 
-			if (_filter != null)
+			if (filter != null)
 			{
-				result = result.Where(x => _filter.HasFlag(x));
+				result = result.Where(x => filter.HasFlag(x));
 			}
 
 			return result.Cast<T>().GetEnumerator();

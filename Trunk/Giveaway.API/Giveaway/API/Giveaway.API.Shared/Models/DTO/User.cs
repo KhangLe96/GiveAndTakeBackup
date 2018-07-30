@@ -29,31 +29,14 @@ namespace Giveaway.API.Shared.Models.DTO
 
         [EmailAddress]
         public string Email { get; set; }
-
-        /// <summary>
-        /// Day of birth
-        /// </summary>
         [Required]
-        public DateTime Dob { get; set; }
+        public DateTime BirthDate { get; set; }
 
         public string PhoneNumber { get; set; }
 
-        private string _role;
 
         [Required]
-        public string Role
-        {
-            get => _role;
-            set
-            {
-                _role = value;
-
-                if (!string.IsNullOrEmpty(value))
-                {
-                    _role = char.ToUpper(_role[0]) + _role.Substring(1).ToLower();
-                }
-            }
-        }
+        public Role Role { get; set; }
 
         [Required]
         [DefaultValue(true)]

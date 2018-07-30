@@ -271,7 +271,7 @@ namespace Giveaway.Data.EF.Repository
         }
 
         #region IDisposable
-        private bool _isDisposed;
+        private bool isDisposed;
 
         ~GenericRepository()
         {
@@ -286,9 +286,9 @@ namespace Giveaway.Data.EF.Repository
 
         private void Dispose(bool dispose)
         {
-            if (!dispose || _isDisposed) return;
+            if (!dispose || isDisposed) return;
 
-            _isDisposed = true;
+            isDisposed = true;
         }
         #endregion
     }

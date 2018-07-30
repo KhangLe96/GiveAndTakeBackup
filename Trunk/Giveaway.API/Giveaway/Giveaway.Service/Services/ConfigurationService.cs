@@ -4,13 +4,13 @@ namespace Giveaway.Service.Services
 {
 	public class ConfigurationService : IConfigurationService
 	{
-		public string ConnectionString => _configRoot.GetConnectionString("DefaultConnection");
+		public string ConnectionString => configRoot.GetConnectionString("DefaultConnection");
 
-		private readonly IConfiguration _configRoot;
+		private readonly IConfiguration configRoot;
 
 		public ConfigurationService(IConfiguration configRoot)
 		{
-			_configRoot = configRoot;
+			this.configRoot = configRoot;
 		}
 	}
 }

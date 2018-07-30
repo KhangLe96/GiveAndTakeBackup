@@ -27,7 +27,7 @@ namespace Giveaway.Service.Services
     {
         #region Private Fields
         private const string DefaultUserPassword = "user@123";
-        private const string _usernamePattern = "[a-zA-Z0-9_]{1,20}";
+        private const string UsernamePattern = "[a-zA-Z0-9_]{1,20}";
         #endregion
 
         #region Constructor
@@ -128,7 +128,7 @@ namespace Giveaway.Service.Services
         {
             var securePassword = GenerateSecurePassword(model.Password);
 
-            return new User()
+            return new User
             {
                 UserName = model.Username,
                 Email = model.Email,
@@ -136,9 +136,8 @@ namespace Giveaway.Service.Services
                 LastName = model.FamilyName,
                 PasswordSalt = securePassword.Salt,
                 PasswordHash = securePassword.Hash,
-                Role = model.RegisterAs,
                 PhoneNumber = model.MobilePhone,
-                Dob = model.Birthday,
+                BirthDate = model.Birthday,
                 CreatedTime = DateTimeOffset.Now,
                 UpdatedTime = DateTimeOffset.Now,
                 LastLogin = DateTimeOffset.Now,
@@ -178,7 +177,7 @@ namespace Giveaway.Service.Services
 
         private bool IsUserNameFormatValid(string userName)
         {
-            return Regex.IsMatch(userName, _usernamePattern);
+            return Regex.IsMatch(userName, UsernamePattern);
         }
 
         private bool IsEmailFormatValid(string email)

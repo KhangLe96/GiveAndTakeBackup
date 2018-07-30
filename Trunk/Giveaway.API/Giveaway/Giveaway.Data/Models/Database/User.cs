@@ -1,5 +1,6 @@
 ﻿using Giveaway.Data.Enums;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,41 +30,14 @@ namespace Giveaway.Data.Models.Database
         [MinLength(5)]
         public string UserName { get; set; }
 
-        [DataMember(Name = "address")]
-        [MaxLength(100)]
-        public string Address { get; set; }
-
-        [DataMember(Name = "email")]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        /// <summary>
-        /// Day of birth
-        /// </summary>
-        [DataMember(Name = "dob")]
+        [DataMember(Name = "birthDate")]
         [Required]
-        public DateTime Dob { get; set; }
-
-        [DataMember(Name = "phoneNumber")]
-        public string PhoneNumber { get; set; }
-
-        private string _role;
+        public DateTime BirthDate { get; set; }
 
         [DataMember(Name = "role")]
         [Required]
-        public string Role
-        {
-            get => _role;
-            set
-            {
-                _role = value;
-
-                if (!string.IsNullOrEmpty(value))
-                {
-                    _role = char.ToUpper(_role[0]) + _role.Substring(1).ToLower();
-                }
-            }
-        }
+        [DefaultValue(Role.User)]
+        public Role Role { get; set; }
 
         [Required]
         [DataMember(Name = "isActivated")]
@@ -86,6 +60,16 @@ namespace Giveaway.Data.Models.Database
 
         #region Unrequired Properties
 
+        [DataMember(Name = "phoneNumber")]
+        public string PhoneNumber { get; set; }
+
+        [DataMember(Name = "avatarUrl")]
+        public string AvatarUrl { get; set; }
+
+        [DataMember(Name = "address")]
+        [MaxLength(100)]
+        public string Address { get; set; }
+
         [DataMember(Name = "fullName")]
         [NotMapped]
         public string FullName => LastName + " " + FirstName;
@@ -96,9 +80,19 @@ namespace Giveaway.Data.Models.Database
         [DataMember(Name = "lastLogin")]
         public DateTimeOffset LastLogin { get; set; }
 
-        [DataMember(Name = "avatar")]
-        public virtual Avatar Avatar { get; set; }
+        [DataMember(Name = "email")]
+        [EmailAddress]
+        public string Email { get; set; }
 
         #endregion
+
+        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
+        //[InverseProperty("Giver")]
+        //public virtual ICollection<Rank> GiverRanks { get; set; }
+        //[InverseProperty("Taker")]
+        //public virtual ICollection<Rank> TakerRanks { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Giveaway.API.Shared.Responses
 
 		[DataMember(Name="avatar", EmitDefaultValue=false)]
 		[JsonProperty(PropertyName = "avatar")]
-		public Avatar Avatar { get; set; }
+		public string AvatarUrl { get; set; }
 
 		[DataMember(Name="mobilephone", EmitDefaultValue=false)]
 		[JsonProperty(PropertyName = "mobilephone")]

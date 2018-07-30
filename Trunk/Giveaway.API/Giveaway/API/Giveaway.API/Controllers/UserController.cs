@@ -12,12 +12,12 @@ namespace Giveaway.API.Controllers
     [Route("api/v1/cms")]
     public class UserController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly IUserService userService;
 
         /// <inheritdoc />
         public UserController(IUserService userService)
         {
-            _userService = userService;
+            this.userService = userService;
         }
 
         [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
@@ -25,7 +25,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public bool Delete(Guid id)
         {
-            return _userService.DeleteUser(id);
+            return userService.DeleteUser(id);
         }
     }
 }

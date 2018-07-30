@@ -71,6 +71,7 @@ namespace Giveaway.API
             services.AddSingleton<ISettingService, SettingService>();
             services.AddSingleton<ISuperAdminService, SuperAdminService>();
             services.AddSingleton<IAdminService, AdminService>();
+            services.AddSingleton<ICategoryService, CategoryService>();
 
             //Use raven to send logs to sentry.io
             services.Configure<RavenOptions>(ConfigRoot.GetSection("RavenOptions"));
