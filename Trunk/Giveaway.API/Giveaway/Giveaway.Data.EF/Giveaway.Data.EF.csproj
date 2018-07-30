@@ -17,6 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Giveaway.Data\Giveaway.Data.csproj" />
     <ProjectReference Include="..\Giveaway.Util\Giveaway.Util.csproj" />
   </ItemGroup>

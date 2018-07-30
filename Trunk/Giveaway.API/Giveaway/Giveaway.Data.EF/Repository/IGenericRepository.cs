@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Query;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
