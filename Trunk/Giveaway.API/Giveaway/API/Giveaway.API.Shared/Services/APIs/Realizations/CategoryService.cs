@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.Models.Database;
 
@@ -17,6 +18,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
             var response = _categoryService.GetAllCategories();
             return GenerateCategoryResponse(response.Data as IQueryable<Category>);
+        }
+
+        public bool Delete(Guid id)
+        {
+            _categoryService.Delete(c => c.Id == id, out var isSaved);
+            return isSaved;
         }
 
         private IQueryable<CategoryResponse> GenerateCategoryResponse(IQueryable<Category> categories)
