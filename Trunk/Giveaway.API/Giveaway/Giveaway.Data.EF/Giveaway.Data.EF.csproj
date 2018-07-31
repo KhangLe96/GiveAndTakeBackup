@@ -13,6 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180731064751_init.cs" />
+    <Compile Remove="Migrations\20180731064751_init.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DTOs\Responses\" />
   </ItemGroup>
 
