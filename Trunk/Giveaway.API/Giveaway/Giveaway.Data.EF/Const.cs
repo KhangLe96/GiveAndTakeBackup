@@ -54,11 +54,11 @@ namespace Giveaway.Data.EF
         {
             public const string Admin = nameof(Admin);
             public const string SuperAdmin = nameof(SuperAdmin);
-            public const string Student = nameof(Student);
-            public const string Teacher = nameof(Teacher);
+            public const string User = nameof(User);
+            public const string Moderator = nameof(Moderator);
 
             public const string AdminOrAbove = Admin + Separator + SuperAdmin;
-            public const string TeacherOrAbove = Teacher + Separator + Admin + Separator + SuperAdmin;
+            public const string ModeratorOrAbove = Moderator + Separator + Admin + Separator + SuperAdmin;
 
             public const string Separator = ",";
         }
@@ -69,5 +69,11 @@ namespace Giveaway.Data.EF
         public const string BigImageSuffix = "big.jpg";
         public const string DefaultAvatar = "default-avatar.png";
         public const string AvatarFolder = "Avatars";
+
+        public class Error
+        {
+            public const string BadRequest = "BadRequest";
+            public const string NotFound = "NotFound";
+        }
     }
 }

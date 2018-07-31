@@ -25,6 +25,7 @@ namespace Giveaway.API.Controllers
         [HttpGet]
         public IQueryable<CategoryResponse> All()
         {
+            //Review: it's good if you implement pagination for GET list API
             return _categoryService.All();
         }
 
