@@ -2,6 +2,7 @@
 using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Giveaway.API.Shared.Requests;
 
 namespace Giveaway.API.Controllers
 {
@@ -19,6 +20,13 @@ namespace Giveaway.API.Controllers
         [HttpGet("getAll")]
         [Produces("application/json")]
         public List<PostResponse> GetAllCategories()
+        {
+            return _postService.GetAllPost();
+        }
+
+        [HttpPost("create")]
+        [Produces("application/json")]
+        public List<PostResponse> Create(PostRequest postRequest)
         {
             return _postService.GetAllPost();
         }
