@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Giveaway.API.Shared.Responses;
 
 namespace Giveaway.API.Shared.Services.APIs
@@ -6,5 +7,6 @@ namespace Giveaway.API.Shared.Services.APIs
     public interface ICategoryService
     {
         IQueryable<CategoryResponse> GetAllCategories();
+        bool Delete(Guid id);
     }
 }
