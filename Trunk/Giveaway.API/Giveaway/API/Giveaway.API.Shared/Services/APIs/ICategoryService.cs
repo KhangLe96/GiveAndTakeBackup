@@ -7,8 +7,9 @@ namespace Giveaway.API.Shared.Services.APIs
 {
     public interface ICategoryService
     {
-        IQueryable<CategoryResponse> GetAllCategories();
+        IQueryable<CategoryResponse> All();
         bool Delete(Guid id);
         CategoryResponse Create(CategoryRequest request);
+        CategoryResponse Find(Guid id);
     }
 }

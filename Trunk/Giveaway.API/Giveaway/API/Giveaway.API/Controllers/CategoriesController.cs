@@ -23,9 +23,9 @@ namespace Giveaway.API.Controllers
         }
 
         [HttpGet]
-        public IQueryable<CategoryResponse> GetAllCategories()
+        public IQueryable<CategoryResponse> All()
         {
-            return _categoryService.GetAllCategories();
+            return _categoryService.All();
         }
 
         [HttpDelete("{categoryId}")]
@@ -38,6 +38,12 @@ namespace Giveaway.API.Controllers
         public CategoryResponse Create([FromBody] CategoryRequest request)
         {
             return _categoryService.Create(request);
+        }
+
+        [HttpGet("{categoryId}")]
+        public CategoryResponse Find(Guid categoryId)
+        {
+            return _categoryService.Find(categoryId);
         }
     }
 }

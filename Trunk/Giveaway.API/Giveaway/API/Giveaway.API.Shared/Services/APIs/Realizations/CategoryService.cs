@@ -16,10 +16,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _categoryService = categoryService;
         }
 
-        public IQueryable<CategoryResponse> GetAllCategories()
+        public IQueryable<CategoryResponse> All()
         {
-            var response = _categoryService.GetAllCategories();
-            return GenerateCategoryResponse(response.Data as IQueryable<Category>);
+            var response = (IQueryable<Category>) _categoryService.GetAllCategories().Data;
+            if (response == null)
+            {
+                throw new BadRequestException("No category found");
+            }
+            return response.Select(x => GenerateCategoryResponse(x));
+            
         }
 
         public bool Delete(Guid id)
@@ -39,17 +44,27 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 throw new BadRequestException("Bad Request.");
             }
+            return GenerateCategoryResponse(category);
+        }
+
+        public CategoryResponse Find(Guid id)
+        {
+            var category =  _categoryService.Find(id);
+            if (category == null)
+            {
+                throw new BadRequestException("Category doesn't exist");
+            }
+            return GenerateCategoryResponse(category);
+        }
+
+        private static CategoryResponse GenerateCategoryResponse(Category category)
+        {
             return new CategoryResponse
             {
                 Id = category.Id,
                 CategoryName = category.CategoryName,
                 CategoryImageUrl = category.ImageUrl
             };
-        }
-
-        private static IQueryable<CategoryResponse> GenerateCategoryResponse(IQueryable<Category> categories)
-        {
-            return categories.Select(x => new CategoryResponse {Id = x.Id, CategoryName = x.CategoryName, CategoryImageUrl = x.ImageUrl});
         }
     }
 }
