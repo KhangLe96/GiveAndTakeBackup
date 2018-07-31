@@ -19,14 +19,14 @@ namespace Giveaway.API.Shared.Helpers
         private static readonly JwtSecurityTokenHandler Handler = new JwtSecurityTokenHandler();
         private static readonly IUserService UserService = ServiceProviderHelper.Current.GetService<IUserService>();
 
-        public static Token CreateToken(string username, Guid id, string fullname, string role)
+        public static Token CreateToken(string username, Guid id, string fullname, string[] roles)
         {
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, username),
                 new Claim(ClaimTypes.Sid, id.ToString()),
                 new Claim(ClaimTypes.Name, fullname),
-                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.Role, roles.ToString()),
             };
 
             var token = new JwtSecurityToken(

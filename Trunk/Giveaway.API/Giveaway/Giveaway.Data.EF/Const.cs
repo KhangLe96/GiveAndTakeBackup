@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Globalization;
 
 namespace Giveaway.Data.EF
 {
     public static class Const
     {
         public const int VerificationCodeDuration = 3; // minutes
+        public const string DefaultSuperAdminUserName = "user123";
         public const string DefaultSuperAdminPassword = "superadmin@123";
+        public const string DefaultAdminUserName = "user123";
         public const string DefaultAdminPassword = "admin@123";
+        public const string DefaultNormalUserName = "user123";
         public const string DefaultUserPassword = "user@123";
         public const string StaticFilesFolder = "Content";
         public const string UsernamePattern = "[a-zA-Z0-9_]{1,20}";

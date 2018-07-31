@@ -1,9 +1,7 @@
 ﻿using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
-using Giveaway.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Net;
 
 namespace Giveaway.API.Controllers
 {

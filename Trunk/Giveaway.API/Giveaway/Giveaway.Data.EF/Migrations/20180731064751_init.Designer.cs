@@ -12,7 +12,7 @@ using System;
 namespace Giveaway.Data.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180730133955_init")]
+    [Migration("20180731064751_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,6 +232,25 @@ namespace Giveaway.Data.EF.Migrations
                     b.ToTable("Requests");
                 });
 
+            modelBuilder.Entity("Giveaway.Data.Models.Database.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired();
+
+                    b.Property<DateTimeOffset>("UpdatedTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Role");
+                });
+
             modelBuilder.Entity("Giveaway.Data.Models.Database.Setting", b =>
                 {
                     b.Property<Guid>("Id")
@@ -318,8 +337,6 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<int>("Role");
-
                     b.Property<DateTimeOffset>("UpdatedTime");
 
                     b.Property<string>("UserName")
@@ -329,6 +346,30 @@ namespace Giveaway.Data.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Giveaway.Data.Models.Database.UserRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<Guid>("RoleId");
+
+                    b.Property<DateTimeOffset>("UpdatedTime");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.Admin", b =>
@@ -400,6 +441,19 @@ namespace Giveaway.Data.EF.Migrations
                 {
                     b.HasOne("Giveaway.Data.Models.Database.User", "User")
                         .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Giveaway.Data.Models.Database.UserRole", b =>
+                {
+                    b.HasOne("Giveaway.Data.Models.Database.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Giveaway.Data.Models.Database.User", "User")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

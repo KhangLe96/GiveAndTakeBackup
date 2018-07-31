@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
-using System.Collections.Generic;
 
 namespace Giveaway.Data.EF.Migrations
 {
@@ -40,6 +39,21 @@ namespace Giveaway.Data.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Role",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    RoleName = table.Column<string>(nullable: false),
+                    UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Setting",
                 columns: table => new
                 {
@@ -76,7 +90,6 @@ namespace Giveaway.Data.EF.Migrations
                     PasswordHash = table.Column<byte[]>(nullable: false),
                     PasswordSalt = table.Column<byte[]>(nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    Role = table.Column<int>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false),
                     UserName = table.Column<string>(maxLength: 20, nullable: false)
                 },
@@ -183,6 +196,34 @@ namespace Giveaway.Data.EF.Migrations
                     table.PrimaryKey("PK_SuperAdmin", x => x.Id);
                     table.ForeignKey(
                         name: "FK_SuperAdmin_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRole",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false),
+                    UpdatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRole", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRole_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRole_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -325,6 +366,16 @@ namespace Giveaway.Data.EF.Migrations
                 name: "IX_SuperAdmin_UserId",
                 table: "SuperAdmin",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_RoleId",
+                table: "UserRole",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRole_UserId",
+                table: "UserRole",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -351,7 +402,13 @@ namespace Giveaway.Data.EF.Migrations
                 name: "SuperAdmin");
 
             migrationBuilder.DropTable(
+                name: "UserRole");
+
+            migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Role");
 
             migrationBuilder.DropTable(
                 name: "Categories");

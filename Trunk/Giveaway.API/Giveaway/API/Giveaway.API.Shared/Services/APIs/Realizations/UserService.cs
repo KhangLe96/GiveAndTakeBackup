@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using Giveaway.Data.Models.Database;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using OfficeOpenXml;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations

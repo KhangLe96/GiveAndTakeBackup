@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Giveaway.API.Shared.Responses;
 
 namespace Giveaway.API.Shared.Services.APIs

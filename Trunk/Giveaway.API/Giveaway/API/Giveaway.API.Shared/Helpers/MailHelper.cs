@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using Giveaway.Data.EF.Utils;
 using Giveaway.Util.Utils;
 using Microsoft.Extensions.Configuration;
 

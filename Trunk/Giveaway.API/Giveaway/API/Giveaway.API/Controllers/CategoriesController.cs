@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
-using Giveaway.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Giveaway.API.Controllers

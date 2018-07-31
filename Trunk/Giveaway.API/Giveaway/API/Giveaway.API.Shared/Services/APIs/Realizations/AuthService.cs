@@ -3,12 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using AutoMapper;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
-using Giveaway.API.Shared.Services.Facebook;
 using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.EF.Exceptions;
@@ -17,7 +15,6 @@ using Giveaway.Data.Models.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Avatar = Giveaway.API.Shared.Models.Avatar;
 using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
 
@@ -31,6 +28,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         private readonly DbService.IAdminService _adminService;
         private readonly DbService.ISuperAdminService _superAdminService;
         private readonly DbService.IUserService _userService;
+        private readonly DbService.IRoleService _roleService;
+        private readonly DbService.IUserRoleService _userRoleService;
         private readonly DbService.ISettingService _settingService;
         private readonly IHostingEnvironment _environment;
 
@@ -45,7 +44,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             DbService.ISuperAdminService superAdminService,
             DbService.IUserService userService,
             DbService.ISettingService settingService,
-            IHostingEnvironment environment
+            IHostingEnvironment environment, DbService.IRoleService roleService, DbService.IUserRoleService userRoleService
             //IFacebookService facebookService
             )
         {
@@ -55,6 +54,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             this._settingService = settingService;
             //_facebookService = facebookService;
             this._environment = environment;
+            _roleService = roleService;
+            _userRoleService = userRoleService;
         }
 
         #endregion
@@ -189,12 +190,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
             if (request.FamilyName == null)
             {
-                return new ResponseMessage(HttpStatusCode.BadRequest, "FamilyName is empty.");
+                return new ResponseMessage(HttpStatusCode.BadRequest, "FirstName is empty.");
             }
 
             if (request.GivenName == null)
             {
-                return new ResponseMessage(HttpStatusCode.BadRequest, "GivenName is empty.");
+                return new ResponseMessage(HttpStatusCode.BadRequest, "LastName is empty.");
             }
 
             if (request.Mobilephone == null)
@@ -228,7 +229,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private RegisterResponse GenerateRegisterResponse(User user)
         {
-            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role.ToString());
+            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, _userRoleService.GetUserRoles(user.Id));
 
             return new RegisterResponse()
             {
@@ -238,7 +239,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private LoginResponse GenerateLoginResponse(User user)
         {
-            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role.ToString());
+            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, _userRoleService.GetUserRoles(user.Id));
 
             var response = new LoginResponse()
             {
@@ -257,34 +258,31 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var response = new UserProfileResponse()
             {
                 Id = user.Id,
-                FamilyName = user.LastName,
-                GivenName = user.FirstName,
+                FirstName = user.LastName,
+                LastName = user.FirstName,
                 Username = user.UserName,
                 BirthDate = user.BirthDate,
                 Gender = user.Gender.ToString(),
-                Mobilephone = user.PhoneNumber,
+                PhoneNumber = user.PhoneNumber,
                 Address = user.Address,
                 Email = user.Email,
-                Role = user.Role.ToString(),
-                Status = user.IsActivated,
-                LastLogin = user.LastLogin,
-                AvatarUrl = user.AvatarUrl,
-                JoinedAt = user.CreatedTime
+                Roles = _userRoleService.GetUserRoles(user.Id),
+                AvatarUrl = user.AvatarUrl
             };
 
             return response;
         }
 
-        private FacebookConnectResponse GenerateFacebookConnectResponse(User user)
-        {
-            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role.ToString());
-            var response = new FacebookConnectResponse()
-            {
-                Profile = GenerateUserProfileResponse(user)
-            };
+        //private FacebookConnectResponse GenerateFacebookConnectResponse(User user)
+        //{
+        //    var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, user.Role.ToString());
+        //    var response = new FacebookConnectResponse()
+        //    {
+        //        Profile = GenerateUserProfileResponse(user)
+        //    };
 
-            return response;
-        }
+        //    return response;
+        //}
         #endregion
     }
 }

@@ -1,5 +1,4 @@
-﻿using Giveaway.API.Shared.Exceptions;
-using Giveaway.Data.EF.Exceptions;
+﻿using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Models;
 using System;
 using System.Net;

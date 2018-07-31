@@ -13,6 +13,7 @@ namespace Giveaway.API
             cfg.CreateMap<Setting, Giveaway.API.Shared.Models.DTO.Setting>();
             cfg.CreateMap<SuperAdmin, Giveaway.API.Shared.Models.DTO.SuperAdmin>();
             cfg.CreateMap<User, Giveaway.API.Shared.Models.DTO.User>();
+            cfg.CreateMap<Category, Shared.Models.DTO.Category>();
             Mapper.Initialize(cfg);
         }
     }

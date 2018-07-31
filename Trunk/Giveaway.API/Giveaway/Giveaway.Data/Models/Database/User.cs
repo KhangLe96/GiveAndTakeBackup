@@ -34,11 +34,6 @@ namespace Giveaway.Data.Models.Database
         [Required]
         public DateTime BirthDate { get; set; }
 
-        [DataMember(Name = "role")]
-        [Required]
-        [DefaultValue(Role.User)]
-        public Role Role { get; set; }
-
         [Required]
         [DataMember(Name = "isActivated")]
         [DefaultValue(true)]
@@ -90,9 +85,6 @@ namespace Giveaway.Data.Models.Database
         public virtual ICollection<Request> Requests { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-        //[InverseProperty("Giver")]
-        //public virtual ICollection<Rank> GiverRanks { get; set; }
-        //[InverseProperty("Taker")]
-        //public virtual ICollection<Rank> TakerRanks { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

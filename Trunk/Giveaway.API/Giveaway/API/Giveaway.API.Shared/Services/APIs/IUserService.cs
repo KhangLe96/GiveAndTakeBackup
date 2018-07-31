@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Giveaway.Data.Models.Database;
-using Microsoft.AspNetCore.Http;
 
 namespace Giveaway.API.Shared.Services.APIs
 {

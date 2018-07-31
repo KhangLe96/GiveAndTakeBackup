@@ -12,8 +12,8 @@ namespace Giveaway.Data.EF.DTOs.Requests
 		/// <summary>
 		/// Gets or Sets Login
 		/// </summary>
-		[DataMember(Name = "login", EmitDefaultValue = false)]
-		[JsonProperty(PropertyName = "login")]
+		[DataMember(Name = "username", EmitDefaultValue = false)]
+		[JsonProperty(PropertyName = "username")]
 		public string UserName { get; set; }
 
 		/// <summary>

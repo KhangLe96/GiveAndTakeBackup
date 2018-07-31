@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Giveaway.API.Shared.Exceptions;
-//using Giveaway.DataLayers.Models.IntermediateModels;
-using Newtonsoft.Json;
+﻿//using Giveaway.DataLayers.Models.IntermediateModels;
 
 namespace Giveaway.API.Shared.Services.Facebook
 {

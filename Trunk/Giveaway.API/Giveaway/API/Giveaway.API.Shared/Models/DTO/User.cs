@@ -34,10 +34,6 @@ namespace Giveaway.API.Shared.Models.DTO
 
         public string PhoneNumber { get; set; }
 
-
-        [Required]
-        public Role Role { get; set; }
-
         [Required]
         [DefaultValue(true)]
         public bool IsActivated { get; set; }

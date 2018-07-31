@@ -2,9 +2,9 @@
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
-namespace Giveaway.API.Shared.Responses
+namespace Giveaway.API.Shared.Models.DTO
 {
-    public class CategoryResponse
+    public class Category
     {
         [DataMember(Name = "id")]
         [JsonProperty(PropertyName = "id")]
@@ -16,6 +16,6 @@ namespace Giveaway.API.Shared.Responses
 
         [DataMember(Name = "categoryImageUrl", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "categoryImageUrl")]
-        public string CategoryImageUrl { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

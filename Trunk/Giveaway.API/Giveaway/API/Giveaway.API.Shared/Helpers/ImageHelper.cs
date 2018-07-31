@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Giveaway.API.Shared.Models;
-using Giveaway.API.Shared.Models.DTO;
 using Giveaway.Data.EF;
 using Giveaway.Util.Utils;
 using Microsoft.AspNetCore.Http;
