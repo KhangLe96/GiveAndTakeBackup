@@ -10,7 +10,6 @@ namespace Giveaway.Data.Models.Database
         public Guid UserId { get; set; }
         public Guid CategoryId { get; set; }
         public Guid ProvinceCityId { get; set; }
-        public Guid PostStatusId { get; set; }
 
         [Required]
         [MaxLength(50)]
