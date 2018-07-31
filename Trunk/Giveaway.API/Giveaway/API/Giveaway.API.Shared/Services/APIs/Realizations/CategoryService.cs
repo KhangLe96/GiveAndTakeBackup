@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Giveaway.API.Shared.Exceptions;
 using Giveaway.API.Shared.Responses;
+using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.Models.Database;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -23,10 +25,29 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public bool Delete(Guid id)
         {
             _categoryService.Delete(c => c.Id == id, out var isSaved);
-            return isSaved;
+            if (!isSaved)
+            {
+                throw new BadRequestException("Bad Request.");
+            }
+            return true;
         }
 
-        private IQueryable<CategoryResponse> GenerateCategoryResponse(IQueryable<Category> categories)
+        public CategoryResponse Create(CategoryRequest request)
+        {
+            var category =  _categoryService.Create(new Category { CategoryName = request.CategoryName,ImageUrl = request.CategoryImageUrl}, out var isSaved);
+            if (!isSaved)
+            {
+                throw new BadRequestException("Bad Request.");
+            }
+            return new CategoryResponse
+            {
+                Id = category.Id,
+                CategoryName = category.CategoryName,
+                CategoryImageUrl = category.ImageUrl
+            };
+        }
+
+        private static IQueryable<CategoryResponse> GenerateCategoryResponse(IQueryable<Category> categories)
         {
             return categories.Select(x => new CategoryResponse {Id = x.Id, CategoryName = x.CategoryName, CategoryImageUrl = x.ImageUrl});
         }

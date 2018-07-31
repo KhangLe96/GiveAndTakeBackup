@@ -2,6 +2,7 @@
 using System.Linq;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
+using Giveaway.Data.EF.DTOs.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Giveaway.API.Controllers
@@ -31,6 +32,12 @@ namespace Giveaway.API.Controllers
         public bool DeleteCategory(Guid categoryId)
         {
             return _categoryService.Delete(categoryId);
+        }
+
+        [HttpPost]
+        public CategoryResponse Create([FromBody] CategoryRequest request)
+        {
+            return _categoryService.Create(request);
         }
     }
 }
