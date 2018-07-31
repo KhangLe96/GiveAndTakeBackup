@@ -46,24 +46,24 @@ class Dashboard extends React.Component {
 
   render() {
     const { dashboard: { loading } } = this.props;
-    return (<div className={styles.dashboard}>
-      <Spin spinning={loading}>
-        <div style={{ textAlign: 'center' }}>
-          {this.isAdmin() ? <Button size="large" type="primary" onClick={this.detection}>Detection</Button> : null
-            }
-        </div>
-      </Spin>
-      <Bar
-        height={200}
-        title="Attendance"
-        data={salesData}
-      />
-      <TimelineChart
-        height={400}
-        data={chartData}
-        titleMap={{ y1: 'View', y2: 'Access' }}
-      />
-    </div>
+    return (
+      <div className={styles.dashboard}>
+        <Spin spinning={loading}>
+          <div style={{ textAlign: 'center' }}>
+            {this.isAdmin() ? <Button size="large" type="primary" onClick={this.detection}>Detection</Button> : null}
+          </div>
+        </Spin>
+        <Bar
+          height={200}
+          title="Attendance"
+          data={salesData}
+        />
+        <TimelineChart
+          height={400}
+          data={chartData}
+          titleMap={{ y1: 'View', y2: 'Access' }}
+        />
+      </div>
     );
   }
 }

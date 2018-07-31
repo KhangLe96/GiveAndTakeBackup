@@ -1,5 +1,8 @@
-import request, { fakelogin } from '../utils/request';
+import request from '../utils/request';
 import urls from '../common/urls';
+
+// fake data
+import { fakelogin } from '../utils/fakeUtils';
 
 export async function getProfile() {
   return request(urls.getProfile);
@@ -44,14 +47,16 @@ export async function register(params) {
   return request('/passport/register', options);
 }
 export function login(params) {
-  // const options = {
-  //   method: 'POST',
-  //   body: {
-  //     ...params,
-  //   },
-  // };
-  //return request(urls.login, options);
-  return fakelogin(params.login, params.password)
+  const options = {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  };
+  // return request(urls.login, options);
+
+  // fake data
+  return fakelogin(params.login, params.password);
 }
 
 export async function forgotPassword(params) {

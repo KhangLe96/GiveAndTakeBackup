@@ -1,34 +1,23 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
 
+// fake data
+const data = require('../Auth/FakeData/post.json');
+
 export default {
-  namespace: 'postManagement', /* should be the same with file name   //Review: make attention with the way to named, it should clear to anyone understand easily */
+  namespace: 'postManagement', /* should be the same with file name */
 
   state: {
-    data: {
-      list: [],
-      pagination: {},
-    },
-    loading: false,
+    posts: [],
   },
 
   effects: {
-    * fetch({ payload }, { call, put }) {
+    // fake Data
+    *fetchPostsFromFakeData({ payload, callback }, { call, put }) {
+
     },
   },
 
   reducers: {
-    save(state, action) {
-      return {
-        ...state,
-        data: action.payload,
-      };
-    },
-    changeLoading(state, action) {
-      return {
-        ...state,
-        loading: action.payload,
-      };
-    },
   },
 };

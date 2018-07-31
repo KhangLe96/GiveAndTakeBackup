@@ -29,16 +29,6 @@ export const getNavData = app => [
             path: 'detail/:id',
             component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Detail')),
           },
-          {
-            name: 'Create',
-            path: 'create',
-            component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Create')),
-          },
-          {
-            name: 'Edit',
-            path: 'edit/:id',
-            component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Edit')),
-          },
         ],
       },
     ],
