@@ -11,5 +11,6 @@ namespace Giveaway.API.Shared.Services.APIs
         bool Delete(Guid id);
         CategoryResponse Create(CategoryRequest request);
         CategoryResponse Find(Guid id);
+        CategoryResponse Update(Guid id, CategoryRequest request);
     }
 }

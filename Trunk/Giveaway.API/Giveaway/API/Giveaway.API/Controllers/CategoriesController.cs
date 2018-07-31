@@ -45,5 +45,11 @@ namespace Giveaway.API.Controllers
         {
             return _categoryService.Find(categoryId);
         }
+
+        [HttpPut("{categoryId}")]
+        public CategoryResponse Update(Guid categoryId, [FromBody] CategoryRequest request)
+        {
+            return _categoryService.Update(categoryId, request);
+        }
     }
 }

@@ -57,6 +57,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GenerateCategoryResponse(category);
         }
 
+        public CategoryResponse Update(Guid id, CategoryRequest request)
+        {
+            var category = _categoryService.Find(id);
+            if (category == null)
+            {
+                throw new BadRequestException("Category doesn't exist");
+            }
+
+            category.CategoryName = request.CategoryName;
+            category.ImageUrl = request.CategoryImageUrl;
+
+            var response = _categoryService.Update(category);
+            if (!response)
+            {
+                throw new BadRequestException("Bad Request.");
+            }
+            return Find(id);
+        }
+
         private static CategoryResponse GenerateCategoryResponse(Category category)
         {
             return new CategoryResponse
