@@ -5,6 +5,7 @@ using Giveaway.Service.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Giveaway.Data.EF;
 using Giveaway.Data.Models.Database;
+using Giveaway.Data.Enums;
 
 namespace Giveaway.API.DB
 {
@@ -20,6 +21,26 @@ namespace Giveaway.API.DB
             SeedAdmin(services);
             SeedSuperAdmin(services);
             SeedCategories(services);
+            SeedPost(services);
+        }
+
+        private static void SeedPost(IServiceProvider services)
+        {
+            var postService = services.GetService<IPostService>();
+            if (postService.All().Any()) return;
+            var post = postService.Create(new Post
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedTime = DateTimeOffset.Now,
+                    UpdatedTime = DateTimeOffset.UtcNow,
+                    CategoryId = Guid.Parse("09038d18-ed8d-4b47-833b-247d4a436c21"),
+                    Description = "Description",
+                    Title = "test",
+                    PostStatus = PostStatus.Open,
+                    //ProvinceCityId = post.ProvinceCityId,
+                    //UserId          = post.UserId,
+                    //Images = post.PostImageUrl
+            }, out _);
         }
 
         private static void SeedRoles(IServiceProvider services)

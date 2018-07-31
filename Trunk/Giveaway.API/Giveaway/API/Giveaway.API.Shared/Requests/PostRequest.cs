@@ -1,35 +1,38 @@
-﻿using System;
+﻿using Giveaway.Data.Models.Database;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using Giveaway.API.Shared.Responses;
-using Newtonsoft.Json;
 
 namespace Giveaway.API.Shared.Requests
 {
     public class PostRequest
     {
-        [DataMember(Name = "title")]
+        //[DataMember(Name = "userId")]
+        //[JsonProperty(PropertyName = "userId")]
+        //public Guid UserId { get; set; }
+
+        [DataMember(Name = "title", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
-        [DataMember(Name = "description")]
+        [DataMember(Name = "description", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
-        [DataMember(Name = "address")]
+        [DataMember(Name = "address", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "address")]
         public string Address { get; set; }
 
-        [DataMember(Name = "postImageUrl")]
+        [DataMember(Name = "postImageUrl", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "postImageUrl")]
-        public string PostImageUrl { get; set; }
+        public List<Image> PostImageUrl { get; set; }
 
-        [DataMember(Name = "categoryId")]
+        [DataMember(Name = "categoryId", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "categoryId")]
         public Guid CategoryId { get; set; }
 
-        [DataMember(Name = "provinceCityId")]
+        [DataMember(Name = "provinceCityId", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "provinceCityId")]
         public Guid ProvinceCityId { get; set; }
 

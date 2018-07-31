@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Giveaway.Data.Models.Database;
+using Newtonsoft.Json;
 using System;
 using System.Runtime.Serialization;
 
@@ -37,6 +38,6 @@ namespace Giveaway.API.Shared.Responses
 
         [DataMember(Name = "category")]
         [JsonProperty(PropertyName = "category")]
-        public CategoryResponse Category { get; set; }
+        public Category Category { get; set; }
     }
 }

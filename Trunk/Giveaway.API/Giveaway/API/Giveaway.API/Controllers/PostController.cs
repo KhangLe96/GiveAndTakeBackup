@@ -3,6 +3,7 @@ using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Giveaway.API.Shared.Requests;
+using Giveaway.API.Shared.Extensions;
 
 namespace Giveaway.API.Controllers
 {
@@ -26,9 +27,10 @@ namespace Giveaway.API.Controllers
 
         [HttpPost("create")]
         [Produces("application/json")]
-        public List<PostResponse> Create(PostRequest postRequest)
+        public PostResponse Create([FromBody]PostRequest postRequest)
         {
-            return _postService.GetAllPost();
+            //postRequest.UserId = User.GetUserId();
+            return _postService.Create(postRequest);
         }
     }
 }
