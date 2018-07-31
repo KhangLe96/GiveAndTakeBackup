@@ -31,6 +31,7 @@ namespace Giveaway.API.Controllers
         [HttpGet]
         public IEnumerable<UserProfileResponse> All()
         {
+            //Review: Should have pagination. 
             return _userService.All();
         }
     }

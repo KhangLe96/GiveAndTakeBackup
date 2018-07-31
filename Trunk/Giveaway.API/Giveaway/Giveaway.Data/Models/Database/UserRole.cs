@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Giveaway.Data.Models.Database
 {
+    [Table("UserRole")]
     public class UserRole :BaseEntity
     {
         public Guid UserId { get; set; }
