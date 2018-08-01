@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm } from 'antd';
 import { Link, routerRedux } from 'dva/router';
-import EditableTable from "../../components/Common/Table/EditableTable";
 
 const columns =
   [
@@ -65,28 +64,27 @@ const columns =
 export default class index extends React.Component {
   state = {};
   componentWillMount() {
-    // this.props.dispatch({
-    //   type: 'postManagement/fetchPost',
-    //   payload: {},
-    // });
+    this.props.dispatch({
+      type: 'postManagement/fetchPost',
+      payload: {},
+    });
   }
 
 
 
   render() {
-    // const { posts } = this.props;
+    const { posts } = this.props;
     return (
       <div>
         <div className="containerHeader">
           <h1>Post Management</h1>
         </div>
         <div className="containerBody">
-          {/* <Table
+          { <Table
             columns={columns}
             dataSource={posts}
             pagination={{ pageSize: 10 }}
-          /> */}
-          <EditableTable />
+          /> }
         </div>
       </div>
     );
