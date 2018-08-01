@@ -15,7 +15,7 @@ namespace Giveaway.API.Shared.Extensions
 			services.AddSingleton<IFacebookClient, FacebookClient>();
 
 			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-			var interfaceAssemblies = new [] { typeof(IServiceCollectionExt).GetTypeInfo().Assembly, typeof(IAdminService).GetTypeInfo().Assembly };
+			var interfaceAssemblies = new [] { typeof(IServiceCollectionExt).GetTypeInfo().Assembly};
 			
 			foreach (var assembly in assemblies.Where(m => m.FullName.Contains("Giveaway")))
 			{

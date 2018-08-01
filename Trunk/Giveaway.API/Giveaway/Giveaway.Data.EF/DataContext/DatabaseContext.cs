@@ -6,7 +6,6 @@ namespace Giveaway.Data.EF.DataContext
 {
     public class DatabaseContext : DbContext, IDataContext
     {
-        public DbSet<Admin> Admins { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -14,8 +13,6 @@ namespace Giveaway.Data.EF.DataContext
         public DbSet<Image> Images { get; set; }
         public DbSet<ProvinceCity> ProvinceCities { get; set; }
         public DbSet<Request> Requests { get; set; }
-        public DbSet<Setting> Settings { get; set; }
-        public DbSet<SuperAdmin> SuperAdmins { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
@@ -24,7 +21,7 @@ namespace Giveaway.Data.EF.DataContext
 
         public DatabaseContext(IConfigurationRoot configRoot)
         {
-            this._configRoot = configRoot;
+            _configRoot = configRoot;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

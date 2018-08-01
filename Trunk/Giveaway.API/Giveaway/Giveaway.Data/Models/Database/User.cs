@@ -30,6 +30,10 @@ namespace Giveaway.Data.Models.Database
         [MinLength(5)]
         public string UserName { get; set; }
 
+        [DataMember(Name = "appreciationNumber")]
+        [Required]
+        public int AppreciationNumber { get; set; }
+
         [DataMember(Name = "birthDate")]
         [Required]
         public DateTime BirthDate { get; set; }

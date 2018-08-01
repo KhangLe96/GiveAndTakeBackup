@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using Giveaway.Data.Enums;
 using Newtonsoft.Json;
 
 namespace Giveaway.API.Shared.Responses
@@ -37,7 +38,7 @@ namespace Giveaway.API.Shared.Responses
 
 	    [DataMember(Name="gender", EmitDefaultValue=false)]
 		[JsonProperty(PropertyName = "gender")]
-		public string Gender { get; set; }
+		public Gender Gender { get; set; }
 
 	    [DataMember(Name="username", EmitDefaultValue=false)]
 		[JsonProperty(PropertyName = "username")]
