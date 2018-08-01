@@ -22,7 +22,7 @@ export const getNavData = app => [
           {
             name: 'List post',
             path: '',
-            component: dynamicWrapper(app, ['postManagement'], () => import('../routes/PostManagement/postManagement2')),
+            component: dynamicWrapper(app, ['postManagement'], () => import('../routes/PostManagement/')),
           },
           {
             name: 'Detail',
