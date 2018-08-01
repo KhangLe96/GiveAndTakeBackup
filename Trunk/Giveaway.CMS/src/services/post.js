@@ -1,10 +1,10 @@
 import request from '../utils/request';
 
 // fake data
-import fakeFetchPost from '../utils/fakeUtils';
+import { fakeFetchPost } from '../utils/fakeUtils';
 
 
-export async function fetchPosts(params) {
+export function fetchPost(params) {
   const options = {
     method: 'GET',
     body: {

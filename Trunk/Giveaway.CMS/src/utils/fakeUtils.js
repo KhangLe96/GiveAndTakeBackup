@@ -18,5 +18,5 @@ export function fakelogin(username, password) {
 }
 
 export function fakeFetchPost() {
-  return postData;
+  return postData.posts;
 }

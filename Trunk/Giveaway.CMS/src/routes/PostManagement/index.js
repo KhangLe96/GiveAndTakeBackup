@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider, Card, Button, Spin } from 'antd';
+import { Table, Icon, Divider, Card, Button, Spin, Popconfirm } from 'antd';
 import { Link, routerRedux } from 'dva/router';
+import EditableTable from "../../components/Common/Table/EditableTable";
 
 const columns =
   [
@@ -35,10 +36,26 @@ const columns =
       dataIndex: 'dayPost',
       render: () => (
         <span>
-          <Button onClick>
-            <Icon type="delete" />
-          </Button>
+          <Popconfirm title="Sure to delete?" onConfirm={(key) => {
+            const dataSource = [...this.state.dataSource];
+            this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+          }}>
+            <Button>
+              <Icon type="delete" />
+            </Button>
+          </Popconfirm>
         </span >),
+      handleDelete: (key) => {
+        console.log(key);
+        const dataSource = [...this.state.dataSource];
+        this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+      },
+      // handleDeletePost: dispatch => {
+      //   dispatch({
+      //     type: 'postManagement/deleteAPost',
+      //     payload: {}
+      //   })
+      // }
     },
   ];
 
@@ -47,25 +64,29 @@ const columns =
 }))
 export default class index extends React.Component {
   state = {};
-  componentDidMount() {
-    this.props.dispatch({
-      type: 'postManagement/fetchPost',
-      payload: {},
-    });
+  componentWillMount() {
+    // this.props.dispatch({
+    //   type: 'postManagement/fetchPost',
+    //   payload: {},
+    // });
   }
+
+
+
   render() {
-    const { posts } = this.props;
+    // const { posts } = this.props;
     return (
       <div>
         <div className="containerHeader">
           <h1>Post Management</h1>
         </div>
         <div className="containerBody">
-          <Table
+          {/* <Table
             columns={columns}
             dataSource={posts}
             pagination={{ pageSize: 10 }}
-          />
+          /> */}
+          <EditableTable />
         </div>
       </div>
     );
