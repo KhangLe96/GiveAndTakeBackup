@@ -1,8 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-
-// fake data
-const data = require('../Auth/FakeData/post.json');
+import fetchPost from '../services/post';
 
 export default {
   namespace: 'postManagement', /* should be the same with file name */
@@ -12,12 +10,21 @@ export default {
   },
 
   effects: {
-    // fake Data
-    *fetchPostsFromFakeData({ payload, callback }, { call, put }) {
-
+    *fetchPost({ payload }, { call, put }) {
+      const posts = yield call(fetchPost, payload);
+      yield put({
+        type: 'savePost',
+        payload: posts,
+      });
     },
   },
 
   reducers: {
+    savePost(state, action) {
+      return {
+        ...state,
+        posts: action.payload,
+      };
+    },
   },
 };

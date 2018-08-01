@@ -52,7 +52,6 @@ export default class Login extends PureComponent {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { loginErrors } = this.props;
 
     return (
       <Spin spinning={this.props.loading}>
@@ -62,6 +61,7 @@ export default class Login extends PureComponent {
               <img
                 style={{ width: '400px', height: '135px', zIndex: '10', marginBottom: '50px' }}
                 src="/images/img_logo_login.png"
+                alt=""
               />
             </div>
             <span>
@@ -81,7 +81,7 @@ export default class Login extends PureComponent {
             </FormItem>
 
             <span>
-          Mật khẩu
+              Mật khẩu
             </span>
             <FormItem>
               {getFieldDecorator('password', {

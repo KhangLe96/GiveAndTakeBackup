@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider, Card, Button } from 'antd';
+import { Table, Icon, Divider, Card, Button, Spin } from 'antd';
 import { Link, routerRedux } from 'dva/router';
-
-import { posts } from '../Auth/FakeData/post.json';
 
 const columns =
   [
@@ -44,14 +42,19 @@ const columns =
     },
   ];
 
-
-@connect(state => ({
-  postManagement: state.postManagement,
+@connect(({ modals, postManagement }) => ({
+  ...modals, ...postManagement,
 }))
 export default class index extends React.Component {
   state = {};
-
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'postManagement/fetchPost',
+      payload: {},
+    });
+  }
   render() {
+    const { posts } = this.props;
     return (
       <div>
         <div className="containerHeader">

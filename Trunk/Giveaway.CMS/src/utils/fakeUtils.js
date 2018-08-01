@@ -1,7 +1,9 @@
-import data from '../routes/Auth/FakeData/users.json';
+// fake data
+import userData from '../fakeData/user.json';
+import postData from '../fakeData/post.json';
 
 export function fakelogin(username, password) {
-  const { users } = data;
+  const { users } = userData;
   for (let index = 0; index < users.length; index += 1) {
     const user = users[index];
     if (user.username === username && user.password === password) {
@@ -13,4 +15,8 @@ export function fakelogin(username, password) {
     }
   }
   return false;
+}
+
+export function fakeFetchPost() {
+  return postData;
 }
