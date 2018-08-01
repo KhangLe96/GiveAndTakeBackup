@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-import { fetchPost } from '../services/post';
+import { fetchPost, deletePost } from '../services/post';
 
 export default {
   namespace: 'postManagement', /* should be the same with file name */
@@ -17,12 +17,19 @@ export default {
         payload: posts,
       });
     },
-    * deleteAPost(payload, { call, put }) {
-      const posts = 0;
+    * deletePost({ payload }, { call, put }) {
       yield put({
-        type: 'savePost',
-        payload: {},
+        type: 'deleteAPost',
+        payload,
       });
+
+      // const response = yield call(deletePost, payload);
+      // if (response) {
+      //   yield put({
+      //     type: 'deleteAPost',
+      //     payload,
+      //   });
+      // }
     },
   },
 
@@ -31,6 +38,13 @@ export default {
       return {
         ...state,
         posts: action.payload,
+      };
+    },
+    deleteAPost(state, action) {
+      const { id, posts } = action.payload;
+      return {
+        ...state,
+        posts: posts.filter(post => post.postId !== id),
       };
     },
   },
