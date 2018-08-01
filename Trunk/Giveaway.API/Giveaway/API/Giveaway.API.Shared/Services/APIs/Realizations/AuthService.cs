@@ -25,12 +25,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     {
         #region Private Fields
 
-        private readonly DbService.IAdminService _adminService;
-        private readonly DbService.ISuperAdminService _superAdminService;
         private readonly DbService.IUserService _userService;
-        private readonly DbService.IRoleService _roleService;
         private readonly DbService.IUserRoleService _userRoleService;
-        private readonly DbService.ISettingService _settingService;
         private readonly IHostingEnvironment _environment;
 
 
@@ -40,21 +36,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         #region Constructor
 
         public AuthService(
-            DbService.IAdminService adminService,
-            DbService.ISuperAdminService superAdminService,
             DbService.IUserService userService,
-            DbService.ISettingService settingService,
             IHostingEnvironment environment, DbService.IRoleService roleService, DbService.IUserRoleService userRoleService
             //IFacebookService facebookService
             )
         {
-            this._adminService = adminService;
-            this._superAdminService = superAdminService;
-            this._userService = userService;
-            this._settingService = settingService;
-            //_facebookService = facebookService;
-            this._environment = environment;
-            _roleService = roleService;
+            _userService = userService;
+            _environment = environment;
             _userRoleService = userRoleService;
         }
 
@@ -262,7 +250,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 LastName = user.FirstName,
                 Username = user.UserName,
                 BirthDate = user.BirthDate,
-                Gender = user.Gender.ToString(),
+                Gender = user.Gender,
                 PhoneNumber = user.PhoneNumber,
                 Address = user.Address,
                 Email = user.Email,

@@ -97,10 +97,9 @@ namespace Giveaway.API.DB
         private static void SeedAdmin(IServiceProvider services)
         {
             var userService = services.GetService<IUserService>();
-            var adminService = services.GetService<IAdminService>();
             var userRoleService = services.GetService<IUserRoleService>();
 
-            if (!adminService.All().Any())
+            if (userRoleService.Where(ur => ur.RoleId == adminRole.Id).Any())
             {
                 var securePassword = userService.GenerateSecurePassword(Const.DefaultAdminPassword);
                 var user = new User
@@ -117,34 +116,20 @@ namespace Giveaway.API.DB
                 };
 
                 var createdUser = userService.Create(user, out var isSaved);
-
-                userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = normalUserRole.Id }, out _);
-
                 if (isSaved)
                 {
-                    var admin = new Admin
-                    {
-                        CreatedTime = DateTimeOffset.Now,
-                        UpdatedTime = DateTimeOffset.Now,
-                        UserId = createdUser.Id,
-                    };
-
-                    adminService.Create(admin, out _);
-
-                    userRoleService.Create(new UserRole {UserId = createdUser.Id, RoleId = adminRole.Id}, out _);
+                    userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = normalUserRole.Id }, out _);
+                    userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = adminRole.Id }, out _);
                 }
-
-             
             }
         }
 
         private static void SeedSuperAdmin(IServiceProvider services)
         {
             var userService = services.GetService<IUserService>();
-            var superAdminService = services.GetService<ISuperAdminService>();
             var userRoleService = services.GetService<IUserRoleService>();
 
-            if (!superAdminService.All().Any())
+            if (userRoleService.Where(ur => ur.RoleId == superAdminRole.Id).Any())
             {
                 var securePassword = userService.GenerateSecurePassword(Const.DefaultSuperAdminPassword);
                 var user = new User
@@ -159,17 +144,10 @@ namespace Giveaway.API.DB
                     BirthDate = new DateTime(1990, 1, 1),
                     Address = string.Empty
                 };
-
                 var createdUser = userService.Create(user, out var isSaved);
-
-                userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = normalUserRole.Id }, out _);
-
                 if (isSaved)
                 {
-                    var superAdmin = new SuperAdmin {UserId = createdUser.Id};
-
-                    superAdminService.Create(superAdmin, out _);
-
+                    userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = normalUserRole.Id }, out _);
                     userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = superAdminRole.Id }, out _);
                 }
             }

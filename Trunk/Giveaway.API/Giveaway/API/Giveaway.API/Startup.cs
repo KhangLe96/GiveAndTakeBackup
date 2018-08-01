@@ -68,9 +68,6 @@ namespace Giveaway.API
                 .AddJwtBearer(Const.Jwt.DefaultScheme, JwtHelper.ConfigureJwtBearerOptions);
 
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<ISettingService, SettingService>();
-            services.AddSingleton<ISuperAdminService, SuperAdminService>();
-            services.AddSingleton<IAdminService, AdminService>();
             services.AddSingleton<ICategoryService, CategoryService>();
             services.AddSingleton<IRoleService, RoleService>();
             services.AddSingleton<IUserRoleService, UserRoleService>();

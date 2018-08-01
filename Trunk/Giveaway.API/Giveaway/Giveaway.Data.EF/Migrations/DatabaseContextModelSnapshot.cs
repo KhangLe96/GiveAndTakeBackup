@@ -21,26 +21,6 @@ namespace Giveaway.Data.EF.Migrations
                 .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125");
 
-            modelBuilder.Entity("Giveaway.Data.Models.Database.Admin", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("CreatedTime");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTimeOffset>("UpdatedTime");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Admin");
-                });
-
             modelBuilder.Entity("Giveaway.Data.Models.Database.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -49,6 +29,8 @@ namespace Giveaway.Data.EF.Migrations
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<int>("CategoryStatus");
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
@@ -248,50 +230,6 @@ namespace Giveaway.Data.EF.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("Giveaway.Data.Models.Database.Setting", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("CreatedTime");
-
-                    b.Property<int>("GroupType");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("SettingName")
-                        .IsRequired();
-
-                    b.Property<string>("SettingValue")
-                        .IsRequired();
-
-                    b.Property<DateTimeOffset>("UpdatedTime");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Setting");
-                });
-
-            modelBuilder.Entity("Giveaway.Data.Models.Database.SuperAdmin", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("CreatedTime");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<DateTimeOffset>("UpdatedTime");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SuperAdmin");
-                });
-
             modelBuilder.Entity("Giveaway.Data.Models.Database.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -301,6 +239,8 @@ namespace Giveaway.Data.EF.Migrations
                         .HasMaxLength(100);
 
                     b.Property<DateTimeOffset>("AllowTokensSince");
+
+                    b.Property<int>("AppreciationNumber");
 
                     b.Property<string>("AvatarUrl");
 
@@ -369,14 +309,6 @@ namespace Giveaway.Data.EF.Migrations
                     b.ToTable("UserRole");
                 });
 
-            modelBuilder.Entity("Giveaway.Data.Models.Database.Admin", b =>
-                {
-                    b.HasOne("Giveaway.Data.Models.Database.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Giveaway.Data.Models.Database.Comment", b =>
                 {
                     b.HasOne("Giveaway.Data.Models.Database.Post", "Post")
@@ -432,14 +364,6 @@ namespace Giveaway.Data.EF.Migrations
                     b.HasOne("Giveaway.Data.Models.Database.User", "User")
                         .WithMany("Requests")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Giveaway.Data.Models.Database.SuperAdmin", b =>
-                {
-                    b.HasOne("Giveaway.Data.Models.Database.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.UserRole", b =>
