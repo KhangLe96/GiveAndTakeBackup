@@ -11,6 +11,6 @@ namespace Giveaway.API.Shared.Services.APIs
 	    bool UpdateUser(User user);
 	    User GetUser(Guid id);
 	    bool DeleteUser(Guid id);
-	    IEnumerable<UserProfileResponse> All();
+	    List<UserProfileResponse> All();
 	}
 }

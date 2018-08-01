@@ -38,15 +38,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return isSaved;
         }
 
-        public IEnumerable<UserProfileResponse> All()
+        public List<UserProfileResponse> All()
         {
             var response = _userService.All();
-            return response.Select(u => GenerateUserProfileResponse(u));
+            return response.Select(u => GenerateUserProfileResponse(u)).ToList();
         }
 
         private UserProfileResponse GenerateUserProfileResponse(User user)
         {
-            var response = new UserProfileResponse
+            return new UserProfileResponse
             {
                 Id = user.Id,
                 FirstName = user.LastName,
@@ -60,8 +60,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 Roles = _userRoleService.GetUserRoles(user.Id),
                 AvatarUrl = user.AvatarUrl
             };
-
-            return response;
         }
     }
 }

@@ -17,17 +17,19 @@ namespace Giveaway.Data.EF.DataContext
         public DbSet<Setting> Settings { get; set; }
         public DbSet<SuperAdmin> SuperAdmins { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
-        private readonly IConfigurationRoot configRoot;
+        private readonly IConfigurationRoot _configRoot;
 
         public DatabaseContext(IConfigurationRoot configRoot)
         {
-            this.configRoot = configRoot;
+            this._configRoot = configRoot;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = configRoot.GetConnectionString("DefaultConnection");
+            var connectionString = _configRoot.GetConnectionString("DefaultConnection");
             optionsBuilder.UseMySql(connectionString);
             base.OnConfiguring(optionsBuilder);
         }

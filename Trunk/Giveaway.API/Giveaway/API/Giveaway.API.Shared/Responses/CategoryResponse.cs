@@ -17,5 +17,13 @@ namespace Giveaway.API.Shared.Responses
         [DataMember(Name = "categoryImageUrl", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "categoryImageUrl")]
         public string CategoryImageUrl { get; set; }
+
+        [DataMember(Name = "createdTime", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "createdTime")]
+        public DateTimeOffset CreatedTime { get; set; }
+
+        [DataMember(Name = "updatedTime", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "updatedTime")]
+        public DateTimeOffset UpdatedTime { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
@@ -23,14 +24,14 @@ namespace Giveaway.API.Controllers
         }
 
         [HttpGet]
-        public IQueryable<CategoryResponse> All()
+        public List<CategoryResponse> All()
         {
             //Review: it's good if you implement pagination for GET list API
             return _categoryService.All();
         }
 
         [HttpDelete("{categoryId}")]
-        public bool DeleteCategory(Guid categoryId)
+        public CategoryResponse DeleteCategory(Guid categoryId)
         {
             return _categoryService.Delete(categoryId);
         }

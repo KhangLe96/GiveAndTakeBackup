@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Giveaway.API.Shared.Exceptions;
 using Giveaway.API.Shared.Responses;
@@ -17,50 +18,41 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _categoryService = categoryService;
         }
 
-        //Review: I see some places you use IQueryable, some places you use IEnumrable. Should use List to consistence
-        public IQueryable<CategoryResponse> All()
+        public List<CategoryResponse> All()
         {
-            var response = (IQueryable<Category>)_categoryService.GetAllCategories().Data;
+            var response = (IEnumerable<Category>)_categoryService.GetAllCategories().Data;
             if (response == null)
             {
-                //Review: should define error key in Constant file. Example: BadRequest
-                throw new BadRequestException("No category found");
+                throw new BadRequestException(Const.Error.BadRequest);
             }
-            return response.Select(x => GenerateCategoryResponse(x));
+            return response.Select(GenerateCategoryResponse).ToList();
         }
 
-
-        //Review: it is good if you return deleted object instead of boolean
-        public bool Delete(Guid id)
+        public CategoryResponse Delete(Guid id)
         {
+            var category = _categoryService.Find(id);
             _categoryService.Delete(c => c.Id == id, out var isSaved);
             if (!isSaved)
             {
-                throw new BadRequestException("Bad Request.");
-                //Review: should define error key in Constant file. Example: BadRequest
-                //throw new BadRequestException(Const.Error.BadRequest);
+                throw new BadRequestException(Const.Error.BadRequest);
             }
-            return true;
+            return GenerateCategoryResponse(category);
         }
 
         public CategoryResponse Create(CategoryRequest request)
         {
-            //Review: should init Id for object to avoid error
-            // should make object in new line to have clean code
-            //var categoryRequest =
-            //    new Category
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CategoryName = request.CategoryName,
-            //        ImageUrl = request.CategoryImageUrl
-            //    };
-            var category = _categoryService.Create(new Category { CategoryName = request.CategoryName, ImageUrl = request.CategoryImageUrl }, out var isSaved);
+            var category = new Category
+            {
+                Id = Guid.NewGuid(),
+                CategoryName = request.CategoryName,
+                ImageUrl = request.CategoryImageUrl
+            };
+            var createdCategory = _categoryService.Create(category, out var isSaved);
             if (!isSaved)
             {
-                //Review: should define error key in Constant file. Example: BadRequest
-                throw new BadRequestException("Bad Request.");
+                throw new BadRequestException(Const.Error.BadRequest);
             }
-            return GenerateCategoryResponse(category);
+            return GenerateCategoryResponse(createdCategory);
         }
 
         public CategoryResponse Find(Guid id)
@@ -68,7 +60,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var category = _categoryService.Find(id);
             if (category == null)
             {
-                throw new BadRequestException("Category doesn't exist");
+                throw new BadRequestException(Const.Error.NotFound);
             }
             return GenerateCategoryResponse(category);
         }
@@ -78,7 +70,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var category = _categoryService.Find(id);
             if (category == null)
             {
-                throw new BadRequestException("Category doesn't exist");
+                throw new BadRequestException(Const.Error.NotFound);
             }
 
             category.CategoryName = request.CategoryName;
@@ -87,19 +79,20 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var response = _categoryService.Update(category);
             if (!response)
             {
-                throw new BadRequestException("Bad Request.");
+                throw new BadRequestException(Const.Error.BadRequest);
             }
             return Find(id);
         }
 
         private static CategoryResponse GenerateCategoryResponse(Category category)
         {
-            //Review: Should return more info when get detail, we can use it for both CMS and Mobile app without creating other API. It's neccessary. Add create time...
             return new CategoryResponse
             {
                 Id = category.Id,
                 CategoryName = category.CategoryName,
-                CategoryImageUrl = category.ImageUrl
+                CategoryImageUrl = category.ImageUrl,
+                CreatedTime = category.CreatedTime,
+                UpdatedTime = category.UpdatedTime
             };
         }
     }
