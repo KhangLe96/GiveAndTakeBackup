@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.Models.Database;
 
@@ -14,10 +15,14 @@ namespace Giveaway.API
             cfg.CreateMap<Category, Shared.Models.DTO.Category>();
 
             cfg.CreateMap<Category, CategoryResponse>();
-            cfg.CreateMap<CategoryResponse, Category> ();
+            cfg.CreateMap<CategoryResponse, Category>();
 
             cfg.CreateMap<Post, PostResponse>();
             cfg.CreateMap<PostResponse, Post>();
+            cfg.CreateMap<PostRequest, Post>();
+
+            cfg.CreateMap<Image, ImageResponse>();
+            cfg.CreateMap<ImageRequest, Image>();
 
             Mapper.Initialize(cfg);
         }

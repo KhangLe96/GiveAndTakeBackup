@@ -14,10 +14,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     public class PostService : IPostService
     {
         private readonly DbService.IPostService _postService;
+        private readonly DbService.IImageService _imageService;
 
-        public PostService(DbService.IPostService postService)
+        public PostService(DbService.IPostService postService, DbService.IImageService imageService)
         {
             _postService = postService;
+            _imageService = imageService;
         }
 
         public List<PostResponse> GetAllPost()
@@ -30,34 +32,50 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PostResponse Create(PostRequest postRequest)
         {
-            var post = ConvertToPostDB(postRequest);
-            var postDb = _postService.Create(post, out var isSaved);
+            //var post = ConvertToPostDB(postRequest);
+            var post = Mapper.Map<Post>(postRequest);
+            post = InitPostDB(post);
 
-            if (!isSaved)
+            var postDb = _postService.Create(post, out var isPostSaved);
+            _imageService.CreateMany(InitImageDB(postDb), out var isImageSaved);
+            if (!isPostSaved || !isImageSaved)
             {
                 throw new SystemException("Internal Error");
             }
 
-            return ConvertToPostResponse(postDb);
+            var postResponse = Mapper.Map<PostResponse>(postDb);
+
+            return postResponse;
         }
 
         #region Utils
 
-        private Post ConvertToPostDB(PostRequest post)
+        private Post InitPostDB(Post post)
         {
-            return new Post()
+            post.Id = Guid.NewGuid();
+            post.CreatedTime = DateTimeOffset.Now;
+            post.UpdatedTime = DateTimeOffset.Now;
+
+            //this UserId is just for test and will be removed
+            post.UserId = Guid.Parse("4fa442c8-44e1-425d-b63d-20c2e2ba957d");
+
+            return post;
+        }
+
+        private List<Image> InitImageDB(Post post)
+        {
+            var imageList = new List<Image>();
+            foreach(var image in post.Images)
             {
-                Id = Guid.NewGuid(),
-                CreatedTime     = DateTimeOffset.Now,
-                UpdatedTime     = DateTimeOffset.Now,
-                CategoryId      = post.CategoryId,
-                Description     = post.Description,
-                Title           = post.Title,
-                PostStatus      = PostStatus.Open,
-                ProvinceCityId  = post.ProvinceCityId,
-                //UserId          = post.UserId,
-                Images          = post.PostImageUrl
-            };
+                imageList.Add(new Image()
+                {
+                    Id = Guid.NewGuid(),
+                    PostId = post.Id,
+                    ImageUrl = image.ImageUrl,
+                });
+            }
+
+            return imageList;
         }
 
         private PostResponse ConvertToPostResponse(Post post)
