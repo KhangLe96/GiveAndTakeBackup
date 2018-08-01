@@ -141,7 +141,7 @@ namespace Giveaway.Service.Services
                 CreatedTime = DateTimeOffset.Now,
                 UpdatedTime = DateTimeOffset.Now,
                 LastLogin = DateTimeOffset.Now,
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid()
             };
         }
 

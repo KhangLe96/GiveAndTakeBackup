@@ -21,25 +21,52 @@ namespace Giveaway.API.DB
             SeedAdmin(services);
             SeedSuperAdmin(services);
             SeedCategories(services);
+            SeedProvinceCity(services);
             SeedPost(services);
+        }
+
+        //private static void SeedUser(IServiceProvider services)
+        //{
+        //    var proviceCityService = services.GetService<IProviceCityService>();
+        //    if (proviceCityService.All().Any()) return;
+        //    var pv = proviceCityService.Create(new ProvinceCity() { ProvinceCityName = "daklak" }, out _);
+        //}
+
+        private static void SeedProvinceCity(IServiceProvider services)
+        {
+            var proviceCityService = services.GetService<IProviceCityService>();
+            if (proviceCityService.All().Any()) return;
+            var pv = proviceCityService.Create(new ProvinceCity(){ProvinceCityName = "daklak"}, out _);
         }
 
         private static void SeedPost(IServiceProvider services)
         {
             var postService = services.GetService<IPostService>();
             if (postService.All().Any()) return;
+
             var post = postService.Create(new Post
                 {
                     Id = Guid.NewGuid(),
                     CreatedTime = DateTimeOffset.Now,
                     UpdatedTime = DateTimeOffset.UtcNow,
-                    CategoryId = Guid.Parse("09038d18-ed8d-4b47-833b-247d4a436c21"),
+                    CategoryId = Guid.Parse("0016cba7-57d5-4f7c-b380-8ce5a87208c2"),
                     Description = "Description",
                     Title = "test",
                     PostStatus = PostStatus.Open,
-                    //ProvinceCityId = post.ProvinceCityId,
-                    //UserId          = post.UserId,
-                    //Images = post.PostImageUrl
+                    ProvinceCityId = Guid.Parse("cdbe4d14-c060-486b-b1ac-0f681ec1620e"),
+                    UserId = Guid.Parse("28698ed3-12ff-407a-bc6b-a0af6f386f52"),
+                }, out _);
+            var post1 = postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CreatedTime = DateTimeOffset.Now,
+                UpdatedTime = DateTimeOffset.UtcNow,
+                CategoryId = Guid.Parse("0016cba7-57d5-4f7c-b380-8ce5a87208c2"),
+                Description = "Abv",
+                Title = "test",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = Guid.Parse("cdbe4d14-c060-486b-b1ac-0f681ec1620e"),
+                UserId = Guid.Parse("28698ed3-12ff-407a-bc6b-a0af6f386f52"),
             }, out _);
         }
 
