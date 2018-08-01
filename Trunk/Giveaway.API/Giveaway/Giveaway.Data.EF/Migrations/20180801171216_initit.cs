@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Giveaway.Data.EF.Migrations
 {
-    public partial class initial : Migration
+    public partial class initit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

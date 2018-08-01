@@ -11,19 +11,15 @@ namespace Giveaway.API.DB
 {
     internal static class DbInitializer
     {
-        private static Role normalUserRole;
-        private static Role adminRole;
-        private static Role superAdminRole;
-
         public static void Seed(IServiceProvider services)
         {
             SeedRoles(services);
             SeedAdmin(services);
             SeedSuperAdmin(services);
             SeedCategories(services);
-            SeedProvinceCity(services);
-            SeedPost(services);
-            SeedImage(services);
+            //SeedProvinceCity(services);
+            //SeedPost(services);
+            //SeedImage(services);
         }
 
         private static void SeedImage(IServiceProvider services)
@@ -89,67 +85,69 @@ namespace Giveaway.API.DB
         {
             var roleService = services.GetService<IRoleService>();
             if (roleService.All().Any()) return;
-            normalUserRole = roleService.Create(new Role {UpdatedTime = DateTimeOffset.UtcNow, RoleName = "User"}, out _);
-            adminRole = roleService.Create(new Role {UpdatedTime = DateTimeOffset.UtcNow, RoleName = "Admin"}, out _);
-            superAdminRole = roleService.Create(new Role {UpdatedTime = DateTimeOffset.UtcNow, RoleName = "SuperAdmin"}, out _);
+            roleService.Create(new Role {RoleName = Const.UserRoles.User}, out _);
+            roleService.Create(new Role {RoleName = Const.UserRoles.Admin }, out _);
+            roleService.Create(new Role {RoleName = Const.UserRoles.SuperAdmin }, out _);
         }
 
         private static void SeedAdmin(IServiceProvider services)
         {
             var userService = services.GetService<IUserService>();
+            var roleService = services.GetService<IRoleService>();
             var userRoleService = services.GetService<IUserRoleService>();
+            var adminRole = roleService.FirstOrDefault(r => r.RoleName == Const.UserRoles.Admin);
+            var userRole = roleService.FirstOrDefault(r => r.RoleName == Const.UserRoles.User);
 
-            if (userRoleService.Where(ur => ur.RoleId == adminRole.Id).Any())
+            if (userRoleService.Where(ur => ur.RoleId == adminRole.Id).Any()) return;
+            var securePassword = userService.GenerateSecurePassword(Const.DefaultAdminPassword);
+            var user = new User
             {
-                var securePassword = userService.GenerateSecurePassword(Const.DefaultAdminPassword);
-                var user = new User
-                {
-                    UserName = "admin",
-                    Email = "admin@gmail.com",
-                    FirstName = "Admin",
-                    LastName = "Admin",
-                    Address = String.Empty,
-                    PasswordSalt = securePassword.Salt,
-                    PasswordHash = securePassword.Hash,
-                    PhoneNumber = "01672734732",
-                    BirthDate = new DateTime(1990, 1, 1)
-                };
+                UserName = "admin",
+                Email = "admin@gmail.com",
+                FirstName = "Admin",
+                LastName = "Admin",
+                Address = String.Empty,
+                PasswordSalt = securePassword.Salt,
+                PasswordHash = securePassword.Hash,
+                PhoneNumber = "01672734732",
+                BirthDate = new DateTime(1990, 1, 1)
+            };
 
-                var createdUser = userService.Create(user, out var isSaved);
-                if (isSaved)
-                {
-                    userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = normalUserRole.Id }, out _);
-                    userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = adminRole.Id }, out _);
-                }
+            var createdUser = userService.Create(user, out var isSaved);
+            if (isSaved)
+            {
+                userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = userRole.Id }, out _);
+                userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = adminRole.Id }, out _);
             }
         }
 
         private static void SeedSuperAdmin(IServiceProvider services)
         {
             var userService = services.GetService<IUserService>();
+            var roleService = services.GetService<IRoleService>();
             var userRoleService = services.GetService<IUserRoleService>();
+            var superAdminRole = roleService.FirstOrDefault(r => r.RoleName == Const.UserRoles.SuperAdmin);
+            var userRole = roleService.FirstOrDefault(r => r.RoleName == Const.UserRoles.User);
 
-            if (userRoleService.Where(ur => ur.RoleId == superAdminRole.Id).Any())
+            if (userRoleService.Where(ur => ur.RoleId == superAdminRole.Id).Any()) return;
+            var securePassword = userService.GenerateSecurePassword(Const.DefaultSuperAdminPassword);
+            var user = new User
             {
-                var securePassword = userService.GenerateSecurePassword(Const.DefaultSuperAdminPassword);
-                var user = new User
-                {
-                    UserName = "superAdmin",
-                    Email = "superadmin@gmail.com",
-                    FirstName = "Super",
-                    LastName = "Admin",
-                    PasswordSalt = securePassword.Salt,
-                    PasswordHash = securePassword.Hash,
-                    PhoneNumber = "01672734732",
-                    BirthDate = new DateTime(1990, 1, 1),
-                    Address = string.Empty
-                };
-                var createdUser = userService.Create(user, out var isSaved);
-                if (isSaved)
-                {
-                    userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = normalUserRole.Id }, out _);
-                    userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = superAdminRole.Id }, out _);
-                }
+                UserName = "superAdmin",
+                Email = "superadmin@gmail.com",
+                FirstName = "Super",
+                LastName = "Admin",
+                PasswordSalt = securePassword.Salt,
+                PasswordHash = securePassword.Hash,
+                PhoneNumber = "01672734732",
+                BirthDate = new DateTime(1990, 1, 1),
+                Address = string.Empty
+            };
+            var createdUser = userService.Create(user, out var isSaved);
+            if (isSaved)
+            {
+                userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = userRole.Id }, out _);
+                userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = superAdminRole.Id }, out _);
             }
         }
 
