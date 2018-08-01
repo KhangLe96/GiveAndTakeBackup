@@ -1,6 +1,7 @@
 ﻿using Giveaway.Data.Models.Database;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Responses
@@ -23,10 +24,9 @@ namespace Giveaway.API.Shared.Responses
         [JsonProperty(PropertyName = "address")]
         public string Address { get; set; }
 
-        [DataMember(Name = "postImageUrl")]
-        [JsonProperty(PropertyName = "postImageUrl")]
-        public string PostImageUrl { get; set; }
-
+        [DataMember(Name = "images")]
+        [JsonProperty(PropertyName = "images")]
+        public ICollection<ImageResponse> Images { get; set; }
 
         [DataMember(Name = "createdTime")]
         [JsonProperty(PropertyName = "createdTime")]
@@ -38,6 +38,6 @@ namespace Giveaway.API.Shared.Responses
 
         [DataMember(Name = "category")]
         [JsonProperty(PropertyName = "category")]
-        public Category Category { get; set; }
+        public CategoryResponse Category { get; set; }
     }
 }

@@ -8,9 +8,9 @@ namespace Giveaway.API.Shared.Requests
 {
     public class PostRequest
     {
-        //[DataMember(Name = "userId")]
-        //[JsonProperty(PropertyName = "userId")]
-        //public Guid UserId { get; set; }
+        [DataMember(Name = "userId")]
+        [JsonProperty(PropertyName = "userId")]
+        public Guid UserId { get; set; }
 
         [DataMember(Name = "title", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "title")]

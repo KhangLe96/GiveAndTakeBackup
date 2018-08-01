@@ -23,14 +23,29 @@ namespace Giveaway.API.DB
             SeedCategories(services);
             SeedProvinceCity(services);
             SeedPost(services);
+            SeedImage(services);
         }
 
-        //private static void SeedUser(IServiceProvider services)
-        //{
-        //    var proviceCityService = services.GetService<IProviceCityService>();
-        //    if (proviceCityService.All().Any()) return;
-        //    var pv = proviceCityService.Create(new ProvinceCity() { ProvinceCityName = "daklak" }, out _);
-        //}
+        private static void SeedImage(IServiceProvider services)
+        {
+            var imageService = services.GetService<IImageService>();
+            if (imageService.All().Any()) return;
+            imageService.Create(new Image()
+            {
+                PostId = Guid.Parse("17e69dba-b1b6-4a4c-a44a-feaecc56046a"),
+                ImageUrl = "test1",
+                CreatedTime = DateTimeOffset.UtcNow,
+                UpdatedTime = DateTimeOffset.Now
+            }, out _);
+
+            imageService.Create(new Image()
+            {
+                PostId = Guid.Parse("17e69dba-b1b6-4a4c-a44a-feaecc56046a"),
+                ImageUrl = "test2",
+                CreatedTime = DateTimeOffset.UtcNow,
+                UpdatedTime = DateTimeOffset.Now
+            }, out _);
+        }
 
         private static void SeedProvinceCity(IServiceProvider services)
         {

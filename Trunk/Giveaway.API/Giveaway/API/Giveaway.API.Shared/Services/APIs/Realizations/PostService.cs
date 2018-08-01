@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -16,11 +19,19 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
             _postService = postService;
         }
-        
-        public PostResponse Create(PostRequest post)
+
+        public List<PostResponse> GetAllPost()
         {
-            var postDb = ConvertToPostDB(post);
-            _postService.Create(postDb, out var isSaved);
+            var posts = _postService.Include(x => x.Category).Include(y => y.Images);
+            var postResponses = Mapper.Map<List<PostResponse>>(posts);
+
+            return postResponses;
+        }
+
+        public PostResponse Create(PostRequest postRequest)
+        {
+            var post = ConvertToPostDB(postRequest);
+            var postDb = _postService.Create(post, out var isSaved);
 
             if (!isSaved)
             {
@@ -28,19 +39,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
 
             return ConvertToPostResponse(postDb);
-        }
-
-        public List<PostResponse> GetAllPost()
-        {
-            var posts = _postService.All();
-
-            var postResponses = new List<PostResponse>();
-
-            foreach (var post in posts)
-            {
-                postResponses.Add(ConvertToPostResponse(post));
-            }
-            return postResponses;
         }
 
         #region Utils
@@ -71,7 +69,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 UpdatedTime = post.UpdatedTime,
                 Description = post.Description,
                 Title       = post.Title,
-                Category    = post.Category
+                Category    = Mapper.Map<CategoryResponse>(post.Category),
+                Address     = post.ProvinceCity.ProvinceCityName,
+                //Images = Mapper.Map<<List<ImageResponse>>(post.Images)
             };
         }
         #endregion
