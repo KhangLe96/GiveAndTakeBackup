@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import PostList from './PostList';
+import PostList from '../CategoryManagement/CategoryList';
 
 @connect(({ modals, postManagement }) => ({
   ...modals, ...postManagement,
@@ -21,7 +21,7 @@ export default class index extends React.Component {
     return (
       <div>
         <div className="containerHeader">
-          <h1>Quản lý bài đăng</h1>
+          <h1>Quản lý danh mục</h1>
         </div>
         <div className="containerBody">
           <PostList

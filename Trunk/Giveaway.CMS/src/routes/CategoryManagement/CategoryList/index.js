@@ -9,29 +9,20 @@ export default class index extends React.Component {
         title: 'ID',
         dataIndex: 'postId',
         key: 'postId',
-        render: val => <Link to={`/post-management/detail/${val}`}>{val}</Link>,
+        render: val => <Link to={`/category-management/detail/${val}`}>{val}</Link>,
       },
       {
-        title: 'Tiêu đề',
+        title: 'Tên danh mục',
         dataIndex: 'title',
         key: 'title',
       },
       {
-        title: 'Địa chỉ',
-        dataIndex: 'postAddress',
-        key: 'postAddress',
-      },
-      {
-        title: 'Danh mục',
-        dataIndex: 'category',
-        key: 'category',
-      }, {
         title: 'Ngày đăng',
         dataIndex: 'dayPost',
         key: 'dayPost',
       },
       {
-        title: 'Hánh động',
+        title: 'Hành động',
         dataIndex: 'postId',
         key: 'Action',
         render: id => (
