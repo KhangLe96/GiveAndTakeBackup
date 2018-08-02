@@ -59,7 +59,7 @@ export default class Login extends PureComponent {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <div className={cx('content_center')}>
               <img
-                style={{ width: '292px', height: '222px', zIndex: '10', marginBottom: '50px' }}
+                style={{ width: '338px', height: '272px', zIndex: '10', marginBottom: '50px' }}
                 src="/images/img_logo_login.png"
                 alt=""
               />
