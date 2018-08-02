@@ -25,10 +25,12 @@ namespace Giveaway.API.DB
         private static void SeedImage(IServiceProvider services)
         {
             var imageService = services.GetService<IImageService>();
+            var postService = services.GetService<IPostService>();
+
             if (imageService.All().Any()) return;
             imageService.Create(new Image()
             {
-                PostId = Guid.Parse("28a6b74b-3596-4f5a-891e-9a31296e5f21"),
+                PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
                 ImageUrl = "test1",
                 CreatedTime = DateTimeOffset.UtcNow,
                 UpdatedTime = DateTimeOffset.Now
@@ -36,7 +38,7 @@ namespace Giveaway.API.DB
 
             imageService.Create(new Image()
             {
-                PostId = Guid.Parse("28a6b74b-3596-4f5a-891e-9a31296e5f21"),
+                PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
                 ImageUrl = "test2",
                 CreatedTime = DateTimeOffset.UtcNow,
                 UpdatedTime = DateTimeOffset.Now
@@ -59,6 +61,10 @@ namespace Giveaway.API.DB
         private static void SeedPost(IServiceProvider services)
         {
             var postService = services.GetService<IPostService>();
+            var proviceCityService = services.GetService<IProviceCityService>();
+            var categoryService = services.GetService<ICategoryService>();
+            var userService = services.GetService<IUserService>();
+
             if (postService.All().Any()) return;
 
             var post = postService.Create(new Post
@@ -66,24 +72,24 @@ namespace Giveaway.API.DB
                 Id = Guid.NewGuid(),
                 CreatedTime = DateTimeOffset.Now,
                 UpdatedTime = DateTimeOffset.UtcNow,
-                CategoryId = Guid.Parse("2ec6992a-72eb-4b1b-b5b3-05714ea0c7ab"),
+                CategoryId = categoryService.All().ToList().ElementAt(0).Id,
                 Description = "Description",
                 Title = "test",
                 PostStatus = PostStatus.Open,
-                ProvinceCityId = Guid.Parse("e06e32cb-4c1f-4252-a600-423e80113860"),
-                UserId = Guid.Parse("45f22de6-d5c8-4a7c-95b6-6828d6430c70"),
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().Take(1).ToList().ElementAt(0).Id
             }, out _);
             var post1 = postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
                 CreatedTime = DateTimeOffset.Now,
                 UpdatedTime = DateTimeOffset.UtcNow,
-                CategoryId = Guid.Parse("2ec6992a-72eb-4b1b-b5b3-05714ea0c7ab"),
+                CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
                 Description = "Abv",
                 Title = "test",
                 PostStatus = PostStatus.Open,
-                ProvinceCityId = Guid.Parse("e06e32cb-4c1f-4252-a600-423e80113860"),
-                UserId = Guid.Parse("45f22de6-d5c8-4a7c-95b6-6828d6430c70"),
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().Take(1).ToList().ElementAt(0).Id
             }, out _);
         }
 
