@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import { Button, Popconfirm } from 'antd';
 
 @connect(({ modals, postManagement }) => ({
@@ -25,6 +26,7 @@ export default class index extends React.Component {
         posts,
       },
     });
+    dispatch(routerRedux.push('/post-management'));
   }
 
   render() {

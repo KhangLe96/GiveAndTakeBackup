@@ -27,5 +27,5 @@ export function deletePost(params) {
   // return request('/post/delete/', options);
 
   // fake data
-  return fakeDeletePost(params.posts, params.id);
+  return fakeDeletePost();
 }

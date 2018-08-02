@@ -33,6 +33,7 @@ export default class index extends React.Component {
       {
         title: 'Action',
         dataIndex: 'postId',
+        key: 'Action',
         render: id => (
           <span>
             <Popconfirm
@@ -52,10 +53,11 @@ export default class index extends React.Component {
     ];
 
   render() {
+    const { posts } = this.props;
     return (
       <Table
         columns={this.columns}
-        dataSource={this.props.posts}
+        dataSource={posts.map((post, key) => { return { ...post, key }; })}
         pagination={{ pageSize: 10 }}
       />
     );

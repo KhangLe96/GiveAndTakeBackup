@@ -21,11 +21,6 @@ export function fakeFetchPost() {
   return postData.posts;
 }
 
-export function fakeDeletePost(posts, id) {
-  const fs = require('fs');
-  const ret = { ...posts.filter(post => post.postId !== id) };
-  const jsonContent = JSON.stringify(ret);
-  return fs.writeFile('../fakeData/post.json', jsonContent, 'utf8', (err) => {
-    return (err !== undefined);
-  });
+export function fakeDeletePost() {
+  return true;
 }

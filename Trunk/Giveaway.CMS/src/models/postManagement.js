@@ -18,20 +18,13 @@ export default {
       });
     },
     * deletePost({ payload }, { call, put }) {
-      yield put({
-        type: 'deleteAPost',
-        payload,
-      });
-
-      // const response = yield call(deletePost, payload);
-      // if (response) {
-      //   yield put({
-      //     type: 'deleteAPost',
-      //     payload,
-      //   });
-      // }
-
-      yield put(routerRedux.push('/post-management'));
+      const response = yield call(deletePost, payload);
+      if (response) {
+        yield put({
+          type: 'deleteAPost',
+          payload,
+        });
+      }
     },
   },
 
