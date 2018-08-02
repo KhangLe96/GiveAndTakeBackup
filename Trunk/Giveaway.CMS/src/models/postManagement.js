@@ -30,6 +30,8 @@ export default {
       //     payload,
       //   });
       // }
+
+      yield put(routerRedux.push('/post-management'));
     },
   },
 

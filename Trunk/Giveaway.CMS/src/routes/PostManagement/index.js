@@ -6,11 +6,14 @@ import PostList from './PostList';
   ...modals, ...postManagement,
 }))
 export default class index extends React.Component {
-  componentWillMount() {
-    this.props.dispatch({
-      type: 'postManagement/fetchPost',
-      payload: {},
-    });
+  componentDidMount() {
+    const { posts, dispatch } = this.props;
+    if (posts.length === 0) {
+      dispatch({
+        type: 'postManagement/fetchPost',
+        payload: {},
+      });
+    }
   }
 
   render() {
