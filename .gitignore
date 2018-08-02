@@ -548,5 +548,12 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+# ignore appsettings configuration files
+appsettings.json
+**/appsettings.json
+**/appsettings.development.json
+**/appsettings.staging.json
+**/appsettings.production.json
+
 # dependencies
 Trunk/Giveaway.CMS/node_modules
