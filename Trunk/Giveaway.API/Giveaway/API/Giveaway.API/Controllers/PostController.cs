@@ -37,7 +37,7 @@ namespace Giveaway.API.Controllers
 
         [HttpPut("update")]
         [Produces("application/json")]
-        public bool Update(PostRequest postRequest)
+        public bool Update([FromBody]PostRequest postRequest)
         {
             return _postService.Update(postRequest);
         }
