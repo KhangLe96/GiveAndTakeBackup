@@ -30,7 +30,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 Data = categories,
                 Pagination = new Pagination
                 {
-                    Total = categories.Count,
+                    Total = _categoryService.Count(),
                     PageNumber = request.Page,
                     PageSize = request.Limit
                 }

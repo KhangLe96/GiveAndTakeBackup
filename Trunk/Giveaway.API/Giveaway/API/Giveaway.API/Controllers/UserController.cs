@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
@@ -33,6 +34,27 @@ namespace Giveaway.API.Controllers
         public PagingQueryResponse<UserProfileResponse> All([FromHeader]IDictionary<string, string> @params)
         {
             return _userService.All(@params);
+        }
+
+        /// <summary>
+        /// Invalidate token
+        /// </summary>
+        /// <returns>true</returns>
+        [HttpPost("logout")]
+        [Authorize]
+        [Produces("application/json")]
+        public bool Logout()
+        {
+            var userId = User.GetUserId();
+            var user = _userService.Find(userId);
+            if (user != null)
+            {
+                user.AllowTokensSince = DateTimeOffset.UtcNow;
+                var isUpdated = _userService.Update(user);
+
+                return isUpdated;
+            }
+            return false;
         }
     }
 }

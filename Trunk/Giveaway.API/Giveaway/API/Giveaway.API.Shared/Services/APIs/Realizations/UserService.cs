@@ -56,6 +56,16 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
+        public User Find(Guid userId)
+        {
+            return _userService.Find(userId);
+        }
+
+        public bool Update(User user)
+        {
+            return _userService.Update(user);
+        }
+
         private UserProfileResponse GenerateUserProfileResponse(User user) => new UserProfileResponse
         {
             Id = user.Id,

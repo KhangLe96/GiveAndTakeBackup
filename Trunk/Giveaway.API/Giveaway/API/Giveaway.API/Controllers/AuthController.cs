@@ -57,28 +57,6 @@ namespace Giveaway.API.Controllers
             _authService.UpdateAvatar(User.GetUserId(), file);
         }
 
-
-        /// <summary>
-        /// Invalidate token
-        /// </summary>
-        /// <returns>true</returns>
-        [HttpPost("logout")]
-        [Authorize]
-        [Produces("application/json")]
-        public bool Logout()
-        {
-            var userId = User.GetUserId();
-            var user = _userService.Find(userId);
-            if (user != null)
-            {
-                user.AllowTokensSince = DateTimeOffset.UtcNow;
-                var isUpdated = _userService.Update(user);
-
-                return isUpdated;
-            }
-            return false;
-        }
-
         /// <summary>
         /// Handles Register
         /// </summary>

@@ -35,10 +35,6 @@ namespace Giveaway.API.Shared.Requests
 		[DataMember(Name = "address", EmitDefaultValue = false)]
 		[JsonProperty(PropertyName = "address")]
 		public string Address { get; set; }
-
-		[DataMember(Name = "introduction", EmitDefaultValue = false)]
-		[JsonProperty(PropertyName = "introduction")]
-		public string Introduction { get; set; }
 	}
 
     [DataContract]

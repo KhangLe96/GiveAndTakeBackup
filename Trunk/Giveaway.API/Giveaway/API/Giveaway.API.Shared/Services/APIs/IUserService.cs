@@ -12,5 +12,7 @@ namespace Giveaway.API.Shared.Services.APIs
 	    User GetUser(Guid id);
 	    bool DeleteUser(Guid id);
 	    PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params);
+	    User Find(Guid userId);
+	    bool Update(User user);
 	}
 }
