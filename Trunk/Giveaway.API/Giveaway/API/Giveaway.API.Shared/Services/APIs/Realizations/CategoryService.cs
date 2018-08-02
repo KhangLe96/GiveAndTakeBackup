@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Giveaway.API.Shared.Exceptions;
+using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.EF;
-using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.Models.Database;
+using CategoryRequest = Giveaway.Data.EF.DTOs.Requests.CategoryRequest;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -18,14 +20,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _categoryService = categoryService;
         }
 
-        public List<CategoryResponse> All()
+        public PagingQueryResponse<CategoryResponse> All(IDictionary<string, string> @params)
         {
+            var request = @params.ToObject<PagingQueryRequest>();
+
             var response = (IEnumerable<Category>)_categoryService.GetAllCategories().Data;
             if (response == null)
             {
                 throw new BadRequestException(Const.Error.BadRequest);
             }
-            return response.Select(GenerateCategoryResponse).ToList();
+            return new PagingQueryResponse<CategoryResponse>
+            {
+                Data = response.Select(GenerateCategoryResponse).ToList(),
+                Pagination = new Pagination
+                {
+                    Total = _categoryService.Count(),
+                    PageNumber = request.Page,
+                    PageSize = request.Limit
+                }
+            };
         }
 
         public CategoryResponse Delete(Guid id)
@@ -84,16 +97,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return Find(id);
         }
 
-        private static CategoryResponse GenerateCategoryResponse(Category category)
+        private static CategoryResponse GenerateCategoryResponse(Category category) => new CategoryResponse
         {
-            return new CategoryResponse
-            {
-                Id = category.Id,
-                CategoryName = category.CategoryName,
-                CategoryImageUrl = category.ImageUrl,
-                CreatedTime = category.CreatedTime,
-                UpdatedTime = category.UpdatedTime
-            };
-        }
+            Id = category.Id,
+            CategoryName = category.CategoryName,
+            CategoryImageUrl = category.ImageUrl,
+            CreatedTime = category.CreatedTime,
+            UpdatedTime = category.UpdatedTime
+        };
     }
 }

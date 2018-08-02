@@ -42,21 +42,19 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params)
         {
-            var pagination = GeneratePaginationUsers(@params.ToObject<PagingQueryRequest>());
+            var request = @params.ToObject<PagingQueryRequest>();
 
             return new PagingQueryResponse<UserProfileResponse>
             {
-                Data = _userService.All().Skip(pagination.PageSize * (pagination.PageNumber -1)).Take(pagination.PageSize).Select(u => GenerateUserProfileResponse(u)).ToList(),
-                Pagination = pagination
+                Data = _userService.All().Skip(request.Limit * (request.Page -1)).Take(request.Limit).Select(u => GenerateUserProfileResponse(u)).ToList(),
+                Pagination = new Pagination
+                {
+                    Total = _userService.Count(),
+                    PageSize = request.Limit,
+                    PageNumber = request.Page
+                }
             };
         }
-
-        private Pagination GeneratePaginationUsers(PagingQueryRequest request) => new Pagination
-        {
-            Total = _userService.Count(),
-            PageSize = request.Limit,
-            PageNumber = request.Page
-        };
 
         private UserProfileResponse GenerateUserProfileResponse(User user) => new UserProfileResponse
         {

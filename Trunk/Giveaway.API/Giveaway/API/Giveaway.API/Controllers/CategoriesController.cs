@@ -24,10 +24,9 @@ namespace Giveaway.API.Controllers
         }
 
         [HttpGet]
-        public List<CategoryResponse> All()
+        public PagingQueryResponse<CategoryResponse> All([FromHeader]IDictionary<string, string> @params)
         {
-            //Review: it's good if you implement pagination for GET list API
-            return _categoryService.All();
+            return _categoryService.All(@params);
         }
 
         [HttpDelete("{categoryId}")]

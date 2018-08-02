@@ -8,7 +8,7 @@ namespace Giveaway.API.Shared.Services.APIs
 {
     public interface ICategoryService
     {
-        List<CategoryResponse> All();
+        PagingQueryResponse<CategoryResponse> All(IDictionary<string, string> @params);
         CategoryResponse Delete(Guid id);
         CategoryResponse Create(CategoryRequest request);
         CategoryResponse Find(Guid id);
