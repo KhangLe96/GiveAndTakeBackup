@@ -22,7 +22,7 @@ namespace Giveaway.API.Shared.Responses
 
         [DataMember(Name = "address")]
         [JsonProperty(PropertyName = "address")]
-        public string Address { get; set; }
+        public ProvinceCityResponse ProvinceCity { get; set; }
 
         [DataMember(Name = "images")]
         [JsonProperty(PropertyName = "images")]
