@@ -8,7 +8,7 @@ namespace Giveaway.API.Shared.Responses
     [DataContract]
     public class PagingQueryResponse<T>
     {
-        [DataMember(Name = "list")]
+        [DataMember(Name = "results")]
         public List<T> Data { get; set; }
 
         [DataMember(Name = "pagination")]
