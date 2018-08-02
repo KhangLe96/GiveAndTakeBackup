@@ -49,19 +49,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         #endregion
 
         #region Methods
-
-        public LoginResponse Login(LoginRequest request)
-        {
-            var validateResult = _userService.ValidateLogin(request);
-
-            if (validateResult.StatusCode != HttpStatusCode.OK)
-            {
-                throw validateResult.ToException();
-            }
-
-            return GenerateLoginResponse(validateResult.Data as User);
-        }
-
+        
         public RegisterResponse Register(RegisterRequest request)
         {
             var resultRegister = _userService.ValidateRegister(request);
@@ -223,22 +211,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 Profile = GenerateUserProfileResponse(user)
             };
-        }
-
-        private LoginResponse GenerateLoginResponse(User user)
-        {
-            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, _userRoleService.GetUserRoles(user.Id));
-
-            var response = new LoginResponse()
-            {
-                Profile = GenerateUserProfileResponse(user),
-                RefreshToken = token.RefreshToke,
-                TokenType = token.Type,
-                Token = token.AccessToken,
-                ExpiresIn = token.Expires
-            };
-
-            return response;
         }
 
         private UserProfileResponse GenerateUserProfileResponse(User user)

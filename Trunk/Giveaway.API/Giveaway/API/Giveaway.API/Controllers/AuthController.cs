@@ -41,14 +41,6 @@ namespace Giveaway.API.Controllers
 
         #region Action Methods
 
-
-        [HttpPost("login")]
-        [Produces("application/json")]
-        public LoginResponse Login([FromBody]LoginRequest request)
-        {
-            return _authService.Login(request);
-        }
-
         [Authorize]
         [HttpPost("profile/me/avatar")]
         [Produces("application/json")]
@@ -68,19 +60,6 @@ namespace Giveaway.API.Controllers
         public RegisterResponse Register([FromBody]RegisterRequest request)
         {
             return _authService.Register(request);
-        }
-
-        /// <summary>
-        /// Get profile of current logged in user
-        /// </summary>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("profile/me")]
-        [Produces("application/json")]
-        public UserProfileResponse GetProfile()
-        {
-            var userId = User.GetUserId();
-            return _authService.GetUserProfile(userId);
         }
 
         /// <summary>

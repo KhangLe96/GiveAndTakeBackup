@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using Giveaway.API.Shared.Exceptions;
 using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.Models.Database;
 using Microsoft.AspNetCore.Hosting;
 using DbService = Giveaway.Service.Services;
@@ -19,8 +23,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public UserService(DbService.IUserService userService, IHostingEnvironment hostingEnvironment, DbService.IUserRoleService userRoleService)
         {
-            this._userService = userService;
-            this._hostingEnvironment = hostingEnvironment;
+            _userService = userService;
+            _hostingEnvironment = hostingEnvironment;
             _userRoleService = userRoleService;
         }
 
@@ -66,6 +70,30 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return _userService.Update(user);
         }
 
+        public UserProfileResponse GetUserProfile(Guid userId)
+        {
+            var currentUser = _userService.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
+
+            if (currentUser == null)
+            {
+                throw new BadRequestException("User doesn't exist.");
+            }
+
+            return GenerateUserProfileResponse(currentUser);
+        }
+
+        public LoginResponse Login(LoginRequest request)
+        {
+            var validateResult = _userService.ValidateLogin(request);
+
+            if (validateResult.StatusCode != HttpStatusCode.OK)
+            {
+                throw validateResult.ToException();
+            }
+
+            return GenerateLoginResponse(validateResult.Data as User);
+        }
+
         private UserProfileResponse GenerateUserProfileResponse(User user) => new UserProfileResponse
         {
             Id = user.Id,
@@ -80,5 +108,21 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             Roles = _userRoleService.GetUserRoles(user.Id),
             AvatarUrl = user.AvatarUrl
         };
+
+        private LoginResponse GenerateLoginResponse(User user)
+        {
+            var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, _userRoleService.GetUserRoles(user.Id));
+
+            var response = new LoginResponse()
+            {
+                Profile = GenerateUserProfileResponse(user),
+                RefreshToken = token.RefreshToke,
+                TokenType = token.Type,
+                Token = token.AccessToken,
+                ExpiresIn = token.Expires
+            };
+
+            return response;
+        }
     }
 }

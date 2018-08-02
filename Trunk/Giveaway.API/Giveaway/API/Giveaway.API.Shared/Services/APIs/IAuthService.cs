@@ -13,9 +13,6 @@ namespace Giveaway.API.Shared.Services.APIs
 
 		UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request);
 
-		LoginResponse 
-            Login(LoginRequest request);
-
 		RegisterResponse Register(RegisterRequest request);
 
 	    void UpdateAvatar(Guid userId, IFormFile file);

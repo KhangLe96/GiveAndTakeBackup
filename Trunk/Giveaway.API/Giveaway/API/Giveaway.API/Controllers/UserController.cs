@@ -7,6 +7,7 @@ using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
+using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.Models.Database;
 
 namespace Giveaway.API.Controllers
@@ -24,20 +25,40 @@ namespace Giveaway.API.Controllers
             _userService = userService;
         }
 
-        [HttpDelete("{id}")]
-        public bool Delete(Guid id)
+        /// <summary>
+        /// Get profile of current logged in user
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        [Produces("application/json")]
+        public UserProfileResponse GetProfile()
         {
-            return _userService.DeleteUser(id);
+            var userId = User.GetUserId();
+            return _userService.GetUserProfile(userId);
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Get list of user with pagination
+        /// </summary>
+        [Authorize]
+        [HttpGet("getList")]
         public PagingQueryResponse<UserProfileResponse> All([FromHeader]IDictionary<string, string> @params)
         {
             return _userService.All(@params);
         }
 
         /// <summary>
-        /// Invalidate token
+        /// login
+        /// </summary>
+        [HttpPost("login")]
+        [Produces("application/json")]
+        public LoginResponse Login([FromBody]LoginRequest request)
+        {
+            return _userService.Login(request);
+        }
+
+        /// <summary>
+        /// logout 
         /// </summary>
         /// <returns>true</returns>
         [HttpPost("logout")]
