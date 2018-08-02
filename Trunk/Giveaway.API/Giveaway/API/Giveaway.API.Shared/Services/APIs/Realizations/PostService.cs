@@ -36,13 +36,23 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var post = Mapper.Map<Post>(postRequest);
             post = InitPostDB(post);
 
-            var postDb = _postService.Create(post, out var isPostSaved);
-            _imageService.CreateMany(InitImageDB(postDb), out var isImageSaved);
-            if (!isPostSaved || !isImageSaved)
+            _postService.Create(post, out var isPostSaved);
+            
+            if (isPostSaved)
+            {
+                var imageDBs = InitImageDB(post);
+                var i = _imageService.CreateMany(imageDBs, out var isImageSaved);
+
+                if(!isImageSaved)
+                {
+                    throw new SystemException("Internal Error");
+                }
+            } else
             {
                 throw new SystemException("Internal Error");
             }
-
+            
+            var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
             var postResponse = Mapper.Map<PostResponse>(postDb);
 
             return postResponse;
@@ -57,7 +67,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             post.UpdatedTime = DateTimeOffset.Now;
 
             //this UserId is just for test and will be removed
-            post.UserId = Guid.Parse("4fa442c8-44e1-425d-b63d-20c2e2ba957d");
+            post.UserId = Guid.Parse("45f22de6-d5c8-4a7c-95b6-6828d6430c70");
 
             return post;
         }
@@ -78,20 +88,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return imageList;
         }
 
-        private PostResponse ConvertToPostResponse(Post post)
-        {
-            return new PostResponse()
-            {
-                Id          = post.Id,
-                CreatedTime = post.CreatedTime,
-                UpdatedTime = post.UpdatedTime,
-                Description = post.Description,
-                Title       = post.Title,
-                Category    = Mapper.Map<CategoryResponse>(post.Category),
-                Address     = post.ProvinceCity.ProvinceCityName,
-                //Images = Mapper.Map<<List<ImageResponse>>(post.Images)
-            };
-        }
         #endregion
     }
 }

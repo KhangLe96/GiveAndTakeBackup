@@ -17,7 +17,7 @@ namespace Giveaway.API.DB
             SeedAdmin(services);
             SeedSuperAdmin(services);
             SeedCategories(services);
-            //SeedProvinceCity(services);
+            SeedProvinceCity(services);
             //SeedPost(services);
             //SeedImage(services);
         }
@@ -28,7 +28,7 @@ namespace Giveaway.API.DB
             if (imageService.All().Any()) return;
             imageService.Create(new Image()
             {
-                PostId = Guid.Parse("17e69dba-b1b6-4a4c-a44a-feaecc56046a"),
+                PostId = Guid.Parse("28a6b74b-3596-4f5a-891e-9a31296e5f21"),
                 ImageUrl = "test1",
                 CreatedTime = DateTimeOffset.UtcNow,
                 UpdatedTime = DateTimeOffset.Now
@@ -36,7 +36,7 @@ namespace Giveaway.API.DB
 
             imageService.Create(new Image()
             {
-                PostId = Guid.Parse("17e69dba-b1b6-4a4c-a44a-feaecc56046a"),
+                PostId = Guid.Parse("28a6b74b-3596-4f5a-891e-9a31296e5f21"),
                 ImageUrl = "test2",
                 CreatedTime = DateTimeOffset.UtcNow,
                 UpdatedTime = DateTimeOffset.Now
@@ -47,7 +47,13 @@ namespace Giveaway.API.DB
         {
             var proviceCityService = services.GetService<IProviceCityService>();
             if (proviceCityService.All().Any()) return;
-            var pv = proviceCityService.Create(new ProvinceCity(){ProvinceCityName = "daklak"}, out _);
+            var pv = proviceCityService.Create(new ProvinceCity()
+            {
+                Id = Guid.NewGuid(),
+                ProvinceCityName = "daklak",
+                CreatedTime = DateTimeOffset.Now,
+                UpdatedTime = DateTimeOffset.UtcNow,
+            }, out _); 
         }
 
         private static void SeedPost(IServiceProvider services)
@@ -56,28 +62,28 @@ namespace Giveaway.API.DB
             if (postService.All().Any()) return;
 
             var post = postService.Create(new Post
-                {
-                    Id = Guid.NewGuid(),
-                    CreatedTime = DateTimeOffset.Now,
-                    UpdatedTime = DateTimeOffset.UtcNow,
-                    CategoryId = Guid.Parse("0016cba7-57d5-4f7c-b380-8ce5a87208c2"),
-                    Description = "Description",
-                    Title = "test",
-                    PostStatus = PostStatus.Open,
-                    ProvinceCityId = Guid.Parse("cdbe4d14-c060-486b-b1ac-0f681ec1620e"),
-                    UserId = Guid.Parse("28698ed3-12ff-407a-bc6b-a0af6f386f52"),
-                }, out _);
+            {
+                Id = Guid.NewGuid(),
+                CreatedTime = DateTimeOffset.Now,
+                UpdatedTime = DateTimeOffset.UtcNow,
+                CategoryId = Guid.Parse("2ec6992a-72eb-4b1b-b5b3-05714ea0c7ab"),
+                Description = "Description",
+                Title = "test",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = Guid.Parse("e06e32cb-4c1f-4252-a600-423e80113860"),
+                UserId = Guid.Parse("45f22de6-d5c8-4a7c-95b6-6828d6430c70"),
+            }, out _);
             var post1 = postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
                 CreatedTime = DateTimeOffset.Now,
                 UpdatedTime = DateTimeOffset.UtcNow,
-                CategoryId = Guid.Parse("0016cba7-57d5-4f7c-b380-8ce5a87208c2"),
+                CategoryId = Guid.Parse("2ec6992a-72eb-4b1b-b5b3-05714ea0c7ab"),
                 Description = "Abv",
                 Title = "test",
                 PostStatus = PostStatus.Open,
-                ProvinceCityId = Guid.Parse("cdbe4d14-c060-486b-b1ac-0f681ec1620e"),
-                UserId = Guid.Parse("28698ed3-12ff-407a-bc6b-a0af6f386f52"),
+                ProvinceCityId = Guid.Parse("e06e32cb-4c1f-4252-a600-423e80113860"),
+                UserId = Guid.Parse("45f22de6-d5c8-4a7c-95b6-6828d6430c70"),
             }, out _);
         }
 

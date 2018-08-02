@@ -24,6 +24,8 @@ namespace Giveaway.API
             cfg.CreateMap<Image, ImageResponse>();
             cfg.CreateMap<ImageRequest, Image>();
 
+            cfg.CreateMap<ProvinceCity, ProvinceCityResponse>();
+
             Mapper.Initialize(cfg);
         }
     }
