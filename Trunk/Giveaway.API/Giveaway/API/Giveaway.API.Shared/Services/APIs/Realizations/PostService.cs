@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using AutoMapper;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using static Giveaway.Data.EF.Const;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -55,6 +58,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return postResponse;
         }
 
+        public bool Update(PostRequest postRequest)
+        {
+            var post = Mapper.Map<Post>(postRequest);
+            //this UserId is just for test and will be got after user has logined
+            post.UserId = Guid.Parse("5151357e-bb71-4e7f-bfaf-ecc6944cc94f");
+
+            return _postService.Update(post);
+        }
+
         public bool Delete(Guid id)
         {
             var post = _postService.Find(id);
@@ -71,7 +83,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             post.CreatedTime = DateTimeOffset.Now;
             post.UpdatedTime = DateTimeOffset.Now;
 
-            //this UserId is just for test and will be removed
+            //this UserId is just for test and will be got after user has logined
             post.UserId = Guid.Parse("45f22de6-d5c8-4a7c-95b6-6828d6430c70");
 
             return post;

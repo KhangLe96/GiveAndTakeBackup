@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Extensions;
+using System;
 
 namespace Giveaway.API.Controllers
 {
@@ -32,6 +33,13 @@ namespace Giveaway.API.Controllers
         {
             //postRequest.UserId = User.GetUserId();
             return _postService.Create(postRequest);
+        }
+
+        [HttpPut("update")]
+        [Produces("application/json")]
+        public bool Update(PostRequest postRequest)
+        {
+            return _postService.Update(postRequest);
         }
 
         [HttpPost("delete")]

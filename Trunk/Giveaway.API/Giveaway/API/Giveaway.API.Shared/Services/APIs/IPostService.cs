@@ -10,5 +10,6 @@ namespace Giveaway.API.Shared.Services.APIs
         List<PostResponse> GetAllPost();
         PostResponse Create(PostRequest post);
         bool Delete(Guid id);
+        bool Update(PostRequest postRequest);
     }
 }
