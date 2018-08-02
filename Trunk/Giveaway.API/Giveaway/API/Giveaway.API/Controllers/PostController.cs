@@ -33,5 +33,12 @@ namespace Giveaway.API.Controllers
             //postRequest.UserId = User.GetUserId();
             return _postService.Create(postRequest);
         }
+
+        [HttpPost("delete")]
+        [Produces("application/json")]
+        public bool Delete(Guid id)
+        {
+            return _postService.Delete(id);
+        }
     }
 }

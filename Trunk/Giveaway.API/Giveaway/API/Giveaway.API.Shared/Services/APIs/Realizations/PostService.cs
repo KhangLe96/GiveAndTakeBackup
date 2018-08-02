@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
-using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using System;
+using System.Collections.Generic;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -32,7 +30,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PostResponse Create(PostRequest postRequest)
         {
-            //var post = ConvertToPostDB(postRequest);
             var post = Mapper.Map<Post>(postRequest);
             post = InitPostDB(post);
 
@@ -56,6 +53,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var postResponse = Mapper.Map<PostResponse>(postDb);
 
             return postResponse;
+        }
+
+        public bool Delete(Guid id)
+        {
+            var post = _postService.Find(id);
+            post.IsDeleted = true;
+
+            return _postService.Update(post);
         }
 
         #region Utils
