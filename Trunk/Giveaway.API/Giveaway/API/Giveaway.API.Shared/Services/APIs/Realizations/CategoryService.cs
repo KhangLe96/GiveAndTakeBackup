@@ -14,6 +14,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     public class CategoryService : ICategoryService
     {
         private readonly Service.Services.ICategoryService _categoryService;
+        private List<CategoryResponse> categories;
 
         public CategoryService(Service.Services.ICategoryService categoryService)
         {
@@ -23,23 +24,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public PagingQueryResponse<CategoryResponse> All(IDictionary<string, string> @params)
         {
             var request = @params.ToObject<PagingQueryRequest>();
-
-            var response = (IEnumerable<Category>)_categoryService.GetAllCategories().Data;
-            if (response == null)
-            {
-                throw new BadRequestException(Const.Error.BadRequest);
-            }
+            categories = GetPagedCategories(request);
             return new PagingQueryResponse<CategoryResponse>
             {
-                Data = response.Select(GenerateCategoryResponse).ToList(),
+                Data = categories,
                 Pagination = new Pagination
                 {
-                    Total = _categoryService.Count(),
+                    Total = categories.Count,
                     PageNumber = request.Page,
                     PageSize = request.Limit
                 }
             };
         }
+
+        private List<CategoryResponse> GetPagedCategories(PagingQueryRequest request) 
+            => _categoryService.All()
+            .Skip(request.Limit * (request.Page - 1))
+            .Take(request.Limit)
+            .Select(category => GenerateCategoryResponse(category))
+            .ToList();
 
         public CategoryResponse Delete(Guid id)
         {
