@@ -1,17 +1,17 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Text;
 
 namespace Giveaway.API.Shared.Responses
 {
     [DataContract]
-    public class PagingQueryResponse
+    public class PagingQueryResponse<T>
     {
-        [DataMember(Name = "total")]
-        public int Total { get; set; }
+        [DataMember(Name = "list")]
+        public List<T> Data { get; set; }
 
-        [DataMember(Name = "page")]
-        public int Page { get; set; }
-
-        [DataMember(Name = "limit")]
-        public int Limit { get; set; }
+        [DataMember(Name = "pagination")]
+        public Pagination Pagination { get; set; }
     }
 }

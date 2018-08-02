@@ -6,6 +6,7 @@ using System.Linq;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
+using Giveaway.Data.Models.Database;
 
 namespace Giveaway.API.Controllers
 {
@@ -29,10 +30,9 @@ namespace Giveaway.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<UserProfileResponse> All()
+        public PagingQueryResponse<UserProfileResponse> All([FromHeader]IDictionary<string, string> @params)
         {
-            //Review: Should have pagination. 
-            return _userService.All();
+            return _userService.All(@params);
         }
     }
 }

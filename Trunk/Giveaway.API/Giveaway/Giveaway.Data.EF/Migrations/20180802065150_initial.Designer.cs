@@ -12,8 +12,8 @@ using System;
 namespace Giveaway.Data.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180801171216_initit")]
-    partial class initit
+    [Migration("20180802065150_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.Models.Database;
 using Microsoft.AspNetCore.Hosting;
@@ -38,28 +40,37 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return isSaved;
         }
 
-        public List<UserProfileResponse> All()
+        public PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params)
         {
-            var response = _userService.All();
-            return response.Select(u => GenerateUserProfileResponse(u)).ToList();
-        }
+            var pagination = GeneratePaginationUsers(@params.ToObject<PagingQueryRequest>());
 
-        private UserProfileResponse GenerateUserProfileResponse(User user)
-        {
-            return new UserProfileResponse
+            return new PagingQueryResponse<UserProfileResponse>
             {
-                Id = user.Id,
-                FirstName = user.LastName,
-                LastName = user.FirstName,
-                Username = user.UserName,
-                BirthDate = user.BirthDate,
-                Gender = user.Gender,
-                PhoneNumber = user.PhoneNumber,
-                Address = user.Address,
-                Email = user.Email,
-                Roles = _userRoleService.GetUserRoles(user.Id),
-                AvatarUrl = user.AvatarUrl
+                Data = _userService.All().Skip(pagination.PageSize * (pagination.PageNumber -1)).Take(pagination.PageSize).Select(u => GenerateUserProfileResponse(u)).ToList(),
+                Pagination = pagination
             };
         }
+
+        private Pagination GeneratePaginationUsers(PagingQueryRequest request) => new Pagination
+        {
+            Total = _userService.Count(),
+            PageSize = request.Limit,
+            PageNumber = request.Page
+        };
+
+        private UserProfileResponse GenerateUserProfileResponse(User user) => new UserProfileResponse
+        {
+            Id = user.Id,
+            FirstName = user.LastName,
+            LastName = user.FirstName,
+            Username = user.UserName,
+            BirthDate = user.BirthDate,
+            Gender = user.Gender,
+            PhoneNumber = user.PhoneNumber,
+            Address = user.Address,
+            Email = user.Email,
+            Roles = _userRoleService.GetUserRoles(user.Id),
+            AvatarUrl = user.AvatarUrl
+        };
     }
 }
