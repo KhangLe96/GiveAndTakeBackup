@@ -63,7 +63,7 @@ export default class index extends React.Component {
               {(result[0].imagePaths)
                 ?
                 result[0].imagePaths.map((imagePath) => {
-                  return <img src={imagePath} alt="" height="300" width="300" />;
+                  return <img src={imagePath} key={imagePath} alt="" height="300" width="300" />;
                 })
 
                 : null}
