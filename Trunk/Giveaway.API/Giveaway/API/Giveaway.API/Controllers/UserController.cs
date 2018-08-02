@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
@@ -72,7 +73,6 @@ namespace Giveaway.API.Controllers
             {
                 user.AllowTokensSince = DateTimeOffset.UtcNow;
                 var isUpdated = _userService.Update(user);
-
                 return isUpdated;
             }
             return false;

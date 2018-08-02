@@ -22,6 +22,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public List<PostResponse> GetAllCategories()
         {
+            //Review: Missing query to filter, pagination. Let's see CategoryController. 1 post contains many categories, so that categories should be an array instead of an object
             return _postService.GetAllPost();
         }
 

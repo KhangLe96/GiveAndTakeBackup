@@ -46,7 +46,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params)
         {
-            var request = @params.ToObject<PagingQueryRequest>();
+            //Review: Create other query object for getting users. Allow filter by name, username, email,phoneNumber
+            var request = @params.ToObject<BasePagingQueryRequest>();
 
             return new PagingQueryResponse<UserProfileResponse>
             {
@@ -54,8 +55,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 Pagination = new Pagination
                 {
                     Total = _userService.Count(),
-                    PageSize = request.Limit,
-                    PageNumber = request.Page
+                    Limit = request.Limit,
+                    Page = request.Page
                 }
             };
         }

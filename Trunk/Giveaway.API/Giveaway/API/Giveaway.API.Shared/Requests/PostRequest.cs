@@ -8,6 +8,7 @@ namespace Giveaway.API.Shared.Requests
 {
     public class PostRequest
     {
+        //Review: Don't need this prop because we can get userId directly from Controller through token
         [DataMember(Name = "userId")]
         [JsonProperty(PropertyName = "userId")]
         public Guid UserId { get; set; }
