@@ -19,6 +19,12 @@ namespace Giveaway.API.Controllers
             _postService = postService;
         }
 
+        //Review: don't need this API, if we get all we can pass params for API query with limit as big number that is enough to get all item
+        //You can create other API to get list post of currentUser, it is similar as get list post with pagination.
+        //I remember that the post has status, we need add this field.
+        //When you implement get list. Should have a API to get list for mobile app, we need filter these posts which is activated. 
+        //And a api for CMS, return all post with their status
+        
         [HttpGet("getAll")]
         [Produces("application/json")]
         public List<PostResponse> GetAll()
@@ -33,6 +39,11 @@ namespace Giveaway.API.Controllers
             return _postService.GetPostForPaging(@params);
         }
 
+        /// <summary>
+        /// Review: You need ad Authorize, after that you can get UserId from User.GetUserId()
+        /// </summary>
+        /// <param name="postRequest"></param>
+        /// <returns></returns>
         [HttpPost("create")]
         [Produces("application/json")]
         public PostResponse Create([FromBody]PostRequest postRequest)
@@ -41,13 +52,18 @@ namespace Giveaway.API.Controllers
             return _postService.Create(postRequest);
         }
 
+        /// <summary>
+        /// Review: You should add Id in path. Ex [HttpPut("{id}")] Need Authorize
+        /// </summary>
+        /// <param name="postRequest"></param>
+        /// <returns></returns>
         [HttpPut("update")]
         [Produces("application/json")]
         public bool Update([FromBody]PostRequest postRequest)
         {
             return _postService.Update(postRequest);
         }
-
+        //Review: Wrong method, it should be is HttpDelete and should Id in path, see category
         [HttpPost("delete")]
         [Produces("application/json")]
         public bool Delete(Guid id)

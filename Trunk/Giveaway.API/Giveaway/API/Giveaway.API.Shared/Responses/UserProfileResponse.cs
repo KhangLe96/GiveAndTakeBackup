@@ -38,7 +38,7 @@ namespace Giveaway.API.Shared.Responses
 
 	    [DataMember(Name="gender", EmitDefaultValue=false)]
 		[JsonProperty(PropertyName = "gender")]
-		public Gender Gender { get; set; }
+		public string Gender { get; set; }
 
 	    [DataMember(Name="username", EmitDefaultValue=false)]
 		[JsonProperty(PropertyName = "username")]

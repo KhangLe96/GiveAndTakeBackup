@@ -135,7 +135,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             LastName = user.FirstName,
             Username = user.UserName,
             BirthDate = user.BirthDate,
-            Gender = user.Gender,
+            Gender = user.Gender.ToString(),
             PhoneNumber = user.PhoneNumber,
             Address = user.Address,
             Email = user.Email,

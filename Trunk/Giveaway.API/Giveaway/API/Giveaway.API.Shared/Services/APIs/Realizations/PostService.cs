@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using static Giveaway.Data.EF.Const;
 using DbService = Giveaway.Service.Services;
-
+//Remove namespace is unused
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
     public class PostService : IPostService
@@ -25,6 +25,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _imageService = imageService;
         }
 
+        //Review: this is unneccessary, should remove it
         public List<PostResponse> GetAllPost()
         {
             var posts = _postService.Include(x => x.Category).Include(y => y.Images);
@@ -79,9 +80,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public bool Update(PostRequest postRequest)
         {
             var post = Mapper.Map<Post>(postRequest);
+            //if you implement like this, createdTime will be updated with DateTime.Now => wrong
             //this UserId is just for test and will be got after user has logined
             post.UserId = Guid.Parse("5151357e-bb71-4e7f-bfaf-ecc6944cc94f");
-
+            //Review: Should get object from db and update some fields. 
             return _postService.Update(post);
         }
 
@@ -123,9 +125,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return imageList;
         }
 
+        //Review: Should rename this function
         private List<PostResponse> GetPagedPostgories(PagingQueryPostRequest request)
         {
             var posts = _postService.Where(x => !x.IsDeleted);
+            //Review: should have more params to query such as CreatedTime, provinceCityId, categoryId
             if (request.PostName != null)
             {
                 posts = posts.Where(x => x.Title.Contains(request.PostName));
