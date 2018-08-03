@@ -1,20 +1,22 @@
 import request from '../utils/request';
+import { stringify } from 'qs';
+
+
 
 // fake data
 import { fakeFetchPost, fakeDeletePost } from '../utils/fakeUtils';
 
 
-export function fetchPost(params) {
+export async function fetchPost(params) {
   const options = {
     method: 'GET',
     body: {
       ...params,
     },
   };
-  // return request('/post/get/', options);
-
+  return request('/post/getAll', options);
   // fake data
-  return fakeFetchPost();
+  // return fakeFetchPost();
 }
 
 export function deletePost(params) {
@@ -24,8 +26,13 @@ export function deletePost(params) {
       ...params,
     },
   };
-  // return request('/post/delete/', options);
-
+  return request('/post/delete/', options);
   // fake data
-  return fakeDeletePost();
+  // return fakeDeletePost();
+}
+
+export async function findAPost(params) {
+  return request(`/post/?${stringify(params)}`, {
+    method: 'GET',
+  });
 }

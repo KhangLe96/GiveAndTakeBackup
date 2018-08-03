@@ -1,16 +1,52 @@
 {
     "users": [
         {
+            "userId" : "001",
             "username" : "admin",
-            "password" : "admin"
+            "password" : "admin",
+            "firstName": "admin",
+            "lastName" : "admin",
+            "birthDay" : "01/01/2001",
+            "email" : "admin@admin.com",
+            "avatarUrl" : [
+                "https://res.cloudinary.com/carsguide/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/Mercedes-Benz-C-Class_2015-d_0.jpg"
+            ],
+            "phoneNumber" : "01231239123",
+            "userAddress" : "Da Nang",
+            "description" : "CMS admin",
+            "role" : "admin"
         },
         {
+            "userId" : "002",
             "username" : "quoctai",
-            "password" : "123123"
+            "password" : "123123",
+            "firstName": "admin",
+            "lastName" : "admin",
+            "birthDay" : "01/01/2001",
+            "email" : "admin@admin.com",
+            "avatarUrl" : [
+                "https://res.cloudinary.com/carsguide/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/Mercedes-Benz-C-Class_2015-d_0.jpg"
+            ],
+            "phoneNumber" : "01231239123",
+            "userAddress" : "Da Nang",
+            "description" : "CMS admin",
+            "role" : "admin"
         },
         {
+            "userId" : "003",
             "username" : "q23ai",
-            "password" : "1s23123"
+            "password" : "1s23123",
+            "firstName": "admin",
+            "lastName" : "admin",
+            "birthDay" : "01/01/2001",
+            "email" : "admin@admin.com",
+            "avatarUrl" : [
+                "https://res.cloudinary.com/carsguide/image/upload/f_auto,fl_lossy,q_auto,t_default/v1/editorial/Mercedes-Benz-C-Class_2015-d_0.jpg"
+            ],
+            "phoneNumber" : "01231239123",
+            "userAddress" : "Da Nang",
+            "description" : "CMS admin",
+            "role" : "admin"          
         }
     ]
 }

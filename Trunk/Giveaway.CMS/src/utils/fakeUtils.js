@@ -24,3 +24,7 @@ export function fakeFetchPost() {
 export function fakeDeletePost() {
   return true;
 }
+
+export function fakeFetchUser() {
+  return userData.users;
+}

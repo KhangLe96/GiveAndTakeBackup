@@ -17,7 +17,7 @@ export const getNavData = app => [
       {
         name: 'Post Management',
         path: 'post-management', // should use format report-management to have friendly url
-        icon: 'data',
+        icon: 'dashboard',
         children: [
           {
             name: 'List post',
@@ -29,6 +29,23 @@ export const getNavData = app => [
             path: 'detail/:id',
             component: dynamicWrapper(app, ['postManagement'], () => import('../routes/PostManagement/Detail')),
           },
+        ],
+      },
+      {
+        name: 'User Management',
+        path: 'user-management', // should use format report-management to have friendly url
+        icon: 'data',
+        children: [
+          {
+            name: 'List User',
+            path: '',
+            component: dynamicWrapper(app, ['userManagement'], () => import('../routes/UserManagement')),
+          },
+          // {
+          //   name: 'Detail',
+          //   path: 'detail/:id',
+          //   component: dynamicWrapper(app, ['postManagement'], () => import('../routes/UserManagement/Detail')),
+          // },
         ],
       },
     ],

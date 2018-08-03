@@ -57,12 +57,16 @@ function prepareJsonData(text_response) {
  */
 export default function request(url, options) {
   url = prepare_api_url(url);
+  url = 'https://jsonplaceholder.typicode.com/posts/';
   const defaultOptions = {
     credentials: 'include',
   };
   let opts = options || {};
   opts = prepare_options(opts);
   const newOptions = { ...defaultOptions, ...opts };
+  if (newOptions.method === 'GET') {
+    newOptions.body = undefined;
+  }
   if (newOptions.method === 'POST'
     || newOptions.method === 'PUT'
     || newOptions.method === 'PATCH'

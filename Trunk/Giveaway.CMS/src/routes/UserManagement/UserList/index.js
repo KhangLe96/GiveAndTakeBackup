@@ -2,63 +2,55 @@ import React from 'react';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm, Input } from 'antd';
 import { Link } from 'dva/router';
 
-export default class index extends React.Component {
-
+export default class index1 extends React.Component {
   columns =
     [
       {
         title: 'ID',
-        dataIndex: 'postId',
-        key: 'postId',
+        dataIndex: 'userId',
+        key: 'userId',
+        value: 'abc',
         render: val => <Link to={`/post-management/detail/${val}`}>{val}</Link>,
       },
       {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
+        title: 'Name',
+        dataIndex: 'userName',
+        key: 'userName',
       },
       {
         title: 'Address',
-        dataIndex: 'postAddress',
-        key: 'postAddress'
+        dataIndex: 'userAddress',
+        key: 'userAddress',
       },
       {
-        title: 'Category',
-        dataIndex: 'category',
-        key: 'category',
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
 
       }, {
-        title: 'Day Post',
-        dataIndex: 'dayPost',
-        key: 'dayPost',
-      }, {
-        title: 'User',
-        dataIndex: 'userPost',
-        key: 'userPost',
-      }, {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
+        title: 'Role',
+        dataIndex: 'role',
+        key: 'role',
       }, {
         title: 'Action',
-        dataIndex: 'postId',
+        dataIndex: 'userId',
         key: 'Action',
         render: id => (
           <span>
-            <Popconfirm
+            {/* <Popconfirm
               title="Bạn chắc chắn muốn xóa?"
-              onConfirm={() => {
-                const { dispatch, posts } = this.props;
-                dispatch({
-                  type: 'postManagement/deletePost',
-                  payload: { posts, id },
-                });
+              // onConfirm={() => {
+              //   const { dispatch, users } = this.props;
+              //   dispatch({
+              //     type: 'postManagement/deletePost',
+              //     payload: { posts, id },
+              //   });
               }}
             >
               <button>
                 <Icon type="delete" />
               </button>
-            </Popconfirm>
+            </Popconfirm> */}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Popconfirm
               title="Ban User?"
@@ -72,11 +64,11 @@ export default class index extends React.Component {
     ];
 
   render() {
-    const { posts } = this.props;
+    const { users } = this.props;
     return (
       <Table
         columns={this.columns}
-        dataSource={posts.map((post, key) => { return { ...post, key }; })}
+        dataSource={users.map((user, key) => { return { ...user, key }; })}
         pagination={{ pageSize: 10 }}
       />
     );

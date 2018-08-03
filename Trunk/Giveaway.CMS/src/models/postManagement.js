@@ -10,12 +10,14 @@ export default {
   },
 
   effects: {
-    * fetchPost(payload, { call, put }) {
+    * fetchPost({ payload }, { call, put }) {
       const posts = yield call(fetchPost, payload);
-      yield put({
-        type: 'savePost',
-        payload: posts,
-      });
+      if (posts) {
+        yield put({
+          type: 'savePost',
+          payload: posts,
+        });
+      }
     },
     * deletePost({ payload }, { call, put }) {
       const response = yield call(deletePost, payload);
