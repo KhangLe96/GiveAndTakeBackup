@@ -8,8 +8,7 @@ namespace Giveaway.API.Shared.Responses
     {
         [DataMember(Name = "totals")]
         public int Total { get; set; }
-        //Review: Should use param name is similar as request params
-        //[DataMember(Name = "pageNumber")]
+
         [DataMember(Name = "page")]
         public int Page { get; set; }
 

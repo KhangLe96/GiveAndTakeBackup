@@ -46,12 +46,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params)
         {
-            //Review: Create other query object for getting users. Allow filter by name, username, email,phoneNumber
-            var request = @params.ToObject<BasePagingQueryRequest>();
-
+            var request = @params.ToObject<PagingQueryUserRequest>();
+            var users = GetPagedUsers(request);
             return new PagingQueryResponse<UserProfileResponse>
             {
-                Data = _userService.All().Skip(request.Limit * (request.Page -1)).Take(request.Limit).Select(u => GenerateUserProfileResponse(u)).ToList(),
+                Data = users,
                 Pagination = new Pagination
                 {
                     Total = _userService.Count(),
@@ -59,6 +58,32 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                     Page = request.Page
                 }
             };
+        }
+
+        private List<UserProfileResponse> GetPagedUsers(PagingQueryUserRequest request)
+        {
+            var users = _userService.Where(u => !u.IsDeleted);
+            if (request.Name != null)
+            {
+                users = users.Where(u => u.FullName.Contains(request.Name));
+            }
+            if (request.Email != null)
+            {
+                users = users.Where(u => u.Email.Contains(request.Email));
+            }
+            if (request.PhoneNumber != null)
+            {
+                users = users.Where(u => u.PhoneNumber.Contains(request.PhoneNumber));
+            }
+            if (request.UserName != null)
+            {
+                users = users.Where(u => u.UserName.Contains(request.UserName));
+            }
+            return users
+                .Skip(request.Limit * (request.Page - 1))
+                .Take(request.Limit)
+                .Select(u => GenerateUserProfileResponse(u))
+                .ToList();
         }
 
         public User Find(Guid userId)

@@ -29,6 +29,7 @@ namespace Giveaway.API.Controllers
         /// <summary>
         /// Get profile of current logged in user
         /// </summary>
+        /// <returns>UserProfileResponse</returns>
         [Authorize]
         [HttpGet]
         [Produces("application/json")]
@@ -41,6 +42,7 @@ namespace Giveaway.API.Controllers
         /// <summary>
         /// Get list of user with pagination
         /// </summary>
+        /// <returns>PagingQueryResponse</returns>
         [Authorize]
         [HttpGet("getList")]
         public PagingQueryResponse<UserProfileResponse> All([FromHeader]IDictionary<string, string> @params)
@@ -51,6 +53,7 @@ namespace Giveaway.API.Controllers
         /// <summary>
         /// login
         /// </summary>
+        /// <returns>LoginResponse</returns>
         [HttpPost("login")]
         [Produces("application/json")]
         public LoginResponse Login([FromBody]LoginRequest request)

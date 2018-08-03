@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Requests
 {
+    [DataContract]
     public class CategoryRequest
     {
         [DataMember(Name = "categoryName", EmitDefaultValue = false)]

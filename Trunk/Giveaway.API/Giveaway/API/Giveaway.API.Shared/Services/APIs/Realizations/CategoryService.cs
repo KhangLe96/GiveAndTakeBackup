@@ -37,21 +37,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
         private List<CategoryResponse> GetPagedCategories(PagingQueryCategoryRequest request)
-        //Review: Shouldn't use syntax with complex function
-        //=> _categoryService.All()
-        //.Skip(request.Limit * (request.Page - 1))
-        //.Take(request.Limit)
-        //.Select(category => GenerateCategoryResponse(category))
-        //.ToList();
-        //Example: if we need filter categoryName
         {
-            //Review: Filter deleted objects
             var categories = _categoryService.Where(x => !x.IsDeleted);
             if (request.CategoryName != null)
             {
                 categories = categories.Where(x => x.CategoryName.Contains(request.CategoryName));
             }
-
             return categories
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)
@@ -61,9 +52,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public CategoryResponse Delete(Guid id)
         {
-            //Should not delete object directly, because category data is important. Just update IsDeleted is true 
             var category = _categoryService.Find(id);
-            _categoryService.Delete(c => c.Id == id, out var isSaved);
+            category.IsDeleted = true;
+            var isSaved = _categoryService.Update(category);
             if (!isSaved)
             {
                 throw new BadRequestException(Const.Error.BadRequest);
