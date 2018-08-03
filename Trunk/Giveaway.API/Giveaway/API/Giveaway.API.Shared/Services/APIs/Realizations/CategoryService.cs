@@ -22,7 +22,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PagingQueryResponse<CategoryResponse> All(IDictionary<string, string> @params)
         {
-            var request = @params.ToObject<PagingQueryCategoryRequest>();
+            var request = @params.ToObject<PagingQueryPostRequest>();
             var categories = GetPagedCategories(request);
             return new PagingQueryResponse<CategoryResponse>
             {
@@ -36,12 +36,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        private List<CategoryResponse> GetPagedCategories(PagingQueryCategoryRequest request)
+        private List<CategoryResponse> GetPagedCategories(PagingQueryPostRequest request)
         {
             var categories = _categoryService.Where(x => !x.IsDeleted);
-            if (request.CategoryName != null)
+            if (request.PostName != null)
             {
-                categories = categories.Where(x => x.CategoryName.Contains(request.CategoryName));
+                categories = categories.Where(x => x.CategoryName.Contains(request.PostName));
             }
             return categories
                 .Skip(request.Limit * (request.Page - 1))

@@ -67,26 +67,50 @@ namespace Giveaway.API.DB
 
             if (postService.All().Any()) return;
 
-            var post = postService.Create(new Post
+            postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
                 CreatedTime = DateTimeOffset.Now,
                 UpdatedTime = DateTimeOffset.UtcNow,
                 CategoryId = categoryService.All().ToList().ElementAt(0).Id,
                 Description = "Description",
-                Title = "test",
+                Title = "test1",
                 PostStatus = PostStatus.Open,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().Take(1).ToList().ElementAt(0).Id
             }, out _);
-            var post1 = postService.Create(new Post
+            postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
                 CreatedTime = DateTimeOffset.Now,
                 UpdatedTime = DateTimeOffset.UtcNow,
                 CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
-                Description = "Abv",
-                Title = "test",
+                Description = "Abvfef",
+                Title = "test2",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CreatedTime = DateTimeOffset.Now,
+                UpdatedTime = DateTimeOffset.UtcNow,
+                CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
+                Description = "Abveeeeeeeeeeeeeee",
+                Title = "test3",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CreatedTime = DateTimeOffset.Now,
+                UpdatedTime = DateTimeOffset.UtcNow,
+                CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
+                Description = "Abv3333333333333",
+                Title = "test4",
                 PostStatus = PostStatus.Open,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().Take(1).ToList().ElementAt(0).Id

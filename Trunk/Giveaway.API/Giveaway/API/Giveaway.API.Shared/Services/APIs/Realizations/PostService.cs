@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
+using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.Enums;
@@ -29,6 +31,22 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var postResponses = Mapper.Map<List<PostResponse>>(posts);
 
             return postResponses;
+        }
+
+        public PagingQueryResponse<PostResponse> GetPostForPaging(IDictionary<string, string> @params)
+        {
+            var request = @params.ToObject<PagingQueryPostRequest>();
+            var posts = GetPagedPostgories(request);
+            return new PagingQueryResponse<PostResponse>
+            {
+                Data = posts,
+                Pagination = new Pagination
+                {
+                    Total = _postService.Count(),
+                    Page = request.Page,
+                    Limit = request.Limit
+                }
+            };
         }
 
         public PostResponse Create(PostRequest postRequest)
@@ -105,6 +123,19 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return imageList;
         }
 
+        private List<PostResponse> GetPagedPostgories(PagingQueryPostRequest request)
+        {
+            var posts = _postService.Where(x => !x.IsDeleted);
+            if (request.PostName != null)
+            {
+                posts = posts.Where(x => x.Title.Contains(request.PostName));
+            }
+            return posts
+                .Skip(request.Limit * (request.Page - 1))
+                .Take(request.Limit)
+                .Select(post => Mapper.Map<PostResponse>(post))
+                .ToList();
+        }
         #endregion
     }
 }

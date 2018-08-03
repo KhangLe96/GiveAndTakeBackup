@@ -21,10 +21,16 @@ namespace Giveaway.API.Controllers
 
         [HttpGet("getAll")]
         [Produces("application/json")]
-        public List<PostResponse> GetAllCategories()
+        public List<PostResponse> GetAll()
         {
-            //Review: Missing query to filter, pagination. Let's see CategoryController. 1 post contains many categories, so that categories should be an array instead of an object
             return _postService.GetAllPost();
+        }
+
+        [HttpGet("getPostForPaging")]
+        [Produces("application/json")]
+        public PagingQueryResponse<PostResponse> GetPostForPaging([FromHeader]IDictionary<string, string> @params)
+        {
+            return _postService.GetPostForPaging(@params);
         }
 
         [HttpPost("create")]
