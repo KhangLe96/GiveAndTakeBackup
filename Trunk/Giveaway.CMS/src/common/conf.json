@@ -1,5 +1,5 @@
 {
-  "active_environment": "local",
+  "active_environment": "test",
   "environments": {
     "development": {
       "API_URL": "http://localhost:8089/api/v1",
@@ -12,6 +12,9 @@
     "local": {
       "API_URL": "http://localhost:8089/api/v1",
       "API_UPLOAD_URL": "http://35.196.128.196:8090/api/"
+    },
+    "test": {
+      "API_URL": "http://192.168.51.175:8090/api/v1"
     }
   }
 }

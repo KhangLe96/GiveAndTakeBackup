@@ -1,25 +1,33 @@
 import React from 'react';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm } from 'antd';
-import { Link } from 'dva/router';
+import { Link, routerRedux } from 'dva/router';
 
 export default class index extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onPageNumberChange = this.onPageNumberChange.bind(this);
+  }
+
+  onPageNumberChange(page, pageSize) {
+    const { dispatch } = this.props;
+    const payload = { page, limit: pageSize };
+    dispatch({
+      type: 'management/fetchCategory',
+      payload,
+    });
+  }
+
   columns =
     [
       {
-        title: 'ID',
-        dataIndex: 'postId',
-        key: 'postId',
-        render: val => <Link to={`/category-management/detail/${val}`}>{val}</Link>,
-      },
-      {
         title: 'Tên danh mục',
-        dataIndex: 'title',
-        key: 'title',
+        key: 'categoryName',
+        render: record => <Link to={`/category-management/detail/${record.id}`}>{record.categoryName}</Link>,
       },
       {
         title: 'Ngày đăng',
-        dataIndex: 'dayPost',
-        key: 'dayPost',
+        dataIndex: 'createdTime',
+        key: 'createdTime',
       },
       {
         title: 'Hành động',
@@ -44,12 +52,12 @@ export default class index extends React.Component {
     ];
 
   render() {
-    const { posts } = this.props;
+    const { categories } = this.props;
     return (
       <Table
         columns={this.columns}
-        dataSource={posts.map((post, key) => { return { ...post, key }; })}
-        pagination={{ pageSize: 10 }}
+        dataSource={categories.map((post, key) => { return { ...post, key }; })}
+        pagination={{ pageSize: 10, total: 11, onChange: this.onPageNumberChange }}
       />
     );
   }

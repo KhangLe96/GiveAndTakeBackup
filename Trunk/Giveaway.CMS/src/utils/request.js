@@ -1,5 +1,6 @@
 import fetch from 'dva/fetch';
 import conf from 'json!../common/conf.json';
+import { stringify } from 'qs';
 import { routerRedux } from 'dva/router';
 import store from '../index';
 
@@ -63,6 +64,11 @@ export default function request(url, options) {
   let opts = options || {};
   opts = prepare_options(opts);
   const newOptions = { ...defaultOptions, ...opts };
+  if (newOptions.method === 'GET') {
+    console.log(newOptions.body);
+    url += `/?${stringify(newOptions.body)}`;
+    newOptions.body = undefined;
+  }
   if (newOptions.method === 'POST'
     || newOptions.method === 'PUT'
     || newOptions.method === 'PATCH'
@@ -74,6 +80,7 @@ export default function request(url, options) {
     };
     newOptions.body = JSON.stringify(newOptions.body);
   }
+  console.log(url);
   return fetch(url, newOptions)
     .then(checkStatus)
     .then(checkEmptyResponse)

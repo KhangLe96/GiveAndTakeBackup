@@ -3,44 +3,43 @@ import { message } from 'antd/lib/index';
 import { fetchPost, deletePost } from '../services/post';
 
 export default {
-  namespace: 'postManagement', /* should be the same with file name */
+  namespace: 'categoryManagement', /* should be the same with file name */
 
   state: {
-    posts: [],
+    categories: [],
   },
 
   effects: {
-    * fetchPost(payload, { call, put }) {
-      const posts = yield call(fetchPost, payload);
+    * fetchCategory(payload, { call, put }) {
+      const categories = yield call(fetchPost, payload);
       yield put({
-        type: 'savePost',
-        payload: posts,
+        type: 'saveCategory',
+        payload: categories,
       });
     },
     * deletePost({ payload }, { call, put }) {
       const response = yield call(deletePost, payload);
       if (response) {
-        const newPayload = { ...payload, ...payload.posts.filter(post => post.postId !== id) };
         yield put({
           type: 'deleteAPost',
-          newPayload,
+          payload,
         });
       }
     },
   },
 
   reducers: {
-    savePost(state, action) {
+    saveCategory(state, action) {
       return {
         ...state,
-        posts: action.payload,
+        categories: action.payload,
       };
     },
     deleteAPost(state, action) {
-      const { id, posts } = action.payload;
+      const { id, categories } = action.payload;
       return {
         ...state,
-        posts: posts.filter(post => post.postId !== id),
+        categories: categories.filter(post => post.postId !== id),
       };
     },
   },
