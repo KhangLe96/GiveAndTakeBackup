@@ -11,8 +11,6 @@ namespace Giveaway.API.Shared.Services.APIs
 	{
 		Task<FacebookConnectResponse> LoginByFacebook(FacebookConnectRequest request);
 
-		UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request);
-
 		RegisterResponse Register(RegisterRequest request);
 
 	    void UpdateAvatar(Guid userId, IFormFile file);

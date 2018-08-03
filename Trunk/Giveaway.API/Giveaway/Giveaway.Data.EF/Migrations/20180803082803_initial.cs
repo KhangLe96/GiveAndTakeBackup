@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Giveaway.Data.EF.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,6 +17,7 @@ namespace Giveaway.Data.EF.Migrations
                     CategoryStatus = table.Column<int>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
                 },
@@ -31,6 +32,7 @@ namespace Giveaway.Data.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     ProvinceCityName = table.Column<string>(maxLength: 25, nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
@@ -46,6 +48,7 @@ namespace Giveaway.Data.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     RoleName = table.Column<string>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
@@ -90,6 +93,7 @@ namespace Giveaway.Data.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Message = table.Column<string>(nullable: false),
                     Title = table.Column<string>(maxLength: 25, nullable: false),
@@ -115,6 +119,7 @@ namespace Giveaway.Data.EF.Migrations
                     CategoryId = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
                     Description = table.Column<string>(nullable: false),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     PostStatus = table.Column<int>(nullable: false),
                     ProvinceCityId = table.Column<Guid>(nullable: false),
@@ -151,6 +156,7 @@ namespace Giveaway.Data.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     RoleId = table.Column<Guid>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false),
@@ -180,6 +186,7 @@ namespace Giveaway.Data.EF.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CommentMessage = table.Column<string>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     PostId = table.Column<Guid>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false),
@@ -209,6 +216,7 @@ namespace Giveaway.Data.EF.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: false),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     PostId = table.Column<Guid>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
@@ -231,6 +239,7 @@ namespace Giveaway.Data.EF.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     AcceptMessage = table.Column<string>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    IsActivated = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     PostId = table.Column<Guid>(nullable: true),
                     RequestMessage = table.Column<string>(nullable: false),

@@ -155,8 +155,8 @@ namespace Giveaway.Service.Services
                 {
                     baseEntity.CreatedTime = baseEntity.UpdatedTime = DateTimeOffset.UtcNow;
                 }
-
                 baseEntity.IsDeleted = false;
+                baseEntity.IsActivated = true;
             }
             return entity;
         }

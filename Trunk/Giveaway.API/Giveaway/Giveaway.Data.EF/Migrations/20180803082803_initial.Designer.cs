@@ -12,8 +12,8 @@ using System;
 namespace Giveaway.Data.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180802022627_init")]
-    partial class init
+    [Migration("20180803082803_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,8 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<string>("ImageUrl");
 
+                    b.Property<bool>("IsActivated");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<DateTimeOffset>("UpdatedTime");
@@ -55,6 +57,8 @@ namespace Giveaway.Data.EF.Migrations
                         .IsRequired();
 
                     b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<bool>("IsActivated");
 
                     b.Property<bool>("IsDeleted");
 
@@ -79,6 +83,8 @@ namespace Giveaway.Data.EF.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<bool>("IsActivated");
 
                     b.Property<bool>("IsDeleted");
 
@@ -110,6 +116,8 @@ namespace Giveaway.Data.EF.Migrations
                     b.Property<string>("ImageUrl")
                         .IsRequired();
 
+                    b.Property<bool>("IsActivated");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<Guid>("PostId");
@@ -134,6 +142,8 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired();
+
+                    b.Property<bool>("IsActivated");
 
                     b.Property<bool>("IsDeleted");
 
@@ -167,6 +177,8 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
+                    b.Property<bool>("IsActivated");
+
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("ProvinceCityName")
@@ -189,6 +201,8 @@ namespace Giveaway.Data.EF.Migrations
                         .IsRequired();
 
                     b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<bool>("IsActivated");
 
                     b.Property<bool>("IsDeleted");
 
@@ -218,6 +232,8 @@ namespace Giveaway.Data.EF.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<bool>("IsActivated");
 
                     b.Property<bool>("IsDeleted");
 
@@ -292,6 +308,8 @@ namespace Giveaway.Data.EF.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTimeOffset>("CreatedTime");
+
+                    b.Property<bool>("IsActivated");
 
                     b.Property<bool>("IsDeleted");
 

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Giveaway.Data.Models.Database
 {
-    [Table("Role")] //Review: remember add this table name
+    [Table("Role")]
     public class Role : BaseEntity
     {
         [Required]

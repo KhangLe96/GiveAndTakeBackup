@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
@@ -65,7 +66,7 @@ namespace Giveaway.API.Controllers
         /// logout 
         /// </summary>
         /// <returns>true</returns>
-        [HttpPost("logout")]
+        [HttpGet("logout")]
         [Authorize]
         [Produces("application/json")]
         public bool Logout()
@@ -79,6 +80,21 @@ namespace Giveaway.API.Controllers
                 return isUpdated;
             }
             return false;
+        }
+
+
+        /// <summary>
+        /// Update current user's profile
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>updated user profile</returns>
+        [Authorize]
+        [HttpPut]
+        [Produces("application/json")]
+        public UserProfileResponse UpdateProfile([FromBody]UserProfileRequest request)
+        {
+            var userId = User.GetUserId();
+            return _userService.UpdateUserProfile(userId, request);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.Models.Database;
@@ -16,5 +17,6 @@ namespace Giveaway.API.Shared.Services.APIs
 	    bool Update(User user);
 	    UserProfileResponse GetUserProfile(Guid userId);
 	    LoginResponse Login(LoginRequest request);
+	    UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request);
 	}
 }

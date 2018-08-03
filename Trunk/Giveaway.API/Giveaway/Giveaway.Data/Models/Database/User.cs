@@ -37,12 +37,7 @@ namespace Giveaway.Data.Models.Database
         [DataMember(Name = "birthDate")]
         [Required]
         public DateTime BirthDate { get; set; }
-
-        [Required]
-        [DataMember(Name = "isActivated")]
-        [DefaultValue(true)]
-        public bool IsActivated { get; set; }
-
+        
         [DataMember(Name = "passwordSalt")]
         [Required]
         public byte[] PasswordSalt { get; set; }

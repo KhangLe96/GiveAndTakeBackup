@@ -15,10 +15,9 @@ namespace Giveaway.Data.Models
         [DataMember(Name = "isDeleted")]
         public bool IsDeleted { get; set; }
 
-        //Review: Should have this prop to handle changing activity status
-        //[DefaultValue(true)]
-        //[DataMember(Name = "isActivated")]
-        //public bool IsActivated { get; set; }
+        [DefaultValue(true)]
+        [DataMember(Name = "isActivated")]
+        public bool IsActivated { get; set; }
 
         [Required]
         [DataMember(Name = "createdTime")]

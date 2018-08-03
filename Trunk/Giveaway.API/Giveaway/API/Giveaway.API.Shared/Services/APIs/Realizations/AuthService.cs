@@ -93,20 +93,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return new FacebookConnectResponse();
         }
 
-        public UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request)
-        {
-            var user = _userService.Find(userId);
-
-            var validateRequest = ValidateProfileRequest(user, request);
-
-            if (validateRequest.StatusCode != HttpStatusCode.OK)
-            {
-                throw validateRequest.ToException();
-            }
-
-            return UpdateProfile(user, request);
-        }
-
         public void UpdateAvatar(Guid userId, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -145,62 +131,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
 
             return currentUser;
-        }
-
-        private ResponseMessage ValidateProfileRequest(User user, UserProfileRequest request)
-        {
-            if (user == null)
-            {
-                return new ResponseMessage(HttpStatusCode.BadRequest, "User doesn't exist");
-            }
-
-            if (request == null)
-            {
-                return new ResponseMessage(HttpStatusCode.BadRequest, "Empty request.");
-            }
-
-            //if (request.Email == null)
-            //{
-            //    return new ResponseMessage(HttpStatusCode.BadRequest, "Email is empty.");
-            //}
-
-            if (request.FamilyName == null)
-            {
-                return new ResponseMessage(HttpStatusCode.BadRequest, "FirstName is empty.");
-            }
-
-            if (request.GivenName == null)
-            {
-                return new ResponseMessage(HttpStatusCode.BadRequest, "LastName is empty.");
-            }
-
-            if (request.Mobilephone == null)
-            {
-                return new ResponseMessage(HttpStatusCode.BadRequest, "Mobiphone is empty.");
-            }
-
-            return new ResponseMessage(HttpStatusCode.OK);
-        }
-
-        private UserProfileResponse UpdateProfile(User user, UserProfileRequest request)
-        {
-            user.FirstName = request.GivenName;
-            user.LastName = request.FamilyName;
-            user.Gender = request.Gender;
-            user.BirthDate = request.BirthDate;
-            user.Email = request.Email;
-            user.Address = request.Address;
-
-            user.PhoneNumber = request.Mobilephone;
-
-            var isUpdated = _userService.Update(user);
-
-            if (!isUpdated)
-            {
-                throw new InternalServerErrorException("couldn't update user's profile");
-            }
-
-            return GenerateUserProfileResponse(user);
         }
 
         private RegisterResponse GenerateRegisterResponse(User user)

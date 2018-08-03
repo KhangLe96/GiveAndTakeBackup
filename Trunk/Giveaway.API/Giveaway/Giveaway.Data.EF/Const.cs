@@ -55,10 +55,8 @@ namespace Giveaway.Data.EF
             public const string Admin = nameof(Admin);
             public const string SuperAdmin = nameof(SuperAdmin);
             public const string User = nameof(User);
-            public const string Moderator = nameof(Moderator);
 
             public const string AdminOrAbove = Admin + Separator + SuperAdmin;
-            public const string ModeratorOrAbove = Moderator + Separator + Admin + Separator + SuperAdmin;
 
             public const string Separator = ",";
         }

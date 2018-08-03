@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Giveaway.API.Shared.Exceptions;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.EF.DTOs.Requests;
+using Giveaway.Data.EF.Exceptions;
+using Giveaway.Data.Models;
 using Giveaway.Data.Models.Database;
 using Microsoft.AspNetCore.Hosting;
+using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -120,6 +122,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GenerateLoginResponse(validateResult.Data as User);
         }
 
+        public UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request)
+        {
+            var user = _userService.Find(userId);
+            return UpdateProfile(user, request);
+        }
+
         private UserProfileResponse GenerateUserProfileResponse(User user) => new UserProfileResponse
         {
             Id = user.Id,
@@ -149,6 +157,28 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
 
             return response;
+        }
+        
+        private UserProfileResponse UpdateProfile(User user, UserProfileRequest request)
+        {
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.UserName = request.UserName;
+            user.BirthDate = request.BirthDate;
+            user.PhoneNumber = request.PhoneNumber;
+            user.AvatarUrl = request.AvatarUrl;
+            user.Address = request.Address;
+            user.Gender = request.Gender;
+            user.Email = request.Email;
+
+            var isUpdated = _userService.Update(user);
+
+            if (!isUpdated)
+            {
+                throw new InternalServerErrorException("couldn't update user's profile");
+            }
+
+            return GenerateUserProfileResponse(user);
         }
     }
 }

@@ -73,21 +73,7 @@ namespace Giveaway.API.Controllers
         {
             return _authService.GetUserProfile(userId);
         }
-
-        /// <summary>
-        /// Update current user's profile
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpPut("profile/me")]
-        [Produces("application/json")]
-        public UserProfileResponse UpdateProfile([FromBody]UserProfileRequest request)
-        {
-            var userId = User.GetUserId();
-            return _authService.UpdateUserProfile(userId, request);
-        }
-
+        
         #endregion
     }
 }
