@@ -34,17 +34,15 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
+                    b.Property<int>("EntityStatus");
+
                     b.Property<string>("ImageUrl");
-
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<DateTimeOffset>("UpdatedTime");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.Comment", b =>
@@ -57,9 +55,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
+                    b.Property<int>("EntityStatus");
 
                     b.Property<Guid>("PostId");
 
@@ -73,7 +69,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.Feedback", b =>
@@ -83,9 +79,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
+                    b.Property<int>("EntityStatus");
 
                     b.Property<string>("Message")
                         .IsRequired();
@@ -102,7 +96,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks");
+                    b.ToTable("Feedback");
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.Image", b =>
@@ -112,12 +106,10 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
+                    b.Property<int>("EntityStatus");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired();
-
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<Guid>("PostId");
 
@@ -127,7 +119,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.Post", b =>
@@ -142,9 +134,7 @@ namespace Giveaway.Data.EF.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
+                    b.Property<int>("EntityStatus");
 
                     b.Property<int>("PostStatus");
 
@@ -166,7 +156,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.ProvinceCity", b =>
@@ -176,9 +166,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
+                    b.Property<int>("EntityStatus");
 
                     b.Property<string>("ProvinceCityName")
                         .IsRequired()
@@ -188,7 +176,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProvinceCities");
+                    b.ToTable("ProvinceCity");
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.Request", b =>
@@ -201,9 +189,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
+                    b.Property<int>("EntityStatus");
 
                     b.Property<Guid?>("PostId");
 
@@ -222,7 +208,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Requests");
+                    b.ToTable("Request");
                 });
 
             modelBuilder.Entity("Giveaway.Data.Models.Database.Role", b =>
@@ -232,9 +218,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
+                    b.Property<int>("EntityStatus");
 
                     b.Property<string>("RoleName")
                         .IsRequired();
@@ -266,15 +250,13 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<int>("EntityStatus");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(40);
 
                     b.Property<int>("Gender");
-
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<DateTimeOffset>("LastLogin");
 
@@ -308,9 +290,7 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<DateTimeOffset>("CreatedTime");
 
-                    b.Property<bool>("IsActivated");
-
-                    b.Property<bool>("IsDeleted");
+                    b.Property<int>("EntityStatus");
 
                     b.Property<Guid>("RoleId");
 

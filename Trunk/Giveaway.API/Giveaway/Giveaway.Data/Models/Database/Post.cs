@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Giveaway.Data.Enums;
 
 namespace Giveaway.Data.Models.Database
 {
+    [Table("Post")]
     public class Post : BaseEntity
     {
         public Guid UserId { get; set; }

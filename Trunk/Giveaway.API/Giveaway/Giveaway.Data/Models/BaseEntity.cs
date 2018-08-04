@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using Giveaway.Data.Enums;
 
 namespace Giveaway.Data.Models
 {
@@ -11,13 +12,9 @@ namespace Giveaway.Data.Models
         [DataMember(Name = "id")]
         public Guid Id { get; set; }
 
-        [DefaultValue(false)]
-        [DataMember(Name = "isDeleted")]
-        public bool IsDeleted { get; set; }
-
-        [DefaultValue(true)]
-        [DataMember(Name = "isActivated")]
-        public bool IsActivated { get; set; }
+        [DefaultValue(EntityStatus.Activated)]
+        [DataMember(Name = "EntityStatus")]
+        public EntityStatus EntityStatus { get; set; }
 
         [Required]
         [DataMember(Name = "createdTime")]

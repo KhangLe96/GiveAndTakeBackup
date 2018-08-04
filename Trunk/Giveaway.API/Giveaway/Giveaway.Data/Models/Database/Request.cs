@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Giveaway.Data.Enums;
 
 namespace Giveaway.Data.Models.Database
 {
+    [Table("Request")]
     public class Request : BaseEntity
     {
         public Guid? PostId { get; set; }

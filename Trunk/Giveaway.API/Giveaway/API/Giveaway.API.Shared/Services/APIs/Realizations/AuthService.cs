@@ -10,6 +10,7 @@ using Giveaway.API.Shared.Responses;
 using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.EF.Exceptions;
+using Giveaway.Data.Enums;
 using Giveaway.Data.Models;
 using Giveaway.Data.Models.Database;
 using Microsoft.AspNetCore.Hosting;
@@ -60,8 +61,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
 
             var user = _userService.CreateUser(request);
-            //user.IsActivated = user.Role == Const.UserRoles.Student;
-            user.IsActivated = true;
+            user.EntityStatus = EntityStatus.Activated;
             var createdUser = _userService.Create(user, out var isSaved);
 
             if (!isSaved)
@@ -74,7 +74,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public UserProfileResponse GetUserProfile(Guid userId)
         {
-            var currentUser = _userService.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
+            var currentUser = _userService.FirstOrDefault(x => x.EntityStatus != EntityStatus.Deleted && x.Id == userId);
 
             if (currentUser == null)
             {
@@ -102,7 +102,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
             var dbUser = GetCurrentUser(userId);
 
-            if (!dbUser.IsActivated)
+            if (dbUser.EntityStatus != EntityStatus.Activated)
             {
                 throw new BadRequestException("Bạn chưa được kích hoạt");
             }
@@ -123,7 +123,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private User GetCurrentUser(Guid userId)
         {
-            var currentUser = _userService.Include(m => m.AvatarUrl).Include(m => m.Address).FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
+            var currentUser = _userService.Include(m => m.AvatarUrl).Include(m => m.Address).FirstOrDefault(x => x.EntityStatus != EntityStatus.Deleted && x.Id == userId);
 
             if (currentUser == null)
             {

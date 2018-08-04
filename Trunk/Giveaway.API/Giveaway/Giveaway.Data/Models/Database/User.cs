@@ -1,7 +1,6 @@
 ﻿using Giveaway.Data.Enums;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -79,7 +78,7 @@ namespace Giveaway.Data.Models.Database
         public string Email { get; set; }
 
         #endregion
-
+        
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

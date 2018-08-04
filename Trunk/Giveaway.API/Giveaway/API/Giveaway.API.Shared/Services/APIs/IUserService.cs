@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.EF.DTOs.Requests;
@@ -14,8 +13,9 @@ namespace Giveaway.API.Shared.Services.APIs
 	    UserProfileResponse GetUserProfile(Guid userId);
 	    PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params);
 	    bool Update(User user);
-	    UserProfileResponse Update(Guid userId, UserProfileRequest request);
-	    LoginResponse Login(LoginRequest request);
+        UserProfileResponse Update(Guid userId, UserProfileRequest request);
+        LoginResponse Login(LoginRequest request);
 	    UserProfileResponse SetRole(Guid userId, RoleRequest request);
+	    UserProfileResponse ChangeUserStatus(StatusRequest request);
 	}
 }

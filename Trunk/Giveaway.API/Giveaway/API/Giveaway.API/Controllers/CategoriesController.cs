@@ -35,7 +35,7 @@ namespace Giveaway.API.Controllers
 
         /// <summary>
         /// delete a category by id
-        /// only update IsDeleted = true, the category still remain in database
+        /// only update EntityStatus = Deleted, the category still remain in database
         /// </summary>
         /// <returns>the deleted category object</returns>
         [HttpDelete("{categoryId}")]

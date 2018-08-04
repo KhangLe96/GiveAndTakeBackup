@@ -35,10 +35,6 @@ namespace Giveaway.API.Shared.Models.DTO
         public string PhoneNumber { get; set; }
 
         [Required]
-        [DefaultValue(true)]
-        public bool IsActivated { get; set; }
-
-        [Required]
         public byte[] PasswordSalt { get; set; }
 
         [Required]

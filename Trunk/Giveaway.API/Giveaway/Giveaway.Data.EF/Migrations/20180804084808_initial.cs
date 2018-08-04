@@ -9,37 +9,35 @@ namespace Giveaway.Data.EF.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "Category",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CategoryName = table.Column<string>(maxLength: 50, nullable: false),
                     CategoryStatus = table.Column<int>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_Category", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProvinceCities",
+                name: "ProvinceCity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     ProvinceCityName = table.Column<string>(maxLength: 25, nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProvinceCities", x => x.Id);
+                    table.PrimaryKey("PK_ProvinceCity", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,8 +46,7 @@ namespace Giveaway.Data.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     RoleName = table.Column<string>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
                 },
@@ -70,10 +67,9 @@ namespace Giveaway.Data.EF.Migrations
                     BirthDate = table.Column<DateTime>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
                     Email = table.Column<string>(nullable: true),
+                    EntityStatus = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 40, nullable: false),
                     Gender = table.Column<int>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     LastLogin = table.Column<DateTimeOffset>(nullable: false),
                     LastName = table.Column<string>(maxLength: 40, nullable: false),
                     PasswordHash = table.Column<byte[]>(nullable: false),
@@ -88,13 +84,12 @@ namespace Giveaway.Data.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Feedbacks",
+                name: "Feedback",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     Message = table.Column<string>(nullable: false),
                     Title = table.Column<string>(maxLength: 25, nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false),
@@ -102,9 +97,9 @@ namespace Giveaway.Data.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
+                    table.PrimaryKey("PK_Feedback", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Feedbacks_User_UserId",
+                        name: "FK_Feedback_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -112,15 +107,14 @@ namespace Giveaway.Data.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Posts",
+                name: "Post",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CategoryId = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
                     Description = table.Column<string>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     PostStatus = table.Column<int>(nullable: false),
                     ProvinceCityId = table.Column<Guid>(nullable: false),
                     Title = table.Column<string>(maxLength: 50, nullable: false),
@@ -129,21 +123,21 @@ namespace Giveaway.Data.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.PrimaryKey("PK_Post", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_Categories_CategoryId",
+                        name: "FK_Post_Category_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Posts_ProvinceCities_ProvinceCityId",
+                        name: "FK_Post_ProvinceCity_ProvinceCityId",
                         column: x => x.ProvinceCityId,
-                        principalTable: "ProvinceCities",
+                        principalTable: "ProvinceCity",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Posts_User_UserId",
+                        name: "FK_Post_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -156,8 +150,7 @@ namespace Giveaway.Data.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     RoleId = table.Column<Guid>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false)
@@ -180,29 +173,28 @@ namespace Giveaway.Data.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "Comment",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CommentMessage = table.Column<string>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     PostId = table.Column<Guid>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false),
                     UserId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Comment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Posts_PostId",
+                        name: "FK_Comment_Post_PostId",
                         column: x => x.PostId,
-                        principalTable: "Posts",
+                        principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_User_UserId",
+                        name: "FK_Comment_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -210,37 +202,35 @@ namespace Giveaway.Data.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
+                name: "Image",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     PostId = table.Column<Guid>(nullable: false),
                     UpdatedTime = table.Column<DateTimeOffset>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.PrimaryKey("PK_Image", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Posts_PostId",
+                        name: "FK_Image_Post_PostId",
                         column: x => x.PostId,
-                        principalTable: "Posts",
+                        principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Requests",
+                name: "Request",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     AcceptMessage = table.Column<string>(nullable: false),
                     CreatedTime = table.Column<DateTimeOffset>(nullable: false),
-                    IsActivated = table.Column<bool>(nullable: false),
-                    IsDeleted = table.Column<bool>(nullable: false),
+                    EntityStatus = table.Column<int>(nullable: false),
                     PostId = table.Column<Guid>(nullable: true),
                     RequestMessage = table.Column<string>(nullable: false),
                     RequestStatus = table.Column<int>(nullable: false),
@@ -249,15 +239,15 @@ namespace Giveaway.Data.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Requests", x => x.Id);
+                    table.PrimaryKey("PK_Request", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Requests_Posts_PostId",
+                        name: "FK_Request_Post_PostId",
                         column: x => x.PostId,
-                        principalTable: "Posts",
+                        principalTable: "Post",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Requests_User_UserId",
+                        name: "FK_Request_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -265,48 +255,48 @@ namespace Giveaway.Data.EF.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_PostId",
-                table: "Comments",
+                name: "IX_Comment_PostId",
+                table: "Comment",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_UserId",
-                table: "Comments",
+                name: "IX_Comment_UserId",
+                table: "Comment",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_UserId",
-                table: "Feedbacks",
+                name: "IX_Feedback_UserId",
+                table: "Feedback",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_PostId",
-                table: "Images",
+                name: "IX_Image_PostId",
+                table: "Image",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_CategoryId",
-                table: "Posts",
+                name: "IX_Post_CategoryId",
+                table: "Post",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_ProvinceCityId",
-                table: "Posts",
+                name: "IX_Post_ProvinceCityId",
+                table: "Post",
                 column: "ProvinceCityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_UserId",
-                table: "Posts",
+                name: "IX_Post_UserId",
+                table: "Post",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Requests_PostId",
-                table: "Requests",
+                name: "IX_Request_PostId",
+                table: "Request",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Requests_UserId",
-                table: "Requests",
+                name: "IX_Request_UserId",
+                table: "Request",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -323,31 +313,31 @@ namespace Giveaway.Data.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "Comment");
 
             migrationBuilder.DropTable(
-                name: "Feedbacks");
+                name: "Feedback");
 
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "Image");
 
             migrationBuilder.DropTable(
-                name: "Requests");
+                name: "Request");
 
             migrationBuilder.DropTable(
                 name: "UserRole");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Post");
 
             migrationBuilder.DropTable(
                 name: "Role");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Category");
 
             migrationBuilder.DropTable(
-                name: "ProvinceCities");
+                name: "ProvinceCity");
 
             migrationBuilder.DropTable(
                 name: "User");

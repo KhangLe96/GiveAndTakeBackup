@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Giveaway.Data.EF;
+using Giveaway.Data.EF.Exceptions;
+using Giveaway.Data.Enums;
 
 namespace Giveaway.Service.Services
 {
@@ -74,6 +77,21 @@ namespace Giveaway.Service.Services
             if (entity == null) throw new ArgumentNullException(nameof(entity));
             var result = Repository.Update(OnUpdate(entity));
             return result;
+        }
+
+        public T UpdateStatus(Guid id, string status)
+        {
+            var entity = Find(id);
+            if (entity is BaseEntity baseEntity)
+            {
+                baseEntity.EntityStatus = GetEnumStatus(status);
+            }
+            else
+            {
+                throw new BadRequestException(Const.Error.BadRequest);
+            }
+            Update(entity);
+            return entity;
         }
 
         public virtual IEnumerable<T> UpdateMany(IEnumerable<T> objects, out bool isSaved)
@@ -155,8 +173,7 @@ namespace Giveaway.Service.Services
                 {
                     baseEntity.CreatedTime = baseEntity.UpdatedTime = DateTimeOffset.UtcNow;
                 }
-                baseEntity.IsDeleted = false;
-                baseEntity.IsActivated = true;
+                baseEntity.EntityStatus = EntityStatus.Activated;
             }
             return entity;
         }
@@ -175,7 +192,7 @@ namespace Giveaway.Service.Services
         {
             if (entity is BaseEntity baseEntity)
             {
-                baseEntity.IsDeleted = true;
+                baseEntity.EntityStatus = EntityStatus.Deleted;
                 baseEntity.UpdatedTime = DateTimeOffset.UtcNow;
             }
             return entity;
@@ -203,6 +220,23 @@ namespace Giveaway.Service.Services
             this.isDisposed = true;
             Repository.Dispose();
             Repository = null;
+        }
+
+        private static EntityStatus GetEnumStatus(string status)
+        {
+            if (status == EntityStatus.Activated.ToString())
+            {
+                return EntityStatus.Activated;
+            }
+            if (status == EntityStatus.Blocked.ToString())
+            {
+                return EntityStatus.Blocked;
+            }
+            if (status == EntityStatus.Deleted.ToString())
+            {
+                return EntityStatus.Deleted;
+            }
+            throw new BadRequestException(Const.Error.BadRequest);
         }
         #endregion
     }

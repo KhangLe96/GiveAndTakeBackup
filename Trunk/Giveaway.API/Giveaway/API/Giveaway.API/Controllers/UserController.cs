@@ -104,5 +104,17 @@ namespace Giveaway.API.Controllers
         {
             return _userService.SetRole(userId, request);
         }
+
+        /// <summary> 
+        /// Block user. Only available for admin or super admin
+        /// </summary> 
+        /// <returns>the updated user profile</returns> 
+        //[Authorize(Roles = Const.UserRoles.AdminOrAbove)]
+        [HttpPut("status")]
+        [Produces("application/json")]
+        public UserProfileResponse ChangeUserStatus([FromBody] StatusRequest request)
+        {
+            return _userService.ChangeUserStatus(request);
+        }
     }
 }

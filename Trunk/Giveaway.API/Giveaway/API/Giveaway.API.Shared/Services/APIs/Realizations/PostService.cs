@@ -90,7 +90,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public bool Delete(Guid id)
         {
             var post = _postService.Find(id);
-            post.IsDeleted = true;
+            post.EntityStatus = EntityStatus.Deleted;
 
             return _postService.Update(post);
         }
@@ -128,7 +128,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         //Review: Should rename this function
         private List<PostResponse> GetPagedPostgories(PagingQueryPostRequest request)
         {
-            var posts = _postService.Where(x => !x.IsDeleted);
+            var posts = _postService.Where(x => x.EntityStatus != EntityStatus.Deleted);
             //Review: should have more params to query such as CreatedTime, provinceCityId, categoryId
             if (request.PostName != null)
             {

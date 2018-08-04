@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Giveaway.Data.Models.Database
 {
+    [Table("ProvinceCity")]
     public class ProvinceCity : BaseEntity
     {
         [Required]

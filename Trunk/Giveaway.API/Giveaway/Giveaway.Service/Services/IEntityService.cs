@@ -21,6 +21,7 @@ namespace Giveaway.Service.Services
 		T Create(T entity, out bool isSaved);
 		IEnumerable<T> CreateMany(IEnumerable<T> objects, out bool isSaved);
 		bool Update(T entity);
+	    T UpdateStatus(Guid id, string status);
 		IEnumerable<T> UpdateMany(IEnumerable<T> objects, out bool isSaved);
 		bool Delete(T entity);
 		bool DeletePermanent(T entity);

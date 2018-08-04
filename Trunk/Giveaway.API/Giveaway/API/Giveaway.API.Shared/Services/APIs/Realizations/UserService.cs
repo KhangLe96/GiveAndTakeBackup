@@ -9,6 +9,7 @@ using Giveaway.API.Shared.Responses;
 using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.EF.Exceptions;
+using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
@@ -42,7 +43,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public User GetUser(Guid userId)
         {
             var user = _userService.Find(userId);
-            if (user.IsDeleted)
+            if (user.EntityStatus == EntityStatus.Deleted)
             {
                 throw new BadRequestException(Const.Error.NotFound);
             }
@@ -87,6 +88,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GetUserProfile(userId);
         }
 
+        public UserProfileResponse ChangeUserStatus(StatusRequest request)
+        {
+            var updatedUser = _userService.UpdateStatus(request.UserId, request.UserStatus);
+            return GenerateUserProfileResponse(updatedUser);
+        }
+
         public LoginResponse Login(LoginRequest request)
         {
             var validateResult = _userService.ValidateLogin(request);
@@ -119,7 +126,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<UserProfileResponse> GetPagedUsers(PagingQueryUserRequest request)
         {
-            var users = _userService.Where(u => !u.IsDeleted);
+            var users = _userService.Where(u => u.EntityStatus != EntityStatus.Deleted);
             if (request.Name != null)
             {
                 users = users.Where(u => u.FullName.Contains(request.Name));
@@ -155,7 +162,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             Address = user.Address,
             Email = user.Email,
             Roles = _userRoleService.GetUserRoles(user.Id),
-            AvatarUrl = user.AvatarUrl
+            AvatarUrl = user.AvatarUrl,
+            Status = user.EntityStatus.ToString()
         };
 
         private LoginResponse GenerateLoginResponse(User user)

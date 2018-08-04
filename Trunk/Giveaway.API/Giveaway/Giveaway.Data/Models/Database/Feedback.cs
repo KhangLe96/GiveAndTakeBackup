@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Giveaway.Data.Models.Database
 {
+    [Table("Feedback")]
     public class Feedback : BaseEntity
     {
         public Guid UserId { get; set; }

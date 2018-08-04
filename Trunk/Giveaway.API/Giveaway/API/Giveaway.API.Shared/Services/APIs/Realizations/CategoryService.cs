@@ -6,6 +6,7 @@ using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.Data.EF;
+using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using CategoryRequest = Giveaway.Data.EF.DTOs.Requests.CategoryRequest;
 
@@ -38,7 +39,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<CategoryResponse> GetPagedCategories(PagingQueryPostRequest request)
         {
-            var categories = _categoryService.Where(x => !x.IsDeleted);
+            var categories = _categoryService.Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (request.PostName != null)
             {
                 categories = categories.Where(x => x.CategoryName.Contains(request.PostName));
@@ -53,7 +54,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public CategoryResponse Delete(Guid id)
         {
             var category = _categoryService.Find(id);
-            category.IsDeleted = true;
+            category.EntityStatus = EntityStatus.Deleted;
             var isSaved = _categoryService.Update(category);
             if (!isSaved)
             {

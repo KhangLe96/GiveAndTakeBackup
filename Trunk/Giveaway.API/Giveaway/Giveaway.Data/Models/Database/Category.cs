@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Giveaway.Data.Enums;
 
 namespace Giveaway.Data.Models.Database
 {
+    [Table("Category")]
     public class Category : BaseEntity
     {
         [Required]

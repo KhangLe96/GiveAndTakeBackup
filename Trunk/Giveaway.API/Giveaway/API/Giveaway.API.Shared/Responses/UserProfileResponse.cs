@@ -51,5 +51,9 @@ namespace Giveaway.API.Shared.Responses
 		[DataMember(Name="role", EmitDefaultValue=false)]
 		[JsonProperty(PropertyName = "role")]
 		public string[] Roles { get; set; }
-	}
+
+	    [DataMember(Name = "status", EmitDefaultValue = false)]
+	    [JsonProperty(PropertyName = "status")]
+        public string Status { get; set; }
+    }
 }
