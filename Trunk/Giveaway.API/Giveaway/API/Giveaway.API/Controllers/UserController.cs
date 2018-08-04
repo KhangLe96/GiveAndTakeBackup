@@ -106,7 +106,8 @@ namespace Giveaway.API.Controllers
         }
 
         /// <summary> 
-        /// Block user. Only available for admin or super admin
+        /// Change user status. Only available for admin or super admin
+        /// Available values : Activated, Blocked, Deleted
         /// </summary> 
         /// <returns>the updated user profile</returns> 
         //[Authorize(Roles = Const.UserRoles.AdminOrAbove)]

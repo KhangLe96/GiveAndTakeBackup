@@ -14,63 +14,40 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
     public class CategoryService : ICategoryService
     {
+        #region Properties
+
         private readonly Service.Services.ICategoryService _categoryService;
+
+        #endregion
+
+        #region Constructor
 
         public CategoryService(Service.Services.ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
 
+        #endregion
+
+        #region Public methods
+
         public PagingQueryResponse<CategoryResponse> All(IDictionary<string, string> @params)
         {
-            var request = @params.ToObject<PagingQueryPostRequest>();
+            var request = @params.ToObject<PagingQueryCategoryRequest>();
             var categories = GetPagedCategories(request);
-            return new PagingQueryResponse<CategoryResponse>
-            {
-                Data = categories,
-                PageInformation = new PageInformation
-                {
-                    Total = _categoryService.Count(),
-                    Page = request.Page,
-                    Limit = request.Limit
-                }
-            };
-        }
-
-        private List<CategoryResponse> GetPagedCategories(PagingQueryPostRequest request)
-        {
-            var categories = _categoryService.Where(x => x.EntityStatus != EntityStatus.Deleted);
-            if (request.PostName != null)
-            {
-                categories = categories.Where(x => x.CategoryName.Contains(request.PostName));
-            }
-            return categories
-                .Skip(request.Limit * (request.Page - 1))
-                .Take(request.Limit)
-                .Select(category => GenerateCategoryResponse(category))
-                .ToList();
+            var pageInfo = GetPageInfo(request);
+            return GeneratePagingQueryResponse(categories, pageInfo);
         }
 
         public CategoryResponse Delete(Guid id)
         {
-            var category = _categoryService.Find(id);
-            category.EntityStatus = EntityStatus.Deleted;
-            var isSaved = _categoryService.Update(category);
-            if (!isSaved)
-            {
-                throw new BadRequestException(Const.Error.BadRequest);
-            }
+            var category = _categoryService.UpdateStatus(id, EntityStatus.Deleted.ToString());
             return GenerateCategoryResponse(category);
         }
 
         public CategoryResponse Create(CategoryRequest request)
         {
-            var category = new Category
-            {
-                Id = Guid.NewGuid(),
-                CategoryName = request.CategoryName,
-                ImageUrl = request.CategoryImageUrl
-            };
+            var category = GenerateCategory(request);
             var createdCategory = _categoryService.Create(category, out var isSaved);
             if (!isSaved)
             {
@@ -79,33 +56,83 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GenerateCategoryResponse(createdCategory);
         }
 
-        public CategoryResponse Find(Guid id)
+        public CategoryResponse FindCategory(Guid id)
         {
-            var category = _categoryService.Find(id);
-            if (category == null)
-            {
-                throw new BadRequestException(Const.Error.NotFound);
-            }
+            var category = GetCategory(id);
             return GenerateCategoryResponse(category);
         }
 
         public CategoryResponse Update(Guid id, CategoryRequest request)
         {
+            var category = GetCategory(id);
+            UpdateCategoryFields(request, category);
+            Update(category);
+            return GenerateCategoryResponse(category);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private List<CategoryResponse> GetPagedCategories(PagingQueryCategoryRequest request)
+        {
+            var categories = _categoryService.Where(x => x.EntityStatus != EntityStatus.Deleted);
+            if (request.CategoryName != null)
+            {
+                categories = categories.Where(x => x.CategoryName.Contains(request.CategoryName));
+            }
+            return categories
+                .Skip(request.Limit * (request.Page - 1))
+                .Take(request.Limit)
+                .Select(category => GenerateCategoryResponse(category))
+                .ToList();
+        }
+
+        private PageInformation GetPageInfo(PagingQueryCategoryRequest request) => new PageInformation
+        {
+            Total = _categoryService.Count(),
+            Page = request.Page,
+            Limit = request.Limit
+        };
+
+        private static PagingQueryResponse<CategoryResponse> GeneratePagingQueryResponse(List<CategoryResponse> categories, PageInformation pageInfo)
+            => new PagingQueryResponse<CategoryResponse>
+            {
+                Data = categories,
+                PageInformation = pageInfo
+            };
+
+        private void Update(Category category)
+        {
+            var isSaved = _categoryService.Update(category);
+            if (!isSaved)
+            {
+                throw new BadRequestException(Const.Error.BadRequest);
+            }
+        }
+
+        private static Category GenerateCategory(CategoryRequest request) => new Category
+        {
+            Id = Guid.NewGuid(),
+            CategoryName = request.CategoryName,
+            ImageUrl = request.CategoryImageUrl
+        };
+
+        private Category GetCategory(Guid id)
+        {
             var category = _categoryService.Find(id);
             if (category == null)
             {
                 throw new BadRequestException(Const.Error.NotFound);
             }
+            return category;
+        }
 
+        private static void UpdateCategoryFields(CategoryRequest request, Category category)
+        {
             category.CategoryName = request.CategoryName;
             category.ImageUrl = request.CategoryImageUrl;
-
-            var response = _categoryService.Update(category);
-            if (!response)
-            {
-                throw new BadRequestException(Const.Error.BadRequest);
-            }
-            return Find(id);
+            category.UpdatedTime = DateTimeOffset.UtcNow;
         }
 
         private static CategoryResponse GenerateCategoryResponse(Category category) => new CategoryResponse
@@ -116,5 +143,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             CreatedTime = category.CreatedTime,
             UpdatedTime = category.UpdatedTime
         };
+
+        #endregion
     }
 }

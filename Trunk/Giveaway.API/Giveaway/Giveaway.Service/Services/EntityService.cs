@@ -85,12 +85,17 @@ namespace Giveaway.Service.Services
             if (entity is BaseEntity baseEntity)
             {
                 baseEntity.EntityStatus = GetEnumStatus(status);
+                baseEntity.UpdatedTime = DateTimeOffset.UtcNow;
             }
             else
             {
                 throw new BadRequestException(Const.Error.BadRequest);
             }
-            Update(entity);
+            var isUpdated = Update(entity);
+            if (!isUpdated)
+            {
+                throw new InternalServerErrorException(Const.Error.InternalServerError);
+            }
             return entity;
         }
 

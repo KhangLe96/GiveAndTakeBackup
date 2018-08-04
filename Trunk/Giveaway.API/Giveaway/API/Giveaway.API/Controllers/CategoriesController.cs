@@ -62,7 +62,7 @@ namespace Giveaway.API.Controllers
         [HttpGet("{categoryId}")]
         public CategoryResponse Find(Guid categoryId)
         {
-            return _categoryService.Find(categoryId);
+            return _categoryService.FindCategory(categoryId);
         }
 
         /// <summary>

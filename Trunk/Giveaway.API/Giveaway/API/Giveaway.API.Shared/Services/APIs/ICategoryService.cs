@@ -11,7 +11,7 @@ namespace Giveaway.API.Shared.Services.APIs
         PagingQueryResponse<CategoryResponse> All(IDictionary<string, string> @params);
         CategoryResponse Delete(Guid id);
         CategoryResponse Create(CategoryRequest request);
-        CategoryResponse Find(Guid id);
+        CategoryResponse FindCategory(Guid id);
         CategoryResponse Update(Guid id, CategoryRequest request);
     }
 }
