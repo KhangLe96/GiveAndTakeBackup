@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Giveaway.API.Shared.Responses
 {
     [DataContract]
-    public class Pagination
+    public class PageInformation
     {
         [DataMember(Name = "totals")]
         public int Total { get; set; }

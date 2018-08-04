@@ -27,7 +27,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return new PagingQueryResponse<CategoryResponse>
             {
                 Data = categories,
-                Pagination = new Pagination
+                PageInformation = new PageInformation
                 {
                     Total = _categoryService.Count(),
                     Page = request.Page,

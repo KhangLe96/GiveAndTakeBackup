@@ -3,7 +3,6 @@ using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Giveaway.API.Shared.Requests;
-using Giveaway.API.Shared.Extensions;
 using System;
 
 namespace Giveaway.API.Controllers

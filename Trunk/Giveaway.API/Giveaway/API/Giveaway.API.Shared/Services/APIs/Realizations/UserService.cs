@@ -6,11 +6,10 @@ using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.EF.Exceptions;
-using Giveaway.Data.Models;
 using Giveaway.Data.Models.Database;
-using Microsoft.AspNetCore.Hosting;
 using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
 
@@ -19,48 +18,104 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     /// <inheritdoc />
     public class UserService : IUserService
     {
+        #region Properties
+
         private readonly DbService.IUserService _userService;
         private readonly DbService.IUserRoleService _userRoleService;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly DbService.IRoleService _roleService;
 
-        public UserService(DbService.IUserService userService, IHostingEnvironment hostingEnvironment, DbService.IUserRoleService userRoleService)
+        #endregion
+
+        #region Constructor
+
+        public UserService(DbService.IUserService userService, DbService.IUserRoleService userRoleService, DbService.IRoleService roleService)
         {
             _userService = userService;
-            _hostingEnvironment = hostingEnvironment;
             _userRoleService = userRoleService;
+            _roleService = roleService;
         }
 
-        public bool UpdateUser(User user)
+        #endregion
+
+        #region public methods
+
+        public User GetUser(Guid userId)
         {
-            return _userService.Update(user);
+            var user = _userService.Find(userId);
+            if (user.IsDeleted)
+            {
+                throw new BadRequestException(Const.Error.NotFound);
+            }
+            return user;
         }
 
-        public User GetUser(Guid id)
+        public UserProfileResponse GetUserProfile(Guid userId)
         {
-            return _userService.Find(id);
-        }
-
-        public bool DeleteUser(Guid id)
-        {
-            _userService.Delete(x => x.Id == id, out var isSaved);
-            return isSaved;
+            var currentUser = GetUser(userId);
+            return GenerateUserProfileResponse(currentUser);
         }
 
         public PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params)
         {
             var request = @params.ToObject<PagingQueryUserRequest>();
             var users = GetPagedUsers(request);
-            return new PagingQueryResponse<UserProfileResponse>
+            var pageInformation = GetPageInformation(request);
+            return GeneratePagingQueryResponse(users, pageInformation);
+        }
+
+        public bool Update(User user)
+        {
+            var isUpdated = _userService.Update(user);
+            if (!isUpdated)
+            {
+                throw new InternalServerErrorException(Const.Error.InternalServerError);
+            }
+            return true;
+        }
+
+        public UserProfileResponse Update(Guid userId, UserProfileRequest request)
+        {
+            var currentUser = GetUser(userId);
+            var updatedUser = UpdateUserProfile(currentUser, request);
+            return GenerateUserProfileResponse(updatedUser);
+        }
+
+        public UserProfileResponse SetRole(Guid userId, RoleRequest request)
+        {
+            var roleId = _roleService.GetRoleId(request.Role);
+            _userRoleService.CreateUserRole(userId, roleId);
+            return GetUserProfile(userId);
+        }
+
+        public LoginResponse Login(LoginRequest request)
+        {
+            var validateResult = _userService.ValidateLogin(request);
+
+            if (validateResult.StatusCode != HttpStatusCode.OK)
+            {
+                throw validateResult.ToException();
+            }
+
+            return GenerateLoginResponse(validateResult.Data as User);
+        }
+
+        #endregion
+
+        #region private methods
+
+        private static PagingQueryResponse<UserProfileResponse> GeneratePagingQueryResponse(List<UserProfileResponse> users, PageInformation pageInformation)
+            => new PagingQueryResponse<UserProfileResponse>
             {
                 Data = users,
-                Pagination = new Pagination
-                {
-                    Total = _userService.Count(),
-                    Limit = request.Limit,
-                    Page = request.Page
-                }
+                PageInformation = pageInformation
             };
-        }
+
+        private PageInformation GetPageInformation(PagingQueryUserRequest request) => new PageInformation
+        {
+            Total = _userService.Count(),
+            Limit = request.Limit,
+            Page = request.Page
+        };
 
         private List<UserProfileResponse> GetPagedUsers(PagingQueryUserRequest request)
         {
@@ -88,46 +143,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 .ToList();
         }
 
-        public User Find(Guid userId)
-        {
-            return _userService.Find(userId);
-        }
-
-        public bool Update(User user)
-        {
-            return _userService.Update(user);
-        }
-
-        public UserProfileResponse GetUserProfile(Guid userId)
-        {
-            var currentUser = _userService.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
-
-            if (currentUser == null)
-            {
-                throw new BadRequestException("User doesn't exist.");
-            }
-
-            return GenerateUserProfileResponse(currentUser);
-        }
-
-        public LoginResponse Login(LoginRequest request)
-        {
-            var validateResult = _userService.ValidateLogin(request);
-
-            if (validateResult.StatusCode != HttpStatusCode.OK)
-            {
-                throw validateResult.ToException();
-            }
-
-            return GenerateLoginResponse(validateResult.Data as User);
-        }
-
-        public UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request)
-        {
-            var user = _userService.Find(userId);
-            return UpdateProfile(user, request);
-        }
-
         private UserProfileResponse GenerateUserProfileResponse(User user) => new UserProfileResponse
         {
             Id = user.Id,
@@ -147,7 +162,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
             var token = JwtHelper.CreateToken(user.UserName, user.Id, user.FullName, _userRoleService.GetUserRoles(user.Id));
 
-            var response = new LoginResponse()
+            var response = new LoginResponse
             {
                 Profile = GenerateUserProfileResponse(user),
                 RefreshToken = token.RefreshToke,
@@ -159,7 +174,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return response;
         }
         
-        private UserProfileResponse UpdateProfile(User user, UserProfileRequest request)
+        private User UpdateUserProfile(User user, UserProfileRequest request)
         {
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
@@ -171,14 +186,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             user.Gender = request.Gender;
             user.Email = request.Email;
 
-            var isUpdated = _userService.Update(user);
+            Update(user);
 
-            if (!isUpdated)
-            {
-                throw new InternalServerErrorException("couldn't update user's profile");
-            }
-
-            return GenerateUserProfileResponse(user);
+            return user;
         }
+
+        #endregion
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Giveaway.API.Shared.Extensions;
-using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Authorization;

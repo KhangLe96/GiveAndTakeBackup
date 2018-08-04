@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF.DTOs.Requests;

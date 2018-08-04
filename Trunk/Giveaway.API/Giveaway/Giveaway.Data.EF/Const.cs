@@ -70,8 +70,9 @@ namespace Giveaway.Data.EF
 
         public class Error
         {
-            public const string BadRequest = "BadRequest";
-            public const string NotFound = "NotFound";
+            public const string BadRequest = "Bad Request";
+            public const string NotFound = "Not Found";
+            public const string InternalServerError = "Internal Server Error";
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return new PagingQueryResponse<PostResponse>
             {
                 Data = posts,
-                Pagination = new Pagination
+                PageInformation = new PageInformation
                 {
                     Total = _postService.Count(),
                     Page = request.Page,

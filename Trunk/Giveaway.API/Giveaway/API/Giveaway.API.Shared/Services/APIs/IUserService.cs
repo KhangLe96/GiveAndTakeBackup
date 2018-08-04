@@ -10,13 +10,12 @@ namespace Giveaway.API.Shared.Services.APIs
 {
 	public interface IUserService
 	{
-	    bool UpdateUser(User user);
-	    User GetUser(Guid id);
-	    PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params);
-	    User Find(Guid userId);
-	    bool Update(User user);
+	    User GetUser(Guid userId);
 	    UserProfileResponse GetUserProfile(Guid userId);
+	    PagingQueryResponse<UserProfileResponse> All(IDictionary<string, string> @params);
+	    bool Update(User user);
+	    UserProfileResponse Update(Guid userId, UserProfileRequest request);
 	    LoginResponse Login(LoginRequest request);
-	    UserProfileResponse UpdateUserProfile(Guid userId, UserProfileRequest request);
+	    UserProfileResponse SetRole(Guid userId, RoleRequest request);
 	}
 }

@@ -12,6 +12,6 @@ namespace Giveaway.API.Shared.Responses
         public List<T> Data { get; set; }
 
         [DataMember(Name = "pagination")]
-        public Pagination Pagination { get; set; }
+        public PageInformation PageInformation { get; set; }
     }
 }

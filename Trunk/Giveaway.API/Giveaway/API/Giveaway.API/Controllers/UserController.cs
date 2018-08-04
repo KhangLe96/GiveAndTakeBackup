@@ -2,15 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Giveaway.API.Shared.Extensions;
-using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
-using Giveaway.Data.Models.Database;
 
 namespace Giveaway.API.Controllers
 {
@@ -72,7 +69,7 @@ namespace Giveaway.API.Controllers
         public bool Logout()
         {
             var userId = User.GetUserId();
-            var user = _userService.Find(userId);
+            var user = _userService.GetUser(userId);
             if (user != null)
             {
                 user.AllowTokensSince = DateTimeOffset.UtcNow;
@@ -81,7 +78,6 @@ namespace Giveaway.API.Controllers
             }
             return false;
         }
-
 
         /// <summary>
         /// Update current user's profile
@@ -94,7 +90,19 @@ namespace Giveaway.API.Controllers
         public UserProfileResponse UpdateProfile([FromBody]UserProfileRequest request)
         {
             var userId = User.GetUserId();
-            return _userService.UpdateUserProfile(userId, request);
+            return _userService.Update(userId, request);
+        }
+
+        /// <summary> 
+        /// Set user's role. Only available for Admin/SuperAdmin 
+        /// </summary> 
+        /// <returns></returns> 
+        [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
+        [HttpPut("profile/{userId}")]
+        [Produces("application/json")]
+        public UserProfileResponse SetRole(Guid userId, [FromBody] RoleRequest request)
+        {
+            return _userService.SetRole(userId, request);
         }
     }
 }
