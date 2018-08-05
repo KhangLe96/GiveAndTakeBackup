@@ -39,7 +39,7 @@ class AdvancedSearchForm extends React.Component {
         if (!err) {
           dispatch({
             type: 'postManagement/findPost',
-            payload: {...c},
+            payload: { ...c },
           });
         }
       }
@@ -64,7 +64,7 @@ class AdvancedSearchForm extends React.Component {
           <h1>Post Management</h1>
         </div>
         <div>
-          <Form onSubmit={this.handleSubmit} className="searchSystem">
+          <Form layout="inline" onSubmit={this.handleSubmit} className="AdvancedSearchForm">
             <FormItem>
               {getFieldDecorator('typeSelect')(
                 <Select
@@ -82,11 +82,11 @@ class AdvancedSearchForm extends React.Component {
             </FormItem>
             <FormItem>
               {getFieldDecorator('searchValue')(
-                <Input />
+                <Input size="large" style={{ width: 500 }} />
               )}
             </FormItem>
             <FormItem>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" >
                 Search
               </Button>
             </FormItem>
