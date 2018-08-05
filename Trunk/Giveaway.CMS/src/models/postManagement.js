@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-import { fetchPost, deletePost } from '../services/post';
+import { fetchPost, deletePost, findPost } from '../services/post';
 
 export default {
   namespace: 'postManagement', /* should be the same with file name */
@@ -15,6 +15,15 @@ export default {
       if (posts) {
         yield put({
           type: 'savePost',
+          payload: posts,
+        });
+      }
+    },
+    * findPost({ payload }, { call, put }) {
+      const findResponse = yield call(findPost, payload);
+      if (findResponse) {
+        yield put({
+          type: 'findingPost',
           payload: posts,
         });
       }
@@ -44,5 +53,11 @@ export default {
         posts: posts.filter(post => post.postId !== id),
       };
     },
+    findingPost(state, action) {
+      return {
+        ...state,
+        posts: action.payload,
+      };
+    }
   },
 };

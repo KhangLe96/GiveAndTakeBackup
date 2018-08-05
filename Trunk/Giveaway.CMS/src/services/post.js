@@ -31,8 +31,9 @@ export function deletePost(params) {
   // return fakeDeletePost();
 }
 
-export async function findAPost(params) {
-  return request(`/post/?${stringify(params)}`, {
+export async function findPost(params) {
+  console.log(`/post?${stringify(params)}`);
+  return request(`/post?${stringify(params)}`, {
     method: 'GET',
   });
 }

@@ -57,7 +57,6 @@ function prepareJsonData(text_response) {
  */
 export default function request(url, options) {
   url = prepare_api_url(url);
-  url = 'https://jsonplaceholder.typicode.com/posts/';
   const defaultOptions = {
     credentials: 'include',
   };

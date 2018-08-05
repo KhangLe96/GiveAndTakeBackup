@@ -1,20 +1,51 @@
 import React from 'react';
 import { connect } from 'dva';
 import PostList from './PostList';
-import { Input, Select, Button } from 'antd';
+import { Input, Select, Button, Form } from 'antd';
 
+const FormItem = Form.Item;
 const Option = Select.Option;
-const Search = Input.Search;
 
 @connect(({ modals, postManagement }) => ({
   ...modals, ...postManagement,
 }))
-export default class index extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSearch = this.handleSearch.bind(this);
+class AdvancedSearchForm extends React.Component {
+  state = {
+    expand: false,
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        if (values.typeSelect === 'categoryName') {
+          this.state.requestValue = {
+            categoryName: values.searchValue
+          };
+        }
+        if (values.typeSelect === 'postStatus') {
+          this.state.requestValue = {
+            postStatus: values.searchValue
+          };
+        }
+        if (values.typeSelect === 'address') {
+          this.state.requestValue = {
+            address: values.searchValue
+          };
+        }
+        console.log(this.state.requestValue);
+        const c = this.state.requestValue;
+        const { dispatch } = this.props;
+        if (!err) {
+          dispatch({
+            type: 'postManagement/findPost',
+            payload: {...c},
+          });
+        }
+      }
+    });
   }
+
   componentDidMount() {
     const { posts, dispatch } = this.props;
     if (posts.length === 0) {
@@ -24,19 +55,8 @@ export default class index extends React.Component {
       });
     }
   }
-  data = {};
-
-  handleChange(value) {
-    this.data = { ...this.data, field: value };
-    console.log(this.data);
-  }
-
-  handleSearch(value) {
-    this.data = { ...this.data, value };
-    console.log(this.data);
-  }
-
   render() {
+    const { getFieldDecorator } = this.props.form;
     const { posts } = this.props;
     return (
       <div>
@@ -44,26 +64,33 @@ export default class index extends React.Component {
           <h1>Post Management</h1>
         </div>
         <div>
-          <Select
-            showSearch
-            style={{ width: 200 }}
-            placeholder="Select type to filter"
-            optionFilterProp="children"
-            size="large"
-            onChange={this.handleChange}
-            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          >
-            <Option value="postStatus">Status</Option>
-            <Option value="categoryName">Category Name</Option>
-            <Option value="address">Address</Option>
-          </Select>
-          <Search
-            placeholder="input search text"
-            enterButton="Search"
-            onSearch={this.handleSearch}
-            style={{ width: 500 }}
-            size="large"
-          />
+          <Form onSubmit={this.handleSubmit} className="searchSystem">
+            <FormItem>
+              {getFieldDecorator('typeSelect')(
+                <Select
+                  style={{ width: 200 }}
+                  placeholder="Select type to filter"
+                  optionFilterProp="children"
+                  size="large"
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  <Option value="postStatus">Status</Option>
+                  <Option value="categoryName">Category Name</Option>
+                  <Option value="address">Address</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('searchValue')(
+                <Input />
+              )}
+            </FormItem>
+            <FormItem>
+              <Button type="primary" htmlType="submit">
+                Search
+              </Button>
+            </FormItem>
+          </Form>
         </div>
         <br />
         <div className="containerBody">
@@ -76,3 +103,4 @@ export default class index extends React.Component {
     );
   }
 }
+export default Form.create()(AdvancedSearchForm);
