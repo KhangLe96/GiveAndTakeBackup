@@ -81,16 +81,18 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GenerateUserProfileResponse(updatedUser);
         }
 
-        public UserProfileResponse SetRole(Guid userId, RoleRequest request)
+        public UserProfileResponse SetRole(Guid userId, IDictionary<string, string> @params)
         {
+            var request = @params.ToObject<RoleRequest>();
             var roleId = _roleService.GetRoleId(request.Role);
             _userRoleService.CreateUserRole(userId, roleId);
             return GetUserProfile(userId);
         }
 
-        public UserProfileResponse ChangeUserStatus(StatusRequest request)
+        public UserProfileResponse ChangeUserStatus(Guid userId, IDictionary<string, string> @params)
         {
-            var updatedUser = _userService.UpdateStatus(request.UserId, request.UserStatus);
+            var request = @params.ToObject<StatusRequest>();
+            var updatedUser = _userService.UpdateStatus(userId, request.UserStatus);
             return GenerateUserProfileResponse(updatedUser);
         }
 

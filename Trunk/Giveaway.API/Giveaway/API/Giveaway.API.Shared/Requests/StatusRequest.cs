@@ -7,10 +7,7 @@ namespace Giveaway.API.Shared.Requests
     [DataContract]
     public class StatusRequest
     {
-        [DataMember(Name = "userId")]
-        public Guid UserId { get; set; }
-
-        [DataMember(Name = "userStatus")]
+        [DataMember(Name = "status")]
         public string UserStatus { get; set; }
     }
 }

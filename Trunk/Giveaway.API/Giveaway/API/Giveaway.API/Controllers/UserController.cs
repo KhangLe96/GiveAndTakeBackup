@@ -49,6 +49,20 @@ namespace Giveaway.API.Controllers
         }
 
         /// <summary>
+        /// Update current user's profile
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>updated user profile</returns>
+        [Authorize]
+        [HttpPut]
+        [Produces("application/json")]
+        public UserProfileResponse UpdateProfile([FromBody]UserProfileRequest request)
+        {
+            var userId = User.GetUserId();
+            return _userService.Update(userId, request);
+        }
+
+        /// <summary>
         /// login
         /// </summary>
         /// <returns>LoginResponse</returns>
@@ -79,30 +93,16 @@ namespace Giveaway.API.Controllers
             return false;
         }
 
-        /// <summary>
-        /// Update current user's profile
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>updated user profile</returns>
-        [Authorize]
-        [HttpPut]
-        [Produces("application/json")]
-        public UserProfileResponse UpdateProfile([FromBody]UserProfileRequest request)
-        {
-            var userId = User.GetUserId();
-            return _userService.Update(userId, request);
-        }
-
         /// <summary> 
         /// Set user's role. Only available for Admin/SuperAdmin 
         /// </summary> 
         /// <returns></returns> 
         [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
-        [HttpPut("profile/{userId}")]
+        [HttpPut("role/{userId}")]
         [Produces("application/json")]
-        public UserProfileResponse SetRole(Guid userId, [FromBody] RoleRequest request)
+        public UserProfileResponse SetRole(Guid userId, [FromHeader]IDictionary<string, string> @params)
         {
-            return _userService.SetRole(userId, request);
+            return _userService.SetRole(userId, @params);
         }
 
         /// <summary> 
@@ -111,11 +111,11 @@ namespace Giveaway.API.Controllers
         /// </summary> 
         /// <returns>the updated user profile</returns> 
         //[Authorize(Roles = Const.UserRoles.AdminOrAbove)]
-        [HttpPut("status")]
+        [HttpPut("status/{userId}")]
         [Produces("application/json")]
-        public UserProfileResponse ChangeUserStatus([FromBody] StatusRequest request)
+        public UserProfileResponse ChangeUserStatus(Guid userId, [FromHeader]IDictionary<string, string> @params)
         {
-            return _userService.ChangeUserStatus(request);
+            return _userService.ChangeUserStatus(userId, @params);
         }
     }
 }
