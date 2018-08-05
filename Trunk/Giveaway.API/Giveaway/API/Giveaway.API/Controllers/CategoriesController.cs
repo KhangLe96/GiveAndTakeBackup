@@ -85,6 +85,7 @@ namespace Giveaway.API.Controllers
         [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
         [HttpPut("status/{userId}")]
         [Produces("application/json")]
+        //Review: Don't use FromHeader with Put mothod, should use FromBody and pass specific object
         public CategoryResponse ChangeCategoryStatus(Guid userId, [FromHeader]IDictionary<string, string> @params)
         {
             return _categoryService.ChangeCategoryStatus(userId, @params);
