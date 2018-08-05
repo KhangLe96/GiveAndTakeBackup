@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
+using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Giveaway.API.Controllers
@@ -73,6 +75,19 @@ namespace Giveaway.API.Controllers
         public CategoryResponse Update(Guid categoryId, [FromBody] CategoryRequest request)
         {
             return _categoryService.Update(categoryId, request);
+        }
+
+        /// <summary> 
+        /// Change category status. Only available for admin or super admin
+        /// Available values : Activated, Blocked, Deleted
+        /// </summary> 
+        /// <returns>the updated user profile</returns> 
+        [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
+        [HttpPut("status/{userId}")]
+        [Produces("application/json")]
+        public CategoryResponse ChangeCategoryStatus(Guid userId, [FromHeader]IDictionary<string, string> @params)
+        {
+            return _categoryService.ChangeCategoryStatus(userId, @params);
         }
     }
 }

@@ -110,7 +110,7 @@ namespace Giveaway.API.Controllers
         /// Available values : Activated, Blocked, Deleted
         /// </summary> 
         /// <returns>the updated user profile</returns> 
-        //[Authorize(Roles = Const.UserRoles.AdminOrAbove)]
+        [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
         [HttpPut("status/{userId}")]
         [Produces("application/json")]
         public UserProfileResponse ChangeUserStatus(Guid userId, [FromHeader]IDictionary<string, string> @params)

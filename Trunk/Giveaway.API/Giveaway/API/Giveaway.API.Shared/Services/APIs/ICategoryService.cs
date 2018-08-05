@@ -13,5 +13,6 @@ namespace Giveaway.API.Shared.Services.APIs
         CategoryResponse Create(CategoryRequest request);
         CategoryResponse FindCategory(Guid id);
         CategoryResponse Update(Guid id, CategoryRequest request);
+        CategoryResponse ChangeCategoryStatus(Guid userId, IDictionary<string, string> @params);
     }
 }
