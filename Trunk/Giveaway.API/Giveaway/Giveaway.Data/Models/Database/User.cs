@@ -84,5 +84,7 @@ namespace Giveaway.Data.Models.Database
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual ICollection<UserConversation> UserConversations { get; set; }
+        public virtual ICollection<WarningMessage> WarningMessages { get; set; }
     }
 }
