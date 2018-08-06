@@ -81,7 +81,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public bool Delete(Guid id)
         {
             var post = _postService.Find(id);
-            post.EntityStatus = EntityStatus.Deleted;
+            if(post != null)
+                post.EntityStatus = EntityStatus.Deleted;
 
             return _postService.Update(post);
         }
@@ -116,23 +117,22 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return imageList;
         }
 
-        //Review: Should rename this function
         private List<PostResponse> GetPagedPosts(PagingQueryPostRequest request)
         {
             var posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Where(x => x.EntityStatus != EntityStatus.Deleted);
             //Review: should have more params to query such as CreatedTime, provinceCityId, categoryId
-            if (request.Title != null)
+            if (!string.IsNullOrEmpty(request.Title))
             {
                 posts = posts.Where(x => x.Title.Contains(request.Title));
             }
-            //if (request.ProvinceCityId != null)
-            //{
-            //    posts = posts.Where(x => x.ProvinceCityId.Equals(request.ProvinceCityId));
-            //}
-            //if (request.CategoryId != null)
-            //{
-            //    posts = posts.Where(x => x.CategoryId.Equals(request.CategoryId));
-            //}
+            if (!string.IsNullOrEmpty(request.ProvinceCityId))
+            {
+                posts = posts.Where(x => x.ProvinceCityId.Equals(Guid.Parse(request.ProvinceCityId)));
+            }
+            if (!string.IsNullOrEmpty(request.CategoryId)) 
+            {
+                posts = posts.Where(x => x.CategoryId.Equals(Guid.Parse(request.CategoryId)));
+            }
             return posts
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)
