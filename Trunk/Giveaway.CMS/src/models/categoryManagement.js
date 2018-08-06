@@ -1,45 +1,38 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-import { fetchPost, deletePost } from '../services/post';
+import { createCategory, fetchCategory, updateCategory, deleteCategory } from '../services/category';
 
 export default {
   namespace: 'categoryManagement', /* should be the same with file name */
 
   state: {
     categories: [],
+    totals: 0,
   },
 
   effects: {
-    * fetchCategory(payload, { call, put }) {
-      const categories = yield call(fetchPost, payload);
-      yield put({
-        type: 'saveCategory',
-        payload: categories,
-      });
-    },
-    * deletePost({ payload }, { call, put }) {
-      const response = yield call(deletePost, payload);
+    * create({ payload }, { call, put }) { },
+    * fetch({ payload }, { call, put }) {
+      const response = yield call(fetchCategory, payload);
       if (response) {
         yield put({
-          type: 'deleteAPost',
-          payload,
+          type: 'save',
+          payload: {
+            categories: response.results,
+            totals: response.pagination.totals,
+          },
         });
       }
     },
+    * update({ payload }, { call, put }) { },
+    * delete({ payload }, { call, put }) { },
   },
 
   reducers: {
-    saveCategory(state, action) {
+    save(state, action) {
       return {
         ...state,
-        categories: action.payload,
-      };
-    },
-    deleteAPost(state, action) {
-      const { id, categories } = action.payload;
-      return {
-        ...state,
-        categories: categories.filter(post => post.postId !== id),
+        ...action.payload,
       };
     },
   },

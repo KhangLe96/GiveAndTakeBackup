@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm } from 'antd';
 import { Link, routerRedux } from 'dva/router';
+import { TABLE_PAGESIZE } from '../../../common/constants';
 
 export default class index extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class index extends React.Component {
     const { dispatch } = this.props;
     const payload = { page, limit: pageSize };
     dispatch({
-      type: 'management/fetchCategory',
+      type: 'categoryManagement/fetch',
       payload,
     });
   }
@@ -52,12 +53,12 @@ export default class index extends React.Component {
     ];
 
   render() {
-    const { categories } = this.props;
+    const { categories, totals } = this.props;
     return (
       <Table
         columns={this.columns}
         dataSource={categories.map((post, key) => { return { ...post, key }; })}
-        pagination={{ pageSize: 10, total: 11, onChange: this.onPageNumberChange }}
+        pagination={{ pageSize: TABLE_PAGESIZE, total: totals, onChange: this.onPageNumberChange }}
       />
     );
   }
