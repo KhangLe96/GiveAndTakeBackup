@@ -12,9 +12,9 @@ namespace Giveaway.API.Shared.Requests
         public string Title { get; set; }
 
         [DataMember(Name = "categoryId")]
-        public Guid CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
         [DataMember(Name = "provinceCityId")]
-        public Guid ProvinceCityId { get; set; }
+        public string ProvinceCityId { get; set; }
     }
 }
