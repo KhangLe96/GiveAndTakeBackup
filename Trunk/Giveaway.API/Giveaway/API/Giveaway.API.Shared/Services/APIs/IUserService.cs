@@ -17,5 +17,6 @@ namespace Giveaway.API.Shared.Services.APIs
         LoginResponse Login(LoginRequest request);
 	    UserProfileResponse SetRole(Guid userId, RoleRequest request);
 	    UserProfileResponse ChangeUserStatus(Guid userId, StatusRequest request);
+	    UserProfileResponse Create(CreateUserProfileRequest request);
 	}
 }

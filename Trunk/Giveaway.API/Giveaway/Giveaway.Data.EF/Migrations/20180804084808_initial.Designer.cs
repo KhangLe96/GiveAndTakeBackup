@@ -368,12 +368,12 @@ namespace Giveaway.Data.EF.Migrations
             modelBuilder.Entity("Giveaway.Data.Models.Database.UserRole", b =>
                 {
                     b.HasOne("Giveaway.Data.Models.Database.Role", "Role")
-                        .WithMany("UserRoles")
+                        .WithMany("Roles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Giveaway.Data.Models.Database.User", "User")
-                        .WithMany("UserRoles")
+                        .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

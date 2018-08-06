@@ -39,7 +39,15 @@ namespace Giveaway.Service.Services
 
         public virtual T Find(Guid id)
         {
-            return Repository.Find(id);
+            var response = Repository.Find(id);
+            if (response is BaseEntity baseEntity)
+            {
+                if (baseEntity.EntityStatus == EntityStatus.Deleted)
+                {
+                    throw new BadRequestException(Const.Error.BadRequest);
+                }
+            }
+            return response;
         }
 
         public async Task<T> FindAsync(Guid id)

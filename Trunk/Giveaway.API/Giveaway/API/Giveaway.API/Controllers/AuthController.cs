@@ -65,7 +65,7 @@ namespace Giveaway.API.Controllers
         /// Get profile of user by her/his Id. Only available for Admin/SuperAdmin
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
+        [Authorize(Roles = Const.Roles.AdminOrAbove)]
         [HttpGet("profile/{userId}")]
         [Produces("application/json")]
         public UserProfileResponse GetProfileById(Guid userId)

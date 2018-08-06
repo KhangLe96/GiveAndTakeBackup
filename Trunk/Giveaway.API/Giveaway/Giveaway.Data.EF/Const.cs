@@ -50,7 +50,7 @@ namespace Giveaway.Data.EF
             //public static readonly TimeSpan TokenLifetime = TimeSpan.FromDays(28);
         }
 
-        public static class UserRoles
+        public static class Roles
         {
             public const string Admin = nameof(Admin);
             public const string SuperAdmin = nameof(SuperAdmin);
