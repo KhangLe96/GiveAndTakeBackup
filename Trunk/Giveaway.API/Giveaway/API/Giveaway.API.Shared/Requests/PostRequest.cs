@@ -1,4 +1,5 @@
-﻿using Giveaway.Data.Models.Database;
+﻿using Giveaway.Data.Enums;
+using Giveaway.Data.Models.Database;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,10 @@ namespace Giveaway.API.Shared.Requests
         [DataMember(Name = "postImageUrl", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "postImageUrl")]
         public List<ImageRequest> Images { get; set; }
+
+        [DataMember(Name = "postStatus", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "postStatus")]
+        public PostStatus PostStatus { get; set; }
 
         [DataMember(Name = "categoryId", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "categoryId")]

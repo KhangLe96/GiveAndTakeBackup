@@ -25,19 +25,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _imageService = imageService;
         }
 
-        //Review: this is unneccessary, should remove it
-        public List<PostResponse> GetAllPost()
-        {
-            var posts = _postService.Include(x => x.Category).Include(y => y.Images);
-            var postResponses = Mapper.Map<List<PostResponse>>(posts);
-
-            return postResponses;
-        }
-
         public PagingQueryResponse<PostResponse> GetPostForPaging(IDictionary<string, string> @params)
         {
             var request = @params.ToObject<PagingQueryPostRequest>();
-            var posts = GetPagedPostgories(request);
+            var posts = GetPagedPosts(request);
             return new PagingQueryResponse<PostResponse>
             {
                 Data = posts,
@@ -126,14 +117,22 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
         //Review: Should rename this function
-        private List<PostResponse> GetPagedPostgories(PagingQueryPostRequest request)
+        private List<PostResponse> GetPagedPosts(PagingQueryPostRequest request)
         {
-            var posts = _postService.Where(x => x.EntityStatus != EntityStatus.Deleted);
+            var posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Where(x => x.EntityStatus != EntityStatus.Deleted);
             //Review: should have more params to query such as CreatedTime, provinceCityId, categoryId
-            if (request.PostName != null)
+            if (request.Title != null)
             {
-                posts = posts.Where(x => x.Title.Contains(request.PostName));
+                posts = posts.Where(x => x.Title.Contains(request.Title));
             }
+            //if (request.ProvinceCityId != null)
+            //{
+            //    posts = posts.Where(x => x.ProvinceCityId.Equals(request.ProvinceCityId));
+            //}
+            //if (request.CategoryId != null)
+            //{
+            //    posts = posts.Where(x => x.CategoryId.Equals(request.CategoryId));
+            //}
             return posts
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)

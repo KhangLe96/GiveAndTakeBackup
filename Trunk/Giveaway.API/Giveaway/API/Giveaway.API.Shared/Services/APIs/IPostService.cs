@@ -7,7 +7,6 @@ namespace Giveaway.API.Shared.Services.APIs
 {
     public interface IPostService
     {
-        List<PostResponse> GetAllPost();
         PagingQueryResponse<PostResponse> GetPostForPaging(IDictionary<string, string> @params);
         PostResponse Create(PostRequest post);
         bool Delete(Guid id);

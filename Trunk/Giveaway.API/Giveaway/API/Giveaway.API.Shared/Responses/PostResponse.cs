@@ -1,4 +1,5 @@
-﻿using Giveaway.Data.Models.Database;
+﻿using Giveaway.Data.Enums;
+using Giveaway.Data.Models.Database;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,10 @@ namespace Giveaway.API.Shared.Responses
         [DataMember(Name = "updatedTime")]
         [JsonProperty(PropertyName = "updatedTime")]
         public DateTimeOffset UpdatedTime { get; set; }
+
+        [DataMember(Name = "postStatus", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "postStatus")]
+        public PostStatus PostStatus { get; set; }
 
         [DataMember(Name = "category")]
         [JsonProperty(PropertyName = "category")]

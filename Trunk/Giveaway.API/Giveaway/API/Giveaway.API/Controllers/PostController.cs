@@ -23,17 +23,10 @@ namespace Giveaway.API.Controllers
         //I remember that the post has status, we need add this field.
         //When you implement get list. Should have a API to get list for mobile app, we need filter these posts which is activated. 
         //And a api for CMS, return all post with their status
-        
-        [HttpGet("getAll")]
+ 
+        [HttpGet("getList")]
         [Produces("application/json")]
-        public List<PostResponse> GetAll()
-        {
-            return _postService.GetAllPost();
-        }
-
-        [HttpGet("getPostForPaging")]
-        [Produces("application/json")]
-        public PagingQueryResponse<PostResponse> GetPostForPaging([FromHeader]IDictionary<string, string> @params)
+        public PagingQueryResponse<PostResponse> GetList([FromHeader]IDictionary<string, string> @params)
         {
             return _postService.GetPostForPaging(@params);
         }
@@ -62,8 +55,8 @@ namespace Giveaway.API.Controllers
         {
             return _postService.Update(postRequest);
         }
-        //Review: Wrong method, it should be is HttpDelete and should Id in path, see category
-        [HttpPost("delete")]
+
+        [HttpDelete("delete/{id}")]
         [Produces("application/json")]
         public bool Delete(Guid id)
         {
