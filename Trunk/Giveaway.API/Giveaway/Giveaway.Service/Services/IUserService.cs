@@ -157,7 +157,7 @@ namespace Giveaway.Service.Services
         //        LastName = model.LastName,
         //        PasswordSalt = securePassword.Salt,
         //        PasswordHash = securePassword.Hash,
-        //        Role = Const.UserRoles.Student,
+        //        Role = Const.Roles.Student,
         //        Dob = model.Birthday,
         //        CreatedTime = DateTimeOffset.Now,
         //        UpdatedTime = DateTimeOffset.Now,

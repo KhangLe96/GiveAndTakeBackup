@@ -95,6 +95,16 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GenerateUserProfileResponse(updatedUser);
         }
 
+        public UserProfileResponse Create(CreateUserProfileRequest request)
+        {
+            var createdUser = _userService.Create(CreateUserFromRequest(request), out _);
+            var normalUserRoleId = _roleService.FirstOrDefault(r => r.RoleName == Const.Roles.User).Id;
+            _userRoleService.CreateUserRole(createdUser.Id, normalUserRoleId);
+            return GetUserProfile(createdUser.Id);
+        }
+
+     
+
         public LoginResponse Login(LoginRequest request)
         {
             var validateResult = _userService.ValidateLogin(request);
@@ -182,8 +192,30 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
             return response;
         }
-        
+
+        private User CreateUserFromRequest(CreateUserProfileRequest request)
+        {
+            var user = new User();
+            UpdateUserFields(user, request);
+            UpdateUserPassword(request, user);
+            return user;
+        }
+
         private User UpdateUserProfile(User user, UserProfileRequest request)
+        {
+            UpdateUserFields(user, request);
+            Update(user);
+            return user;
+        }
+
+        private void UpdateUserPassword(CreateUserProfileRequest request, User user)
+        {
+            var securedPassword = _userService.GenerateSecurePassword(request.Password);
+            user.PasswordHash = securedPassword.Hash;
+            user.PasswordSalt = securedPassword.Salt;
+        }
+
+        private static void UpdateUserFields(User user, UserProfileRequest request)
         {
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
@@ -194,10 +226,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             user.Address = request.Address;
             user.Gender = request.Gender;
             user.Email = request.Email;
-
-            Update(user);
-
-            return user;
         }
 
         #endregion

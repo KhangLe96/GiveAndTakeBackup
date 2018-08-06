@@ -121,9 +121,9 @@ namespace Giveaway.API.DB
         {
             var roleService = services.GetService<IRoleService>();
             if (roleService.All().Any()) return;
-            roleService.Create(new Role {RoleName = Const.UserRoles.User}, out _);
-            roleService.Create(new Role {RoleName = Const.UserRoles.Admin }, out _);
-            roleService.Create(new Role {RoleName = Const.UserRoles.SuperAdmin }, out _);
+            roleService.Create(new Role {RoleName = Const.Roles.User}, out _);
+            roleService.Create(new Role {RoleName = Const.Roles.Admin }, out _);
+            roleService.Create(new Role {RoleName = Const.Roles.SuperAdmin }, out _);
         }
 
         private static void SeedAdmin(IServiceProvider services)
@@ -131,8 +131,8 @@ namespace Giveaway.API.DB
             var userService = services.GetService<IUserService>();
             var roleService = services.GetService<IRoleService>();
             var userRoleService = services.GetService<IUserRoleService>();
-            var adminRole = roleService.FirstOrDefault(r => r.RoleName == Const.UserRoles.Admin);
-            var userRole = roleService.FirstOrDefault(r => r.RoleName == Const.UserRoles.User);
+            var adminRole = roleService.FirstOrDefault(r => r.RoleName == Const.Roles.Admin);
+            var userRole = roleService.FirstOrDefault(r => r.RoleName == Const.Roles.User);
 
             if (userRoleService.Where(ur => ur.RoleId == adminRole.Id).Any()) return;
             var securePassword = userService.GenerateSecurePassword(Const.DefaultAdminPassword);
@@ -162,8 +162,8 @@ namespace Giveaway.API.DB
             var userService = services.GetService<IUserService>();
             var roleService = services.GetService<IRoleService>();
             var userRoleService = services.GetService<IUserRoleService>();
-            var superAdminRole = roleService.FirstOrDefault(r => r.RoleName == Const.UserRoles.SuperAdmin);
-            var userRole = roleService.FirstOrDefault(r => r.RoleName == Const.UserRoles.User);
+            var superAdminRole = roleService.FirstOrDefault(r => r.RoleName == Const.Roles.SuperAdmin);
+            var userRole = roleService.FirstOrDefault(r => r.RoleName == Const.Roles.User);
 
             if (userRoleService.Where(ur => ur.RoleId == superAdminRole.Id).Any()) return;
             var securePassword = userService.GenerateSecurePassword(Const.DefaultSuperAdminPassword);

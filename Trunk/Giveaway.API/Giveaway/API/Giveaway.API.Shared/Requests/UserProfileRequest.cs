@@ -20,7 +20,7 @@ namespace Giveaway.API.Shared.Requests
 	    [DataMember(Name = "userName")]
 	    public string UserName { get; set; }
 
-	    [DataMember(Name = "birthDate")]
+        [DataMember(Name = "birthDate")]
 	    public DateTime BirthDate { get; set; }
 
 	    [DataMember(Name = "phoneNumber")]

@@ -97,15 +97,13 @@ namespace Giveaway.API
             app.UseMvc();
             app.UseContent();
 
-            DbInitializer.Seed(app.ApplicationServices);
+            //DbInitializer.Seed(app.ApplicationServices);
 
-#if DEBUG
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Giveaway.API v1");
             });
-#endif
         }
 
         private void ConfigureCors(CorsPolicyBuilder builder)
