@@ -14,7 +14,7 @@ namespace GiveAndTake.Core
 				.AsInterfaces()
 				.RegisterAsLazySingleton();
 
-			RegisterAppStart<MasterViewModel>();
+			RegisterAppStart<LoginViewModel>();
 		}
 	}
 }

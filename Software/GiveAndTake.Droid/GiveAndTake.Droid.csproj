@@ -72,6 +72,7 @@
     <Compile Include="Views\Base\BaseFragment.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
+    <Compile Include="Views\LoginView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -113,9 +114,13 @@
       <Version>6.1.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2" />
+    <PackageReference Include="Xamarin.Facebook.Android">
+      <Version>4.34.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
+    <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GiveAndTake.Core\GiveAndTake.Core.csproj">
@@ -130,6 +135,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\MasterView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\LoginView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
