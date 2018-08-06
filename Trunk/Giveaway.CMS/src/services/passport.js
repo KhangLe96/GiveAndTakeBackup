@@ -53,10 +53,10 @@ export function login(params) {
       ...params,
     },
   };
-  // return request(urls.login, options);
+  return request(`/user/login`, options);
 
   // fake data
-  return fakelogin(params.login, params.password);
+  // return fakelogin(params.login, params.password);
 }
 
 export async function forgotPassword(params) {

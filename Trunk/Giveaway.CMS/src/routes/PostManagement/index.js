@@ -14,23 +14,34 @@ class AdvancedSearchForm extends React.Component {
     expand: false,
   };
 
+  componentDidMount() {
+    const { posts, dispatch } = this.props;
+    if (posts.length === 0) {
+      dispatch({
+        type: 'postManagement/fetchPost',
+        payload: {},
+      });
+    }
+  }
+
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         if (values.typeSelect === 'categoryName') {
           this.state.requestValue = {
-            categoryName: values.searchValue
+            categoryName: values.searchValue,
           };
         }
         if (values.typeSelect === 'postStatus') {
           this.state.requestValue = {
-            postStatus: values.searchValue
+            postStatus: values.searchValue,
           };
         }
         if (values.typeSelect === 'address') {
           this.state.requestValue = {
-            address: values.searchValue
+            address: values.searchValue,
           };
         }
         console.log(this.state.requestValue);
@@ -45,25 +56,16 @@ class AdvancedSearchForm extends React.Component {
       }
     });
   }
-
-  componentDidMount() {
-    const { posts, dispatch } = this.props;
-    if (posts.length === 0) {
-      dispatch({
-        type: 'postManagement/fetchPost',
-        payload: {},
-      });
-    }
-  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const { posts } = this.props;
+    console.log(posts);
     return (
       <div>
         <div className="containerHeader">
           <h1>Post Management</h1>
         </div>
-        <div>
+        <div hidden>
           <Form layout="inline" onSubmit={this.handleSubmit} className="AdvancedSearchForm">
             <FormItem>
               {getFieldDecorator('typeSelect')(

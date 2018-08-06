@@ -85,10 +85,6 @@ export default {
     },
     * login({ payload, callback }, { call, put }) {
       yield put({
-        type: 'saveLoginError',
-        payload: {},
-      });
-      yield put({
         type: 'modals/changeLoading',
         payload: true,
       });
@@ -97,7 +93,7 @@ export default {
         type: 'modals/changeLoading',
         payload: false,
       });
-      if (response && response.access_token) {
+      if (response && response.token !== undefined) {
         message.success('Đăng nhập thành công.')
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('currentUser', JSON.stringify(response));
@@ -105,15 +101,6 @@ export default {
           type: 'saveLogin',
           payload: response,
         });
-        yield put({
-          type: 'saveLoginError',
-          payload: {},
-        });
-
-        yield put({
-          type: 'modals/hide',
-        });
-
         yield put(routerRedux.push('/post-management'));
       } else {
         message.error('Tên đăng nhập hoặc mật khẩu sai.');

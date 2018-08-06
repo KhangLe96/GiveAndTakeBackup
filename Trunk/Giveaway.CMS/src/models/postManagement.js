@@ -20,10 +20,10 @@ export default {
       }
     },
     * findPost({ payload }, { call, put }) {
-      const findResponse = yield call(findPost, payload);
-      if (findResponse) {
+      const posts = yield call(findPost, payload);
+      if (posts) {
         yield put({
-          type: 'findingPost',
+          type: 'savePost',
           payload: posts,
         });
       }
@@ -53,11 +53,5 @@ export default {
         posts: posts.filter(post => post.postId !== id),
       };
     },
-    findingPost(state, action) {
-      return {
-        ...state,
-        posts: action.payload,
-      };
-    }
   },
 };

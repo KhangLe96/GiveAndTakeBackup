@@ -269,7 +269,7 @@ class BasicLayout extends React.PureComponent {
     };
     const renderRole = () => {
       if (currentUser && currentUser.profile) {
-        const role = currentUser.profile.role.toLowerCase();
+        const role = currentUser.profile;
         switch (role) {
           case 'superadmin':
             return 'Super Administrator';

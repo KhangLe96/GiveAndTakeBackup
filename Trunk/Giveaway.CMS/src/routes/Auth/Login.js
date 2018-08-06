@@ -29,7 +29,7 @@ export default class Login extends PureComponent {
           type: 'passport/login',
           payload: {
             password: values.password,
-            login: values.userName,
+            username: values.userName,
           },
         });
       }
