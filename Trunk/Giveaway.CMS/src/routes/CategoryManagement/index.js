@@ -10,22 +10,23 @@ export default class index extends React.Component {
     const { categories, dispatch } = this.props;
     if (categories.length === 0) {
       dispatch({
-        type: 'categoryManagement/fetch',
+        type: 'categoryManagement/getCategories',
         payload: {},
       });
     }
   }
 
   render() {
-    const { categories, dispatch, totals } = this.props;
+    const { categories, currentPage, dispatch, totals } = this.props;
     return (
       <div>
         <div className="containerHeader">
-          <h1>Quản lý danh mụcs</h1>
+          <h1>Quản lý danh mục</h1>
         </div>
         <div className="containerBody">
           <CategoryList
             categories={categories}
+            currentPage={currentPage}
             dispatch={dispatch}
             totals={totals}
           />

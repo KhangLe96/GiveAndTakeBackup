@@ -12,7 +12,7 @@ export function createCategory(params) {
   return request(`${ROOT_PATH}/create`, options);
 }
 
-export function fetchCategory(params) {
+export function getCategories(params) {
   const options = {
     method: 'GET',
     body: {
@@ -20,6 +20,13 @@ export function fetchCategory(params) {
     },
   };
   return request(`${ROOT_PATH}`, options);
+}
+
+export function getACategory(id) {
+  const options = {
+    method: 'GET',
+  };
+  return request(`${ROOT_PATH}/${id}`, options);
 }
 
 export function updateCategory(params) {
@@ -32,12 +39,9 @@ export function updateCategory(params) {
   return request(`${ROOT_PATH}/edit`, options);
 }
 
-export function deleteCategory(params) {
+export function deleteCategory(id) {
   const options = {
     method: 'DELETE',
-    body: {
-      ...params,
-    },
   };
-  return request(`${ROOT_PATH}/delete`, options);
+  return request(`${ROOT_PATH}/${id}`, options);
 }

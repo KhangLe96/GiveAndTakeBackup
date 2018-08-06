@@ -13,7 +13,7 @@ export default class index extends React.Component {
     const { dispatch } = this.props;
     const payload = { page, limit: pageSize };
     dispatch({
-      type: 'categoryManagement/fetch',
+      type: 'categoryManagement/getCategories',
       payload,
     });
   }
@@ -32,17 +32,16 @@ export default class index extends React.Component {
       },
       {
         title: 'Hành động',
-        dataIndex: 'postId',
         key: 'Action',
-        render: id => (
+        render: record => (
           <span>
             <Popconfirm
               title="Bạn chắc chắn muốn xóa?"
               onConfirm={() => {
-                const { dispatch, posts } = this.props;
+                const { categories, dispatch, totals } = this.props;
                 dispatch({
-                  type: 'postManagement/deletePost',
-                  payload: { posts, id },
+                  type: 'categoryManagement/delete',
+                  payload: { categories, id: record.id, totals },
                 });
               }}
             >
@@ -53,12 +52,17 @@ export default class index extends React.Component {
     ];
 
   render() {
-    const { categories, totals } = this.props;
+    const { categories, currentPage, totals } = this.props;
     return (
       <Table
         columns={this.columns}
         dataSource={categories.map((post, key) => { return { ...post, key }; })}
-        pagination={{ pageSize: TABLE_PAGESIZE, total: totals, onChange: this.onPageNumberChange }}
+        pagination={{
+          current: currentPage,
+          onChange: this.onPageNumberChange,
+          pageSize: TABLE_PAGESIZE,
+          total: totals,
+        }}
       />
     );
   }
