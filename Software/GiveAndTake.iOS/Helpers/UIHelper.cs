@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GiveAndTake.Core;
+using System;
 using UIKit;
-using static GiveAndTake.Core.ApplicationEnum;
 
 namespace GiveAndTake.iOS.Helpers
 {
