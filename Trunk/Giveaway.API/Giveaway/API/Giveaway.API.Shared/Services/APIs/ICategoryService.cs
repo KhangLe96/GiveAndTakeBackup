@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
-using Giveaway.Data.EF.DTOs.Requests;
+using CategoryRequest = Giveaway.Data.EF.DTOs.Requests.CategoryRequest;
 
 namespace Giveaway.API.Shared.Services.APIs
 {
@@ -13,6 +14,6 @@ namespace Giveaway.API.Shared.Services.APIs
         CategoryResponse Create(CategoryRequest request);
         CategoryResponse FindCategory(Guid id);
         CategoryResponse Update(Guid id, CategoryRequest request);
-        CategoryResponse ChangeCategoryStatus(Guid userId, IDictionary<string, string> @params);
+        CategoryResponse ChangeCategoryStatus(Guid userId, StatusRequest request);
     }
 }

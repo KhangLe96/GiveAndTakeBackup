@@ -81,19 +81,16 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GenerateUserProfileResponse(updatedUser);
         }
 
-        //Review: Should use specific object instead of Dictionary
-        public UserProfileResponse SetRole(Guid userId, IDictionary<string, string> @params)
+        public UserProfileResponse SetRole(Guid userId, RoleRequest request)
         {
-            var request = @params.ToObject<RoleRequest>();
             var roleId = _roleService.GetRoleId(request.Role);
             _userRoleService.CreateUserRole(userId, roleId);
             return GetUserProfile(userId);
         }
 
         //Review: Should use specific object instead of Dictionary
-        public UserProfileResponse ChangeUserStatus(Guid userId, IDictionary<string, string> @params)
+        public UserProfileResponse ChangeUserStatus(Guid userId, StatusRequest request)
         {
-            var request = @params.ToObject<StatusRequest>();
             var updatedUser = _userService.UpdateStatus(userId, request.UserStatus);
             return GenerateUserProfileResponse(updatedUser);
         }

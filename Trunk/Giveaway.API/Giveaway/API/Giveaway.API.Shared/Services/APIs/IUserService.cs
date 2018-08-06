@@ -15,7 +15,7 @@ namespace Giveaway.API.Shared.Services.APIs
 	    bool Update(User user);
         UserProfileResponse Update(Guid userId, UserProfileRequest request);
         LoginResponse Login(LoginRequest request);
-	    UserProfileResponse SetRole(Guid userId, IDictionary<string, string> @params);
-	    UserProfileResponse ChangeUserStatus(Guid userId, IDictionary<string, string> @params);
+	    UserProfileResponse SetRole(Guid userId, RoleRequest request);
+	    UserProfileResponse ChangeUserStatus(Guid userId, StatusRequest request);
 	}
 }

@@ -70,9 +70,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GenerateCategoryResponse(category);
         }
 
-        public CategoryResponse ChangeCategoryStatus(Guid userId, IDictionary<string, string> @params)
+        public CategoryResponse ChangeCategoryStatus(Guid userId, StatusRequest request)
         {
-            var request = @params.ToObject<StatusRequest>();
             var updatedCategoryr = _categoryService.UpdateStatus(userId, request.UserStatus);
             return GenerateCategoryResponse(updatedCategoryr);
         }

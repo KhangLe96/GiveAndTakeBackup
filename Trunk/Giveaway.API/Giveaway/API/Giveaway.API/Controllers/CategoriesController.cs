@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
-using Giveaway.Data.EF.DTOs.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CategoryRequest = Giveaway.Data.EF.DTOs.Requests.CategoryRequest;
 
 namespace Giveaway.API.Controllers
 {
@@ -85,10 +86,9 @@ namespace Giveaway.API.Controllers
         [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
         [HttpPut("status/{userId}")]
         [Produces("application/json")]
-        //Review: Don't use FromHeader with Put mothod, should use FromBody and pass specific object
-        public CategoryResponse ChangeCategoryStatus(Guid userId, [FromHeader]IDictionary<string, string> @params)
+        public CategoryResponse ChangeCategoryStatus(Guid userId, [FromBody]StatusRequest request)
         {
-            return _categoryService.ChangeCategoryStatus(userId, @params);
+            return _categoryService.ChangeCategoryStatus(userId, request);
         }
     }
 }

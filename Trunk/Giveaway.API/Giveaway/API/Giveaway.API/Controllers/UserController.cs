@@ -100,10 +100,9 @@ namespace Giveaway.API.Controllers
         [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
         [HttpPut("role/{userId}")]
         [Produces("application/json")]
-        //Review: If use put, post, delete method, pass data FromBody, Don't use FromHeader
-        public UserProfileResponse SetRole(Guid userId, [FromHeader]IDictionary<string, string> @params)
+        public UserProfileResponse SetRole(Guid userId, [FromBody]RoleRequest request)
         {
-            return _userService.SetRole(userId, @params);
+            return _userService.SetRole(userId, request);
         }
 
         /// <summary> 
@@ -114,10 +113,9 @@ namespace Giveaway.API.Controllers
         [Authorize(Roles = Const.UserRoles.AdminOrAbove)]
         [HttpPut("status/{userId}")]
         [Produces("application/json")]
-        //Review: If use put, post, delete method, should pass data FromBody, Don't use FromHeader
-        public UserProfileResponse ChangeUserStatus(Guid userId, [FromHeader]IDictionary<string, string> @params)
+        public UserProfileResponse ChangeUserStatus(Guid userId, [FromBody]StatusRequest request)
         {
-            return _userService.ChangeUserStatus(userId, @params);
+            return _userService.ChangeUserStatus(userId, request);
         }
     }
 }
