@@ -65,15 +65,31 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Helpers\DimensionHelper.cs" />
+    <Compile Include="Helpers\ResolutionHelper.cs" />
+    <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Setup.cs" />
-    <Compile Include="Views\MainView.cs" />
-    <None Include="Info.plist" />
+    <Compile Include="Views\Base\BaseView.cs" />
+    <Compile Include="Views\Base\DetailView.cs" />
+    <Compile Include="Views\Base\MasterView.cs" />
+    <None Include="Info.plist">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Entitlements.plist" />
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <None Include="packages.config" />
+    <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
+    <BundleResource Include="Resources\Fonts\HelveticaNeue.ttf" />
+    <BundleResource Include="Resources\Fonts\HelveticaNeue-Bold.ttf" />
+    <BundleResource Include="Resources\Fonts\HelveticaNeue-Italic.ttf" />
+    <BundleResource Include="Resources\Fonts\HelveticaNeue-Light.ttf" />
+    <BundleResource Include="Resources\Fonts\HelveticaNeue-LightItalic.ttf" />
+    <BundleResource Include="Resources\Fonts\HelveticaNeue-Medium.ttf" />
+    <BundleResource Include="Resources\Fonts\HelveticaNeue-Thin.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -129,7 +145,8 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Folder Include="Resources\Images\" />
+    <Folder Include="Views\Popups\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GiveAndTake.Core\GiveAndTake.Core.csproj">

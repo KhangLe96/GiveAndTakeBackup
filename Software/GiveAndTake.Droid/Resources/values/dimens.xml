@@ -1,0 +1,4 @@
+<resources>
+	<dimen name="SmallTextSize">30dp</dimen>
+	<dimen name="MediumTextSize">40dp</dimen>
+</resources>

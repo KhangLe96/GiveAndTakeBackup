@@ -5,9 +5,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{241C11E6-C170-48A3-9C68-436BCF9F2513}</ProjectGuid>
+    <ProjectGuid>{3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TemplateGuid>{122416d6-6b49-4ee2-a1e8-b825f31c79fe}</TemplateGuid>
+    <TemplateGuid>{84dd83c5-0fe3-4294-9419-09e7c8ba324f}</TemplateGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GiveAndTake.Droid</RootNamespace>
@@ -17,7 +17,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
@@ -39,8 +39,8 @@
     <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
     <DebugType>PdbOnly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -59,11 +59,19 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Helpers\DimensionHelper.cs" />
+    <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup.cs" />
     <Compile Include="SplashScreen.cs" />
-    <Compile Include="Views\MasterView.cs" />
+    <Compile Include="Views\Base\BaseActivity.cs" />
+    <Compile Include="Views\Base\BaseFragment.cs" />
+    <Compile Include="Views\Base\DetailView.cs" />
+    <Compile Include="Views\Base\MasterView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -72,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\colors.xml" />
+    <AndroidResource Include="Resources\values\dimens.xml" />
     <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
     <AndroidResource Include="Resources\values\strings.xml" />
     <AndroidResource Include="Resources\values\styles.xml" />
@@ -94,6 +103,21 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MvvmCross">
+      <Version>6.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmCross.Droid.Support.V7.AppCompat">
+      <Version>6.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="MvvmCross.Droid.Support.V7.RecyclerView">
+      <Version>6.1.2</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\GiveAndTake.Core\GiveAndTake.Core.csproj">
       <Project>{d618a4b3-243a-4cd6-bde2-d31fd4341494}</Project>
       <Name>GiveAndTake.Core</Name>
@@ -108,17 +132,6 @@
     <AndroidResource Include="Resources\layout\MasterView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="MvvmCross">
-      <Version>6.1.2</Version>
-    </PackageReference>
-    <PackageReference Include="MvvmCross.Droid.Support.Design">
-      <Version>6.1.2</Version>
-    </PackageReference>
-    <PackageReference Include="MvvmCross.Droid.Support.V7.AppCompat">
-      <Version>6.1.2</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

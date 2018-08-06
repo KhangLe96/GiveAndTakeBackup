@@ -5,7 +5,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Give And Take</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.GiveAndTake.iOS</string>
+	<string>com.sioux.giveandtake</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -17,6 +17,16 @@
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Fonts/HelveticaNeue-Thin.ttf</string>
+		<string>Fonts/HelveticaNeue-Light.ttf</string>
+		<string>Fonts/HelveticaNeue-LightItalic.ttf</string>
+		<string>Fonts/HelveticaNeue-Medium.ttf</string>
+		<string>Fonts/HelveticaNeue.ttf</string>
+		<string>Fonts/HelveticaNeue-Bold.ttf</string>
+		<string>Fonts/HelveticaNeue-Italic.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
