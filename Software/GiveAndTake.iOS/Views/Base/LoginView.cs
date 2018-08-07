@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.ViewModels.Base;
+﻿using GiveAndTake.Core.ViewModels;
+using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
@@ -7,7 +8,7 @@ using UIKit;
 namespace GiveAndTake.iOS.Views.Base
 {
 	[MvxRootPresentation]
-	public class MasterView : BaseView
+	public class LoginView : BaseView
 	{
 		private UILabel _lbProjectName;
 
@@ -28,7 +29,7 @@ namespace GiveAndTake.iOS.Views.Base
 
 		{
 			base.CreateBinding();
-			var set = this.CreateBindingSet<MasterView, MasterViewModel>();
+			var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
 			set.Bind(_lbProjectName)
 				.For(v => v.Text)

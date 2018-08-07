@@ -74,7 +74,7 @@
     <Compile Include="Setup.cs" />
     <Compile Include="Views\Base\BaseView.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
-    <Compile Include="Views\Base\MasterView.cs" />
+    <Compile Include="Views\Base\LoginView.cs" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
@@ -90,8 +90,12 @@
     <BundleResource Include="Resources\Fonts\HelveticaNeue-LightItalic.ttf" />
     <BundleResource Include="Resources\Fonts\HelveticaNeue-Medium.ttf" />
     <BundleResource Include="Resources\Fonts\HelveticaNeue-Thin.ttf" />
+    <InterfaceDefinition Include="Views\Login.xib" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Facebook, Version=4.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Facebook.iOS.4.33.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="MvvmCross, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmCross.6.1.2\lib\xamarinios10\MvvmCross.dll</HintPath>
     </Reference>
