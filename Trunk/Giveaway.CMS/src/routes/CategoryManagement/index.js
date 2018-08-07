@@ -1,9 +1,11 @@
 import React from 'react';
+import { Button } from 'antd';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import CategoryList from '../CategoryManagement/CategoryList';
 
 @connect(({ modals, categoryManagement }) => ({
-  ...modals, ...categoryManagement,
+  ...categoryManagement, ...modals,
 }))
 export default class index extends React.Component {
   componentDidMount() {
@@ -22,6 +24,9 @@ export default class index extends React.Component {
       <div>
         <div className="containerHeader">
           <h1>Quản lý danh mục</h1>
+          <Link to="/category-management/create" >
+            <Button className="rightButton" type="primary">Tạo mới</Button>
+          </Link>
         </div>
         <div className="containerBody">
           <CategoryList

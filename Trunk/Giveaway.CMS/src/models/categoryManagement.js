@@ -14,7 +14,16 @@ export default {
   },
 
   effects: {
-    * create({ payload }, { call, put }) { },
+    * create({ payload }, { call, put }) {
+      const response = yield call(createCategory, payload);
+      if (response) {
+        yield put(routerRedux.push('/category-management'));
+        yield put({
+          type: 'getCategories',
+          payload: {},
+        });
+      }
+    },
     * getCategories({ payload }, { call, put }) {
       const response = yield call(getCategories, payload);
       if (response) {
