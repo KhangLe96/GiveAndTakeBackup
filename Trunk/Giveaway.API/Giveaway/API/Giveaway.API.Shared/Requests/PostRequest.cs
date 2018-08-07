@@ -21,12 +21,8 @@ namespace Giveaway.API.Shared.Requests
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
-        [DataMember(Name = "address", EmitDefaultValue = false)]
-        [JsonProperty(PropertyName = "address")]
-        public string Address { get; set; }
-
-        [DataMember(Name = "postImageUrl", EmitDefaultValue = false)]
-        [JsonProperty(PropertyName = "postImageUrl")]
+        [DataMember(Name = "images", EmitDefaultValue = false)] 
+        [JsonProperty(PropertyName = "images")]
         public List<ImageRequest> Images { get; set; }
 
         [DataMember(Name = "postStatus", EmitDefaultValue = false)]
