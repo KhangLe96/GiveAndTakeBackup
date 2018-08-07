@@ -97,7 +97,7 @@ namespace Giveaway.API
             app.UseMvc();
             app.UseContent();
 
-            //DbInitializer.Seed(app.ApplicationServices);
+            DbInitializer.Seed(app.ApplicationServices);
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

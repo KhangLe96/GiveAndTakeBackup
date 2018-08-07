@@ -38,6 +38,18 @@ namespace Giveaway.API.Controllers
         }
 
         /// <summary>
+        /// Get profile base on the id of user
+        /// </summary>
+        /// <returns>UserProfileResponse</returns>
+        [Authorize]
+        [HttpGet("{userId}")]
+        [Produces("application/json")]
+        public UserProfileResponse GetProfile(Guid userId)
+        {
+            return _userService.GetUserProfile(userId);
+        }
+
+        /// <summary>
         /// Get list of user with pagination
         /// </summary>
         /// <returns>PagingQueryResponse</returns>
@@ -97,7 +109,7 @@ namespace Giveaway.API.Controllers
         /// Set user's role. Only available for Admin/SuperAdmin 
         /// </summary> 
         /// <returns></returns> 
-        //[Authorize(Roles = Const.Roles.AdminOrAbove)]
+        [Authorize(Roles = Const.Roles.AdminOrAbove)]
         [HttpPut("role/{userId}")]
         [Produces("application/json")]
         public UserProfileResponse SetRole(Guid userId, [FromBody]RoleRequest request)
@@ -110,7 +122,7 @@ namespace Giveaway.API.Controllers
         /// Available values : Activated, Blocked, Deleted
         /// </summary> 
         /// <returns>the updated user profile</returns> 
-        //[Authorize(Roles = Const.Roles.AdminOrAbove)]
+        [Authorize(Roles = Const.Roles.AdminOrAbove)]
         [HttpPut("status/{userId}")]
         [Produces("application/json")]
         public UserProfileResponse ChangeUserStatus(Guid userId, [FromBody]StatusRequest request)
