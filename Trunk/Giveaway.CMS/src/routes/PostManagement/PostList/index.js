@@ -4,6 +4,9 @@ import { Link } from 'dva/router';
 
 export default class index extends React.Component {
 
+  // /Review: use moment and date format to display a datetime, See example in category management
+  // After API fix return status is a string, you need convert that status key to vietnamese :))), update button with text and icon, have divider.
+  // pass id to detail page, don't use title
   columns =
     [
       {

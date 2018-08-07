@@ -42,6 +42,7 @@ namespace Giveaway.API.Controllers
         }
 
         [Authorize]
+        //Review: Should have id in path, it likes delete, update status, or get detail
         [HttpPut("update")]
         [Produces("application/json")]
         public bool Update([FromBody]PostRequest postRequest)

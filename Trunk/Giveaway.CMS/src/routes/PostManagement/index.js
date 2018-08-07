@@ -13,6 +13,7 @@ class AdvancedSearchForm extends React.Component {
 
   componentDidMount() {
     const { posts, dispatch } = this.props;
+    // Review: remove check length, see review in other management to have explain.
     if (posts.length === 0) {
       dispatch({
         type: 'postManagement/fetch',

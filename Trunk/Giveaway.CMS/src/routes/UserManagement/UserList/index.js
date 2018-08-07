@@ -62,7 +62,9 @@ export default class index extends React.Component {
           </span >),
       },
     ];
-
+  // /Review: Should use button with both text and icon to clear. Status converts to Vietnamese pls.
+  // /Role should have comma between roles likes User, Admin. Add one button for block use here.
+  // /If data is null, we should display N/A
   render() {
     const { users, currentPage, totals } = this.props;
     return (

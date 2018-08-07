@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using static Giveaway.Data.EF.Const;
 using DbService = Giveaway.Service.Services;
-//Remove namespace is unused
+//Review: Remove namespace is unused
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
     public class PostService : IPostService
@@ -52,6 +52,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _postService.Create(post, out var isPostSaved);
             
             //Save images of Post
+            //Review: You implement  create images here, but i don't see you update image in Update function, make sure that it works well :))
             if (isPostSaved)
             {
                 var imageDBs = InitImageDB(post);
@@ -75,34 +76,36 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public bool Update(PostRequest postRequest)
         {
             var post = _postService.Find(postRequest.Id);
-
-            Mapper.Map<PostRequest,Post>(postRequest, post);
-
+            
+            Mapper.Map(postRequest, post);
+            //Handle error and through Exception if updating is failed. Should return updated object to client, shouldn't return true.
             return _postService.Update(post);
         }
 
         public bool ChangePostStatusCMS(Guid id, StatusRequest request)
         {
             bool updated = _postService.UpdateStatus(id, request.UserStatus) != null;
-
+            //Review: updated is false should through Exception to inform an error
             return updated;
         }
 
         public bool ChangePostStatusApp(Guid postId, StatusRequest request)
         {
             var post = _postService.Find(postId);
-
+            //Review: handle error, what will happen if postId is invalid so that post is null
             if(request.UserStatus == PostStatus.Open.ToString())
             {
                 post.PostStatus = PostStatus.Open;
+                //Review: should handle error if update fail, orther option that you can use UpdateStatus which handled error to through Exception
                 return _postService.Update(post);
             }
-            else if(request.UserStatus == PostStatus.Close.ToString())
+
+            if(request.UserStatus == PostStatus.Close.ToString())
             {
                 post.PostStatus = PostStatus.Close;
                 return _postService.Update(post);
             }
-            throw new BadRequestException(Const.Error.BadRequest);
+            throw new BadRequestException(Error.BadRequest);
         }
 
         #region Utils

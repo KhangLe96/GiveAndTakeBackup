@@ -9,6 +9,7 @@ import { Button, Popconfirm } from 'antd';
 export default class index extends React.Component {
   componentDidMount() {
     const { posts, dispatch } = this.props;
+    // Review: fetch a post by id, don't use this way.
     if (posts.length === 0) {
       dispatch({
         type: 'postManagement/fetch',

@@ -13,13 +13,13 @@ namespace Giveaway.API.DB
     {
         public static void Seed(IServiceProvider services)
         {
-            SeedRoles(services);
-            SeedAdmin(services);
-            SeedSuperAdmin(services);
-            SeedCategories(services);
-            SeedProvinceCity(services);
-            //SeedPost(services);
-            //SeedImage(services);
+            //SeedRoles(services);
+            //SeedAdmin(services);
+            //SeedSuperAdmin(services);
+            //SeedCategories(services);
+            //SeedProvinceCity(services);
+            SeedPost(services);
+            SeedImage(services);
         }
 
         private static void SeedImage(IServiceProvider services)

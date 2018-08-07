@@ -1,7 +1,9 @@
 import React from 'react';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm } from 'antd';
 import { Link, routerRedux } from 'dva/router';
-import { TABLE_PAGESIZE } from '../../../common/constants';
+import moment from 'moment';
+
+import { DateFormatDisplay, TABLE_PAGESIZE } from '../../../common/constants';
 
 export default class index extends React.Component {
   constructor(props) {
@@ -18,6 +20,7 @@ export default class index extends React.Component {
     });
   }
 
+  // /Review: should have status column, if it is necessary, don't hesitate to request API team to change sth
   columns =
     [
       {
@@ -29,6 +32,7 @@ export default class index extends React.Component {
         title: 'Ngày đăng',
         dataIndex: 'createdTime',
         key: 'createdTime',
+        render: val => <span>{moment.utc(val).local().format(DateFormatDisplay)}</span>,
       },
       {
         title: 'Hành động',
@@ -47,16 +51,20 @@ export default class index extends React.Component {
             >
               <Icon type="delete" />
             </Popconfirm>
-          </span >),
+          </span>),
       },
     ];
+  // /Review: Should use button with text and icon to clear. Should have edit button, change status.
+  // /Why do you pass categories when you delete a category? I don't see you use it in model
 
   render() {
     const { categories, currentPage, totals } = this.props;
     return (
       <Table
         columns={this.columns}
-        dataSource={categories.map((post, key) => { return { ...post, key }; })}
+        dataSource={categories.map((post, key) => {
+          return { ...post, key };
+        })}
         pagination={{
           current: currentPage,
           onChange: this.onPageNumberChange,
