@@ -43,13 +43,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public PostResponse Create(PostRequest postRequest)
+        public PostResponse Create(PostRequest postRequest) 
         {
             var post = Mapper.Map<Post>(postRequest);
-            post = InitPostDB(post);
+            post.Id = Guid.NewGuid();
 
             _postService.Create(post, out var isPostSaved);
             
+            //Save images of Post
             if (isPostSaved)
             {
                 var imageDBs = InitImageDB(post);
@@ -89,18 +90,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
         #region Utils
-
-        private Post InitPostDB(Post post)
-        {
-            post.Id = Guid.NewGuid();
-            post.CreatedTime = DateTimeOffset.Now;
-            post.UpdatedTime = DateTimeOffset.Now;
-
-            //this UserId is just for test and will be got after user has logined
-            post.UserId = Guid.Parse("45f22de6-d5c8-4a7c-95b6-6828d6430c70");
-
-            return post;
-        }
 
         private List<Image> InitImageDB(Post post)
         {

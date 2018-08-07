@@ -37,13 +37,13 @@ namespace Giveaway.API.Controllers
         /// </summary>
         /// <param name="postRequest"></param>
         /// <returns></returns>
-        [Authorize(Roles = Const.Roles.User)]
+        [Authorize]
         [HttpPost("create")]
         [Produces("application/json")]
         public PostResponse Create([FromBody]PostRequest postRequest)
         {
-            postRequest.UserId = User.GetUserId(); 
-            return _postService.Create(postRequest);//
+            postRequest.UserId = User.GetUserId();  
+            return _postService.Create(postRequest);
         }
 
         [Authorize]
