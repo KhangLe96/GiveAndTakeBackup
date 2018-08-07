@@ -63,6 +63,11 @@ export const getNavData = app => [
             path: 'detail/:id',
             component: dynamicWrapper(app, ['categoryManagement'], () => import('../routes/CategoryManagement/Detail')),
           },
+          {
+            name: 'Create new category',
+            path: 'create',
+            component: dynamicWrapper(app, ['categoryManagement'], () => import('../routes/CategoryManagement/Create')),
+          },
         ],
       },
     ],
