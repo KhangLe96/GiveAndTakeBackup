@@ -41,6 +41,8 @@ export default {
           type: 'saveLogin',
           payload: response,
         });
+      } else {
+        yield put(routerRedux.push('/auth'));
       }
     },
     *createUser({ payload, callback }, { call, put }) {
@@ -83,10 +85,6 @@ export default {
     },
     * login({ payload, callback }, { call, put }) {
       yield put({
-        type: 'saveLoginError',
-        payload: {},
-      });
-      yield put({
         type: 'modals/changeLoading',
         payload: true,
       });
@@ -95,8 +93,7 @@ export default {
         type: 'modals/changeLoading',
         payload: false,
       });
-      if (response && response.access_token) {
-        // window.alert('successful');  //Review: use message from ant instead of
+      if (response && response.token !== undefined) {
         message.success('Đăng nhập thành công.')
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('currentUser', JSON.stringify(response));
@@ -104,18 +101,8 @@ export default {
           type: 'saveLogin',
           payload: response,
         });
-        yield put({
-          type: 'saveLoginError',
-          payload: {},
-        });
-
-        yield put({
-          type: 'modals/hide',
-        });
-
         yield put(routerRedux.push('/post-management'));
       } else {
-        // window.alert("Wrong Username or Password");//Review: don't use default alert, ui is not good. You should message from ant to have good UI and UX
         message.error('Tên đăng nhập hoặc mật khẩu sai.');
       }
       yield put({

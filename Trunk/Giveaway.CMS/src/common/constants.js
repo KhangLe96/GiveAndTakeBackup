@@ -6,4 +6,5 @@ export const STATUS_NOT_VERIFIED = 'not_verified';
 export const STATUS_NOT_AUTHORIZED = 'not_authorized';
 export const MAX_RETRIES_COUNT = 3;
 export const RETRIES_SECONDS_COUNTDOWN = 30;
+export const TABLE_PAGESIZE = 10;
 

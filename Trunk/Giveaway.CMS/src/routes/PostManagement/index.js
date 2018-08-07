@@ -1,79 +1,105 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Divider, Card, Button } from 'antd';
-import { Link, routerRedux } from 'dva/router';
-import styles from './postManagement.less';
+import PostList from './PostList';
+import { Input, Select, Button, Form } from 'antd';
 
-const data = require('../Auth/FakeData/post.json');
-// console.log(data);
-const columns = [{
-  title: 'ID',
-  dataIndex: 'postId',
-  key: 'postId',
-  // render: text => <a href="javascript:;">{text}</a>, //Review: don't use a tag, should use Link
-  render: val => <Link to={`/post-management/detail/${val}`}>{val}</Link>,
-}, {
-  title: 'Title',
-  dataIndex: 'title',
-  key: 'title',
-}, {
-  title: 'Address',
-  dataIndex: 'postAddress',
-  key: 'postAddress',
-}, {
-  title: 'Category',
-  dataIndex: 'category',
-  key: 'category',
-}, {
-  title: 'Day Post',
-  dataIndex: 'dayPost',
-  key: 'dayPost',
-}, {
-  title: 'Action',
-  dataIndex: 'dayPost',
-  render: object => (
-    <span>
-      <Link to={`/post-management/edit/${object && object.id}`}>Edit</Link>
-      <Divider type="vertical" />
-      <Link to="/">Block</Link>
-      <Divider type="vertical" />
-      <Link to="/">Delete</Link>
-    </span>),
-}];
+const FormItem = Form.Item;
+const Option = Select.Option;
 
-
-@connect(state => ({
-  postManagement: state.postManagement,
+@connect(({ modals, postManagement }) => ({
+  ...modals, ...postManagement,
 }))
-// Review: class ReportMNG extends React.Component {
-export default class index extends React.Component {
-  state = {};
+class AdvancedSearchForm extends React.Component {
 
-  navigateToCreatePage = () => {
-    this.props.dispatch(routerRedux.push('/post-management/create'));
+  componentDidMount() {
+    const { posts, dispatch } = this.props;
+    if (posts.length === 0) {
+      dispatch({
+        type: 'postManagement/fetch',
+        payload: {},
+      });
+    }
+    // this.props.posts.refetch();
+    console.log(this.props.posts);
   }
 
-  render() {
-    const { loading } = this.props;
-    return (<div>
-      {/* <text style={{color: 'red', fontSize: 20, fontWeight: 'bold'}}> Please click ID number to edit the Report</text> */}
-      <div className="containerHeader">
-        <h1>Post Management</h1>
-        <div className="rightButton">
-          <Button type="primary" onClick={() => this.navigateToCreatePage()}>
-              Thêm mới post
-          </Button>
-        </div>
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        if (values.typeSelect === 'categoryName') {
+          this.state.requestValue = {
+            categoryName: values.searchValue,
+          };
+        }
+        if (values.typeSelect === 'postStatus') {
+          this.state.requestValue = {
+            postStatus: values.searchValue,
+          };
+        }
+        if (values.typeSelect === 'address') {
+          this.state.requestValue = {
+            address: values.searchValue,
+          };
+        }
+        console.log(this.state.requestValue);
+        const c = this.state.requestValue;
+        const { dispatch } = this.props;
+        if (!err) {
+          dispatch({
+            type: 'postManagement/findPost',
+            payload: { ...c },
+          });
+        }
+      }
+    });
+  }
+  render() {
+    const { getFieldDecorator } = this.props.form;
+    const { posts } = this.props;
+    return (
+      <div>
+        <div className="containerHeader">
+          <h1>Quản lý bài đăng</h1>
+        </div>
+        <div hidden>
+          <Form layout="inline" onSubmit={this.handleSubmit} className="AdvancedSearchForm">
+            <FormItem>
+              {getFieldDecorator('typeSelect')(
+                <Select
+                  style={{ width: 200 }}
+                  placeholder="Select type to filter"
+                  optionFilterProp="children"
+                  size="large"
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                >
+                  <Option value="postStatus">Status</Option>
+                  <Option value="categoryName">Category Name</Option>
+                  <Option value="address">Address</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('searchValue')(
+                <Input size="large" style={{ width: 500 }} />
+              )}
+            </FormItem>
+            <FormItem>
+              <Button type="primary" htmlType="submit" >
+                Search
+              </Button>
+            </FormItem>
+          </Form>
+        </div>
+        <div className="containerBody">
+          <PostList
+            posts={posts}
+            dispatch={this.props.dispatch}
+          />
+        </div>
       </div>
-      <div className="containerBody">
-        <Table
-          columns={columns}
-          dataSource={data.posts}
-          pagination={{ pageSize: 10 }}
-        />
-      </div>
-    </div>
     );
   }
 }
+export default Form.create()(AdvancedSearchForm);

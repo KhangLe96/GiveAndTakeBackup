@@ -15,9 +15,9 @@ export const getNavData = app => [
     path: '',
     children: [
       {
-        name: 'Post Management',
+        name: 'Quản lý bài đăng',
         path: 'post-management', // should use format report-management to have friendly url
-        icon: 'data',
+        icon: 'dashboard',
         children: [
           {
             name: 'List post',
@@ -27,17 +27,24 @@ export const getNavData = app => [
           {
             name: 'Detail',
             path: 'detail/:id',
-            component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Detail')),
+            component: dynamicWrapper(app, ['postManagement'], () => import('../routes/PostManagement/Detail')),
+          },
+        ],
+      },
+      {
+        name: 'Quản lý người dùng',
+        path: 'user-management', // should use format report-management to have friendly url
+        icon: 'data',
+        children: [
+          {
+            name: 'List User',
+            path: '',
+            component: dynamicWrapper(app, ['userManagement'], () => import('../routes/UserManagement')),
           },
           {
-            name: 'Create',
-            path: 'create',
-            component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Create')),
-          },
-          {
-            name: 'Edit',
-            path: 'edit/:id',
-            component: dynamicWrapper(app, ['passport'], () => import('../routes/PostManagement/Edit')),
+            name: 'Detail',
+            path: 'detail/:id',
+            component: dynamicWrapper(app, ['userManagement'], () => import('../routes/UserManagement/Detail')),
           },
         ],
       },

@@ -1,33 +1,56 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
+import { fetch, deletePost, findPost } from '../services/post';
 
 export default {
-  namespace: 'postManagement', /* should be the same with file name   //Review: make attention with the way to named, it should clear to anyone understand easily */
+  namespace: 'postManagement', /* should be the same with file name */
 
   state: {
-    data: {
-      list: [],
-      pagination: {},
-    },
-    loading: false,
+    posts: [],
   },
 
   effects: {
     * fetch({ payload }, { call, put }) {
+      const response = yield call(fetch, payload);
+      if (response) {
+        yield put({
+          type: 'savePost',
+          payload: { posts: response.results },
+        });
+      }
+    },
+    * findPost({ payload }, { call, put }) {
+      const posts = yield call(findPost, payload);
+      if (posts) {
+        yield put({
+          type: 'savePost',
+          payload,
+        });
+      }
+    },
+    * delete({ payload }, { call, put }) {
+      const response = yield call(deletePost, payload);
+      if (response) {
+        yield put({
+          type: 'deletePost',
+          payload,
+        });
+      }
     },
   },
 
   reducers: {
-    save(state, action) {
+    savePost(state, action) {
       return {
         ...state,
-        data: action.payload,
+        ...action.payload,
       };
     },
-    changeLoading(state, action) {
+    deletePost(state, action) {
+      const { id, posts } = action.payload;
       return {
         ...state,
-        loading: action.payload,
+        posts: posts.filter(post => post.postId !== id),
       };
     },
   },

@@ -1,5 +1,6 @@
 import fetch from 'dva/fetch';
 import conf from 'json!../common/conf.json';
+import { stringify } from 'qs';
 import { routerRedux } from 'dva/router';
 import store from '../index';
 
@@ -28,10 +29,10 @@ function prepare_api_url_upload(url) {
 
 function prepare_options(options) {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  if (currentUser && currentUser.access_token !== undefined) {
+  if (currentUser && currentUser.token !== undefined) {
     options.headers = {
       ...options.headers,
-      Authorization: `Bearer ${currentUser.access_token}`,
+      Authorization: `Bearer ${currentUser.token}`,
     };
   }
   return options;
@@ -63,6 +64,10 @@ export default function request(url, options) {
   let opts = options || {};
   opts = prepare_options(opts);
   const newOptions = { ...defaultOptions, ...opts };
+  if (newOptions.method === 'GET') {
+    url += `/?${stringify(newOptions.body)}`;
+    newOptions.body = undefined;
+  }
   if (newOptions.method === 'POST'
     || newOptions.method === 'PUT'
     || newOptions.method === 'PATCH'
@@ -84,22 +89,6 @@ export default function request(url, options) {
     .catch((error) => {
       return error;
     });
-}
-export function fakelogin(username, password) {
-  const data = require('../routes/Auth/FakeData/users.json');
-  const users = data.users;
-  for (let index = 0; index < users.length; index++) {
-    const user = users[index];
-    if (user.username == username && user.password == password) // Review: should use === instead of ==
-    {
-      return (
-        {
-          access_token: 'asdkjxklcj12asdlsd',
-        }
-      );
-    }
-  }
-  return false;
 }
 
 export function requestUpload(url, options) {

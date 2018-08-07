@@ -29,7 +29,7 @@ export default class Login extends PureComponent {
           type: 'passport/login',
           payload: {
             password: values.password,
-            login: values.userName,
+            username: values.userName,
           },
         });
       }
@@ -53,7 +53,6 @@ export default class Login extends PureComponent {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { loginErrors } = this.props;
 
     return (
       <Spin spinning={this.props.loading}>
@@ -61,8 +60,9 @@ export default class Login extends PureComponent {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <div className={cx('content_center')}>
               <img
-                style={{ width: '400px', height: '135px', zIndex: '10', marginBottom: '50px' }}
+                style={{ width: '338px', height: '272px', zIndex: '10', marginBottom: '50px' }}
                 src="/images/img_logo_login.png"
+                alt=""
               />
             </div>
             <span>
@@ -82,7 +82,7 @@ export default class Login extends PureComponent {
             </FormItem>
 
             <span>
-          Mật khẩu
+              Mật khẩu
             </span>
             <FormItem>
               {getFieldDecorator('password', {

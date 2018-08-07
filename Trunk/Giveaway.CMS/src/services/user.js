@@ -1,15 +1,25 @@
 import request from '../utils/request';
 
-export async function queryCurrent() {
-  return request('/passport/profile/me');
+const ROOT_PATH = '/user';
+
+export function fetch(params) {
+  const options = {
+    method: 'GET',
+    body: {
+      ...params,
+    },
+  };
+  return request(`${ROOT_PATH}/getList`, options);
 }
 
-export async function updateProfile() {
+export async function changeStatus(params) {
+  const { id } = params;
   const options = {
     method: 'PUT',
     body: {
-      ...params
+      status: params.status,
     },
   };
-  return request(`/passport/profile/me`, options);
+  return request(`${ROOT_PATH}/status/${id}`, options);
 }
+
