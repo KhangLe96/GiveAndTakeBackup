@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
 
-import {connect} from 'dva';
-import {Link, Route, Redirect, Switch, routerRedux} from 'dva/router';
-import {Popover, Layout, Menu, Icon, Avatar, Dropdown, Tag, message, Spin} from 'antd';
+import { connect } from 'dva';
+import { Link, Route, Redirect, Switch, routerRedux } from 'dva/router';
+import { Popover, Layout, Menu, Icon, Avatar, Dropdown, Tag, message, Spin } from 'antd';
 import cx from 'classnames';
 
 import NoticeIcon from 'ant-design-pro/lib/NoticeIcon';
@@ -13,16 +13,16 @@ import GlobalFooter from 'ant-design-pro/lib/GlobalFooter';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import classNames from 'classnames';
-import {ContainerQuery} from 'react-container-query';
+import { ContainerQuery } from 'react-container-query';
 
 import styles from './BasicLayout.less';
 import SidebarIcon from './SidebarIcon';
 
-import {DEFAULT_AVATAR_URL} from '../common/constants';
+import { DEFAULT_AVATAR_URL } from '../common/constants';
 import MainModal from './MainModal';
 
-const {Header, Sider, Content} = Layout;
-const {SubMenu} = Menu;
+const { Header, Sider, Content } = Layout;
+const { SubMenu } = Menu;
 
 const query = {
   'screen-xs': {
@@ -62,7 +62,7 @@ class BasicLayout extends React.PureComponent {
   }
 
   getChildContext() {
-    const {location, navData, getRouteData} = this.props;
+    const { location, navData, getRouteData } = this.props;
     const routeData = getRouteData('BasicLayout');
     const firstMenuData = navData.reduce((arr, current) => arr.concat(current.children), []);
     const menuData = this.getMenuData(firstMenuData, '');
@@ -71,7 +71,7 @@ class BasicLayout extends React.PureComponent {
     routeData.concat(menuData).forEach((item) => {
       breadcrumbNameMap[item.path] = item.name;
     });
-    return {location, breadcrumbNameMap};
+    return { location, breadcrumbNameMap };
   }
 
   componentDidMount() {
@@ -85,7 +85,7 @@ class BasicLayout extends React.PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if (!localStorage.getItem('currentUser')) {
-      // this.props.dispatch(routerRedux.push('/auth/login'));
+      this.props.dispatch(routerRedux.push('/auth/login'));
     }
   }
 
@@ -93,7 +93,7 @@ class BasicLayout extends React.PureComponent {
     clearTimeout(this.resizeTimeout);
   }
 
-  onMenuClick = ({key}) => {
+  onMenuClick = ({ key }) => {
     if (key === 'logout') {
       this.props.dispatch({
         type: 'passport/logout',
@@ -105,7 +105,7 @@ class BasicLayout extends React.PureComponent {
     let arr = [];
     data.forEach((item) => {
       if (item.children) {
-        arr.push({path: `${parentPath}/${item.path}`, name: item.name});
+        arr.push({ path: `${parentPath}/${item.path}`, name: item.name });
         arr = arr.concat(this.getMenuData(item.children, `${parentPath}/${item.path}`));
       }
     });
@@ -122,7 +122,7 @@ class BasicLayout extends React.PureComponent {
   }
 
   getCurrentMenuSelectedKeys(props) {
-    const {location: {pathname}} = props || this.props;
+    const { location: { pathname } } = props || this.props;
     const keys = pathname.split('/').slice(1);
     if (keys.length === 1 && keys[0] === '') {
       return [this.menus[0].key];
@@ -150,7 +150,7 @@ class BasicLayout extends React.PureComponent {
             title={
               item.icon ? (
                 <span>
-                  <Icon type={item.icon}/>
+                  <Icon type={item.icon} />
                   <span>{item.name}</span>
                 </span>
               ) : item.name
@@ -162,21 +162,21 @@ class BasicLayout extends React.PureComponent {
         );
       }
       const renderIcon = (fn) => {
-        return item.icon && <SidebarIcon name={item.icon} size="2x" state={fn() ? 'hover' : 'normal'}/>;
+        return item.icon && <SidebarIcon name={item.icon} size="2x" state={fn() ? 'hover' : 'normal'} />;
       };
 
       return (
         <Menu.Item
           key={item.key || item.path}
           onMouseEnter={(e) => {
-            this.setState({...this.state, currentHoverMenuItemKey: item.path});
+            this.setState({ ...this.state, currentHoverMenuItemKey: item.path });
           }}
         >
           <Link
             to={itemPath}
             target={item.target}
             replace={itemPath === this.props.location.pathname}
-            onMouseLeave={e => this.setState({...this.state, currentHoverMenuItemKey: ''})}
+            onMouseLeave={e => this.setState({ ...this.state, currentHoverMenuItemKey: '' })}
           >
             {renderIcon(() => (this.props.location.pathname.indexOf(itemPath) >= 0 || this.state.currentHoverMenuItemKey === item.path))}<span>{item.name}</span>
           </Link>
@@ -187,8 +187,8 @@ class BasicLayout extends React.PureComponent {
   }
 
   getPageTitle() {
-    const {location, getRouteData} = this.props;
-    const {pathname} = location;
+    const { location, getRouteData } = this.props;
+    const { pathname } = location;
     let title = 'Cho và Nhận';
     getRouteData('BasicLayout').forEach((item) => {
       if (item.path === pathname) {
@@ -199,12 +199,12 @@ class BasicLayout extends React.PureComponent {
   }
 
   getNoticeData() {
-    const {notices = []} = this.props;
+    const { notices = [] } = this.props;
     if (notices.length === 0) {
       return {};
     }
     const newNotices = notices.map((notice) => {
-      const newNotice = {...notice};
+      const newNotice = { ...notice };
       if (newNotice.datetime) {
         newNotice.datetime = moment(notice.datetime).fromNow();
       }
@@ -219,7 +219,7 @@ class BasicLayout extends React.PureComponent {
           urgent: 'red',
           doing: 'gold',
         })[newNotice.status];
-        newNotice.extra = <Tag color={color} style={{marginRight: 0}}>{newNotice.extra}</Tag>;
+        newNotice.extra = <Tag color={color} style={{ marginRight: 0 }}>{newNotice.extra}</Tag>;
       }
       return newNotice;
     });
@@ -251,7 +251,7 @@ class BasicLayout extends React.PureComponent {
   };
 
   render() {
-    const {currentUser, collapsed, fetchingNotices, getRouteData} = this.props;
+    const { currentUser, collapsed, fetchingNotices, getRouteData } = this.props;
 
     const renderAvatar = (size) => {
       let url = '';
@@ -259,27 +259,20 @@ class BasicLayout extends React.PureComponent {
         url = currentUser.profile.photo[size];
       }
       return url.indexOf('http') > 0 ?
-        <Avatar src={currentUser.profile.photo[size]}/>
-        : <Avatar src={DEFAULT_AVATAR_URL}/>;
+        <Avatar src={currentUser.profile.photo[size]} />
+        : <Avatar src={DEFAULT_AVATAR_URL} />;
     };
     const renderUserNameDisplay = () => {
       if (currentUser && currentUser.profile) {
-        return `${currentUser.profile.familyName} ${currentUser.profile.givenName}`;
+        return `${currentUser.profile.firstName} ${currentUser.profile.lastName}`;
       }
     };
     const renderRole = () => {
       if (currentUser && currentUser.profile) {
         const role = currentUser.profile;
         switch (role) {
-          case 'superadmin':
-            return 'Super Administrator';
-          case 'teacher':
-            return 'Giáo viên';
-          case 'student':
-            return 'Sinh viên';
-          case 'admin':
           default:
-            return 'Administrator';
+            return '';
         }
       }
     };
@@ -295,9 +288,9 @@ class BasicLayout extends React.PureComponent {
           </div>
         </div>
         <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-          <Menu.Item><Link to="/administrator/profile"><Icon type="user"/>Thông tin cá nhân</Link></Menu.Item>
-          <Menu.Divider/>
-          <Menu.Item key="logout"><a><Icon type="logout"/>Đăng xuất</a></Menu.Item>
+          <Menu.Item><Link to="/administrator/profile"><Icon type="user" />Thông tin cá nhân</Link></Menu.Item>
+          <Menu.Divider />
+          <Menu.Item key="logout"><a><Icon type="logout" />Đăng xuất</a></Menu.Item>
         </Menu>
       </div>
     );
@@ -321,7 +314,7 @@ class BasicLayout extends React.PureComponent {
         >
           <div className={styles.logo}>
             <Link to="/">
-              <img src="/images/logo.png" alt="logo"/>
+              <img src="/images/logo.png" alt="logo" />
               <span style={{
                 color: 'white',
                 fontSize: '22px',
@@ -337,13 +330,13 @@ class BasicLayout extends React.PureComponent {
             {...menuProps}
             onOpenChange={this.handleOpenChange}
             selectedKeys={this.getCurrentMenuSelectedKeys()}
-            style={{margin: '16px 0', width: '100%'}}
+            style={{ margin: '16px 0', width: '100%' }}
           >
             {this.getNavMenuItems(this.menus)}
           </Menu>
         </Sider>
         <Layout>
-          <MainModal/>
+          <MainModal />
           <Header className={styles.header}>
             <div className={styles.right}>
               <Popover
@@ -364,7 +357,7 @@ class BasicLayout extends React.PureComponent {
                 onClear={this.handleNoticeClear}
                 onPopupVisibleChange={this.handleNoticeVisibleChange}
                 loading={fetchingNotices}
-                popupAlign={{offset: [20, -16]}}
+                popupAlign={{ offset: [20, -16] }}
               >
                 <NoticeIcon.Tab
                   list={noticeData.notice}
@@ -396,7 +389,7 @@ class BasicLayout extends React.PureComponent {
               {/* </div> */}
             </div>
           </Header>
-          <Content style={{height: '100%', padding: '20px'}}>
+          <Content style={{ height: '100%', padding: '20px' }}>
             <Switch>
               {
                 getRouteData('BasicLayout').map(item =>
@@ -411,7 +404,7 @@ class BasicLayout extends React.PureComponent {
                   ),
                 )
               }
-              <Redirect exact from="/" to="/dashboard"/>
+              <Redirect exact from="/" to="/dashboard" />
             </Switch>
             <GlobalFooter
               links={[{
@@ -421,7 +414,7 @@ class BasicLayout extends React.PureComponent {
               }]}
               copyright={
                 <div>
-                  Copyright <Icon type="copyright"/> 2018 ChoVaNhan
+                  Copyright <Icon type="copyright" /> 2018 ChoVaNhan
                 </div>
               }
             />

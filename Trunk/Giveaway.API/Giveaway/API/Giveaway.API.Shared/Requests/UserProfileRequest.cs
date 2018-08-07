@@ -34,6 +34,7 @@ namespace Giveaway.API.Shared.Requests
 	    public string Address { get; set; }
 
 	    [DataMember(Name = "gender")]
+        //Review: should send 1 string instead of Enum type, we need more clear
 	    public Gender Gender { get; set; }
 
 	    [DataMember(Name = "email")]

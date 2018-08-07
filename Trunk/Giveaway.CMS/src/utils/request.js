@@ -1,6 +1,7 @@
 import fetch from 'dva/fetch';
 import conf from 'json!../common/conf.json';
 import { stringify } from 'qs';
+import { message } from 'antd';
 import { routerRedux } from 'dva/router';
 import store from '../index';
 
@@ -9,6 +10,7 @@ function checkStatus(response) {
     return response;
   }
 
+  const { dispatch } = this.props;
   if (response.status === 401) {
     localStorage.clear();
     return;
@@ -84,7 +86,9 @@ export default function request(url, options) {
     .then(checkEmptyResponse)
     .then(prepareJsonData)
     .catch((error) => {
-      if (error && error.response) { return error.response.json(); }
+      if (error && error.response) {
+        return error.response.json();
+      }
     })
     .catch((error) => {
       return error;
@@ -115,9 +119,14 @@ export function requestUpload(url, options) {
     .then(checkEmptyResponse)
     .then(prepareJsonData)
     .catch((error) => {
-      if (error && error.response) { return error.response.json(); }
+      if (error && error.response) {
+        const errorObject = error.response.json();
+        message.error(errorObject && errorObject.message);
+        return error.response.json();
+      }
     })
     .catch((error) => {
+      message.error(error && error.message);
       return error;
     });
 }

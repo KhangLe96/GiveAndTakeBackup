@@ -56,6 +56,7 @@ export default class index extends React.Component {
   }
 
   handleOnConfirm = () => {}
+
   renderDetail(newResult) {
     const { status, id, username, firstName, lastName, birthdate, email, phoneNumber, gender, address, role } = newResult !== null ? newResult : null;
     return (
@@ -68,7 +69,7 @@ export default class index extends React.Component {
               onConfirm={() => {
                   const { dispatch, users } = this.props;
                   // this.setState({
-                  //   activateStatus: 
+                  //   activateStatus:
                   // });
                   const newStatus = status === 'Blocked' ? 'Activated' : 'Blocked';
                   console.log(newStatus);

@@ -9,6 +9,7 @@ import { Input, Select, Button } from 'antd';
 export default class index extends React.Component {
   componentDidMount() {
     const { users, dispatch } = this.props;
+    // Review: remove check length here, allow fetch new data
     if (users.length === 0) {
       dispatch({
         type: 'userManagement/fetch',
