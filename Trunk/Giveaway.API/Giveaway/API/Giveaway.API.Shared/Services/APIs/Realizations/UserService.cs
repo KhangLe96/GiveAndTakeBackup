@@ -43,10 +43,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public User GetUser(Guid userId)
         {
             var user = _userService.Find(userId);
-            if (user.EntityStatus == EntityStatus.Deleted)
-            {
-                throw new BadRequestException(Const.Error.NotFound);
-            }
             return user;
         }
 

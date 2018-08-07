@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Giveaway.API.Shared.Extensions;
@@ -21,14 +23,13 @@ namespace Giveaway.API.Shared.Helpers
 
         public static Token CreateToken(string username, Guid id, string fullname, string[] roles)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, username),
                 new Claim(ClaimTypes.Sid, id.ToString()),
-                new Claim(ClaimTypes.Name, fullname),
-                new Claim(ClaimTypes.Role, roles.ToString()),
+                new Claim(ClaimTypes.Name, fullname)
             };
-
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
             var token = new JwtSecurityToken(
                 Const.Jwt.Issuer,
                 Const.Jwt.Audience,
