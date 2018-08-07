@@ -1,29 +1,25 @@
 import request from '../utils/request';
 
-import { fakeFetchUser, fakeDeletePost } from '../utils/fakeUtils';
-export async function queryCurrent() {
-  return request('/passport/profile/me');
-}
+const ROOT_PATH = '/user';
 
-export async function updateProfile() {
-  const options = {
-    method: 'PUT',
-    body: {
-      ...params
-    },
-  };
-  return request('/passport/profile/me', options);
-}
-
-export function fetchUser(params) {
+export function fetch(params) {
   const options = {
     method: 'GET',
     body: {
       ...params,
     },
   };
-  // return request('/post/get/', options);
-
-  // fake data
-  return fakeFetchUser();
+  return request(`${ROOT_PATH}/getList`, options);
 }
+
+export async function changeStatus(params) {
+  const { id } = params;
+  const options = {
+    method: 'PUT',
+    body: {
+      status: params.status,
+    },
+  };
+  return request(`${ROOT_PATH}/status/${id}`, options);
+}
+

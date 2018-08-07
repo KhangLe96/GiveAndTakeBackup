@@ -15,7 +15,7 @@ export const getNavData = app => [
     path: '',
     children: [
       {
-        name: 'Post Management',
+        name: 'Quản lý bài đăng',
         path: 'post-management', // should use format report-management to have friendly url
         icon: 'dashboard',
         children: [
@@ -32,7 +32,7 @@ export const getNavData = app => [
         ],
       },
       {
-        name: 'User Management',
+        name: 'Quản lý người dùng',
         path: 'user-management', // should use format report-management to have friendly url
         icon: 'data',
         children: [
@@ -41,11 +41,11 @@ export const getNavData = app => [
             path: '',
             component: dynamicWrapper(app, ['userManagement'], () => import('../routes/UserManagement')),
           },
-          // {
-          //   name: 'Detail',
-          //   path: 'detail/:id',
-          //   component: dynamicWrapper(app, ['postManagement'], () => import('../routes/UserManagement/Detail')),
-          // },
+          {
+            name: 'Detail',
+            path: 'detail/:id',
+            component: dynamicWrapper(app, ['userManagement'], () => import('../routes/UserManagement/Detail')),
+          },
         ],
       },
     ],

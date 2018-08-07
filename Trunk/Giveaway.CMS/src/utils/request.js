@@ -1,5 +1,6 @@
 import fetch from 'dva/fetch';
 import conf from 'json!../common/conf.json';
+import { stringify } from 'qs';
 import { routerRedux } from 'dva/router';
 import store from '../index';
 
@@ -28,10 +29,10 @@ function prepare_api_url_upload(url) {
 
 function prepare_options(options) {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  if (currentUser && currentUser.access_token !== undefined) {
+  if (currentUser && currentUser.token !== undefined) {
     options.headers = {
       ...options.headers,
-      Authorization: `Bearer ${currentUser.access_token}`,
+      Authorization: `Bearer ${currentUser.token}`,
     };
   }
   return options;
@@ -64,6 +65,7 @@ export default function request(url, options) {
   opts = prepare_options(opts);
   const newOptions = { ...defaultOptions, ...opts };
   if (newOptions.method === 'GET') {
+    url += `/?${stringify(newOptions.body)}`;
     newOptions.body = undefined;
   }
   if (newOptions.method === 'POST'

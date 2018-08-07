@@ -10,18 +10,17 @@ const Option = Select.Option;
   ...modals, ...postManagement,
 }))
 class AdvancedSearchForm extends React.Component {
-  state = {
-    expand: false,
-  };
 
   componentDidMount() {
     const { posts, dispatch } = this.props;
     if (posts.length === 0) {
       dispatch({
-        type: 'postManagement/fetchPost',
+        type: 'postManagement/fetch',
         payload: {},
       });
     }
+    // this.props.posts.refetch();
+    console.log(this.props.posts);
   }
 
 
@@ -59,11 +58,10 @@ class AdvancedSearchForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { posts } = this.props;
-    console.log(posts);
     return (
       <div>
         <div className="containerHeader">
-          <h1>Post Management</h1>
+          <h1>Quản lý bài đăng</h1>
         </div>
         <div hidden>
           <Form layout="inline" onSubmit={this.handleSubmit} className="AdvancedSearchForm">
@@ -94,7 +92,6 @@ class AdvancedSearchForm extends React.Component {
             </FormItem>
           </Form>
         </div>
-        <br />
         <div className="containerBody">
           <PostList
             posts={posts}

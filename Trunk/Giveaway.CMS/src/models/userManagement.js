@@ -1,27 +1,37 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-import { fetchUser, deletePost } from '../services/user';
+import { fetch, deletePost, changeStatus } from '../services/user';
+
+const DEFAULT_CURRENT_PAGE = 1;
 
 export default {
   namespace: 'userManagement', /* should be the same with file name */
 
   state: {
     users: [],
+    currentPage: DEFAULT_CURRENT_PAGE,
+    totals: 0,
   },
 
   effects: {
-    * fetchUser(payload, { call, put }) {
-      const users = yield call(fetchUser, payload);
-      yield put({
-        type: 'saveUser',
-        payload: users,
-      });
-    },
-    * banUser({ payload }, { call, put }) {
-      const response = yield call(banUser, payload);
+    * fetch({ payload }, { call, put }) {
+      const response = yield call(fetch, payload);
       if (response) {
         yield put({
-          type: 'banAUser',
+          type: 'save',
+          payload: {
+            users: response.results,
+            currentPage: (payload.page) ? payload.page : DEFAULT_CURRENT_PAGE,
+            totals: response.pagination.totals,
+          },
+        });
+      }
+    },
+    * changeStatus({ payload }, { call, put }) {
+      const response = yield call(changeStatus, payload);
+      if (response) {
+        yield put({
+          type: 'fetch',
           payload,
         });
       }
@@ -29,17 +39,10 @@ export default {
   },
 
   reducers: {
-    saveUser(state, action) {
+    save(state, action) {
       return {
         ...state,
-        users: action.payload,
-      };
-    },
-    banAUser(state, action) {
-      const { id, users } = action.payload;
-      return {
-        ...state,
-        users: users.filter(user => user.userId !== id),
+        ...action.payload,
       };
     },
   },

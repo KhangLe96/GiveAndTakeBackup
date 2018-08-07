@@ -7,46 +7,37 @@ export default class index extends React.Component {
   columns =
     [
       {
-        title: 'ID',
-        dataIndex: 'postId',
-        key: 'postId',
+        title: 'Tiêu đề',
+        dataIndex: 'title',
+        key: 'title',
         render: val => <Link to={`/post-management/detail/${val}`}>{val}</Link>,
       },
       {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-      },
-      {
-        title: 'Address',
-        dataIndex: 'postAddress',
-        key: 'postAddress'
+        title: 'Địa chỉ',
+        dataIndex: 'address.provinceCityName',
+        key: 'address.provinceCityName',
       },
       {
         title: 'Category',
-        dataIndex: 'category',
-        key: 'category',
+        dataIndex: 'category.categoryName',
+        key: 'category.categoryName',
 
       }, {
-        title: 'Day Post',
-        dataIndex: 'dayPost',
+        title: 'Ngày đăng',
+        dataIndex: 'createdTime',
         key: 'dayPost',
       }, {
-        title: 'User',
-        dataIndex: 'userPost',
-        key: 'userPost',
+        title: 'Trạng thái',
+        dataIndex: 'postStatus',
+        key: 'postStatus',
       }, {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-      }, {
-        title: 'Action',
+        title: 'Hành động',
         dataIndex: 'postId',
         key: 'Action',
         render: id => (
           <span>
             <Popconfirm
-              title="Bạn chắc chắn muốn xóa?"
+              title="Bạn chắc chắn muốn ẩn bài đăng này?"
               onConfirm={() => {
                 const { dispatch, posts } = this.props;
                 dispatch({
@@ -59,7 +50,6 @@ export default class index extends React.Component {
                 <Icon type="delete" />
               </button>
             </Popconfirm>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Popconfirm
               title="Ban User?"
             >

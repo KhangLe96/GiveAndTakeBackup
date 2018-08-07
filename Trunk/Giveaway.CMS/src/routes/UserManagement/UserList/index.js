@@ -1,59 +1,62 @@
 import React from 'react';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm, Input } from 'antd';
-import { Link } from 'dva/router';
+import { Link, routerRedux } from 'dva/router';
+import { TABLE_PAGESIZE } from '../../../common/constants';
 
-export default class index1 extends React.Component {
+export default class index extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onPageNumberChange = this.onPageNumberChange.bind(this);
+  }
+
+  onPageNumberChange(page, pageSize) {
+    const { dispatch } = this.props;
+    const payload = { page, limit: pageSize };
+    dispatch({
+      type: 'userManagement/fetch',
+      payload,
+    });
+  }
+
   columns =
     [
       {
-        title: 'ID',
-        dataIndex: 'userId',
-        key: 'userId',
-        value: 'abc',
-        render: val => <Link to={`/post-management/detail/${val}`}>{val}</Link>,
+        title: 'Tên',
+        // dataIndex: 'firstName',
+        key: 'firstName',
+        render: record => <Link to={`/user-management/detail/${record.id}`}>{record.username}</Link>,
       },
       {
-        title: 'Name',
-        dataIndex: 'userName',
-        key: 'userName',
+        title: 'Địa chỉ',
+        dataIndex: 'address',
+        key: 'address',
       },
       {
-        title: 'Address',
-        dataIndex: 'userAddress',
-        key: 'userAddress',
-      },
-      {
-        title: 'Email',
-        dataIndex: 'email',
-        key: 'email',
+        title: 'Trạng thái',
+        dataIndex: 'status',
+        key: 'status',
 
       }, {
         title: 'Role',
         dataIndex: 'role',
         key: 'role',
       }, {
-        title: 'Action',
+        title: 'Hành động',
         dataIndex: 'userId',
         key: 'Action',
         render: id => (
           <span>
-            {/* <Popconfirm
-              title="Bạn chắc chắn muốn xóa?"
-              // onConfirm={() => {
-              //   const { dispatch, users } = this.props;
-              //   dispatch({
-              //     type: 'postManagement/deletePost',
-              //     payload: { posts, id },
-              //   });
-              }}
-            >
-              <button>
-                <Icon type="delete" />
-              </button>
-            </Popconfirm> */}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Popconfirm
-              title="Ban User?"
+              title="Bạn chắc chắn muốn block người dùng này ?"
+              onConfirm={() => {
+                const { dispatch, users } = this.props;
+                const id = this.props.match.params;
+                const status = 'Blocked';
+                dispatch({
+                  type: 'userManagement/changeStatus',
+                  payload: { status, ...id },
+                });
+              }}
             >
               <button>
                 <Icon type="warning" />
@@ -64,12 +67,17 @@ export default class index1 extends React.Component {
     ];
 
   render() {
-    const { users } = this.props;
+    const { users, currentPage, totals } = this.props;
     return (
       <Table
         columns={this.columns}
         dataSource={users.map((user, key) => { return { ...user, key }; })}
-        pagination={{ pageSize: 10 }}
+        pagination={{
+          current: currentPage,
+          onChange: this.onPageNumberChange,
+          pageSize: TABLE_PAGESIZE,
+          total: totals,
+        }}
       />
     );
   }

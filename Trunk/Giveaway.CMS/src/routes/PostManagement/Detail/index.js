@@ -11,7 +11,7 @@ export default class index extends React.Component {
     const { posts, dispatch } = this.props;
     if (posts.length === 0) {
       dispatch({
-        type: 'postManagement/fetchPost',
+        type: 'postManagement/fetch',
         payload: {},
       });
     }
@@ -39,14 +39,14 @@ export default class index extends React.Component {
       ? (
         <div>
           <div className="containerHeader">
-            <h1>Chi tiết</h1>
+            <h1>Chi tiết bài đăng</h1>
             <div className="rightButton">
               <Popconfirm
                 title="Bạn chắc chắn muốn xóa?"
                 onConfirm={() => this.navigateToEditPage()}
               >
                 <Button type="primary">
-                  Delete
+                  Ẩn Post
                 </Button>
               </Popconfirm>
             </div>
@@ -54,9 +54,9 @@ export default class index extends React.Component {
           </div>
           <div className="containerBody">
             <h3> Post Id        : {result[0].postId}</h3>
-            <h3> Title          : {result[0].title} </h3>
-            <h3> Description    : {result[0].description} </h3>
-            <h3> Address        : {result[0].postAddress} </h3>
+            <h3> Tiêu đề        : {result[0].title} </h3>
+            <h3> Mô tả          : {result[0].description} </h3>
+            <h3> Địa chỉ        : {result[0].postAddress} </h3>
             <h3> Category       : {result[0].category} </h3>
             <h3> User           : {result[0].userPost} </h3>
             <div>

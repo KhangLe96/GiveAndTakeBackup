@@ -1,39 +1,31 @@
 import request from '../utils/request';
 import { stringify } from 'qs';
 
+const ROOT_PATH = '/post';
 
-
-// fake data
-import { fakeFetchPost, fakeDeletePost } from '../utils/fakeUtils';
-
-
-export async function fetchPost(params) {
+export async function fetch(params) {
   const options = {
     method: 'GET',
     body: {
       ...params,
     },
   };
-  return request('/post/getAll', options);
-  // fake data
-  // return fakeFetchPost();
+  return request(`${ROOT_PATH}/getList`, options);
 }
 
-export function deletePost(params) {
-  const options = {
-    method: 'DELETE',
-    body: {
-      ...params,
-    },
-  };
-  return request('/post/delete/', options);
-  // fake data
-  // return fakeDeletePost();
-}
+// export function delete(params) {
+//   const options = {
+//     method: 'DELETE',
+//     body: {
+//       ...params,
+//     },
+//   };
+//   return request(`${ROOT_PATH}/delete`, options);
+// }
 
 export async function findPost(params) {
-  console.log(`/post?${stringify(params)}`);
-  return request(`/post?${stringify(params)}`, {
+  console.log(`${ROOT_PATH}?${stringify(params)}`);
+  return request(`${ROOT_PATH}?${stringify(params)}`, {
     method: 'GET',
   });
 }
