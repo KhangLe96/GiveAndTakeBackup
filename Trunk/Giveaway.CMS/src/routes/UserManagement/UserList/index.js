@@ -42,25 +42,22 @@ export default class index extends React.Component {
         key: 'role',
       }, {
         title: 'Hành động',
-        dataIndex: 'userId',
         key: 'Action',
-        render: id => (
+        render: record => (
           <span>
             <Popconfirm
-              title="Bạn chắc chắn muốn block người dùng này ?"
+              title="Bạn chắc chắn không ?"
               onConfirm={() => {
-                const { dispatch, users } = this.props;
-                const id = this.props.match.params;
-                const status = 'Blocked';
+                const { users, totals, dispatch } = this.props;
+                const newStatus = record.status === 'Blocked' ? 'Activated' : 'Blocked';
                 dispatch({
                   type: 'userManagement/changeStatus',
-                  payload: { status, ...id },
-                });
-              }}
+                  payload: { newStatus, id: record.id },
+                })
+              }
+              }
             >
-              <button>
-                <Icon type="warning" />
-              </button>
+              <Icon type="warning" />
             </Popconfirm>
           </span >),
       },
