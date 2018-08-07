@@ -69,6 +69,7 @@
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\ResolutionHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
+    <Compile Include="Helpers\Keys.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Setup.cs" />
