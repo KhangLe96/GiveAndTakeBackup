@@ -5,7 +5,7 @@ namespace GiveAndTake.Core.ViewModels
 {
     public class LoginViewModel : MvxViewModel
     {
-        public string ProjectName => AppConstants.AppTitle;
+        public string Login => AppConstants.Login;
         public IMvxAsyncCommand FacebookLoginCommand { get; set; }
         public LoginViewModel()
         {
