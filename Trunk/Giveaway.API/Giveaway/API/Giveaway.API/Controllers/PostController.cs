@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Giveaway.API.Shared.Requests;
 using System;
+using Giveaway.Data.EF;
+using Microsoft.AspNetCore.Authorization;
+using Giveaway.API.Shared.Extensions;
 
 namespace Giveaway.API.Controllers
 {
@@ -18,9 +21,7 @@ namespace Giveaway.API.Controllers
             _postService = postService;
         }
 
-        //Review: don't need this API, if we get all we can pass params for API query with limit as big number that is enough to get all item
         //You can create other API to get list post of currentUser, it is similar as get list post with pagination.
-        //I remember that the post has status, we need add this field.
         //When you implement get list. Should have a API to get list for mobile app, we need filter these posts which is activated. 
         //And a api for CMS, return all post with their status
  
@@ -36,23 +37,21 @@ namespace Giveaway.API.Controllers
         /// </summary>
         /// <param name="postRequest"></param>
         /// <returns></returns>
+        [Authorize(Roles = Const.Roles.User)]
         [HttpPost("create")]
         [Produces("application/json")]
         public PostResponse Create([FromBody]PostRequest postRequest)
         {
-            //postRequest.UserId = User.GetUserId();
-            return _postService.Create(postRequest);
+            postRequest.UserId = User.GetUserId(); 
+            return _postService.Create(postRequest);//
         }
 
-        /// <summary>
-        /// Review: You should add Id in path. Ex [HttpPut("{id}")] Need Authorize
-        /// </summary>
-        /// <param name="postRequest"></param>
-        /// <returns></returns>
+        [Authorize]
         [HttpPut("update")]
         [Produces("application/json")]
         public bool Update([FromBody]PostRequest postRequest)
         {
+            postRequest.UserId = User.GetUserId();
             return _postService.Update(postRequest);
         }
 
