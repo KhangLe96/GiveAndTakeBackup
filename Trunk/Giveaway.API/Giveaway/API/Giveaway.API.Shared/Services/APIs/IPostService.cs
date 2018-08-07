@@ -9,7 +9,8 @@ namespace Giveaway.API.Shared.Services.APIs
     {
         PagingQueryResponse<PostResponse> GetPostForPaging(IDictionary<string, string> @params);
         PostResponse Create(PostRequest post);
-        bool Delete(Guid id);
+        bool ChangePostStatusCMS(Guid id, StatusRequest request);
+        bool ChangePostStatusApp(Guid postId, StatusRequest request);
         bool Update(PostRequest postRequest);
     }
 }

@@ -13,6 +13,10 @@ namespace Giveaway.API.Shared.Responses
         [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
+        [DataMember(Name = "userId", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "userId")]
+        public Guid UserId { get; set; }
+
         [DataMember(Name = "title")]
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }

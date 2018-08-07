@@ -6,6 +6,7 @@ using AutoMapper;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.Data.EF;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
@@ -80,13 +81,28 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return _postService.Update(post);
         }
 
-        public bool Delete(Guid id)
+        public bool ChangePostStatusCMS(Guid id, StatusRequest request)
         {
-            var post = _postService.Find(id);
-            if(post != null)
-                post.EntityStatus = EntityStatus.Deleted;
+            bool updated = _postService.UpdateStatus(id, request.UserStatus) != null;
 
-            return _postService.Update(post);
+            return updated;
+        }
+
+        public bool ChangePostStatusApp(Guid postId, StatusRequest request)
+        {
+            var post = _postService.Find(postId);
+
+            if(request.UserStatus == PostStatus.Open.ToString())
+            {
+                post.PostStatus = PostStatus.Open;
+                return _postService.Update(post);
+            }
+            else if(request.UserStatus == PostStatus.Close.ToString())
+            {
+                post.PostStatus = PostStatus.Close;
+                return _postService.Update(post);
+            }
+            throw new BadRequestException(Const.Error.BadRequest);
         }
 
         #region Utils
@@ -129,6 +145,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 .Select(post => Mapper.Map<PostResponse>(post))
                 .ToList();
         }
+
         #endregion
     }
 }
