@@ -32,11 +32,6 @@ namespace Giveaway.API.Controllers
             return _postService.GetPostForPaging(@params);
         }
 
-        /// <summary>
-        /// Review: You need ad Authorize, after that you can get UserId from User.GetUserId()
-        /// </summary>
-        /// <param name="postRequest"></param>
-        /// <returns></returns>
         [Authorize]
         [HttpPost("create")]
         [Produces("application/json")]
@@ -55,11 +50,20 @@ namespace Giveaway.API.Controllers
             return _postService.Update(postRequest);
         }
 
-        [HttpDelete("delete/{id}")]
+        [Authorize]
+        [HttpPut("statusCMS/{postId}")]
         [Produces("application/json")]
-        public bool Delete(Guid id)
+        public bool ChangePostStatusCMS(Guid postId, [FromBody]StatusRequest request)
         {
-            return _postService.Delete(id);
+            return _postService.ChangePostStatusCMS(postId, request);
+        }
+
+        [Authorize]
+        [HttpPut("statusApp/{postId}")]
+        [Produces("application/json")]
+        public bool ChangePostStatusApp(Guid postId, [FromBody]StatusRequest request)
+        {
+            return _postService.ChangePostStatusApp(postId, request);
         }
     }
 }
