@@ -40,5 +40,9 @@ namespace Giveaway.API.Shared.Requests
         [DataMember(Name = "provinceCityId", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "provinceCityId")]
         public Guid ProvinceCityId { get; set; }
+
+        [DataMember(Name = "userId", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "userId")]
+        public Guid UserId { get; set; }
     }
 }
