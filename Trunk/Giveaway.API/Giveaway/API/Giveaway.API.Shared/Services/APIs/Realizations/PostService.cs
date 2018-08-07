@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AutoMapper;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using Microsoft.EntityFrameworkCore;
@@ -41,13 +43,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public PostResponse Create(PostRequest postRequest)
+        public PostResponse Create(PostRequest postRequest) 
         {
             var post = Mapper.Map<Post>(postRequest);
-            post = InitPostDB(post);
+            post.Id = Guid.NewGuid();
 
             _postService.Create(post, out var isPostSaved);
             
+            //Save images of Post
             if (isPostSaved)
             {
                 var imageDBs = InitImageDB(post);
@@ -55,11 +58,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
                 if(!isImageSaved)
                 {
-                    throw new SystemException("Internal Error");
+                    throw new InternalServerErrorException("Internal Error");
                 }
             } else
             {
-                throw new SystemException("Internal Error");
+                throw new InternalServerErrorException("Internal Error");
             }
             
             var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
@@ -70,11 +73,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public bool Update(PostRequest postRequest)
         {
-            var post = Mapper.Map<Post>(postRequest);
-            //if you implement like this, createdTime will be updated with DateTime.Now => wrong
-            //this UserId is just for test and will be got after user has logined
-            post.UserId = Guid.Parse("5151357e-bb71-4e7f-bfaf-ecc6944cc94f");
-            //Review: Should get object from db and update some fields. 
+            var post = _postService.Find(postRequest.Id);
+
+            Mapper.Map<PostRequest,Post>(postRequest, post);
+
             return _postService.Update(post);
         }
 
@@ -88,18 +90,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
         #region Utils
-
-        private Post InitPostDB(Post post)
-        {
-            post.Id = Guid.NewGuid();
-            post.CreatedTime = DateTimeOffset.Now;
-            post.UpdatedTime = DateTimeOffset.Now;
-
-            //this UserId is just for test and will be got after user has logined
-            post.UserId = Guid.Parse("45f22de6-d5c8-4a7c-95b6-6828d6430c70");
-
-            return post;
-        }
 
         private List<Image> InitImageDB(Post post)
         {

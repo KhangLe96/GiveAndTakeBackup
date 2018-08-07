@@ -21,12 +21,8 @@ namespace Giveaway.API.Shared.Requests
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
-        [DataMember(Name = "address", EmitDefaultValue = false)]
-        [JsonProperty(PropertyName = "address")]
-        public string Address { get; set; }
-
-        [DataMember(Name = "postImageUrl", EmitDefaultValue = false)]
-        [JsonProperty(PropertyName = "postImageUrl")]
+        [DataMember(Name = "images", EmitDefaultValue = false)] 
+        [JsonProperty(PropertyName = "images")]
         public List<ImageRequest> Images { get; set; }
 
         [DataMember(Name = "postStatus", EmitDefaultValue = false)]
@@ -40,5 +36,9 @@ namespace Giveaway.API.Shared.Requests
         [DataMember(Name = "provinceCityId", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "provinceCityId")]
         public Guid ProvinceCityId { get; set; }
+
+        [DataMember(Name = "userId", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "userId")]
+        public Guid UserId { get; set; }
     }
 }
