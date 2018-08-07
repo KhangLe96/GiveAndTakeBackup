@@ -31,6 +31,7 @@ export default {
     * delete({ payload }, { call, put }) {
       const response = yield call(deletePost, payload);
       if (response) {
+        const newPayload = { ...payload, ...payload.posts.filter(post => post.postId !== id) };
         yield put({
           type: 'deletePost',
           payload,

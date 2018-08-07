@@ -48,6 +48,23 @@ export const getNavData = app => [
           },
         ],
       },
+      {
+        name: 'Quản lý danh mục',
+        path: 'category-management',
+        icon: 'data',
+        children: [
+          {
+            name: 'List category',
+            path: '',
+            component: dynamicWrapper(app, ['categoryManagement'], () => import('../routes/CategoryManagement')),
+          },
+          {
+            name: 'Detail',
+            path: 'detail/:id',
+            component: dynamicWrapper(app, ['categoryManagement'], () => import('../routes/CategoryManagement/Detail')),
+          },
+        ],
+      },
     ],
   },
   {

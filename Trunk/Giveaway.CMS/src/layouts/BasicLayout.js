@@ -189,7 +189,7 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const {location, getRouteData} = this.props;
     const {pathname} = location;
-    let title = 'ChoVaNhan';
+    let title = 'Cho và Nhận';
     getRouteData('BasicLayout').forEach((item) => {
       if (item.path === pathname) {
         title = `${item.name} - ChoVaNhan`;
@@ -327,7 +327,7 @@ class BasicLayout extends React.PureComponent {
                 fontSize: '22px',
                 fontWeight: '700',
               }}
-              >ChoVaNhan
+              >Cho và Nhận
               </span>
             </Link>
           </div>
