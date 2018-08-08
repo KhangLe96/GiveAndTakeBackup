@@ -100,27 +100,36 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public bool ChangePostStatusCMS(Guid id, StatusRequest request)
         {
             bool updated = _postService.UpdateStatus(id, request.UserStatus) != null;
-            //Review: updated is false should through Exception to inform an error
+            if (updated == false)
+                throw new InternalServerErrorException(Error.InternalServerError);
+
             return updated;
         }
 
         public bool ChangePostStatusApp(Guid postId, StatusRequest request)
         {
             var post = _postService.Find(postId);
-            //Review: handle error, what will happen if postId is invalid so that post is null
-            if(request.UserStatus == PostStatus.Open.ToString())
+            if (post == null)
             {
-                post.PostStatus = PostStatus.Open;
-                //Review: should handle error if update fail, orther option that you can use UpdateStatus which handled error to through Exception
-                return _postService.Update(post);
+                throw new BadRequestException(Const.Error.NotFound);
             }
 
-            if(request.UserStatus == PostStatus.Close.ToString())
+            if (request.UserStatus == PostStatus.Open.ToString())
+            {
+                post.PostStatus = PostStatus.Open;
+            }
+            else if(request.UserStatus == PostStatus.Close.ToString())
             {
                 post.PostStatus = PostStatus.Close;
-                return _postService.Update(post);
             }
-            throw new BadRequestException(Error.BadRequest);
+            else
+                throw new BadRequestException(Error.BadRequest);
+
+            bool updated = _postService.Update(post);
+            if (updated == false)
+                throw new InternalServerErrorException(Error.InternalServerError);
+
+            return updated;
         }
 
         #region Utils
