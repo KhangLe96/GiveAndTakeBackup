@@ -14,7 +14,6 @@ namespace GiveAndTake.iOS.Views.Base
     {
         private UILabel lbLogin;
         private LoginButton loginButton;
-        private readonly List<string> readPermissions = new List<string> { "public_profile" };
 
         protected override void InitView()
         {
@@ -23,8 +22,8 @@ namespace GiveAndTake.iOS.Views.Base
             {
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 LoginBehavior = LoginBehavior.Native,
-                ReadPermissions = readPermissions.ToArray()
-            };
+                ReadPermissions = new []{ "public_profile" }
+              };
 
             View.Add(lbLogin);
             View.Add(loginButton);
