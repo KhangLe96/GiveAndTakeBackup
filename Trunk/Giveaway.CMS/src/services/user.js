@@ -15,7 +15,6 @@ export function fetch(params) {
 
 export async function changeStatus(params) {
   const { id } = params;
-  console.log(params);
   const options = {
     method: 'PUT',
     body: {
@@ -25,3 +24,22 @@ export async function changeStatus(params) {
   return request(`${ROOT_PATH}/status/${id}`, options);
 }
 
+export async function getProfile(params) {
+  const { id } = params;
+  const options = {
+    method: 'GET',
+    body: null,
+  };
+  return request(`${ROOT_PATH}/${id}`, options);
+}
+
+export async function changeStatusProfile(params) {
+  const { id } = params;
+  const options = {
+    method: 'PUT',
+    body: {
+      status: params.newStatus,
+    },
+  };
+  return request(`${ROOT_PATH}/status/${id}`, options);
+}

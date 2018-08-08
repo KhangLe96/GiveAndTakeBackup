@@ -1,12 +1,27 @@
 import React from 'react';
+import { connect } from 'dva';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm, Input } from 'antd';
 import { Link, routerRedux } from 'dva/router';
 import { TABLE_PAGESIZE } from '../../../common/constants';
 
+@connect(({ modals, userManagement }) => ({
+  ...modals, userManagement,
+}))
 export default class index extends React.Component {
   constructor(props) {
     super(props);
     this.onPageNumberChange = this.onPageNumberChange.bind(this);
+  }
+
+  componentWillMount() {
+    const { dispatch } = this.props;
+    const pageSize = TABLE_PAGESIZE;
+    const page = this.props.userManagement.currentPage;
+    const payload = { page, limit: pageSize };
+    dispatch({
+      type: 'userManagement/fetch',
+      payload,
+    });
   }
 
   onPageNumberChange(page, pageSize) {
@@ -15,6 +30,15 @@ export default class index extends React.Component {
     dispatch({
       type: 'userManagement/fetch',
       payload,
+    });
+  }
+
+  handleConfirmChangeStatus = (record) => {
+    const { users, totals, dispatch, currentPage } = this.props;
+    const newStatus = record.status === 'Blocked' ? 'Activated' : 'Blocked';
+    dispatch({
+      type: 'userManagement/changeStatus',
+      payload: { newStatus, id: record.id, page: currentPage },
     });
   }
 
@@ -33,13 +57,18 @@ export default class index extends React.Component {
       },
       {
         title: 'Trạng thái',
-        dataIndex: 'status',
+        // dataIndex: 'status',
         key: 'status',
-
+        render: record => (
+          record.status === 'Activated' ? 'Kích hoạt' : 'Khóa'
+        ),
       }, {
-        title: 'Role',
-        dataIndex: 'role',
+        title: 'Vai trò',
+        // dataIndex: 'role',
         key: 'role',
+        render: record => (
+          record.role[0] === 'User' ? 'Người dùng' : 'Quản lý'
+        ),
       }, {
         title: 'Hành động',
         key: 'Action',
@@ -48,16 +77,18 @@ export default class index extends React.Component {
             <Popconfirm
               title="Bạn chắc chắn không ?"
               onConfirm={() => {
-                const { users, totals, dispatch } = this.props;
+                const { users, totals, dispatch, userManagement: { currentPage } } = this.props;
                 const newStatus = record.status === 'Blocked' ? 'Activated' : 'Blocked';
                 dispatch({
                   type: 'userManagement/changeStatus',
-                  payload: { newStatus, id: record.id },
-                })
+                  payload: { newStatus, id: record.id, page: currentPage },
+                });
               }
               }
             >
-              <Icon type="warning" />
+              <Button icon="exclamation-circle-o" type="primary" style={{ width: 120 }}>
+                {record.status === 'Activated' ? 'Khóa' : 'Kích hoạt'}
+              </Button>
             </Popconfirm>
           </span >),
       },
@@ -66,18 +97,25 @@ export default class index extends React.Component {
   // /Role should have comma between roles likes User, Admin. Add one button for block use here.
   // /If data is null, we should display N/A
   render() {
-    const { users, currentPage, totals } = this.props;
+    const { userManagement: { users, currentPage, totals } } = this.props;
     return (
-      <Table
-        columns={this.columns}
-        dataSource={users.map((user, key) => { return { ...user, key }; })}
-        pagination={{
-          current: currentPage,
-          onChange: this.onPageNumberChange,
-          pageSize: TABLE_PAGESIZE,
-          total: totals,
-        }}
-      />
+      <div>
+        <div className="containerHeader">
+          <h1>Quản lý người dùng</h1>
+        </div>
+        <div className="containerBody">
+          <Table
+            columns={this.columns}
+            dataSource={users && users.map((user, key) => { return { ...user, key }; })}
+            pagination={{
+              current: currentPage,
+              onChange: this.onPageNumberChange,
+              pageSize: TABLE_PAGESIZE,
+              total: totals,
+            }}
+          />
+        </div>
+      </div>
     );
   }
 }
