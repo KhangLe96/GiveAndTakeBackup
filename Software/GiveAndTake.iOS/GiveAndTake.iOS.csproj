@@ -91,7 +91,6 @@
     <BundleResource Include="Resources\Fonts\HelveticaNeue-LightItalic.ttf" />
     <BundleResource Include="Resources\Fonts\HelveticaNeue-Medium.ttf" />
     <BundleResource Include="Resources\Fonts\HelveticaNeue-Thin.ttf" />
-    <InterfaceDefinition Include="Views\Login.xib" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook, Version=4.10.0.0, Culture=neutral, processorArchitecture=MSIL">
