@@ -43,12 +43,12 @@ namespace Giveaway.API.Controllers
 
         [Authorize]
         //Review: Should have id in path, it likes delete, update status, or get detail
-        [HttpPut("update")]
+        [HttpPut("update/{postId}")]
         [Produces("application/json")]
-        public bool Update([FromBody]PostRequest postRequest)
+        public PostResponse Update(Guid postId, [FromBody]PostRequest postRequest)
         {
             postRequest.UserId = User.GetUserId();
-            return _postService.Update(postRequest);
+            return _postService.Update(postId, postRequest);
         }
 
         [Authorize]

@@ -73,13 +73,28 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return postResponse;
         }
 
-        public bool Update(PostRequest postRequest)
+        public PostResponse Update(Guid id, PostRequest postRequest)
         {
-            var post = _postService.Find(postRequest.Id);
-            
-            Mapper.Map(postRequest, post);
-            //Handle error and through Exception if updating is failed. Should return updated object to client, shouldn't return true.
-            return _postService.Update(post);
+            var post = _postService.Find(id);
+            if (post == null)
+            {
+                throw new BadRequestException(Const.Error.NotFound);
+            }
+
+            try
+            {
+                Mapper.Map(postRequest, post);
+                post.UpdatedTime = DateTimeOffset.UtcNow;
+                _postService.Update(post);
+            }
+            catch
+            {
+                throw new InternalServerErrorException(Const.Error.InternalServerError);
+            }
+
+            var postResponse = Mapper.Map<PostResponse>(post);
+
+            return postResponse;
         }
 
         public bool ChangePostStatusCMS(Guid id, StatusRequest request)

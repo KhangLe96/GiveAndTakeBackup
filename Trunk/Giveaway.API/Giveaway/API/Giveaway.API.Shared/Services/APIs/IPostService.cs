@@ -11,6 +11,6 @@ namespace Giveaway.API.Shared.Services.APIs
         PostResponse Create(PostRequest post);
         bool ChangePostStatusCMS(Guid id, StatusRequest request);
         bool ChangePostStatusApp(Guid postId, StatusRequest request);
-        bool Update(PostRequest postRequest);
+        PostResponse Update(Guid id, PostRequest postRequest);
     }
 }
