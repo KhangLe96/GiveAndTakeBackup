@@ -42,10 +42,10 @@ export default class index extends React.Component {
             <Popconfirm
               title="Bạn chắc chắn muốn xóa?"
               onConfirm={() => {
-                const { categories, dispatch, totals } = this.props;
+                const { dispatch, totals } = this.props;
                 dispatch({
                   type: 'categoryManagement/delete',
-                  payload: { categories, id: record.id, totals },
+                  payload: { id: record.id, totals },
                 });
               }}
             >
@@ -55,7 +55,6 @@ export default class index extends React.Component {
       },
     ];
   // /Review: Should use button with text and icon to clear. Should have edit button, change status.
-  // /Why do you pass categories when you delete a category? I don't see you use it in model
 
   render() {
     const { categories, currentPage, totals } = this.props;
