@@ -9,4 +9,12 @@ export const RETRIES_SECONDS_COUNTDOWN = 30;
 export const TABLE_PAGESIZE = 10;
 export const DateFormatDisplay = 'DD/MM/YYYY';
 export const DateTimeFormatDisplay = 'HH:mm DD/MM/YYYY';
+export const WARNING_COLOR = 'orange';
 
+export const POST_STATUSES = {
+  Open: 'Đang mở',
+};
+export const USER_STATUSES = {
+  Activated: 'Activated',
+  Block: 'Blocked',
+};

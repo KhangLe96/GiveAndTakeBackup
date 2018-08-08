@@ -13,17 +13,11 @@ class AdvancedSearchForm extends React.Component {
 
   componentDidMount() {
     const { posts, dispatch } = this.props;
-    // Review: remove check length, see review in other management to have explain.
-    if (posts.length === 0) {
-      dispatch({
-        type: 'postManagement/fetch',
-        payload: {},
-      });
-    }
-    // this.props.posts.refetch();
-    console.log(this.props.posts);
+    dispatch({
+      type: 'postManagement/fetch',
+      payload: {},
+    });
   }
-
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -57,19 +51,21 @@ class AdvancedSearchForm extends React.Component {
     });
   }
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { posts } = this.props;
+    const { form: { getFieldDecorator }, posts } = this.props;
+    const searchFilterWidth = 200;
+    const searchInputWidth = 500;
+    console.log(posts);
     return (
       <div>
         <div className="containerHeader">
           <h1>Quản lý bài đăng</h1>
         </div>
-        <div hidden>
+        <div className="containerBody">
           <Form layout="inline" onSubmit={this.handleSubmit} className="AdvancedSearchForm">
             <FormItem>
               {getFieldDecorator('typeSelect')(
                 <Select
-                  style={{ width: 200 }}
+                  style={{ width: searchFilterWidth }}
                   placeholder="Select type to filter"
                   optionFilterProp="children"
                   size="large"
@@ -83,7 +79,7 @@ class AdvancedSearchForm extends React.Component {
             </FormItem>
             <FormItem>
               {getFieldDecorator('searchValue')(
-                <Input size="large" style={{ width: 500 }} />
+                <Input size="large" style={{ width: searchInputWidth }} />
               )}
             </FormItem>
             <FormItem>
