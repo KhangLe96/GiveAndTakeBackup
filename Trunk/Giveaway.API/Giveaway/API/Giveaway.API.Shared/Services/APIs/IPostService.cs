@@ -7,7 +7,7 @@ namespace Giveaway.API.Shared.Services.APIs
 {
     public interface IPostService
     {
-        PagingQueryResponse<PostResponse> GetPostForPaging(IDictionary<string, string> @params);
+        PagingQueryResponse<PostResponse> GetPostForPaging(string userId, IDictionary<string, string> @params);
         PostResponse Create(PostRequest post);
         bool ChangePostStatusCMS(Guid id, StatusRequest request);
         bool ChangePostStatusApp(Guid postId, StatusRequest request);
