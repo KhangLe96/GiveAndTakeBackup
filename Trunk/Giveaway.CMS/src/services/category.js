@@ -2,11 +2,11 @@ import request from '../utils/request';
 
 const ROOT_API_PATH = '/categories';
 
-export function createCategory(params) {
+export function createCategory(category) {
   const options = {
     method: 'POST',
     body: {
-      ...params,
+      ...category,
     },
   };
   return request(`${ROOT_API_PATH}`, options);
@@ -29,14 +29,14 @@ export function getACategory(id) {
   return request(`${ROOT_API_PATH}/${id}`, options);
 }
 
-export function updateCategory(params) {
+export function updateCategory(category, id) {
   const options = {
-    method: 'POST',
+    method: 'PUT',
     body: {
-      ...params,
+      ...category,
     },
   };
-  return request(`${ROOT_API_PATH}/edit`, options);
+  return request(`${ROOT_API_PATH}/${id}`, options);
 }
 
 export function deleteCategory(id) {
