@@ -42,15 +42,9 @@ namespace Giveaway.API.Shared.Responses
         [JsonProperty(PropertyName = "updatedTime")]
         public DateTimeOffset UpdatedTime { get; set; }
 
-        //Review: Should return status string to front end team know post status exactly
-        //[JsonIgnore]
-        [DataMember(Name = "postStatus", EmitDefaultValue = false)]
-        [JsonProperty(PropertyName = "postStatus")]
-        public PostStatus PostStatus { get; set; }
-
-        //[DataMember(Name = "status", EmitDefaultValue = false)]
-        //[JsonProperty(PropertyName = "status")]
-        //public string Status => PostStatus.ToString();
+        [DataMember(Name = "status", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "status")]
+        public string Status { get; set; }
 
         [DataMember(Name = "category")]
         [JsonProperty(PropertyName = "category")]

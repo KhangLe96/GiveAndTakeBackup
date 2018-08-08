@@ -9,7 +9,6 @@ namespace Giveaway.API.Shared.Responses
     public class ImageResponse
     {
         [DataMember(Name = "imageUrl")]
-        [JsonProperty(PropertyName = "imageUrl")]
         public string ImageUrl { get; set; }
     }
 }
