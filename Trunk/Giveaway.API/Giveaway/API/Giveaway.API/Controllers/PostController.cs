@@ -21,7 +21,6 @@ namespace Giveaway.API.Controllers
             _postService = postService;
         }
 
-        //You can create other API to get list post of currentUser, it is similar as get list post with pagination.
         //When you implement get list. Should have a API to get list for mobile app, we need filter these posts which is activated. 
         //And a api for CMS, return all post with their status
  
@@ -29,7 +28,15 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PagingQueryResponse<PostResponse> GetList([FromHeader]IDictionary<string, string> @params)
         {
-            return _postService.GetPostForPaging(@params);
+            return _postService.GetPostForPaging(null, @params);
+        }
+
+        [Authorize]
+        [HttpGet("getListPostOfSingleUser/{userId}")]
+        [Produces("application/json")]
+        public PagingQueryResponse<PostResponse> GetListPostOfSingleUser(string userId, [FromHeader]IDictionary<string, string> @params)
+        {
+            return _postService.GetPostForPaging(userId, @params);
         }
 
         [Authorize]

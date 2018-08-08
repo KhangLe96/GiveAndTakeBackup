@@ -25,10 +25,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _imageService = imageService;
         }
 
-        public PagingQueryResponse<PostResponse> GetPostForPaging(IDictionary<string, string> @params)
+        public PagingQueryResponse<PostResponse> GetPostForPaging(string userId, IDictionary<string, string> @params)
         {
             var request = @params.ToObject<PagingQueryPostRequest>();
-            var posts = GetPagedPosts(request);
+            var posts = GetPagedPosts(userId, request);
             return new PagingQueryResponse<PostResponse>
             {
                 Data = posts,
@@ -172,10 +172,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<PostResponse> GetPagedPosts(PagingQueryPostRequest request)
+        private List<PostResponse> GetPagedPosts(string userId, PagingQueryPostRequest request)
         {
-            var posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Where(x => x.EntityStatus != EntityStatus.Deleted);
-            //Review: should have more params to query such as CreatedTime, provinceCityId, categoryId
+            IEnumerable<Post> posts;
+            if (string.IsNullOrEmpty(userId))
+                posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Where(x => x.EntityStatus != EntityStatus.Deleted);
+            else
+            {
+                try
+                {
+                    Guid id = Guid.Parse(userId);
+                    posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Where(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id);
+                }
+                catch
+                {
+                    throw new BadRequestException(Error.NotFound);
+                }
+            }
+
+            //filter post by properties
             if (!string.IsNullOrEmpty(request.Title))
             {
                 posts = posts.Where(x => x.Title.Contains(request.Title));
@@ -188,6 +203,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 posts = posts.Where(x => x.CategoryId.Equals(Guid.Parse(request.CategoryId)));
             }
+
             return posts
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)
