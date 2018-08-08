@@ -1,7 +1,7 @@
-﻿using Facebook.LoginKit;
-using GiveAndTake.Core;
+﻿using System.Collections.Generic;
+using CoreGraphics;
+using Facebook.LoginKit;
 using GiveAndTake.Core.ViewModels;
-using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
@@ -14,11 +14,17 @@ namespace GiveAndTake.iOS.Views.Base
     {
         private UILabel lbLogin;
         private LoginButton loginButton;
+        private readonly List<string> readPermissions = new List<string> { "public_profile" };
 
         protected override void InitView()
         {
-            lbLogin = UIHelper.CreateLabel(UIColor.Blue, DimensionHelper.MediumTextSize);
-            loginButton = new LoginButton();
+            lbLogin = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize);
+            loginButton = new LoginButton(new CGRect(80, 20, 220, 46))
+            {
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                LoginBehavior = LoginBehavior.Native,
+                ReadPermissions = readPermissions.ToArray()
+            };
 
             View.Add(lbLogin);
             View.Add(loginButton);
@@ -26,16 +32,11 @@ namespace GiveAndTake.iOS.Views.Base
             View.AddConstraints(new[]
             {
                 NSLayoutConstraint.Create(lbLogin, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0),
-                NSLayoutConstraint.Create(lbLogin, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterY, 1, 0)
-            });
-            View.AddConstraints(new[]
-            {
+                NSLayoutConstraint.Create(lbLogin, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterY, 1, 0),
                 NSLayoutConstraint.Create(loginButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, lbLogin, NSLayoutAttribute.Bottom, 1, 20),
                 NSLayoutConstraint.Create(loginButton, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0)
             });
-
-            
-        }
+         }
 
         protected override void CreateBinding()
 
