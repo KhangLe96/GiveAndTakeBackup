@@ -24,7 +24,6 @@ export async function fetch(params) {
 // }
 
 export async function findPost(params) {
-  console.log(`${ROOT_PATH}?${stringify(params)}`);
   return request(`${ROOT_PATH}?${stringify(params)}`, {
     method: 'GET',
   });

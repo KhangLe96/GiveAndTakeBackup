@@ -39,7 +39,7 @@ export const getNavData = app => [
           {
             name: 'List User',
             path: '',
-            component: dynamicWrapper(app, ['userManagement'], () => import('../routes/UserManagement')),
+            component: dynamicWrapper(app, ['userManagement'], () => import('../routes/UserManagement/UserList')),
           },
           {
             name: 'Detail',

@@ -1,6 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-import { fetch, deletePost, changeStatus } from '../services/user';
+import { fetch, deletePost, changeStatus, getProfile } from '../services/user';
+import { TABLE_PAGESIZE } from '../common/constants';
 
 const DEFAULT_CURRENT_PAGE = 1;
 
@@ -9,6 +10,7 @@ export default {
 
   state: {
     users: [],
+    userProfile: {},
     currentPage: DEFAULT_CURRENT_PAGE,
     totals: 0,
   },
@@ -32,7 +34,30 @@ export default {
       if (response) {
         yield put({
           type: 'fetch',
+          payload: {
+            page: payload.page,
+            limit: TABLE_PAGESIZE,
+          },
+        });
+      }
+    },
+    * changeStatusProfile({ payload }, { call, put }) {
+      const response = yield call(changeStatus, payload);
+      if (response) {
+        yield put({
+          type: 'getProfile',
           payload,
+        });
+      }
+    },
+    * getProfile({ payload }, { call, put }) {
+      const response = yield call(getProfile, payload);
+      if (response) {
+        yield put({
+          type: 'save',
+          payload: {
+            userProfile: response,
+          },
         });
       }
     },
