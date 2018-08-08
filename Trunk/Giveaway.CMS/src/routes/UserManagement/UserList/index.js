@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm, Input } from 'antd';
 import { Link, routerRedux } from 'dva/router';
-import { TABLE_PAGESIZE } from '../../../common/constants';
+import { TABLE_PAGESIZE, STATUS_ACTIVATED, STATUS_BLOCKED, STATUS_ACTIVATED_VN, STATUS_BLOCKED_VN, ROLE_ADMIN_VN, ROLE_USER_VN } from '../../../common/constants';
 
 @connect(({ modals, userManagement }) => ({
   ...modals, userManagement,
@@ -34,12 +34,24 @@ export default class index extends React.Component {
   }
 
   handleConfirmChangeStatus = (record) => {
-    const { users, totals, dispatch, currentPage } = this.props;
-    const newStatus = record.status === 'Blocked' ? 'Activated' : 'Blocked';
+    const { users, totals, dispatch, userManagement: { currentPage } } = this.props;
+    const newStatus = record.status === STATUS_BLOCKED ? STATUS_ACTIVATED : STATUS_BLOCKED;
     dispatch({
       type: 'userManagement/changeStatus',
       payload: { newStatus, id: record.id, page: currentPage },
     });
+  }
+
+  handleDisplayStatus = (record) => {
+    record.status === STATUS_ACTIVATED ? STATUS_ACTIVATED_VN : STATUS_BLOCKED_VN;
+  }
+
+  handleDisplayRole = (record) => {
+    record.role && record.role[0] === 'User' ? ROLE_USER_VN : ROLE_ADMIN_VN;
+  }
+
+  handleDisplayStatusButton = (record) => {
+    record.status === STATUS_ACTIVATED ? STATUS_BLOCKED_VN : STATUS_ACTIVATED_VN;
   }
 
   columns =
@@ -59,16 +71,12 @@ export default class index extends React.Component {
         title: 'Trạng thái',
         // dataIndex: 'status',
         key: 'status',
-        render: record => (
-          record.status === 'Activated' ? 'Kích hoạt' : 'Khóa'
-        ),
+        render: record => (this.handleDisplayStatus(record)),
       }, {
         title: 'Vai trò',
         // dataIndex: 'role',
         key: 'role',
-        render: record => (
-          record.role[0] === 'User' ? 'Người dùng' : 'Quản lý'
-        ),
+        render: record => (this.handleDisplayRole(record)),
       }, {
         title: 'Hành động',
         key: 'Action',
@@ -76,26 +84,15 @@ export default class index extends React.Component {
           <span>
             <Popconfirm
               title="Bạn chắc chắn không ?"
-              onConfirm={() => {
-                const { users, totals, dispatch, userManagement: { currentPage } } = this.props;
-                const newStatus = record.status === 'Blocked' ? 'Activated' : 'Blocked';
-                dispatch({
-                  type: 'userManagement/changeStatus',
-                  payload: { newStatus, id: record.id, page: currentPage },
-                });
-              }
-              }
+              onConfirm={() => this.handleChangeStatus(record)}
             >
               <Button icon="exclamation-circle-o" type="primary" style={{ width: 120 }}>
-                {record.status === 'Activated' ? 'Khóa' : 'Kích hoạt'}
+                {this.handleDisplayStatusButton(record)}
               </Button>
             </Popconfirm>
           </span >),
       },
     ];
-  // /Review: Should use button with both text and icon to clear. Status converts to Vietnamese pls.
-  // /Role should have comma between roles likes User, Admin. Add one button for block use here.
-  // /If data is null, we should display N/A
   render() {
     const { userManagement: { users, currentPage, totals } } = this.props;
     return (
