@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
@@ -11,10 +7,11 @@ using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using static Giveaway.Data.EF.Const;
 using DbService = Giveaway.Service.Services;
-//Review: Remove namespace is unused
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
     public class PostService : IPostService
@@ -52,16 +49,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _postService.Create(post, out var isPostSaved);
             
             //Save images of Post
-            //Review: You implement  create images here, but i don't see you update image in Update function, make sure that it works well :))
             if (isPostSaved)
             {
-                var imageDBs = InitImageDB(post);
-                var i = _imageService.CreateMany(imageDBs, out var isImageSaved);
-
-                if(!isImageSaved)
-                {
-                    throw new InternalServerErrorException("Internal Error");
-                }
+                CreateImage(post);
             } else
             {
                 throw new InternalServerErrorException("Internal Error");
@@ -75,26 +65,37 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PostResponse Update(Guid id, PostRequest postRequest)
         {
-            var post = _postService.Find(id);
+            var post = _postService.Include(x => x.Images).FirstAsync(x => x.Id == id).Result;
             if (post == null)
             {
                 throw new BadRequestException(Const.Error.NotFound);
             }
-
+            
             try
             {
+                List<Image> oldImages = post.Images.ToList();
                 Mapper.Map(postRequest, post);
-                post.UpdatedTime = DateTimeOffset.UtcNow;
-                _postService.Update(post);
+                bool updated = _postService.Update(post);
+
+                if (updated)
+                {
+                    DeleteOldImages(oldImages);
+                    CreateImage(post);
+                }
+                else
+                {
+                    throw new InternalServerErrorException("Internal Error");
+                }
+
+                var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
+                var postResponse = Mapper.Map<PostResponse>(postDb);
+
+                return postResponse;
             }
             catch
             {
                 throw new InternalServerErrorException(Const.Error.InternalServerError);
             }
-
-            var postResponse = Mapper.Map<PostResponse>(post);
-
-            return postResponse;
         }
 
         public bool ChangePostStatusCMS(Guid id, StatusRequest request)
@@ -133,8 +134,18 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
         #region Utils
+        private void CreateImage(Post post)
+        {
+            var imageDBs = InitListImageDB(post);
+            _imageService.CreateMany(imageDBs, out var isImageSaved);
 
-        private List<Image> InitImageDB(Post post)
+            if (!isImageSaved)
+            {
+                throw new InternalServerErrorException("Internal Error");
+            }
+        }
+
+        private List<Image> InitListImageDB(Post post)
         {
             var imageList = new List<Image>();
             foreach(var image in post.Images)
@@ -148,6 +159,17 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
 
             return imageList;
+        }
+
+        private void DeleteOldImages(List<Image> images)
+        {
+            foreach (var image in images)
+            {
+                _imageService.Delete(x => x.Id == image.Id, out var isSaved);
+
+                if (isSaved == false)
+                    throw new InternalServerErrorException(Error.InternalServerError);
+            }
         }
 
         private List<PostResponse> GetPagedPosts(PagingQueryPostRequest request)

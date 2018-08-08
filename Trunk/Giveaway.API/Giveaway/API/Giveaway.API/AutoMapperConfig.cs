@@ -17,7 +17,11 @@ namespace Giveaway.API
             cfg.CreateMap<Category, CategoryResponse>();
             cfg.CreateMap<CategoryResponse, Category>();
 
-            cfg.CreateMap<Post, PostResponse>();
+            cfg.CreateMap<Post, PostResponse>()
+                .ForMember(
+                    destination => destination.Status,
+                    map => map.MapFrom(source => source.PostStatus.ToString()
+                ));
             cfg.CreateMap<PostResponse, Post>();
             cfg.CreateMap<PostRequest, Post>();
 
