@@ -1,12 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 
 namespace GiveAndTake.Core.ViewModels
 {
     public class LoginViewModel : MvxViewModel
     {
+        public string Login => AppConstants.Login;
+        public IMvxAsyncCommand FacebookLoginCommand { get; set; }
         public LoginViewModel()
         {
+
         }
     }
 }

@@ -72,6 +72,7 @@
     <Compile Include="Views\Base\BaseFragment.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
+    <Compile Include="Views\FacebookCallback.cs" />
     <Compile Include="Views\LoginView.cs" />
   </ItemGroup>
   <ItemGroup>
