@@ -92,7 +92,8 @@ namespace Giveaway.Service.Services
             var entity = Find(id);
             if (entity is BaseEntity baseEntity)
             {
-                baseEntity.EntityStatus = GetEnumStatus(status);
+                Enum.TryParse(status, out EntityStatus entityStatus);
+                baseEntity.EntityStatus = entityStatus;
                 baseEntity.UpdatedTime = DateTimeOffset.UtcNow;
             }
             else
@@ -235,22 +236,6 @@ namespace Giveaway.Service.Services
             Repository = null;
         }
 
-        private static EntityStatus GetEnumStatus(string status)
-        {
-            if (status == EntityStatus.Activated.ToString())
-            {
-                return EntityStatus.Activated;
-            }
-            if (status == EntityStatus.Blocked.ToString())
-            {
-                return EntityStatus.Blocked;
-            }
-            if (status == EntityStatus.Deleted.ToString())
-            {
-                return EntityStatus.Deleted;
-            }
-            throw new BadRequestException(Const.Error.BadRequest);
-        }
         #endregion
     }
 }

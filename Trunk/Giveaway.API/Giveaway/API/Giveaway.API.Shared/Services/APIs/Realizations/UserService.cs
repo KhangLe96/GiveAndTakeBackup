@@ -84,7 +84,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GetUserProfile(userId);
         }
 
-        //Review: Should use specific object instead of Dictionary
         public UserProfileResponse ChangeUserStatus(Guid userId, StatusRequest request)
         {
             var updatedUser = _userService.UpdateStatus(userId, request.UserStatus);
@@ -126,7 +125,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private PageInformation GetPageInformation(PagingQueryUserRequest request) => new PageInformation
         {
-            Total = _userService.Count(),
+            Total = _userService.Where(u => u.EntityStatus != EntityStatus.Deleted).Count(),
             Limit = request.Limit,
             Page = request.Page
         };
@@ -213,6 +212,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private static void UpdateUserFields(User user, UserProfileRequest request)
         {
+            Enum.TryParse(request.Gender, out Gender gender);
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.UserName = request.UserName;
@@ -220,7 +220,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             user.PhoneNumber = request.PhoneNumber;
             user.AvatarUrl = request.AvatarUrl;
             user.Address = request.Address;
-            user.Gender = request.Gender;
+            user.Gender = gender;
             user.Email = request.Email;
         }
 

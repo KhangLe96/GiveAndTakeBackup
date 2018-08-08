@@ -96,7 +96,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private PageInformation GetPageInfo(PagingQueryCategoryRequest request) => new PageInformation
         {
-            Total = _categoryService.Count(),
+            Total = _categoryService.Where(x => x.EntityStatus != EntityStatus.Deleted).Count(),
             Page = request.Page,
             Limit = request.Limit
         };

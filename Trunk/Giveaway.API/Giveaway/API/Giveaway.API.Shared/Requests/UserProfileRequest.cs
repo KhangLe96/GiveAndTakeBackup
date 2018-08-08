@@ -1,14 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
-using Giveaway.Data.Enums;
-using Newtonsoft.Json;
 
 namespace Giveaway.API.Shared.Requests
 {
-	[DataContract]
+    [DataContract]
 	public class UserProfileRequest
 	{
 	    [DataMember(Name = "firtName")]
@@ -34,8 +30,7 @@ namespace Giveaway.API.Shared.Requests
 	    public string Address { get; set; }
 
 	    [DataMember(Name = "gender")]
-        //Review: should send 1 string instead of Enum type, we need more clear
-	    public Gender Gender { get; set; }
+	    public string Gender { get; set; }
 
 	    [DataMember(Name = "email")]
 	    [EmailAddress]
