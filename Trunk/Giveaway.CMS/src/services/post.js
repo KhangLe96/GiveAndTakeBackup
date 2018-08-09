@@ -10,7 +10,7 @@ export async function fetch(params) {
       ...params,
     },
   };
-  return request(`${ROOT_PATH}/getList`, options);
+  return request(`${ROOT_PATH}/getListPostCMS`, options);
 }
 
 export function changePostCMSStatus(id, statusCMS) {
