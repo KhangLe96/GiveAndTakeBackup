@@ -53,6 +53,9 @@ namespace Giveaway.Data.Models.Database
 
         #region Unrequired Properties
 
+        [DataMember(Name = "socialAccountId")]
+        public Guid? SocialAccountId { get; set; }
+
         [DataMember(Name = "phoneNumber")]
         public string PhoneNumber { get; set; }
 
