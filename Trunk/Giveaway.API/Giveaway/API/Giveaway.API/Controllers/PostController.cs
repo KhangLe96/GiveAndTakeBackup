@@ -22,9 +22,6 @@ namespace Giveaway.API.Controllers
             _postService = postService;
         }
 
-        //When you implement get list. Should have a API to get list for mobile app, we need filter these posts which is activated. 
-        //And a api for CMS, return all post with their status
-
         /// <summary>
         /// Get list post with params object that includes: page, limit, keyword, provinceCityId, categoryId, title
         /// </summary>
@@ -60,18 +57,6 @@ namespace Giveaway.API.Controllers
         public PagingQueryResponse<PostResponse> GetListPostOfSingleUser(string userId, [FromHeader]IDictionary<string, string> @params)
         {
             return _postService.GetPostForPaging(userId, @params, null);
-        }
-
-        /// <summary>
-        /// Get detail of a post by id 
-        /// </summary>
-        /// <param name="postId"></param>
-        /// <returns></returns>
-        [HttpGet("getDetail/{postId}")]
-        [Produces("application/json")]
-        public PostResponse GetDetail(Guid postId)
-        {
-            return _postService.GetDetail(postId);
         }
 
         /// <summary>
