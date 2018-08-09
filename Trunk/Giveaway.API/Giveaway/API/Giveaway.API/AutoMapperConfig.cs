@@ -12,8 +12,9 @@ namespace Giveaway.API
         {
             var cfg = new MapperConfigurationExpression();
             cfg.CreateMap<User, Giveaway.API.Shared.Models.DTO.User>();
-            cfg.CreateMap<Category, Shared.Models.DTO.Category>();
+            cfg.CreateMap<User, UserPostRespone>();
 
+            cfg.CreateMap<Category, Shared.Models.DTO.Category>();
             cfg.CreateMap<Category, CategoryResponse>();
             cfg.CreateMap<CategoryResponse, Category>();
 
