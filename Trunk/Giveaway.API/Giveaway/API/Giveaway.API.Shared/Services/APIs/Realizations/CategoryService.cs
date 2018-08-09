@@ -147,7 +147,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             CategoryName = category.CategoryName,
             CategoryImageUrl = category.ImageUrl,
             CreatedTime = category.CreatedTime,
-            UpdatedTime = category.UpdatedTime
+            UpdatedTime = category.UpdatedTime,
+            EntityStatus = category.EntityStatus.ToString()
         };
 
         #endregion

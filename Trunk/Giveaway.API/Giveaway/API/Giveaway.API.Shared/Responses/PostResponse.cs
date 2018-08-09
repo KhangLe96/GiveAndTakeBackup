@@ -14,9 +14,9 @@ namespace Giveaway.API.Shared.Responses
         [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
-        [DataMember(Name = "userId", EmitDefaultValue = false)]
-        [JsonProperty(PropertyName = "userId")]
-        public Guid UserId { get; set; }
+        [DataMember(Name = "user", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "user")]
+        public UserPostRespone User { get; set; }
 
         [DataMember(Name = "title")]
         [JsonProperty(PropertyName = "title")]
@@ -42,9 +42,13 @@ namespace Giveaway.API.Shared.Responses
         [JsonProperty(PropertyName = "updatedTime")]
         public DateTimeOffset UpdatedTime { get; set; }
 
-        [DataMember(Name = "status", EmitDefaultValue = false)]
-        [JsonProperty(PropertyName = "status")]
+        [DataMember(Name = "statusApp", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "statusApp")]
         public string Status { get; set; }
+
+        [DataMember(Name = "statusCMS")]
+        [JsonProperty(PropertyName = "statusCMS")]
+        public string EntityStatus { get; set; }
 
         [DataMember(Name = "category")]
         [JsonProperty(PropertyName = "category")]

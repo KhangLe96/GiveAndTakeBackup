@@ -12,16 +12,19 @@ namespace Giveaway.API
         {
             var cfg = new MapperConfigurationExpression();
             cfg.CreateMap<User, Giveaway.API.Shared.Models.DTO.User>();
-            cfg.CreateMap<Category, Shared.Models.DTO.Category>();
+            cfg.CreateMap<User, UserPostRespone>();
 
+            cfg.CreateMap<Category, Shared.Models.DTO.Category>();
             cfg.CreateMap<Category, CategoryResponse>();
             cfg.CreateMap<CategoryResponse, Category>();
 
             cfg.CreateMap<Post, PostResponse>()
                 .ForMember(
                     destination => destination.Status,
-                    map => map.MapFrom(source => source.PostStatus.ToString()
-                ));
+                    map => map.MapFrom(source => source.PostStatus.ToString()))
+                .ForMember(
+                    destination => destination.EntityStatus,
+                    map => map.MapFrom(source => source.EntityStatus.ToString()));
             cfg.CreateMap<PostResponse, Post>();
             cfg.CreateMap<PostRequest, Post>();
 

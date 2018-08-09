@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-import { fetch, deletePost, findPost } from '../services/post';
+import { changePostCMSStatus, fetch, findPost } from '../services/post';
 
 export default {
   namespace: 'postManagement', /* should be the same with file name */
@@ -14,7 +14,7 @@ export default {
       const response = yield call(fetch, payload);
       if (response) {
         yield put({
-          type: 'savePost',
+          type: 'save',
           payload: { posts: response.results },
         });
       }
@@ -23,35 +23,36 @@ export default {
       const posts = yield call(findPost, payload);
       if (posts) {
         yield put({
-          type: 'savePost',
+          type: 'save',
           payload,
         });
       }
     },
-    * delete({ payload }, { call, put }) {
-      const response = yield call(deletePost, payload);
+    * changeCMSStatus({ payload }, { call, put }) {
+      const { id, statusCMS, posts } = payload;
+      const response = yield call(changePostCMSStatus, id, statusCMS);
       if (response) {
-        const newPayload = { ...payload, ...payload.posts.filter(post => post.postId !== id) };
+        const newPosts = posts.map((post) => {
+          if (post.id === id) {
+            return { ...post, statusCMS };
+          }
+          return post;
+        });
         yield put({
-          type: 'deletePost',
-          payload,
+          type: 'save',
+          payload: {
+            posts: newPosts,
+          },
         });
       }
     },
   },
 
   reducers: {
-    savePost(state, action) {
+    save(state, action) {
       return {
         ...state,
         ...action.payload,
-      };
-    },
-    deletePost(state, action) {
-      const { id, posts } = action.payload;
-      return {
-        ...state,
-        posts: posts.filter(post => post.postId !== id),
       };
     },
   },

@@ -39,6 +39,16 @@ export function updateCategory(category, id) {
   return request(`${ROOT_API_PATH}/${id}`, options);
 }
 
+export function changeCategoryCMSStatus(CMSStatus, id) {
+  const options = {
+    method: 'PUT',
+    body: {
+      status: CMSStatus,
+    },
+  };
+  return request(`${ROOT_API_PATH}/status/${id}`, options);
+}
+
 export function deleteCategory(id) {
   const options = {
     method: 'DELETE',
