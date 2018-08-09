@@ -140,5 +140,16 @@ namespace Giveaway.API.Controllers
         {
             return _userService.Create(request);
         }
+
+        /// <summary>
+        /// login with facebook
+        /// </summary>
+        /// <returns>user profile</returns>
+        [HttpPost("login/facebook")]
+        [Produces("application/json")]
+        public LoginResponse LoginWithFacebook([FromBody]FacebookConnectRequest request)
+        {
+            return _userService.LoginWithFacebook(request);
+        }
     }
 }

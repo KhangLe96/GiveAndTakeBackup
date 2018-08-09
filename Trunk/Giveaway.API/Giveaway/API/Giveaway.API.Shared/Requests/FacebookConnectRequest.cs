@@ -17,7 +17,7 @@ namespace Giveaway.API.Shared.Requests
 	    [DataMember(Name = "socialAccountId")]
         public string SocialAccountId { get; set; }
 
-	    [DataMember(Name = "imageUrl")]
-        public string ImageUrl { get; set; }
+	    [DataMember(Name = "avatarUrl")]
+        public string AvatarUrl { get; set; }
     }
 }

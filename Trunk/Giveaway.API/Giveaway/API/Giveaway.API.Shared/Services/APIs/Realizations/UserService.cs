@@ -93,12 +93,42 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public UserProfileResponse Create(CreateUserProfileRequest request)
         {
             var createdUser = _userService.Create(CreateUserFromRequest(request), out _);
-            var normalUserRoleId = _roleService.FirstOrDefault(r => r.RoleName == Const.Roles.User).Id;
-            _userRoleService.CreateUserRole(createdUser.Id, normalUserRoleId);
+            CreateUserRole(createdUser.Id, Const.Roles.User);
             return GetUserProfile(createdUser.Id);
         }
 
-     
+        private void CreateUserRole(Guid userId, string role)
+        {
+            var normalUserRoleId = _roleService.FirstOrDefault(r => r.RoleName == role).Id;
+            _userRoleService.CreateUserRole(userId, normalUserRoleId);
+        }
+
+        public LoginResponse LoginWithFacebook(FacebookConnectRequest request)
+        {
+            var user = _userService.FirstOrDefault(u => string.Equals(u.SocialAccountId, request.SocialAccountId));
+            if (user == null)
+            {
+                var securedPassword = _userService.GenerateSecurePassword(Const.DefaultUserPassword);
+                user = new User
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    UserName = request.UserName,
+                    SocialAccountId = request.SocialAccountId,
+                    AvatarUrl = request.AvatarUrl,
+                    PasswordHash = securedPassword.Hash,
+                    PasswordSalt = securedPassword.Salt
+                };
+                user = _userService.Create(user, out bool isSaved);
+                CreateUserRole(user.Id, Const.Roles.User);
+            }
+            if (user.EntityStatus != EntityStatus.Activated)
+            {
+                throw new BadRequestException("User has been blocked");
+            }
+            return GenerateLoginResponse(user);
+        }
+
 
         public LoginResponse Login(LoginRequest request)
         {

@@ -18,5 +18,6 @@ namespace Giveaway.API.Shared.Services.APIs
 	    UserProfileResponse SetRole(Guid userId, RoleRequest request);
 	    UserProfileResponse ChangeUserStatus(Guid userId, StatusRequest request);
 	    UserProfileResponse Create(CreateUserProfileRequest request);
+	    LoginResponse LoginWithFacebook(FacebookConnectRequest request);
 	}
 }
