@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
-using Android.Content.PM;
-using Android.OS;
 using Android.Widget;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
-using MvvmCross.Droid.Support.V7.AppCompat;
+using GiveAndTake.Droid.Views.Base;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using System.Collections.Generic;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Xamarin.Facebook.Login.Widget;
@@ -15,25 +15,45 @@ using Xamarin.Facebook.Login.Widget;
 namespace GiveAndTake.Droid.Views
 {
     [MvxActivityPresentation]
-    [Activity(
-        Label = "GiveAndTake.Droid.Views",
-        LaunchMode = LaunchMode.SingleTop
-    )]
-    public class LoginView : MvxAppCompatActivity<LoginViewModel>
+    [Activity(Label = "GiveAndTake.Droid.Views")]
+
+    public class LoginView : BaseActivity
     {
         private ICallbackManager callbackManager;
 
-        private readonly List<string> permissions = new List<string> {"public_profile"};
-        private TextView tvName;
+        private readonly List<string> permissions = new List<string> { "public_profile" };
 
-        protected override void OnCreate(Bundle bundle)
+        public IMvxCommand<UserProfile> LoginCommand { get; set; }
+
+        protected override int LayoutId => Resource.Layout.LoginView;
+
+        protected override void InitView()
         {
-            base.OnCreate(bundle);
+            InitFacebookButton();
+        }
 
-            SetContentView(Resource.Layout.LoginView);
+        protected override void CreateBinding()
+        {
+            base.CreateBinding();
 
-            var loginButton = FindViewById<LoginButton>(Resource.Id.login_button);
-            tvName = FindViewById<TextView>(Resource.Id.tvName);
+            var bindingSet = this.CreateBindingSet<LoginView, LoginViewModel>();
+
+            bindingSet.Bind(this)
+                .For(v => v.LoginCommand)
+                .To(vm => vm.LoginCommand);
+
+            bindingSet.Apply();
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
+        }
+
+        private void InitFacebookButton()
+        {
+            var btnFbDefault = FindViewById<LoginButton>(Resource.Id.btnFbDefault);
 
             var loginCallback = new FacebookCallback<LoginResult>
             {
@@ -44,17 +64,30 @@ namespace GiveAndTake.Droid.Views
 
             callbackManager = CallbackManagerFactory.Create();
 
-            loginButton.RegisterCallback(callbackManager, loginCallback);
+            btnFbDefault.RegisterCallback(callbackManager, loginCallback);
 
             LoginManager.Instance.LogInWithReadPermissions(this, permissions);
             LoginManager.Instance.RegisterCallback(callbackManager, loginCallback);
-            
+
+            var btnFacebookLogin = FindViewById<Button>(Resource.Id.btnFb);
+            btnFacebookLogin.Click += delegate { btnFbDefault.PerformClick(); };
         }
 
         private void OnLoginSuccess(LoginResult loginResult)
         {
-            tvName.Text = Profile.CurrentProfile.Name;
+            var profile = Profile.CurrentProfile;
+            var userProfile = new UserProfile
+            {
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                UserName = profile.Name,
+                ImageUrl = GetProfilePicture(profile.Id),
+                SocialAccountId = profile.Id
+            };
+            LoginCommand.Execute(userProfile);
         }
+
+        private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
 
         private void OnCancelLogin()
         {
@@ -62,12 +95,6 @@ namespace GiveAndTake.Droid.Views
 
         private void OnLoginError(FacebookException loginException)
         {
-        }
-
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-            callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
         }
     }
 }

@@ -4,10 +4,9 @@
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:gravity="center">
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="@dimen/SmallTextSize"
-		android:textColor="#123654"
-		android:text="Loading...." />
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:src="@drawable/splashscreen"
+    android:scaleType="fitXY"/>
 </LinearLayout>
