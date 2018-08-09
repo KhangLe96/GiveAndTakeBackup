@@ -7,7 +7,7 @@ import styles from './index.less';
 import { DateFormatDisplay, STATUS_BLOCKED, STATUS_ACTIVATED, STATUS_ACTIVATED_VN, STATUS_BLOCKED_VN, ROLE_ADMIN_VN, ROLE_USER_VN, STATUS_ACTION_ACTIVATE_VN } from '../../../common/constants';
 
 @connect(({ modals, userManagement }) => ({
-  ...modals, ...userManagement,
+  ...modals, userManagement,
 }))
 
 export default class index extends React.Component {
@@ -21,9 +21,9 @@ export default class index extends React.Component {
   }
 
   handleOnConfirm = (e) => {
-    const { dispatch, users } = this.props;
+    const { dispatch } = this.props;
     const { id } = this.props.match.params;
-    const { status } = this.props.userProfile;
+    const { status } = this.props.userManagement.userProfile;
     const newStatus = status === STATUS_BLOCKED ? STATUS_ACTIVATED : STATUS_BLOCKED;
     dispatch({
       type: 'userManagement/changeStatusProfile',
@@ -47,6 +47,10 @@ export default class index extends React.Component {
     return (moment.utc(date).local().format(DateFormatDisplay));
   }
 
+  handleDisplayGender = (gender) => {
+    return (gender === 'Male' ? 'Nam' : 'Nữ');
+  }
+
   renderDetail(userProfile) {
     const { username, status, firstName, lastName, birthdate, email, phoneNumber, gender, address, role } = userProfile !== null ? userProfile : null;
     return (
@@ -67,7 +71,7 @@ export default class index extends React.Component {
         <div className="containerBody">
           <Row>
             <Col span={8} className={styles.imageBox}>
-              <img src='https://cdn.pixabay.com/photo/2016/03/31/19/58/avatar-1295429_960_720.png' alt="" />
+              <img src='http://wfiles.brothersoft.com/c/cat-photograph_195928-800x600.jpg' alt="" className={styles.avatarStyle} />
               <Row>
                 <Col align="middle"><h2> {username} </h2></Col>
               </Row>
@@ -88,7 +92,7 @@ export default class index extends React.Component {
               </Row>
               <Row>
                 <Col span={12}><h3>{email}</h3></Col>
-                <Col span={12}><h3>{gender}</h3></Col>
+                <Col span={12}><h3>{this.handleDisplayGender(gender)}</h3></Col>
               </Row>
               <br /><br />
               <Row>
@@ -106,7 +110,7 @@ export default class index extends React.Component {
               </Row>
               <Row>
                 <Col span={12}><h3>{this.handleDisplayRole(role)}</h3></Col>
-                <Col span={12}><h3>{this.handleDisplayStatus(status)}</h3></Col>
+                <Col span={12}><h3 className={styles.statusText}>{this.handleDisplayStatus(status)}</h3></Col>
               </Row>
             </Col>
           </Row>
@@ -125,7 +129,7 @@ export default class index extends React.Component {
     );
   }
   render() {
-    const { userProfile } = this.props;
+    const { userManagement: { userProfile } } = this.props;
     const userDetail = (userProfile !== null) ? this.renderDetail(userProfile) : null;
     return (
       <div>
