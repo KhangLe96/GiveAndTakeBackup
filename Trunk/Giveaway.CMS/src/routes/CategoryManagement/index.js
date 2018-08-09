@@ -10,13 +10,10 @@ import CategoryList from '../CategoryManagement/CategoryList';
 export default class index extends React.Component {
   componentDidMount() {
     const { categories, dispatch } = this.props;
-    //Review: should remove check length here, sometime, category is updated by other user or other way, data should be updated, if you prevent like this, they don't know why they don't see any update.
-    if (categories.length === 0) {
-      dispatch({
-        type: 'categoryManagement/getCategories',
-        payload: {},
-      });
-    }
+    dispatch({
+      type: 'categoryManagement/getCategories',
+      payload: {},
+    });
   }
 
   render() {
