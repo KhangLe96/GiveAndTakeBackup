@@ -1,10 +1,10 @@
+import { Input, Select, Button, Form } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import PostList from './PostList';
-import { Input, Select, Button, Form } from 'antd';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
+const { Option } = Select;
 
 @connect(({ modals, postManagement }) => ({
   ...modals, ...postManagement,
@@ -12,18 +12,12 @@ const Option = Select.Option;
 class AdvancedSearchForm extends React.Component {
 
   componentDidMount() {
-    const { posts, dispatch } = this.props;
-    // Review: remove check length, see review in other management to have explain.
-    if (posts.length === 0) {
-      dispatch({
-        type: 'postManagement/fetch',
-        payload: {},
-      });
-    }
-    // this.props.posts.refetch();
-    console.log(this.props.posts);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'postManagement/fetch',
+      payload: {},
+    });
   }
-
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -44,7 +38,6 @@ class AdvancedSearchForm extends React.Component {
             address: values.searchValue,
           };
         }
-        console.log(this.state.requestValue);
         const c = this.state.requestValue;
         const { dispatch } = this.props;
         if (!err) {
@@ -56,20 +49,22 @@ class AdvancedSearchForm extends React.Component {
       }
     });
   }
+
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { posts } = this.props;
+    const { form: { getFieldDecorator }, posts } = this.props;
+    const searchFilterWidth = 200;
+    const searchInputWidth = 500;
     return (
       <div>
         <div className="containerHeader">
           <h1>Quản lý bài đăng</h1>
         </div>
-        <div hidden>
+        <div className="containerBody">
           <Form layout="inline" onSubmit={this.handleSubmit} className="AdvancedSearchForm">
             <FormItem>
               {getFieldDecorator('typeSelect')(
                 <Select
-                  style={{ width: 200 }}
+                  style={{ width: searchFilterWidth }}
                   placeholder="Select type to filter"
                   optionFilterProp="children"
                   size="large"
@@ -83,7 +78,7 @@ class AdvancedSearchForm extends React.Component {
             </FormItem>
             <FormItem>
               {getFieldDecorator('searchValue')(
-                <Input size="large" style={{ width: 500 }} />
+                <Input size="large" style={{ width: searchInputWidth }} />
               )}
             </FormItem>
             <FormItem>

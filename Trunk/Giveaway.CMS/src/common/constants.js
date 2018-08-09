@@ -15,3 +15,19 @@ export const DateTimeFormatDisplay = 'HH:mm DD/MM/YYYY';
 export const ROLE_USER_VN = 'Người dùng';
 export const ROLE_ADMIN_VN = 'Quản lý';s
 
+export const COLOR = {
+  Warning: 'orange',
+};
+
+export const STATUSES = {
+  Activated: 'Activated',
+  Blocked: 'Blocked',
+  Deleted: 'Deleted',
+};
+
+export const ENG_VN_DICTIONARY = {
+  Activated: 'Đang kích hoạt',
+  Blocked: 'Đang khóa',
+  Close: 'Đóng',
+  Open: 'Mở',
+};
