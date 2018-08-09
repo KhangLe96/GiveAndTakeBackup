@@ -42,7 +42,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
         public PostResponse Create(PostRequest postRequest) 
-        {
+        { 
             var post = Mapper.Map<Post>(postRequest);
             post.Id = Guid.NewGuid();
 
