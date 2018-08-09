@@ -63,20 +63,18 @@ export default {
       }
     },
     * changeCMSStatus({ payload }, { call, put }) {
-      const { categories, CMSStatus, id } = payload;
+      const { CMSStatus, id, page } = payload;
       const response = yield call(changeCategoryCMSStatus, CMSStatus, id);
       if (response) {
-        const newCategories = categories.map((category) => {
-          if (category.id === id) {
-            return { ...category, status: CMSStatus };
-          }
-          return category;
+        // After edit CMS status of a category, refetch catogories and this category from API
+        // to get updated information
+        yield put({
+          type: 'getCategories',
+          payload: { page },
         });
         yield put({
-          type: 'save',
-          payload: {
-            categories: newCategories,
-          },
+          type: 'getACategory',
+          payload: { id },
         });
       }
     },
