@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Icon, Divider, Card, Button, Spin, Popconfirm, Input } from 'antd';
 import { Link, routerRedux } from 'dva/router';
-import { TABLE_PAGESIZE, STATUS_ACTIVATED, STATUS_BLOCKED, STATUS_ACTIVATED_VN, STATUS_BLOCKED_VN, ROLE_ADMIN_VN, ROLE_USER_VN } from '../../../common/constants';
+import { TABLE_PAGESIZE, STATUS_ACTIVATED, STATUS_BLOCKED, STATUS_ACTIVATED_VN, STATUS_ACTION_ACTIVATE_VN, STATUS_BLOCKED_VN, ROLE_ADMIN_VN, ROLE_USER_VN } from '../../../common/constants';
 
 @connect(({ modals, userManagement }) => ({
   ...modals, userManagement,
@@ -34,7 +34,7 @@ export default class index extends React.Component {
   }
 
   handleConfirmChangeStatus = (record) => {
-    const { users, totals, dispatch, userManagement: { currentPage } } = this.props;
+    const { dispatch, userManagement: { currentPage } } = this.props;
     const newStatus = record.status === STATUS_BLOCKED ? STATUS_ACTIVATED : STATUS_BLOCKED;
     dispatch({
       type: 'userManagement/changeStatus',
@@ -43,15 +43,15 @@ export default class index extends React.Component {
   }
 
   handleDisplayStatus = (record) => {
-    record.status === STATUS_ACTIVATED ? STATUS_ACTIVATED_VN : STATUS_BLOCKED_VN;
+    return (record.status === STATUS_ACTIVATED ? STATUS_ACTIVATED_VN : STATUS_BLOCKED_VN);
   }
 
   handleDisplayRole = (record) => {
-    record.role && record.role[0] === 'User' ? ROLE_USER_VN : ROLE_ADMIN_VN;
+    return (record.role && record.role[0] === 'User' ? ROLE_USER_VN : ROLE_ADMIN_VN);
   }
 
   handleDisplayStatusButton = (record) => {
-    record.status === STATUS_ACTIVATED ? STATUS_BLOCKED_VN : STATUS_ACTIVATED_VN;
+    return (record.status === STATUS_ACTIVATED ? STATUS_BLOCKED_VN : STATUS_ACTION_ACTIVATE_VN);
   }
 
   columns =
@@ -84,7 +84,7 @@ export default class index extends React.Component {
           <span>
             <Popconfirm
               title="Bạn chắc chắn không ?"
-              onConfirm={() => this.handleChangeStatus(record)}
+              onConfirm={() => this.handleConfirmChangeStatus(record)}
             >
               <Button icon="exclamation-circle-o" type="primary" style={{ width: 120 }}>
                 {this.handleDisplayStatusButton(record)}
