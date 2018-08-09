@@ -9,7 +9,7 @@ import CategoryList from '../CategoryManagement/CategoryList';
 }))
 export default class index extends React.Component {
   componentDidMount() {
-    const { categories, dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'categoryManagement/getCategories',
       payload: {},

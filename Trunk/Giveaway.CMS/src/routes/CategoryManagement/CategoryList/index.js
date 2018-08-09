@@ -60,10 +60,10 @@ export default class index extends React.Component {
               <Popconfirm
                 title={popConfirmTitle}
                 onConfirm={() => {
-                  const { categories, dispatch } = this.props;
+                  const { currentPage, dispatch } = this.props;
                   dispatch({
                     type: 'categoryManagement/changeCMSStatus',
-                    payload: { categories, CMSStatus: newCMSStatus, id: record.id },
+                    payload: { CMSStatus: newCMSStatus, id: record.id, page: currentPage },
                   });
                 }}
               >
