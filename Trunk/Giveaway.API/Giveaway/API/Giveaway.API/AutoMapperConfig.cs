@@ -20,8 +20,10 @@ namespace Giveaway.API
             cfg.CreateMap<Post, PostResponse>()
                 .ForMember(
                     destination => destination.Status,
-                    map => map.MapFrom(source => source.PostStatus.ToString()
-                ));
+                    map => map.MapFrom(source => source.PostStatus.ToString()))
+                .ForMember(
+                    destination => destination.EntityStatus,
+                    map => map.MapFrom(source => source.EntityStatus.ToString()));
             cfg.CreateMap<PostResponse, Post>();
             cfg.CreateMap<PostRequest, Post>();
 
