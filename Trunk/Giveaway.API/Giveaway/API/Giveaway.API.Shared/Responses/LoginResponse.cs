@@ -13,7 +13,6 @@ namespace Giveaway.API.Shared.Responses
 		[DataMember(Name="profile", EmitDefaultValue=false)]
 		public UserProfileResponse Profile { get; set; }
 
-
 	    [DataMember(Name = "token", EmitDefaultValue = false)]
 	    public string Token { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using Giveaway.Data.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -30,13 +31,9 @@ namespace Giveaway.Data.Models.Database
         public string UserName { get; set; }
 
         [DataMember(Name = "appreciationNumber")]
-        [Required]
+        [DefaultValue(0)]
         public int AppreciationNumber { get; set; }
 
-        [DataMember(Name = "birthDate")]
-        [Required]
-        public DateTime BirthDate { get; set; }
-        
         [DataMember(Name = "passwordSalt")]
         [Required]
         public byte[] PasswordSalt { get; set; }
@@ -45,16 +42,18 @@ namespace Giveaway.Data.Models.Database
         [Required]
         public byte[] PasswordHash { get; set; }
 
-        [DataMember(Name = "allowTokensSince")]
-        [Required]
-        public DateTimeOffset AllowTokensSince { get; set; }
-
         #endregion
 
         #region Unrequired Properties
 
+        [DataMember(Name = "allowTokensSince")]
+        public DateTimeOffset? AllowTokensSince { get; set; }
+
+        [DataMember(Name = "birthDate")]
+        public DateTime? BirthDate { get; set; }
+
         [DataMember(Name = "socialAccountId")]
-        public Guid? SocialAccountId { get; set; }
+        public string SocialAccountId { get; set; }
 
         [DataMember(Name = "phoneNumber")]
         public string PhoneNumber { get; set; }
@@ -71,10 +70,10 @@ namespace Giveaway.Data.Models.Database
         public string FullName => LastName + " " + FirstName;
 
         [DataMember(Name = "gender")]
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         [DataMember(Name = "lastLogin")]
-        public DateTimeOffset LastLogin { get; set; }
+        public DateTimeOffset? LastLogin { get; set; }
 
         [DataMember(Name = "email")]
         [EmailAddress]

@@ -86,10 +86,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public async Task<FacebookConnectResponse> LoginByFacebook(FacebookConnectRequest request)
         {
-            if (string.IsNullOrEmpty(request?.FacebookId) || string.IsNullOrEmpty(request.AccessToken))
-            {
-                throw new BadRequestException("Empty content request");
-            }
+            //if (string.IsNullOrEmpty(request?.FacebookId) || string.IsNullOrEmpty(request.AccessToken))
+            //{
+            //    throw new BadRequestException("Empty content request");
+            //}
             return new FacebookConnectResponse();
         }
 

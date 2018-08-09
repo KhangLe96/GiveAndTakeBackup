@@ -18,8 +18,8 @@ namespace Giveaway.API.DB
             //SeedSuperAdmin(services);
             //SeedCategories(services);
             //SeedProvinceCity(services);
-            SeedPost(services);
-            SeedImage(services);
+            //SeedPost(services);
+            //SeedImage(services);
         }
 
         private static void SeedImage(IServiceProvider services)
