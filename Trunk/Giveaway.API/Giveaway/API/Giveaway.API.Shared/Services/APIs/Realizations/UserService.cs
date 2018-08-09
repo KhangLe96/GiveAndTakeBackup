@@ -108,17 +108,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var user = _userService.FirstOrDefault(u => string.Equals(u.SocialAccountId, request.SocialAccountId));
             if (user == null)
             {
-                var securedPassword = _userService.GenerateSecurePassword(Const.DefaultUserPassword);
                 user = new User
                 {
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     UserName = request.UserName,
                     SocialAccountId = request.SocialAccountId,
-                    AvatarUrl = request.AvatarUrl,
-                    PasswordHash = securedPassword.Hash,
-                    PasswordSalt = securedPassword.Salt
+                    AvatarUrl = request.AvatarUrl
                 };
+                UpdateUserPassword(Const.DefaultUserPassword, user);
                 user = _userService.Create(user, out bool isSaved);
                 CreateUserRole(user.Id, Const.Roles.User);
             }
@@ -222,7 +220,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
             var user = new User();
             UpdateUserFields(user, request);
-            UpdateUserPassword(request, user);
+            UpdateUserPassword(request.Password, user);
             return user;
         }
 
@@ -233,9 +231,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return user;
         }
 
-        private void UpdateUserPassword(CreateUserProfileRequest request, User user)
+        private void UpdateUserPassword(string password, User user)
         {
-            var securedPassword = _userService.GenerateSecurePassword(request.Password);
+            var securedPassword = _userService.GenerateSecurePassword(password);
             user.PasswordHash = securedPassword.Hash;
             user.PasswordSalt = securedPassword.Salt;
         }
