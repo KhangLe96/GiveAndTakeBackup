@@ -74,5 +74,11 @@ namespace Giveaway.Data.EF
             public const string NotFound = "Not Found";
             public const string InternalServerError = "Internal Server Error";
         }
+
+        public class Platform
+        {
+            public const string App = "App";
+            public const string CMS = "CMS";
+        }
     }
 }

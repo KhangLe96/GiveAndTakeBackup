@@ -22,19 +22,28 @@ namespace Giveaway.API.Controllers
             _postService = postService;
         }
 
-        //When you implement get list. Should have a API to get list for mobile app, we need filter these posts which is activated. 
-        //And a api for CMS, return all post with their status
-
         /// <summary>
         /// Get list post with params object that includes: page, limit, keyword, provinceCityId, categoryId, title
         /// </summary>
         /// <param name="params">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
-        [HttpGet("getList")]
+        [HttpGet("getListPostCMS")]
         [Produces("application/json")]
-        public PagingQueryResponse<PostResponse> GetList([FromHeader]IDictionary<string, string> @params)
+        public PagingQueryResponse<PostResponse> GetListPostCMS([FromHeader]IDictionary<string, string> @params)
         {
-            return _postService.GetPostForPaging(null, @params);
+            return _postService.GetPostForPaging(null, @params, Const.Platform.CMS);
+        }
+
+        /// <summary>
+        /// Get list post with params object that includes: page, limit, keyword, provinceCityId, categoryId, title
+        /// </summary>
+        /// <param name="params"></param>
+        /// <returns></returns>
+        [HttpGet("getListPostApp")]
+        [Produces("application/json")]
+        public PagingQueryResponse<PostResponse> GetListPostApp([FromHeader]IDictionary<string, string> @params)
+        {
+            return _postService.GetPostForPaging(null, @params, Const.Platform.App);
         }
 
         /// <summary>
@@ -47,12 +56,24 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PagingQueryResponse<PostResponse> GetListPostOfSingleUser(string userId, [FromHeader]IDictionary<string, string> @params)
         {
-            return _postService.GetPostForPaging(userId, @params);
+            return _postService.GetPostForPaging(userId, @params, null);
+        }
+
+        /// <summary>
+        /// Get detail of a post by id 
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet("getDetail/{postId}")]
+        [Produces("application/json")]
+        public PostResponse GetDetail(Guid postId)
+        {
+            return _postService.GetDetail(postId);
         }
 
         /// <summary>
         /// Create a post
-        /// </summary> 
+        /// </summary>
         /// <param name="postRequest">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
         [Authorize]
