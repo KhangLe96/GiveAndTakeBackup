@@ -52,7 +52,7 @@ namespace Giveaway.API.Controllers
 
         /// <summary>
         /// Create a post
-        /// </summary>
+        /// </summary> 
         /// <param name="postRequest">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
         [Authorize]
