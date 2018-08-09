@@ -76,6 +76,8 @@
     <Compile Include="Views\Base\BaseView.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\LoginView.cs" />
+    <BundleResource Include="Resources\Images\splashscreen.png" />
+    <BundleResource Include="Resources\Images\LoginLogo.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
@@ -149,7 +151,6 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\Images\" />
     <Folder Include="Views\Popups\" />
   </ItemGroup>
   <ItemGroup>

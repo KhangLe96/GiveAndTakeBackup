@@ -5,7 +5,6 @@ using UIKit;
 namespace GiveAndTake.iOS.Views.Base
 {
 	public abstract class BaseView : MvxViewController
-
 	{
 		public override void ViewDidLoad()
 		{
