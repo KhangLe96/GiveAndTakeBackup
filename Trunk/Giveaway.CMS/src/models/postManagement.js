@@ -1,12 +1,29 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-import { changePostCMSStatus, fetch, findPost } from '../services/post';
+import { fetch, changePostCMSStatus, findPost, fetchPostInformation, changeAPostCMSStatus } from '../services/post';
+import { TABLE_PAGESIZE } from '../common/constants';
+
+const DEFAULT_CURRENT_PAGE = 1;
 
 export default {
   namespace: 'postManagement', /* should be the same with file name */
 
   state: {
     posts: [],
+    postInformation: {
+      id: null,
+      user: {},
+      title: null,
+      description: null,
+      images: null,
+      address: {},
+      createdTime: null,
+      updatedTime: null,
+      status: null,
+      category: {},
+    },
+    currentPage: DEFAULT_CURRENT_PAGE,
+    totals: 0,
   },
 
   effects: {
@@ -19,6 +36,38 @@ export default {
         });
       }
     },
+
+    * fetchPostInformation({ payload }, { call, put }) {
+      const response = yield call(fetchPostInformation, payload);
+      if (response) {
+        yield put({
+          type: 'save',
+          payload: {
+            postInformation: response,
+          },
+        });
+      }
+    },
+    * changeAPostCMSStatus({ payload }, { call, put }) {
+      const response = yield call(changeAPostCMSStatus, payload);
+      if (response) {
+        yield put({
+          type: 'fetchPostInformation',
+          payload,
+        });
+      }
+    },
+
+    * changeStatusPostInformation({ payload }, { call, put }) {
+      const response = yield call(changeStatusPost, payload);
+      if (response) {
+        yield put({
+          type: 'fetchPostInformation',
+          payload,
+        });
+      }
+    },
+
     * findPost({ payload }, { call, put }) {
       const posts = yield call(findPost, payload);
       if (posts) {

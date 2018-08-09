@@ -10,7 +10,7 @@ export async function fetch(params) {
       ...params,
     },
   };
-  return request(`${ROOT_PATH}/getList`, options);
+  return request(`${ROOT_PATH}/getListPostCMS`, options);
 }
 
 export function changePostCMSStatus(id, statusCMS) {
@@ -27,4 +27,24 @@ export async function findPost(params) {
   return request(`${ROOT_PATH}?${stringify(params)}`, {
     method: 'GET',
   });
+}
+
+export async function fetchPostInformation(params) {
+  const { id } = params;
+  const options = {
+    method: 'GET',
+    body: null,
+  };
+  return request(`${ROOT_PATH}/getDetail/${id}`, options);
+}
+
+export async function changeAPostCMSStatus(params) {
+  const { id } = params;
+  const options = {
+    method: 'PUT',
+    body: {
+      status: params.newStatusCMS,
+    },
+  };
+  return request(`${ROOT_PATH}/statusCMS/${id}`, options);
 }
