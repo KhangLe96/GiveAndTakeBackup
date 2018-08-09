@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
-import { createCategory, getCategories, getACategory, updateCategory, deleteCategory } from '../services/category';
+import { createCategory, getCategories, getACategory, updateCategory, changeCategoryCMSStatus, deleteCategory } from '../services/category';
 
 const DEFAULT_CURRENT_PAGE = 1;
 
@@ -59,6 +59,24 @@ export default {
         yield put({
           type: 'getCategories',
           payload: {},
+        });
+      }
+    },
+    * changeCMSStatus({ payload }, { call, put }) {
+      const { categories, CMSStatus, id } = payload;
+      const response = yield call(changeCategoryCMSStatus, CMSStatus, id);
+      if (response) {
+        const newCategories = categories.map((category) => {
+          if (category.id === id) {
+            return { ...category, status: CMSStatus };
+          }
+          return category;
+        });
+        yield put({
+          type: 'save',
+          payload: {
+            categories: newCategories,
+          },
         });
       }
     },
