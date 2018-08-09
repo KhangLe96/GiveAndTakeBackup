@@ -25,24 +25,39 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _imageService = imageService;
         }
 
-        public PagingQueryResponse<PostResponse> GetPostForPaging(string userId, IDictionary<string, string> @params)
+        public PagingQueryResponse<PostResponse> GetPostForPaging(string userId, IDictionary<string, string> @params, string platform)
         {
             var request = @params.ToObject<PagingQueryPostRequest>();
-            var posts = GetPagedPosts(userId, request);
+            var posts = GetPagedPosts(userId, request, platform);
             return new PagingQueryResponse<PostResponse>
             {
                 Data = posts,
                 PageInformation = new PageInformation
                 {
-                    Total = _postService.Count(),
+                    Total = posts.Count(),
                     Page = request.Page,
                     Limit = request.Limit
                 }
             };
         }
 
+        public PostResponse GetDetail(Guid postId)
+        {
+            try
+            {
+                var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == postId).Result;
+                var postResponse = Mapper.Map<PostResponse>(post);
+
+                return postResponse;
+            }
+            catch
+            {
+                throw new BadRequestException(Error.NotFound);
+            }
+        }
+
         public PostResponse Create(PostRequest postRequest) 
-        { 
+        {
             var post = Mapper.Map<Post>(postRequest);
             post.Id = Guid.NewGuid();
 
@@ -172,11 +187,19 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<PostResponse> GetPagedPosts(string userId, PagingQueryPostRequest request)
+        private List<PostResponse> GetPagedPosts(string userId, PagingQueryPostRequest request, string platform)
         {
             IEnumerable<Post> posts;
             if (string.IsNullOrEmpty(userId))
-                posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Where(x => x.EntityStatus != EntityStatus.Deleted);
+            {
+                if(platform == Platform.CMS)
+                    //display Posts that were not deleted to Admin in CMS
+                    posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Where(x => x.EntityStatus != EntityStatus.Deleted);
+                else
+                    //display Posts that weren't deleted have category that wasn't blocked to User in App's newfeed
+                    posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity)
+                        .Where(x => x.EntityStatus != EntityStatus.Deleted & x.Category.EntityStatus != EntityStatus.Blocked);
+            }
             else
             {
                 try
