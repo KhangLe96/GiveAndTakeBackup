@@ -75,6 +75,18 @@ namespace Giveaway.API.Controllers
         }
 
         /// <summary>
+        /// Get detail of a post by id 
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet("getDetail/{postId}")]
+        [Produces("application/json")]
+        public PostResponse GetDetail(Guid postId)
+        {
+            return _postService.GetDetail(postId);
+        }
+
+        /// <summary>
         /// Create a post
         /// </summary>
         /// <param name="postRequest">page, limit, keyword, provinceCityId, categoryId, title</param>
