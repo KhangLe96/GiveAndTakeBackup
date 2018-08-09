@@ -9,12 +9,20 @@ export const RETRIES_SECONDS_COUNTDOWN = 30;
 export const TABLE_PAGESIZE = 10;
 export const DateFormatDisplay = 'DD/MM/YYYY';
 export const DateTimeFormatDisplay = 'HH:mm DD/MM/YYYY';
-export const WARNING_COLOR = 'orange';
 
-export const POST_STATUSES = {
-  Open: 'Đang mở',
+export const COLOR = {
+  Warning: 'orange',
 };
-export const USER_STATUSES = {
+
+export const STATUSES = {
   Activated: 'Activated',
-  Block: 'Blocked',
+  Blocked: 'Blocked',
+  Deleted: 'Deleted',
+};
+
+export const ENG_VN_DICTIONARY = {
+  Activated: 'Đang kích hoạt',
+  Blocked: 'Đang khóa',
+  Close: 'Đóng',
+  Open: 'Mở',
 };

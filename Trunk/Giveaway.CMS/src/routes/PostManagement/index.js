@@ -1,10 +1,10 @@
+import { Input, Select, Button, Form } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import PostList from './PostList';
-import { Input, Select, Button, Form } from 'antd';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
+const { Option } = Select;
 
 @connect(({ modals, postManagement }) => ({
   ...modals, ...postManagement,
@@ -12,7 +12,7 @@ const Option = Select.Option;
 class AdvancedSearchForm extends React.Component {
 
   componentDidMount() {
-    const { posts, dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'postManagement/fetch',
       payload: {},
@@ -38,7 +38,6 @@ class AdvancedSearchForm extends React.Component {
             address: values.searchValue,
           };
         }
-        console.log(this.state.requestValue);
         const c = this.state.requestValue;
         const { dispatch } = this.props;
         if (!err) {
@@ -50,11 +49,11 @@ class AdvancedSearchForm extends React.Component {
       }
     });
   }
+
   render() {
     const { form: { getFieldDecorator }, posts } = this.props;
     const searchFilterWidth = 200;
     const searchInputWidth = 500;
-    console.log(posts);
     return (
       <div>
         <div className="containerHeader">

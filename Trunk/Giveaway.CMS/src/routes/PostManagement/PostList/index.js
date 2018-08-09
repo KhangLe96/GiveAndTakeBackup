@@ -3,7 +3,7 @@ import { Table, Icon, Divider, Card, Button, Spin, Popconfirm, Input } from 'ant
 import { Link } from 'dva/router';
 import moment from 'moment';
 
-import { DateFormatDisplay, TABLE_PAGESIZE, POST_STATUSES, WARNING_COLOR } from '../../../common/constants';
+import { DateFormatDisplay, TABLE_PAGESIZE, ENG_VN_DICTIONARY, COLOR, STATUSES } from '../../../common/constants';
 
 export default class index extends React.Component {
 
@@ -39,34 +39,48 @@ export default class index extends React.Component {
       },
       {
         title: 'Trạng thái',
-        dataIndex: 'status',
-        key: 'status',
-        render: val => POST_STATUSES[val],
+        dataIndex: 'statusCMS',
+        key: 'statusCMS',
+        render: val => ENG_VN_DICTIONARY[val],
       }, {
         title: 'Hành động',
-        dataIndex: 'postId',
         key: 'Action',
-        render: id => (
-          <span>
-            <Popconfirm
-              title="Bạn chắc chắn muốn ẩn bài đăng này?"
-              onConfirm={() => {
-                const { dispatch, posts } = this.props;
-                dispatch({
-                  type: 'postManagement/deletePost',
-                  payload: { posts, id },
-                });
-              }}
-            >
-              <Button type="danger" icon="delete">Ẩn bài đăng</Button>
-            </Popconfirm>
-            <Divider type="vertical" />
-            <Popconfirm
-              title="Cảnh cáo người dùng này?"
-            >
-              <Button type="primary" icon="warning" style={{ background: WARNING_COLOR }}>Cảnh báo người dùng</Button>
-            </Popconfirm>
-          </span >),
+        render: (record) => {
+          let buttonContent = 'Khóa';
+          let buttonIcon = 'lock';
+          let buttonType = 'danger';
+          let newPostStatus = STATUSES.Blocked;
+          let popConfirmTitle = 'Bạn chắc chắn muốn khóa bài đăng này?';
+          if (record.statusCMS === STATUSES.Blocked) {
+            buttonContent = 'Mở khóa';
+            buttonIcon = 'unlock';
+            buttonType = 'default';
+            newPostStatus = STATUSES.Activated;
+            popConfirmTitle = 'Bạn có muốn mở lại bài đăng này?';
+          }
+          return (
+            <span>
+              <Popconfirm
+                title={popConfirmTitle}
+                onConfirm={() => {
+                  const { dispatch, posts } = this.props;
+                  dispatch({
+                    type: 'postManagement/changeCMSStatus',
+                    payload: { id: record.id, statusCMS: newPostStatus, posts },
+                  });
+                }}
+              >
+                <Button type={buttonType} icon={buttonIcon}>{buttonContent}</Button>
+              </Popconfirm>
+              <Divider type="vertical" />
+              <Popconfirm
+                title="Cảnh cáo người dùng này?"
+              >
+                <Button type="primary" icon="warning" style={{ background: COLOR.Warning }}>Cảnh báo người dùng</Button>
+              </Popconfirm>
+            </span >
+          );
+        },
       },
     ];
 
