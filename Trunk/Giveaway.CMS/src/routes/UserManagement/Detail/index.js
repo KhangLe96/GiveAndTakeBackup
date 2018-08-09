@@ -4,7 +4,8 @@ import { Button, Popconfirm, Row, Col } from 'antd';
 import { Record } from '../../../../node_modules/immutable';
 import moment from 'moment';
 import styles from './index.less';
-import { DateFormatDisplay, STATUS_BLOCKED, STATUS_ACTIVATED, STATUS_ACTIVATED_VN, STATUS_BLOCKED_VN, ROLE_ADMIN_VN, ROLE_USER_VN, STATUS_ACTION_ACTIVATE_VN } from '../../../common/constants';
+import { DateFormatDisplay, STATUS_BLOCKED, STATUS_ACTIVATED, STATUS_ACTION_ACTIVATE, STATUS_ACTION_BLOCK } from '../../../common/constants';
+import { ENG_VN_DICTIONARY } from "../../../common/constants";
 
 @connect(({ modals, userManagement }) => ({
   ...modals, userManagement,
@@ -32,23 +33,11 @@ export default class index extends React.Component {
   }
 
   handleDisplayStatusButton = (userProfile) => {
-    return (userProfile.status === STATUS_ACTIVATED ? STATUS_BLOCKED_VN : STATUS_ACTION_ACTIVATE_VN);
-  }
-
-  handleDisplayStatus = (status) => {
-    return (status === STATUS_ACTIVATED ? STATUS_ACTIVATED_VN : STATUS_BLOCKED_VN);
-  }
-
-  handleDisplayRole = (role) => {
-    return (role && role[0] === 'User' ? ROLE_USER_VN : ROLE_ADMIN_VN);
+    return (userProfile.status === STATUS_ACTIVATED ? STATUS_ACTION_BLOCK : STATUS_ACTION_ACTIVATE);
   }
 
   handleDateAndTimeFormat = (date) => {
     return (moment.utc(date).local().format(DateFormatDisplay));
-  }
-
-  handleDisplayGender = (gender) => {
-    return (gender === 'Male' ? 'Nam' : 'Nữ');
   }
 
   renderDetail(userProfile) {
@@ -92,7 +81,7 @@ export default class index extends React.Component {
               </Row>
               <Row>
                 <Col span={12}><h3>{email}</h3></Col>
-                <Col span={12}><h3>{this.handleDisplayGender(gender)}</h3></Col>
+                <Col span={12}><h3>{ENG_VN_DICTIONARY(gender)}</h3></Col>
               </Row>
               <br /><br />
               <Row>
@@ -109,8 +98,8 @@ export default class index extends React.Component {
                 <Col span={12}><h2> Trạng thái </h2></Col>
               </Row>
               <Row>
-                <Col span={12}><h3>{this.handleDisplayRole(role)}</h3></Col>
-                <Col span={12}><h3 className={styles.statusText}>{this.handleDisplayStatus(status)}</h3></Col>
+                <Col span={12}><h3>{ENG_VN_DICTIONARY(role[0])}</h3></Col>
+                <Col span={12}><h3 className={styles.statusText}>{ENG_VN_DICTIONARY(status)}</h3></Col>
               </Row>
             </Col>
           </Row>

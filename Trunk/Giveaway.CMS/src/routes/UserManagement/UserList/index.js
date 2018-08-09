@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider, Card, Button, Spin, Popconfirm, Input } from 'antd';
-import { Link, routerRedux } from 'dva/router';
-import { TABLE_PAGESIZE, STATUS_ACTIVATED, STATUS_BLOCKED, STATUS_ACTIVATED_VN, STATUS_ACTION_ACTIVATE_VN, STATUS_BLOCKED_VN, ROLE_ADMIN_VN, ROLE_USER_VN } from '../../../common/constants';
+import { Table, Button, Popconfirm } from 'antd';
+import { Link } from 'dva/router';
+import { TABLE_PAGESIZE, STATUS_ACTIVATED, STATUS_BLOCKED, STATUS_ACTION_ACTIVATE, STATUS_ACTION_BLOCKED } from '../../../common/constants';
+import { ENG_VN_DICTIONARY } from "../../../common/constants";
 
 @connect(({ modals, userManagement }) => ({
   ...modals, userManagement,
@@ -42,16 +43,8 @@ export default class index extends React.Component {
     });
   }
 
-  handleDisplayStatus = (record) => {
-    return (record.status === STATUS_ACTIVATED ? STATUS_ACTIVATED_VN : STATUS_BLOCKED_VN);
-  }
-
-  handleDisplayRole = (record) => {
-    return (record.role && record.role[0] === 'User' ? ROLE_USER_VN : ROLE_ADMIN_VN);
-  }
-
   handleDisplayStatusButton = (record) => {
-    return (record.status === STATUS_ACTIVATED ? STATUS_BLOCKED_VN : STATUS_ACTION_ACTIVATE_VN);
+    return (record.status === STATUS_ACTIVATED ? STATUS_ACTION_BLOCKED : STATUS_ACTION_ACTIVATE);
   }
 
   columns =
@@ -71,12 +64,12 @@ export default class index extends React.Component {
         title: 'Trạng thái',
         // dataIndex: 'status',
         key: 'status',
-        render: record => (this.handleDisplayStatus(record)),
+        render: record => (ENG_VN_DICTIONARY(record)),
       }, {
         title: 'Vai trò',
         // dataIndex: 'role',
         key: 'role',
-        render: record => (this.handleDisplayRole(record)),
+        render: record => (ENG_VN_DICTIONARY(record)),
       }, {
         title: 'Hành động',
         key: 'Action',
@@ -87,7 +80,7 @@ export default class index extends React.Component {
               onConfirm={() => this.handleConfirmChangeStatus(record)}
             >
               <Button icon="exclamation-circle-o" type="primary" style={{ width: 120 }}>
-                {this.handleDisplayStatusButton(record)}
+                {ENG_VN_DICTIONARY(record)}
               </Button>
             </Popconfirm>
           </span >),
