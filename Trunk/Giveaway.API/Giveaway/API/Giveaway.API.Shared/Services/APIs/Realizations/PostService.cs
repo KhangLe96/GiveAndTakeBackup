@@ -2,6 +2,7 @@
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.API.Shared.Responses.Post;
 using Giveaway.Data.EF;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
@@ -14,7 +15,7 @@ using static Giveaway.Data.EF.Const;
 using DbService = Giveaway.Service.Services;
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-    public class PostService : IPostService
+    public class PostService<T> : IPostService<T> where T : PostBaseResponse
     {
         private readonly DbService.IPostService _postService;
         private readonly DbService.IImageService _imageService;
@@ -25,11 +26,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _imageService = imageService;
         }
 
-        public PagingQueryResponse<PostResponse> GetPostForPaging(string userId, IDictionary<string, string> @params, string platform)
+        public PagingQueryResponse<T> GetPostForPaging(string userId, IDictionary<string, string> @params, string platform)
         {
             var request = @params.ToObject<PagingQueryPostRequest>();
             var posts = GetPagedPosts(userId, request, platform, out var total);
-            return new PagingQueryResponse<PostResponse>
+            return new PagingQueryResponse<T>
             {
                 Data = posts,
                 PageInformation = new PageInformation
@@ -41,13 +42,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public PostResponse GetDetail(Guid postId)
+        public T GetDetail(Guid postId)
         {
-            //Change status of post, only one status.
             try
             {
-                var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == postId).Result;
-                var postResponse = Mapper.Map<PostResponse>(post);
+                var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).Include(x => x.User).FirstAsync(x => x.Id == postId).Result;
+                var postResponse = Mapper.Map<T>(post);
 
                 return postResponse;
             }
@@ -57,7 +57,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        public PostResponse Create(PostRequest postRequest) 
+        public PostAppResponse Create(PostRequest postRequest) 
         {
             var post = Mapper.Map<Post>(postRequest);
             post.Id = Guid.NewGuid();
@@ -74,12 +74,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
             
             var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
-            var postResponse = Mapper.Map<PostResponse>(postDb);
+            var postResponse = Mapper.Map<PostAppResponse>(postDb);
 
             return postResponse;
         }
 
-        public PostResponse Update(Guid id, PostRequest postRequest)
+        public PostAppResponse Update(Guid id, PostRequest postRequest)
         {
             var post = _postService.Include(x => x.Images).FirstAsync(x => x.Id == id).Result;
             if (post == null)
@@ -104,7 +104,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 }
 
                 var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
-                var postResponse = Mapper.Map<PostResponse>(postDb);
+                var postResponse = Mapper.Map<PostAppResponse>(postDb);
 
                 return postResponse;
             }
@@ -188,7 +188,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<PostResponse> GetPagedPosts(string userId, PagingQueryPostRequest request, string platform, out int total)
+        private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, string platform, out int total)
         {
             IEnumerable<Post> posts;
             try
@@ -229,7 +229,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return posts
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)
-                .Select(post => Mapper.Map<PostResponse>(post))
+                .Select(post => Mapper.Map<T>(post))
                 .ToList();
         }
 

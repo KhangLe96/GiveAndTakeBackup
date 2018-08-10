@@ -2,6 +2,7 @@
 using AutoMapper.Configuration;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.API.Shared.Responses.Post;
 using Giveaway.Data.Models.Database;
 
 namespace Giveaway.API
@@ -11,25 +12,46 @@ namespace Giveaway.API
         public static void RegisterModel()
         {
             var cfg = new MapperConfigurationExpression();
+
+            #region User
+
             cfg.CreateMap<User, Giveaway.API.Shared.Models.DTO.User>();
             cfg.CreateMap<User, UserPostRespone>();
+
+            #endregion
+
+            #region Category
 
             cfg.CreateMap<Category, Shared.Models.DTO.Category>();
             cfg.CreateMap<Category, CategoryResponse>();
             cfg.CreateMap<CategoryResponse, Category>();
 
-            cfg.CreateMap<Post, PostResponse>()
+            #endregion
+
+            #region Post
+
+            cfg.CreateMap<Post, PostAppResponse>()
                 .ForMember(
                     destination => destination.Status,
-                    map => map.MapFrom(source => source.PostStatus.ToString()))
+                    map => map.MapFrom(source => source.PostStatus.ToString()
+                ));
+            cfg.CreateMap<PostAppResponse, Post>();
+            cfg.CreateMap<Post, PostCmsResponse>()
                 .ForMember(
                     destination => destination.EntityStatus,
-                    map => map.MapFrom(source => source.EntityStatus.ToString()));
-            cfg.CreateMap<PostResponse, Post>();
+                    map => map.MapFrom(source => source.EntityStatus.ToString()
+                ));
+            cfg.CreateMap<PostCmsResponse, Post>();
             cfg.CreateMap<PostRequest, Post>();
+
+            #endregion
+
+            #region Image
 
             cfg.CreateMap<Image, ImageResponse>();
             cfg.CreateMap<ImageRequest, Image>();
+
+            #endregion
 
             cfg.CreateMap<ProvinceCity, ProvinceCityResponse>();
 

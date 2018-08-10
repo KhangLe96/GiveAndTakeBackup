@@ -7,6 +7,7 @@ using System;
 using Giveaway.Data.EF;
 using Microsoft.AspNetCore.Authorization;
 using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Responses.Post;
 
 namespace Giveaway.API.Controllers
 {
@@ -15,11 +16,13 @@ namespace Giveaway.API.Controllers
     [Route("api/v1/Post")]
     public class PostController : Controller
     {
-        private readonly IPostService _postService;
+        private readonly IPostService<PostCmsResponse> _postCmsService;
+        private readonly IPostService<PostAppResponse> _postService;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService<PostCmsResponse> postCmsService, IPostService<PostAppResponse> postAppService)
         {
-            _postService = postService;
+            _postCmsService = postCmsService;
+            _postService = postAppService;
         }
 
         /// <summary>
@@ -27,13 +30,11 @@ namespace Giveaway.API.Controllers
         /// </summary>
         /// <param name="params">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
-        /// REVIEW: Ex: cms/list. app/list
-        [HttpGet("getListPostCMS")]
+        [HttpGet("cms/list")]
         [Produces("application/json")]
-        public PagingQueryResponse<PostResponse> GetListPostCMS([FromHeader]IDictionary<string, string> @params)
+        public PagingQueryResponse<PostCmsResponse> GetListPostCMS([FromHeader]IDictionary<string, string> @params)
         {
-            // REVIEW: remove unnecessary field, description, image is not necessary.
-            return _postService.GetPostForPaging(null, @params, Const.Platform.CMS);
+            return _postCmsService.GetPostForPaging(null, @params, Const.Platform.CMS);
         }
 
         /// <summary>
@@ -41,11 +42,10 @@ namespace Giveaway.API.Controllers
         /// </summary>
         /// <param name="params"></param>
         /// <returns></returns>
-        [HttpGet("getListPostApp")]
+        [HttpGet("app/list")]
         [Produces("application/json")]
-        public PagingQueryResponse<PostResponse> GetListPostApp([FromHeader]IDictionary<string, string> @params)
+        public PagingQueryResponse<PostAppResponse> GetListPostApp([FromHeader]IDictionary<string, string> @params)
         {
-            //REVIEW: Only one status, don't divide cms status and app status. App should be return a list of active posts. Don't return inavtive posts, but in CMS return both.
             return _postService.GetPostForPaging(null, @params, Const.Platform.App);
         }
 
@@ -55,9 +55,9 @@ namespace Giveaway.API.Controllers
         /// <param name="params">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
         [Authorize]
-        [HttpGet("getListPostOfSingleUser/{userId}")]
+        [HttpGet("app/listPostOfUser/{userId}")]
         [Produces("application/json")]
-        public PagingQueryResponse<PostResponse> GetListPostOfSingleUser(string userId, [FromHeader]IDictionary<string, string> @params)
+        public PagingQueryResponse<PostAppResponse> GetListPostOfSingleUser(string userId, [FromHeader]IDictionary<string, string> @params)
         {
             return _postService.GetPostForPaging(userId, @params, null);
         }
@@ -67,11 +67,23 @@ namespace Giveaway.API.Controllers
         /// </summary>
         /// <param name="postId"></param>
         /// <returns></returns>
-        [HttpGet("getDetail/{postId}")]
+        [HttpGet("app/detail/{postId}")]
         [Produces("application/json")]
-        public PostResponse GetDetail(Guid postId)
+        public PostAppResponse GetDetailApp(Guid postId)
         {
             return _postService.GetDetail(postId);
+        }
+
+        /// <summary>
+        /// Get detail of a post by id 
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [HttpGet("cms/detail/{postId}")]
+        [Produces("application/json")]
+        public PostCmsResponse GetDetailCms(Guid postId)
+        {
+            return _postCmsService.GetDetail(postId);
         }
 
         /// <summary>
@@ -80,9 +92,9 @@ namespace Giveaway.API.Controllers
         /// <param name="postRequest">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
         [Authorize]
-        [HttpPost("create")]
+        [HttpPost("app/create")]
         [Produces("application/json")]
-        public PostResponse Create([FromBody]PostRequest postRequest)
+        public PostAppResponse Create([FromBody]PostRequest postRequest)
         {
             postRequest.UserId = User.GetUserId();  
             return _postService.Create(postRequest);
@@ -95,9 +107,9 @@ namespace Giveaway.API.Controllers
         /// <param name="postRequest"></param>
         /// <returns></returns>
         [Authorize] 
-        [HttpPut("update/{postId}")]
+        [HttpPut("app/update/{postId}")]
         [Produces("application/json")]
-        public PostResponse Update(Guid postId, [FromBody]PostRequest postRequest)
+        public PostAppResponse Update(Guid postId, [FromBody]PostRequest postRequest)
         {
             postRequest.UserId = User.GetUserId();
             return _postService.Update(postId, postRequest);
@@ -110,7 +122,7 @@ namespace Giveaway.API.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpPut("statusCMS/{postId}")]
+        [HttpPut("cms/status/{postId}")]
         [Produces("application/json")]
         public bool ChangePostStatusCMS(Guid postId, [FromBody]StatusRequest request)
         {
@@ -123,9 +135,8 @@ namespace Giveaway.API.Controllers
         /// <param name="postId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        /// REVIEW: remove this API
         [Authorize]
-        [HttpPut("statusApp/{postId}")]
+        [HttpPut("app/status/{postId}")]
         [Produces("application/json")]
         public bool ChangePostStatusApp(Guid postId, [FromBody]StatusRequest request)
         {

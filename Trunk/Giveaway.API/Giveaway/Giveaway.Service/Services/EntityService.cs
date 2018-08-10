@@ -90,10 +90,9 @@ namespace Giveaway.Service.Services
         public T UpdateStatus(Guid id, string status)
         {
             var entity = Find(id);
-            if (entity is BaseEntity baseEntity)
+            bool isStatus = Enum.TryParse(status, out EntityStatus entityStatus);
+            if (entity is BaseEntity baseEntity && isStatus)
             {
-                //REVIEW: check if status is valid status enum
-                Enum.TryParse(status, out EntityStatus entityStatus);
                 baseEntity.EntityStatus = entityStatus;
                 baseEntity.UpdatedTime = DateTimeOffset.UtcNow;
             }
