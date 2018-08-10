@@ -1,14 +1,16 @@
-﻿using Facebook.CoreKit;
+﻿using System;
+using Facebook.CoreKit;
 using Facebook.LoginKit;
-using GiveAndTake.Core.ViewModels;
-using MvvmCross.Binding.BindingContext;
-using MvvmCross.Platforms.Ios.Presenters.Attributes;
-using System;
+using Foundation;
 using GiveAndTake.Core.Models;
+using GiveAndTake.Core.ViewModels;
+using GiveAndTake.iOS.Views.Base;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
 
-namespace GiveAndTake.iOS.Views.Base
+namespace GiveAndTake.iOS.Views
 {
     [MvxRootPresentation]
     public class LoginView : BaseView
@@ -25,7 +27,6 @@ namespace GiveAndTake.iOS.Views.Base
             InitLogoImage();
             InitLoginFbButton();
             InitLoginGoogleButton();
-            InitDefaultLoginFacebookButton();
         }
 
         protected override void CreateBinding()
@@ -71,8 +72,6 @@ namespace GiveAndTake.iOS.Views.Base
 
         private void InitLoginFbButton()
         {
-            InitDefaultLoginFacebookButton();
-
             customedLoginFacebookButton = new UIButton { TranslatesAutoresizingMaskIntoConstraints = false };
 
             customedLoginFacebookButton.AddConstraints(new[]
@@ -83,10 +82,7 @@ namespace GiveAndTake.iOS.Views.Base
                     NSLayoutAttribute.NoAttribute, 1, 100)
             });
 
-            customedLoginFacebookButton.Layer.CornerRadius = 20;
-            customedLoginFacebookButton.BackgroundColor = UIColor.FromRGB(35, 143, 205);
-            customedLoginFacebookButton.SetTitle("f", UIControlState.Normal);
-            customedLoginFacebookButton.SetTitleColor(UIColor.White, UIControlState.Normal);
+            customedLoginFacebookButton.SetBackgroundImage(new UIImage("Images/facebook_button"), UIControlState.Normal);
 
             View.Add(customedLoginFacebookButton);
 
@@ -113,10 +109,7 @@ namespace GiveAndTake.iOS.Views.Base
                     NSLayoutAttribute.NoAttribute, 1, 100)
             });
 
-            customedLoginGoogleButton.Layer.CornerRadius = 20;
-            customedLoginGoogleButton.BackgroundColor = UIColor.FromRGB(176, 93, 89);
-            customedLoginGoogleButton.SetTitle("G+", UIControlState.Normal);
-            customedLoginGoogleButton.SetTitleColor(UIColor.White, UIControlState.Normal);
+            customedLoginGoogleButton.SetBackgroundImage(new UIImage("Images/google_button"), UIControlState.Normal);
 
             View.Add(customedLoginGoogleButton);
 
@@ -132,51 +125,19 @@ namespace GiveAndTake.iOS.Views.Base
         private void HandleLoginFacebook(object sender, EventArgs e)
         {
             // integrate with default login facebook button
+            var manager = new LoginManager();
+            manager.LogInWithReadPermissions(new[] { "public_profile" }, this, HandleLoginWithFacebook);
         }
 
-        private void InitDefaultLoginFacebookButton()
+        private void HandleLoginWithFacebook(LoginManagerLoginResult result, NSError error)
         {
-            defaultLoginButton = new LoginButton
-            {
-                TranslatesAutoresizingMaskIntoConstraints = false,
-                LoginBehavior = LoginBehavior.Native,
-                ReadPermissions = new[] { "public_profile" },
-            };
-
-            defaultLoginButton.AddConstraints(new[]
-            {
-                NSLayoutConstraint.Create(defaultLoginButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
-                    NSLayoutAttribute.NoAttribute, 1, 30),
-                NSLayoutConstraint.Create(defaultLoginButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
-                    NSLayoutAttribute.NoAttribute, 1, 90)
-            });
-
-            View.Add(defaultLoginButton);
-
-            View.AddConstraints(new[]
-            {
-                NSLayoutConstraint.Create(defaultLoginButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-                    NSLayoutAttribute.Bottom, 1, 20),
-                NSLayoutConstraint.Create(defaultLoginButton, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
-                    NSLayoutAttribute.CenterX, 1, 0)
-            });
-
-            Profile.Notifications.ObserveDidChange(HandleProfileChanged);
-
-            defaultLoginButton.Completed += HandleDefaultLogin;
-
-            defaultLoginButton.LoggedOut += HandleLogout;
-        }
-
-        private void HandleDefaultLogin(object sender, LoginButtonCompletedEventArgs e)
-        {
-            if (e.Error != null)
+            if (error != null)
             {
                 // handle error
                 return;
             }
 
-            if (e.Result.IsCancelled)
+            if (result.IsCancelled)
             {
                 // handle cancel
                 return;
@@ -188,22 +149,12 @@ namespace GiveAndTake.iOS.Views.Base
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
                 UserName = profile.Name,
-                ImageUrl = GetProfilePicture(profile.UserID),
+                AvatarUrl = GetProfilePicture(profile.UserID),
                 SocialAccountId = profile.UserID
             };
             LoginCommand.Execute(userProfile);
         }
 
         private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
-
-        private void HandleLogout(object sender, EventArgs e)
-        {
-
-        }
-
-        private void HandleProfileChanged(object sender, ProfileDidChangeEventArgs e)
-        {
-
-        }
     }
 }

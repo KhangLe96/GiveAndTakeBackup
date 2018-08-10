@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using GiveAndTake.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using Newtonsoft.Json;
@@ -8,7 +9,16 @@ namespace GiveAndTake.Core.ViewModels
 {
     public class LoginViewModel : MvxViewModel
     {
-        public UserProfile Profile { get; set; }
+        private UserProfile profile;
+        public UserProfile Profile
+        {
+            get => profile;
+            set
+            {
+                profile = value;
+                RaisePropertyChanged(() => Profile);
+            }
+        }
 
         public IMvxCommand<BaseUser> LoginCommand { get; set; }
 
@@ -24,11 +34,18 @@ namespace GiveAndTake.Core.ViewModels
 
         private void OnLoginSuccess(BaseUser user)
         {
-            var client = new RestClient("http://192.168.76.1:8089/api/v1/user/login/facebook");
-            var request = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json };
-            request.AddBody(user);
-            var response = client.Execute<LoginResponse>(request);
-            Profile = response.Data.Profile;
+            try
+            {
+                var client = new RestClient("http://192.168.76.1:8089/api/v1/user/login/facebook");
+                var request = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json };
+                request.AddBody(user);
+                var response = client.Execute<LoginResponse>(request);
+                Profile = response.Data.Profile;
+            }
+            catch (Exception e)
+            {
+                // login error, finish current screen and back to main screen
+            }
         }
     }
 }

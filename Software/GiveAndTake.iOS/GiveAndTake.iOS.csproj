@@ -75,9 +75,11 @@
     <Compile Include="Setup.cs" />
     <Compile Include="Views\Base\BaseView.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
-    <Compile Include="Views\Base\LoginView.cs" />
+    <Compile Include="Views\LoginView.cs" />
     <BundleResource Include="Resources\Images\splashscreen.png" />
     <BundleResource Include="Resources\Images\LoginLogo.png" />
+    <BundleResource Include="Resources\Images\facebook_button.png" />
+    <BundleResource Include="Resources\Images\google_button.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Content;
 using Android.Widget;
 using GiveAndTake.Core.Models;
@@ -8,9 +9,11 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System.Collections.Generic;
+using Android.Runtime;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Xamarin.Facebook.Login.Widget;
+using Object = Java.Lang.Object;
 
 namespace GiveAndTake.Droid.Views
 {
@@ -24,7 +27,7 @@ namespace GiveAndTake.Droid.Views
         private readonly List<string> permissions = new List<string> { "public_profile" };
 
         public IMvxCommand<BaseUser> LoginCommand { get; set; }
-
+        
         protected override int LayoutId => Resource.Layout.LoginView;
 
         protected override void InitView()
@@ -53,8 +56,6 @@ namespace GiveAndTake.Droid.Views
 
         private void InitFacebookButton()
         {
-            var btnFbDefault = FindViewById<LoginButton>(Resource.Id.btnFbDefault);
-
             var loginCallback = new FacebookCallback<LoginResult>
             {
                 HandleSuccess = OnLoginSuccess,
@@ -64,13 +65,12 @@ namespace GiveAndTake.Droid.Views
 
             callbackManager = CallbackManagerFactory.Create();
 
-            btnFbDefault.RegisterCallback(callbackManager, loginCallback);
-
-            LoginManager.Instance.LogInWithReadPermissions(this, permissions);
             LoginManager.Instance.RegisterCallback(callbackManager, loginCallback);
 
-            var btnFacebookLogin = FindViewById<Button>(Resource.Id.btnFb);
-            btnFacebookLogin.Click += delegate { btnFbDefault.PerformClick(); };
+            FindViewById<ImageButton>(Resource.Id.btnFb).Click += delegate
+            {
+                LoginManager.Instance.LogInWithReadPermissions(this, permissions);
+            };
         }
 
         private void OnLoginSuccess(LoginResult loginResult)
@@ -87,14 +87,39 @@ namespace GiveAndTake.Droid.Views
             LoginCommand.Execute(userProfile);
         }
 
-        private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
-
         private void OnCancelLogin()
         {
         }
 
         private void OnLoginError(FacebookException loginException)
         {
+        }
+
+        private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
+    }
+
+    public class FacebookCallback<TResult> : Object, IFacebookCallback where TResult : Object
+    {
+        public Action HandleCancel { get; set; }
+        public Action<FacebookException> HandleError { get; set; }
+        public Action<TResult> HandleSuccess { get; set; }
+
+        public void OnCancel()
+        {
+            var c = HandleCancel;
+            c?.Invoke();
+        }
+
+        public void OnError(FacebookException error)
+        {
+            var c = HandleError;
+            c?.Invoke(error);
+        }
+
+        public void OnSuccess(Object result)
+        {
+            var c = HandleSuccess;
+            c?.Invoke(result.JavaCast<TResult>());
         }
     }
 }
