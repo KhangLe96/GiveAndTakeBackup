@@ -27,10 +27,12 @@ namespace Giveaway.API.Controllers
         /// </summary>
         /// <param name="params">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
+        /// REVIEW: Ex: cms/list. app/list
         [HttpGet("getListPostCMS")]
         [Produces("application/json")]
         public PagingQueryResponse<PostResponse> GetListPostCMS([FromHeader]IDictionary<string, string> @params)
         {
+            // REVIEW: remove unnecessary field, description, image is not necessary.
             return _postService.GetPostForPaging(null, @params, Const.Platform.CMS);
         }
 
@@ -43,6 +45,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PagingQueryResponse<PostResponse> GetListPostApp([FromHeader]IDictionary<string, string> @params)
         {
+            //REVIEW: Only one status, don't divide cms status and app status. App should be return a list of active posts. Don't return inavtive posts, but in CMS return both.
             return _postService.GetPostForPaging(null, @params, Const.Platform.App);
         }
 
@@ -120,6 +123,7 @@ namespace Giveaway.API.Controllers
         /// <param name="postId"></param>
         /// <param name="request"></param>
         /// <returns></returns>
+        /// REVIEW: remove this API
         [Authorize]
         [HttpPut("statusApp/{postId}")]
         [Produces("application/json")]

@@ -92,6 +92,7 @@ namespace Giveaway.Service.Services
             var entity = Find(id);
             if (entity is BaseEntity baseEntity)
             {
+                //REVIEW: check if status is valid status enum
                 Enum.TryParse(status, out EntityStatus entityStatus);
                 baseEntity.EntityStatus = entityStatus;
                 baseEntity.UpdatedTime = DateTimeOffset.UtcNow;
