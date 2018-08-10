@@ -29,7 +29,8 @@ export const ENG_VN_DICTIONARY = {
   Close: 'Đóng',
   Open: 'Mở',
   User: 'Người dùng',
-  Admin: 'Quản lý',
+  Admin: 'Admin',
   Male: 'Nam',
   Female: 'Nữ',
+  SuperAdmin: 'SuperAdmin',
 };

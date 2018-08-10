@@ -40,6 +40,29 @@ export default class index extends React.Component {
     return (moment.utc(date).local().format(DateFormatDisplay));
   }
 
+  handleActionWithUser = (record) => {
+    let buttonContent = 'Khóa';
+    let buttonIcon = 'lock';
+    let newStatus = STATUS_BLOCKED;
+    let popConfirmTitle = 'Bạn chắc chắn muốn khóa User này?';
+    if (record.status === STATUS_BLOCKED) {
+      buttonContent = STATUS_ACTION_ACTIVATE;
+      buttonIcon = 'unlock';
+      newStatus = STATUS_ACTIVATED;
+      popConfirmTitle = 'Bạn có muốn mở lại User này?';
+    }
+    return (
+      <span>
+        <Popconfirm
+          title={popConfirmTitle}
+          onConfirm={() => this.handleOnConfirm(record.key)}
+        >
+          <Button type="primary" icon={buttonIcon} className={styles.buttonStyle}>{buttonContent}</Button>
+        </Popconfirm>
+      </span >
+    );
+  }
+
   renderDetail(userProfile) {
     const { username, status, firstName, lastName, birthdate, email, phoneNumber, gender, address, role } = userProfile !== null ? userProfile : null;
     return (
@@ -47,20 +70,14 @@ export default class index extends React.Component {
         <div className="containerHeader">
           <h1>Xem thông tin thành viên</h1>
           <div className="rightButton">
-            <Popconfirm
-              title="Bạn chắc không ?"
-              onConfirm={() => this.handleOnConfirm(Record.key)}
-            >
-              <Button icon="exclamation-circle-o" type="primary" className={styles.buttonStyle}>
-                {this.handleDisplayStatusButton(userProfile)}
-              </Button>
-            </Popconfirm>
+            {this.handleActionWithUser(userProfile)}
           </div>
         </div>
         <div className="containerBody">
           <Row>
             <Col span={8} className={styles.imageBox}>
               <img src='http://wfiles.brothersoft.com/c/cat-photograph_195928-800x600.jpg' alt="" className={styles.avatarStyle} />
+              <br /><br />
               <Row>
                 <Col align="middle"><h2> {username} </h2></Col>
               </Row>
@@ -81,7 +98,7 @@ export default class index extends React.Component {
               </Row>
               <Row>
                 <Col span={12}><h3>{email}</h3></Col>
-                <Col span={12}><h3>{ENG_VN_DICTIONARY(gender)}</h3></Col>
+                <Col span={12}><h3>{ENG_VN_DICTIONARY[gender]}</h3></Col>
               </Row>
               <br /><br />
               <Row>
@@ -98,8 +115,8 @@ export default class index extends React.Component {
                 <Col span={12}><h2> Trạng thái </h2></Col>
               </Row>
               <Row>
-                <Col span={12}><h3>{ENG_VN_DICTIONARY(role[0])}</h3></Col>
-                <Col span={12}><h3 className={styles.statusText}>{ENG_VN_DICTIONARY(status)}</h3></Col>
+                <Col span={12}><h3>{ENG_VN_DICTIONARY[role && role[0]]} {ENG_VN_DICTIONARY[role && role[1]]}</h3></Col>
+                <Col span={12}><h3 className={styles.statusText}>{ENG_VN_DICTIONARY[status]}</h3></Col>
               </Row>
             </Col>
           </Row>

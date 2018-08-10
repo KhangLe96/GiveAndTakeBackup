@@ -66,7 +66,7 @@ export default class index extends React.Component {
     if (record.statusCMS === STATUSES.Blocked) {
       buttonContent = 'Mở khóa';
       buttonIcon = 'unlock';
-      buttonType = 'default';
+      buttonType = 'primary';
       newPostStatus = STATUSES.Activated;
       popConfirmTitle = 'Bạn có muốn mở lại bài đăng này?';
     }
@@ -89,7 +89,7 @@ export default class index extends React.Component {
   }
 
   renderDetail(postInformation) {
-    const { id, user, title, description, images, address, createdTime, updatedTime, statusCMS, statusApp, category } = postInformation !== null ? postInformation : null;
+    const { id, user, title, description, images, address, createdTime, statusCMS, category } = postInformation !== null ? postInformation : null;
     return (
       <div>
         <div className="containerHeader">
