@@ -1,6 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
 import { createCategory, getCategories, getACategory, updateCategory, changeCategoryCMSStatus, deleteCategory } from '../services/category';
+import { getPostsByCategory, fetch } from '../services/post';
 
 const DEFAULT_CURRENT_PAGE = 1;
 
@@ -10,7 +11,15 @@ export default {
   state: {
     categories: [],
     currentPage: DEFAULT_CURRENT_PAGE,
-    selectedCategory: {},
+    selectedCategory: {
+      categoryName: null,
+      categoryImageUrl: null,
+      createdTime: null,
+      doesHaveAnyPost: true,
+      id: null,
+      status: null,
+      updatedTime: null,
+    },
     totals: 0,
   },
 
@@ -28,10 +37,19 @@ export default {
     * getCategories({ payload }, { call, put }) {
       const response = yield call(getCategories, payload);
       if (response) {
+        const { results } = yield call(fetch, {});
+        let categoryIdsHavingPosts = results.map(value => value.category.id);
+        // remove dupclicated value in categoryIdsHavingPosts
+        categoryIdsHavingPosts = categoryIdsHavingPosts.filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
+        const newCategories = response.results.map((category) => {
+          return { ...category, doesHaveAnyPost: categoryIdsHavingPosts.indexOf(category.id) >= 0 };
+        });
         yield put({
           type: 'save',
           payload: {
-            categories: response.results,
+            categories: newCategories,
             currentPage: (payload.page) ? payload.page : DEFAULT_CURRENT_PAGE,
             totals: response.pagination.totals,
           },
@@ -39,12 +57,19 @@ export default {
       }
     },
     * getACategory({ payload }, { call, put }) {
-      const response = yield call(getACategory, payload.id);
+      let response = yield call(getACategory, payload.id);
       if (response) {
+        let newSelectedCategory = { ...response };
+        response = yield call(getPostsByCategory, payload.id);
+        const postsByCategory = response.results;
+        newSelectedCategory = {
+          ...newSelectedCategory,
+          doesHaveAnyPost: postsByCategory.length !== 0,
+        };
         yield put({
           type: 'save',
           payload: {
-            selectedCategory: response,
+            selectedCategory: newSelectedCategory,
           },
         });
       }

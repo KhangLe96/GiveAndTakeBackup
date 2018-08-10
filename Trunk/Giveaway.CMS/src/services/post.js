@@ -38,6 +38,16 @@ export async function fetchPostInformation(params) {
   return request(`${ROOT_PATH}/getDetail/${id}`, options);
 }
 
+export async function getPostsByCategory(categoryID) {
+  const options = {
+    method: 'GET',
+    body: {
+      categoryID,
+    },
+  };
+  return request(`${ROOT_PATH}/getListPostCMS`, options);
+}
+
 export async function changeAPostCMSStatus(params) {
   const { id } = params;
   const options = {
@@ -46,5 +56,5 @@ export async function changeAPostCMSStatus(params) {
       status: params.newStatusCMS,
     },
   };
-  return request(`${ROOT_PATH}/statusCMS/${id}`, options);
+  return request(`${ROOT_PATH} / statusCMS / ${id}`, options);
 }
