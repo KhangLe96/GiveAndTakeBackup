@@ -80,7 +80,7 @@ export default class index extends React.Component {
                   });
                 }}
               >
-                <Button type="danger" icon="delete">Xóa</Button>
+                <Button type="danger" icon="delete" disabled={record.doesHaveAnyPost}>Xóa</Button>
               </Popconfirm>
             </span>
           );
