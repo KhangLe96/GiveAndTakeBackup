@@ -43,6 +43,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PostResponse GetDetail(Guid postId)
         {
+            //Change status of post, only one status.
             try
             {
                 var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == postId).Result;
