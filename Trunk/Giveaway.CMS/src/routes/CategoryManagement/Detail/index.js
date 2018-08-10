@@ -89,7 +89,7 @@ export default class index extends PureComponent {
   }
 
   render() {
-    const { form: { getFieldDecorator }, selectedCategory: { categoryName, status } } = this.props;
+    const { form: { getFieldDecorator }, selectedCategory: { categoryName, doesHaveAnyPost, status } } = this.props;
     return (
       <div className="containerBody">
         <Form onSubmit={this.handleSubmit}>
@@ -130,7 +130,7 @@ export default class index extends PureComponent {
             title="Bạn chắc chắn muốn xóa?"
             onConfirm={this.handleDelete}
           >
-            <Button icon="delete" type="danger">Xóa</Button>
+            <Button icon="delete" type="danger" disabled={doesHaveAnyPost}>Xóa</Button>
           </Popconfirm>
         </Form>
       </div>
