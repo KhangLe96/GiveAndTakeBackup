@@ -23,7 +23,7 @@ namespace GiveAndTake.Droid.Views
 
         private readonly List<string> permissions = new List<string> { "public_profile" };
 
-        public IMvxCommand<UserProfile> LoginCommand { get; set; }
+        public IMvxCommand<BaseUser> LoginCommand { get; set; }
 
         protected override int LayoutId => Resource.Layout.LoginView;
 
@@ -76,12 +76,12 @@ namespace GiveAndTake.Droid.Views
         private void OnLoginSuccess(LoginResult loginResult)
         {
             var profile = Profile.CurrentProfile;
-            var userProfile = new UserProfile
+            var userProfile = new BaseUser
             {
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
-                UserName = profile.Name,
-                ImageUrl = GetProfilePicture(profile.Id),
+                UserName = profile.Id,
+                AvatarUrl = GetProfilePicture(profile.Id),
                 SocialAccountId = profile.Id
             };
             LoginCommand.Execute(userProfile);
