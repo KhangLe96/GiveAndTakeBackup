@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Icon, Divider, Card, Button, Spin, Popconfirm, Input } from 'antd';
-import { Link, routerRedux } from 'dva/router';
-import { TABLE_PAGESIZE, STATUS_ACTIVATED, STATUS_BLOCKED, STATUS_ACTIVATED_VN, STATUS_ACTION_ACTIVATE_VN, STATUS_BLOCKED_VN, ROLE_ADMIN_VN, ROLE_USER_VN } from '../../../common/constants';
-
+import { Table, Button, Popconfirm } from 'antd';
+import { Link } from 'dva/router';
+import { TABLE_PAGESIZE, STATUS_ACTIVATED, STATUS_BLOCKED, STATUS_ACTION_ACTIVATE, STATUS_ACTION_BLOCK } from '../../../common/constants';
+import { ENG_VN_DICTIONARY } from "../../../common/constants";
+import styles from './index.less';
 @connect(({ modals, userManagement }) => ({
   ...modals, userManagement,
 }))
+
 export default class index extends React.Component {
   constructor(props) {
     super(props);
@@ -42,16 +44,17 @@ export default class index extends React.Component {
     });
   }
 
-  handleDisplayStatus = (record) => {
-    return (record.status === STATUS_ACTIVATED ? STATUS_ACTIVATED_VN : STATUS_BLOCKED_VN);
-  }
-
   handleDisplayRole = (record) => {
-    return (record.role && record.role[0] === 'User' ? ROLE_USER_VN : ROLE_ADMIN_VN);
+    if (record.role.length > 1) {
+      return (<h3>{ENG_VN_DICTIONARY[record.role && record.role[0]]} , {ENG_VN_DICTIONARY[record.role && record.role[1]]}</h3>)
+    }
+    else {
+      return (<h3>{ENG_VN_DICTIONARY[record.role && record.role[0]]}</h3>)
+    }
   }
 
   handleDisplayStatusButton = (record) => {
-    return (record.status === STATUS_ACTIVATED ? STATUS_BLOCKED_VN : STATUS_ACTION_ACTIVATE_VN);
+    return (record.status === STATUS_ACTIVATED ? STATUS_ACTION_BLOCK : STATUS_ACTION_ACTIVATE);
   }
 
   columns =
@@ -71,7 +74,7 @@ export default class index extends React.Component {
         title: 'Trạng thái',
         // dataIndex: 'status',
         key: 'status',
-        render: record => (this.handleDisplayStatus(record)),
+        render: record => <h3>{ENG_VN_DICTIONARY[record.status]}</h3>,
       }, {
         title: 'Vai trò',
         // dataIndex: 'role',
@@ -80,17 +83,28 @@ export default class index extends React.Component {
       }, {
         title: 'Hành động',
         key: 'Action',
-        render: record => (
-          <span>
-            <Popconfirm
-              title="Bạn chắc chắn không ?"
-              onConfirm={() => this.handleConfirmChangeStatus(record)}
-            >
-              <Button icon="exclamation-circle-o" type="primary" style={{ width: 120 }}>
-                {this.handleDisplayStatusButton(record)}
-              </Button>
-            </Popconfirm>
-          </span >),
+        render: (record) => {
+          let buttonContent = 'Khóa';
+          let buttonIcon = 'lock';
+          let newStatus = STATUS_BLOCKED;
+          let popConfirmTitle = 'Bạn chắc chắn muốn khóa User này?';
+          if (record.status === STATUS_BLOCKED) {
+            buttonContent = STATUS_ACTION_ACTIVATE;
+            buttonIcon = 'unlock';
+            newStatus = STATUS_ACTIVATED;
+            popConfirmTitle = 'Bạn có muốn mở lại User này?';
+          }
+          return (
+            <span>
+              <Popconfirm
+                title={popConfirmTitle}
+                onConfirm={() => this.handleConfirmChangeStatus(record)}
+              >
+                <Button type="primary" icon={buttonIcon} className={styles.buttonStyle}>{buttonContent}</Button>
+              </Popconfirm>
+            </span >
+          );
+        }
       },
     ];
   render() {
