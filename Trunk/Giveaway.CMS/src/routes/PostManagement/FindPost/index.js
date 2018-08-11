@@ -56,9 +56,6 @@ class AdvancedSearchForm extends React.Component {
     const searchInputWidth = 500;
     return (
       <div>
-        <div className="containerHeader">
-          <h1>Quản lý bài đăng</h1>
-        </div>
         <div className="containerBody">
           <Form layout="inline" onSubmit={this.handleSubmit} className="AdvancedSearchForm">
             <FormItem>

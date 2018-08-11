@@ -32,7 +32,11 @@ export default {
       if (response) {
         yield put({
           type: 'save',
-          payload: { posts: response.results },
+          payload: {
+            posts: response.results,
+            currentPage: (payload.page) ? payload.page : DEFAULT_CURRENT_PAGE,
+            totals: response.pagination.totals,
+          },
         });
       }
     },
@@ -58,16 +62,6 @@ export default {
       }
     },
 
-    * changeStatusPostInformation({ payload }, { call, put }) {
-      const response = yield call(changeStatusPost, payload);
-      if (response) {
-        yield put({
-          type: 'fetchPostInformation',
-          payload,
-        });
-      }
-    },
-
     * findPost({ payload }, { call, put }) {
       const posts = yield call(findPost, payload);
       if (posts) {
@@ -77,20 +71,15 @@ export default {
         });
       }
     },
-    * changeCMSStatus({ payload }, { call, put }) {
-      const { id, statusCMS, posts } = payload;
-      const response = yield call(changePostCMSStatus, id, statusCMS);
+
+    * changePostCMSStatus({ payload }, { call, put }) {
+      const response = yield call(changePostCMSStatus, payload);
       if (response) {
-        const newPosts = posts.map((post) => {
-          if (post.id === id) {
-            return { ...post, statusCMS };
-          }
-          return post;
-        });
         yield put({
-          type: 'save',
+          type: 'fetch',
           payload: {
-            posts: newPosts,
+            page: payload.page,
+            limit: TABLE_PAGESIZE,
           },
         });
       }

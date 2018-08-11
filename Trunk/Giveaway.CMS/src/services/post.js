@@ -10,24 +10,25 @@ export async function fetch(params) {
       ...params,
     },
   };
-  return request(`${ROOT_PATH}/getListPostCMS`, options);
+  return request(`${ROOT_PATH}/cms/list`, options);
 }
 
-export function changePostCMSStatus(id, statusCMS) {
+export async function changePostCMSStatus(params) {
+  const { id } = params;
   const options = {
     method: 'PUT',
     body: {
-      status: statusCMS,
+      status: params.statusCMS,
     },
   };
-  return request(`${ROOT_PATH}/statusCMS/${id}`, options);
+  return request(`${ROOT_PATH}/cms/status/${id}`, options);
 }
 
-export async function findPost(params) {
-  return request(`${ROOT_PATH}?${stringify(params)}`, {
-    method: 'GET',
-  });
-}
+// export async function findPost(params) {
+//   return request(`${ROOT_PATH}?${stringify(params)}`, {
+//     method: 'GET',
+//   });
+// }
 
 export async function fetchPostInformation(params) {
   const { id } = params;
@@ -35,7 +36,7 @@ export async function fetchPostInformation(params) {
     method: 'GET',
     body: null,
   };
-  return request(`${ROOT_PATH}/getDetail/${id}`, options);
+  return request(`${ROOT_PATH}/cms/detail/${id}`, options);
 }
 
 export async function getPostsByCategory(categoryID) {
@@ -45,7 +46,7 @@ export async function getPostsByCategory(categoryID) {
       categoryID,
     },
   };
-  return request(`${ROOT_PATH}/getListPostCMS`, options);
+  return request(`${ROOT_PATH}/cms/list`, options);
 }
 
 export async function changeAPostCMSStatus(params) {
@@ -56,5 +57,5 @@ export async function changeAPostCMSStatus(params) {
       status: params.newStatusCMS,
     },
   };
-  return request(`${ROOT_PATH} / statusCMS / ${id}`, options);
+  return request(`${ROOT_PATH}/cms/status/${id}`, options);
 }

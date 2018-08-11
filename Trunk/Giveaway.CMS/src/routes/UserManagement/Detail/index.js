@@ -63,8 +63,17 @@ export default class index extends React.Component {
     );
   }
 
+  displayImage = (avatarUrl) => {
+    if (avatarUrl === "string" || avatarUrl === null) {
+      return (<img src="http://cdn1.crystalcommerce.com/themes/clients/earth383/assets/img/ui/no-image-available.png" alt="" className={styles.avatarStyle} />)
+    }
+    else {
+      return (<img src={avatarUrl} alt="" className={styles.avatarStyle} />)
+    }
+  }
+
   renderDetail(userProfile) {
-    const { username, status, firstName, lastName, birthdate, email, phoneNumber, gender, address, role } = userProfile !== null ? userProfile : null;
+    const { username, status, firstName, lastName, birthdate, email, phoneNumber, gender, address, role, avatarUrl } = userProfile !== null ? userProfile : null;
     return (
       <div>
         <div className="containerHeader">
@@ -76,7 +85,7 @@ export default class index extends React.Component {
         <div className="containerBody">
           <Row>
             <Col span={8} className={styles.imageBox}>
-              <img src='http://wfiles.brothersoft.com/c/cat-photograph_195928-800x600.jpg' alt="" className={styles.avatarStyle} />
+              {this.displayImage(avatarUrl)}
               <br /><br />
               <Row>
                 <Col align="middle"><h2> {username} </h2></Col>
@@ -120,15 +129,6 @@ export default class index extends React.Component {
               </Row>
             </Col>
           </Row>
-          <div>
-            {/* {(users.avatarUrl)
-                ?
-                users.avatarUrl.map((avatarPath) => {
-                  return <img src={avatarPath} key={avatarPath} alt="" height="400" width="400" />;
-                })
-
-                : null} */}
-          </div>
         </div>
       </div>
 

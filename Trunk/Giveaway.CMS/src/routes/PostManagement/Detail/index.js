@@ -60,13 +60,11 @@ export default class index extends React.Component {
   handleActionWithPost = (record) => {
     let buttonContent = 'Khóa';
     let buttonIcon = 'lock';
-    let buttonType = 'danger';
     let newPostStatus = STATUSES.Blocked;
     let popConfirmTitle = 'Bạn chắc chắn muốn khóa bài đăng này?';
     if (record.statusCMS === STATUSES.Blocked) {
       buttonContent = 'Mở khóa';
       buttonIcon = 'unlock';
-      buttonType = 'primary';
       newPostStatus = STATUSES.Activated;
       popConfirmTitle = 'Bạn có muốn mở lại bài đăng này?';
     }
@@ -76,13 +74,7 @@ export default class index extends React.Component {
           title={popConfirmTitle}
           onConfirm={() => this.handleChangeCMSStatus(record.key)}
         >
-          <Button type={buttonType} icon={buttonIcon}>{buttonContent}</Button>
-        </Popconfirm>
-        <Divider type="vertical" />
-        <Popconfirm
-          title="Cảnh cáo người dùng này?"
-        >
-          <Button type="primary" icon="warning" style={{ background: COLOR.Warning }}>Cảnh báo người dùng</Button>
+          <Button type="primary" icon={buttonIcon} className={styles.buttonStyle}>{buttonContent}</Button>
         </Popconfirm>
       </span >
     );
@@ -101,7 +93,7 @@ export default class index extends React.Component {
         <div className="containerBody">
           <Row>
             <Col span={8}><h2> Tiêu đề </h2></Col>
-            <Col span={8}><h2> Thông tin người dùng </h2></Col>
+            <Col span={8}><h2> Thông tin người đăng </h2></Col>
             <Col span={8}><h2> Địa chỉ </h2></Col>
           </Row>
           <Row>
@@ -127,17 +119,20 @@ export default class index extends React.Component {
           </Row>
           <br /><br /><br /><br />
           <Row>
-            <Col span={8} >
-              <img src='http://wfiles.brothersoft.com/c/cat-photograph_195928-800x600.jpg' alt="" className={styles.imageBox} />
-              <div>
-                {/* {(postInformation.imagePaths)
-              ?
-              postInformation.imagePaths.map((imagePath) => {
-                return <img src={imagePath} key={imagePath} alt="" height="300" width="300" />;
-              })
-              : null} */}
-              </div>
-            </Col>
+            <div>
+              {(postInformation.images)
+                ?
+                postInformation.images && postInformation.images.map((imageUrl, key) => {
+                  return (
+                    <Col span={8} >
+                      <Row className={styles.imageBox}>
+                        <img src={imageUrl.imageUrl} key={key} alt="" className={styles.imageBox} />
+                      </Row>
+                    </Col>
+                  );
+                })
+                : null}
+            </div>
           </Row>
         </div>
       </div>
