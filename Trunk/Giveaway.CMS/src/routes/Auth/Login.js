@@ -5,6 +5,7 @@ import { GoogleLogin } from 'react-google-login-component';
 import { Link } from 'dva/router';
 import styles from './Login.less';
 import cx from 'classnames';
+
 const FormItem = Form.Item;
 
 @connect(({ passport, global, modals }) => ({
@@ -60,7 +61,7 @@ export default class Login extends PureComponent {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <div className={cx('content_center')}>
               <img
-                style={{ width: '338px', height: '272px', zIndex: '10', marginBottom: '50px' }}
+                style={{ width: '100%', zIndex: '10', marginBottom: '50px' }}
                 src="/images/img_logo_login.png"
                 alt=""
               />
@@ -103,8 +104,8 @@ export default class Login extends PureComponent {
               </Button>
             </div>
           </Form>
-        </div>
-      </Spin>
+        </div >
+      </Spin >
     );
   }
 }

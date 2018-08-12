@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
-import { Button, Popconfirm, Row, Col, Divider } from 'antd';
+import { Button, Popconfirm, Row, Col } from 'antd';
 import moment from 'moment';
 import styles from './index.less';
-import { DateFormatDisplay, ENG_VN_DICTIONARY, COLOR, STATUSES } from "../../../common/constants";
+import { DateFormatDisplay, ENG_VN_DICTIONARY, STATUSES } from '../../../common/constants';
 
 @connect(({ modals, postManagement }) => ({
   ...modals, postManagement,
@@ -80,6 +80,28 @@ export default class index extends React.Component {
     );
   }
 
+  displayImage = (postInformation) => {
+    if ((postInformation.images === 'string') || (postInformation.images === null)) {
+      return (<img src="./images/noImage.jpg" alt="" />);
+    }
+    else {
+      return (
+        (postInformation.images)
+          ?
+          postInformation.images && postInformation.images.map((imageUrl) => {
+            return (
+              <Col span={8} >
+                <Row className={styles.imageBox}>
+                  <img src={imageUrl.imageUrl} alt="" className={styles.imageBox} />
+                </Row>
+              </Col>
+            );
+          })
+          : null
+      );
+    }
+  }
+
   renderDetail(postInformation) {
     const { id, user, title, description, images, address, createdTime, statusCMS, category } = postInformation !== null ? postInformation : null;
     return (
@@ -120,18 +142,7 @@ export default class index extends React.Component {
           <br /><br /><br /><br />
           <Row>
             <div>
-              {(postInformation.images)
-                ?
-                postInformation.images && postInformation.images.map((imageUrl, key) => {
-                  return (
-                    <Col span={8} >
-                      <Row className={styles.imageBox}>
-                        <img src={imageUrl.imageUrl} key={key} alt="" className={styles.imageBox} />
-                      </Row>
-                    </Col>
-                  );
-                })
-                : null}
+              {this.displayImage(postInformation)}
             </div>
           </Row>
         </div>

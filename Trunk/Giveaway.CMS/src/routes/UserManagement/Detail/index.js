@@ -4,8 +4,7 @@ import { Button, Popconfirm, Row, Col } from 'antd';
 import { Record } from '../../../../node_modules/immutable';
 import moment from 'moment';
 import styles from './index.less';
-import { DateFormatDisplay, STATUS_BLOCKED, STATUS_ACTIVATED, STATUS_ACTION_ACTIVATE, STATUS_ACTION_BLOCK } from '../../../common/constants';
-import { ENG_VN_DICTIONARY } from "../../../common/constants";
+import { DateFormatDisplay, STATUSES, STATUS_ACTION_ACTIVATE, STATUS_ACTION_BLOCK, ENG_VN_DICTIONARY } from '../../../common/constants';
 
 @connect(({ modals, userManagement }) => ({
   ...modals, userManagement,
@@ -25,7 +24,7 @@ export default class index extends React.Component {
     const { dispatch } = this.props;
     const { id } = this.props.match.params;
     const { status } = this.props.userManagement.userProfile;
-    const newStatus = status === STATUS_BLOCKED ? STATUS_ACTIVATED : STATUS_BLOCKED;
+    const newStatus = status === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
     dispatch({
       type: 'userManagement/changeStatusProfile',
       payload: { newStatus, id },
@@ -33,7 +32,7 @@ export default class index extends React.Component {
   }
 
   handleDisplayStatusButton = (userProfile) => {
-    return (userProfile.status === STATUS_ACTIVATED ? STATUS_ACTION_BLOCK : STATUS_ACTION_ACTIVATE);
+    return (userProfile.status === STATUSES.Activated ? STATUS_ACTION_BLOCK : STATUS_ACTION_ACTIVATE);
   }
 
   handleDateAndTimeFormat = (date) => {
@@ -43,12 +42,12 @@ export default class index extends React.Component {
   handleActionWithUser = (record) => {
     let buttonContent = 'Khóa';
     let buttonIcon = 'lock';
-    let newStatus = STATUS_BLOCKED;
+    let newStatus = STATUSES.Blocked;
     let popConfirmTitle = 'Bạn chắc chắn muốn khóa User này?';
-    if (record.status === STATUS_BLOCKED) {
+    if (record.status === STATUSES.Blocked) {
       buttonContent = STATUS_ACTION_ACTIVATE;
       buttonIcon = 'unlock';
-      newStatus = STATUS_ACTIVATED;
+      newStatus = STATUSES.Activated;
       popConfirmTitle = 'Bạn có muốn mở lại User này?';
     }
     return (
@@ -64,8 +63,8 @@ export default class index extends React.Component {
   }
 
   displayImage = (avatarUrl) => {
-    if (avatarUrl === "string" || avatarUrl === null) {
-      return (<img src="http://cdn1.crystalcommerce.com/themes/clients/earth383/assets/img/ui/no-image-available.png" alt="" className={styles.avatarStyle} />)
+    if ((avatarUrl === 'string') || (avatarUrl === null)) {
+      return (<img src="./images/noImage.jpg" alt="" className={styles.avatarStyle} />)
     }
     else {
       return (<img src={avatarUrl} alt="" className={styles.avatarStyle} />)
