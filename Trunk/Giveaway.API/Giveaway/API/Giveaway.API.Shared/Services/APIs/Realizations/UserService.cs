@@ -103,11 +103,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _userRoleService.CreateUserRole(userId, normalUserRoleId);
         }
 
-        public LoginResponse LoginWithFacebook(FacebookConnectRequest request)
+        public LoginResponse
+            LoginWithFacebook(FacebookConnectRequest request)
         {
             var user = _userService.FirstOrDefault(u => string.Equals(u.SocialAccountId, request.SocialAccountId));
             if (user == null)
             {
+                //REVIEW: check userName is unique, other way. set username with social account id value
                 user = new User
                 {
                     FirstName = request.FirstName,
