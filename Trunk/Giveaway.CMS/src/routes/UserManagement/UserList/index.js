@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Popconfirm } from 'antd';
 import { Link } from 'dva/router';
-import { TABLE_PAGESIZE, STATUS_ACTIVATED, STATUS_BLOCKED, STATUS_ACTION_ACTIVATE, STATUS_ACTION_BLOCK } from '../../../common/constants';
-import { ENG_VN_DICTIONARY } from "../../../common/constants";
+import { TABLE_PAGESIZE, STATUSES, STATUS_ACTION_ACTIVATE, STATUS_ACTION_BLOCK, ENG_VN_DICTIONARY } from '../../../common/constants';
 import styles from './index.less';
+
 @connect(({ modals, userManagement }) => ({
   ...modals, userManagement,
 }))
@@ -37,7 +37,7 @@ export default class index extends React.Component {
 
   handleConfirmChangeStatus = (record) => {
     const { dispatch, userManagement: { currentPage } } = this.props;
-    const newStatus = record.status === STATUS_BLOCKED ? STATUS_ACTIVATED : STATUS_BLOCKED;
+    const newStatus = record.status === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
     dispatch({
       type: 'userManagement/changeStatus',
       payload: { newStatus, id: record.id, page: currentPage },
@@ -46,15 +46,15 @@ export default class index extends React.Component {
 
   handleDisplayRole = (record) => {
     if (record.role.length > 1) {
-      return (<h3>{ENG_VN_DICTIONARY[record.role && record.role[0]]} , {ENG_VN_DICTIONARY[record.role && record.role[1]]}</h3>)
+      return (<text>{ENG_VN_DICTIONARY[record.role && record.role[0]]} , {ENG_VN_DICTIONARY[record.role && record.role[1]]}</text>)
     }
     else {
-      return (<h3>{ENG_VN_DICTIONARY[record.role && record.role[0]]}</h3>)
+      return (<text>{ENG_VN_DICTIONARY[record.role && record.role[0]]}</text>)
     }
   }
 
   handleDisplayStatusButton = (record) => {
-    return (record.status === STATUS_ACTIVATED ? STATUS_ACTION_BLOCK : STATUS_ACTION_ACTIVATE);
+    return (record.status === STATUSES.Activated ? STATUS_ACTION_BLOCK : STATUS_ACTION_ACTIVATE);
   }
 
   columns =
@@ -74,7 +74,7 @@ export default class index extends React.Component {
         title: 'Trạng thái',
         // dataIndex: 'status',
         key: 'status',
-        render: record => <h3>{ENG_VN_DICTIONARY[record.status]}</h3>,
+        render: record => (ENG_VN_DICTIONARY[record.status]),
       }, {
         title: 'Vai trò',
         // dataIndex: 'role',
@@ -86,12 +86,12 @@ export default class index extends React.Component {
         render: (record) => {
           let buttonContent = 'Khóa';
           let buttonIcon = 'lock';
-          let newStatus = STATUS_BLOCKED;
+          let newStatus = STATUSES.Blocked;
           let popConfirmTitle = 'Bạn chắc chắn muốn khóa User này?';
-          if (record.status === STATUS_BLOCKED) {
+          if (record.status === STATUSES.Blocked) {
             buttonContent = STATUS_ACTION_ACTIVATE;
             buttonIcon = 'unlock';
-            newStatus = STATUS_ACTIVATED;
+            newStatus = STATUSES.Activated;
             popConfirmTitle = 'Bạn có muốn mở lại User này?';
           }
           return (

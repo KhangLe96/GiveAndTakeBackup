@@ -1,8 +1,6 @@
 export const DEFAULT_ERROR_MESSAGE = 'Có lỗi xảy ra';
 export const DEFAULT_AVATAR_URL = '/images/default-avatar.png';
 export const STATUS_NOT_ACTIVATED = 'not_activated';
-export const STATUS_ACTIVATED = 'Activated';
-export const STATUS_BLOCKED = 'Blocked';
 export const STATUS_ACTION_ACTIVATE = 'Kích hoạt';
 export const STATUS_ACTION_BLOCK = 'Khóa';
 export const STATUS_NOT_VERIFIED = 'not_verified';

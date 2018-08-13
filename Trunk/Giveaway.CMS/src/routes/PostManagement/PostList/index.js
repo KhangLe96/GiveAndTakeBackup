@@ -3,9 +3,50 @@ import { Table, Divider, Button, Popconfirm } from 'antd';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import { DateFormatDisplay, TABLE_PAGESIZE, ENG_VN_DICTIONARY, COLOR, STATUSES } from '../../../common/constants';
+import { connect } from 'dva';
+import styles from './index.less';
+@connect(({ modals, postManagement }) => ({
+  ...modals, postManagement,
+}))
 
 export default class index extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onPageNumberChange = this.onPageNumberChange.bind(this);
+  }
 
+  componentWillMount() {
+    const { dispatch } = this.props;
+    const pageSize = TABLE_PAGESIZE;
+    const page = this.props.postManagement.currentPage;
+    const payload = { page, limit: pageSize };
+    dispatch({
+      type: 'postManagement/fetch',
+      payload,
+    });
+  }
+
+  onPageNumberChange(page, pageSize) {
+    const { dispatch } = this.props;
+    const payload = { page, limit: pageSize };
+    dispatch({
+      type: 'postManagement/fetch',
+      payload,
+    });
+  }
+
+  handleConfirmChangeStatus = (record) => {
+    const { dispatch, postManagement: { currentPage } } = this.props;
+    const statusCMS = record.statusCMS === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
+    dispatch({
+      type: 'postManagement/changePostCMSStatus',
+      payload: { statusCMS, id: record.id, page: currentPage },
+    });
+  }
+
+  handleDisplayStatusButton = (record) => {
+    return (record.status === STATUSES.Activated ? STATUSES.Blocked : STATUSES.Activated);
+  }
   columns =
     [
       {
@@ -16,7 +57,7 @@ export default class index extends React.Component {
       {
         title: 'Người đăng',
         key: 'user',
-        render: record => <Link to={`/user-management/detail/${record.userId}`}>{record.userId}</Link>,
+        render: record => <Link to={`/user-management/detail/${record.user.id}`}>{record.user.username}</Link>,
       },
       {
         title: 'Địa chỉ',
@@ -47,13 +88,11 @@ export default class index extends React.Component {
         render: (record) => {
           let buttonContent = 'Khóa';
           let buttonIcon = 'lock';
-          let buttonType = 'danger';
           let newPostStatus = STATUSES.Blocked;
           let popConfirmTitle = 'Bạn chắc chắn muốn khóa bài đăng này?';
           if (record.statusCMS === STATUSES.Blocked) {
             buttonContent = 'Mở khóa';
             buttonIcon = 'unlock';
-            buttonType = 'default';
             newPostStatus = STATUSES.Activated;
             popConfirmTitle = 'Bạn có muốn mở lại bài đăng này?';
           }
@@ -61,21 +100,9 @@ export default class index extends React.Component {
             <span>
               <Popconfirm
                 title={popConfirmTitle}
-                onConfirm={() => {
-                  const { dispatch, posts } = this.props;
-                  dispatch({
-                    type: 'postManagement/changeCMSStatus',
-                    payload: { id: record.id, statusCMS: newPostStatus, posts },
-                  });
-                }}
+                onConfirm={() => this.handleConfirmChangeStatus(record)}
               >
-                <Button type={buttonType} icon={buttonIcon}>{buttonContent}</Button>
-              </Popconfirm>
-              <Divider type="vertical" />
-              <Popconfirm
-                title="Cảnh cáo người dùng này?"
-              >
-                <Button type="primary" icon="warning" style={{ background: COLOR.Warning }}>Cảnh báo người dùng</Button>
+                <Button type="primary" icon={buttonIcon} className={styles.buttonStyle}>{buttonContent}</Button>
               </Popconfirm>
             </span >
           );
@@ -84,13 +111,26 @@ export default class index extends React.Component {
     ];
 
   render() {
-    const { posts } = this.props;
+    const { postManagement: { posts, currentPage, totals } } = this.props;
     return (
-      <Table
-        columns={this.columns}
-        dataSource={posts.map((post, key) => { return { ...post, key }; })}
-        pagination={{ pageSize: TABLE_PAGESIZE }}
-      />
+      <div>
+        <div className="containerHeader">
+          <h1>Quản lý bài đăng</h1>
+        </div>
+        <div className="containerBody">
+          <Table
+            columns={this.columns}
+            dataSource={posts && posts.map((post, key) => { return { ...post, key }; })}
+            pagination={{
+              current: currentPage,
+              onChange: this.onPageNumberChange,
+              pageSize: TABLE_PAGESIZE,
+              total: totals,
+            }}
+            dispatch={this.props.dispatch}
+          />
+        </div>
+      </div>
     );
   }
 }

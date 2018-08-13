@@ -2,6 +2,7 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
 import { createCategory, getCategories, getACategory, updateCategory, changeCategoryCMSStatus, deleteCategory } from '../services/category';
 import { getPostsByCategory, fetch } from '../services/post';
+import { TABLE_PAGESIZE } from '../common/constants';
 
 const DEFAULT_CURRENT_PAGE = 1;
 
@@ -95,7 +96,10 @@ export default {
         // to get updated information
         yield put({
           type: 'getCategories',
-          payload: { page },
+          payload: {
+            page: payload.page,
+            limit: TABLE_PAGESIZE,
+          },
         });
         yield put({
           type: 'getACategory',
@@ -108,7 +112,10 @@ export default {
       if (response) {
         yield put({
           type: 'getCategories',
-          payload: {},
+          payload: {
+            page: payload.page,
+            limit: TABLE_PAGESIZE,
+          },
         });
       }
     },
