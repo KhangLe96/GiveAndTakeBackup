@@ -109,12 +109,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var user = _userService.FirstOrDefault(u => string.Equals(u.SocialAccountId, request.SocialAccountId));
             if (user == null)
             {
-                //REVIEW: check userName is unique, other way. set username with social account id value
                 user = new User
                 {
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    UserName = request.UserName,
+                    UserName = request.SocialAccountId,
                     SocialAccountId = request.SocialAccountId,
                     AvatarUrl = request.AvatarUrl
                 };
