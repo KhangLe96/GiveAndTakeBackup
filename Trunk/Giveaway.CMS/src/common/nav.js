@@ -56,7 +56,7 @@ export const getNavData = app => [
           {
             name: 'List category',
             path: '',
-            component: dynamicWrapper(app, ['categoryManagement'], () => import('../routes/CategoryManagement')),
+            component: dynamicWrapper(app, ['categoryManagement'], () => import('../routes/CategoryManagement/CategoryList')),
           },
           {
             name: 'Detail',

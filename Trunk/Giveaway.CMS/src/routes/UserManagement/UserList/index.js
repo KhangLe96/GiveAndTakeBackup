@@ -4,6 +4,7 @@ import { Table, Button, Popconfirm } from 'antd';
 import { Link } from 'dva/router';
 import { TABLE_PAGESIZE, STATUSES, STATUS_ACTION_ACTIVATE, STATUS_ACTION_BLOCK, ENG_VN_DICTIONARY } from '../../../common/constants';
 import styles from './index.less';
+
 @connect(({ modals, userManagement }) => ({
   ...modals, userManagement,
 }))
@@ -45,10 +46,10 @@ export default class index extends React.Component {
 
   handleDisplayRole = (record) => {
     if (record.role.length > 1) {
-      return (<h3>{ENG_VN_DICTIONARY[record.role && record.role[0]]} , {ENG_VN_DICTIONARY[record.role && record.role[1]]}</h3>)
+      return (<text>{ENG_VN_DICTIONARY[record.role && record.role[0]]} , {ENG_VN_DICTIONARY[record.role && record.role[1]]}</text>)
     }
     else {
-      return (<h3>{ENG_VN_DICTIONARY[record.role && record.role[0]]}</h3>)
+      return (<text>{ENG_VN_DICTIONARY[record.role && record.role[0]]}</text>)
     }
   }
 
@@ -73,7 +74,7 @@ export default class index extends React.Component {
         title: 'Trạng thái',
         // dataIndex: 'status',
         key: 'status',
-        render: record => <h3>{ENG_VN_DICTIONARY[record.status]}</h3>,
+        render: record => (ENG_VN_DICTIONARY[record.status]),
       }, {
         title: 'Vai trò',
         // dataIndex: 'role',
