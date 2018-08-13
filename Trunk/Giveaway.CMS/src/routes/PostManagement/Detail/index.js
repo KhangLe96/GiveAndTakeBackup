@@ -81,7 +81,8 @@ export default class index extends React.Component {
   }
 
   displayImage = (postInformation) => {
-    if ((postInformation.images.length === 0) || (postInformation.images === null)) {
+    console.log(postInformation);
+    if ((postInformation.images && postInformation.images.length === 0) || (postInformation.images && postInformation.images === null)) {
       return (<img src="./images/noImage.jpg" alt="" />);
     }
     else {
