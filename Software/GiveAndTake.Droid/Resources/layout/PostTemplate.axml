@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+  <ImageView
+      android:id="@+id/imgPost"
+      android:layout_width="130dp"
+      android:layout_height="130dp"
+      android:layout_marginBottom="8dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:scaleType="fitXY"
+      local:layout_constraintBottom_toBottomOf="parent"
+      local:layout_constraintStart_toStartOf="parent"
+      local:layout_constraintTop_toTopOf="parent" />
+  <ImageView
+      android:id="@+id/imgMultiImages"
+      android:layout_width="25dp"
+      android:layout_height="25dp"
+      android:layout_marginRight="8dp"
+      android:layout_marginBottom="8dp"
+      local:layout_constraintBottom_toBottomOf="@+id/imgPost"
+      local:layout_constraintEnd_toEndOf="@+id/imgPost" />
+  <Button
+      android:id="@+id/btnCategory"
+      android:layout_width="wrap_content"
+      android:layout_height="30dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginStart="8dp"
+      android:background="@color/com_facebook_button_send_background_color"
+      android:text="Sách"
+      android:textColor="#fff"
+      android:textAllCaps="false"
+      local:layout_constraintStart_toEndOf="@+id/imgPost"
+      local:layout_constraintTop_toTopOf="@+id/imgPost" />
+  <ImageView
+      android:id="@+id/imgAvatar"
+      android:layout_width="35dp"
+      android:layout_height="35dp"
+      android:layout_marginTop="8dp"
+      local:layout_constraintTop_toBottomOf="@id/btnCategory"
+      local:layout_constraintStart_toStartOf="@id/btnCategory" />
+  <TextView
+      android:id="@+id/tvUserFullName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Thao Nguyen"
+      android:textSize="18sp"
+      android:textColor="#000"
+      android:layout_marginLeft="8dp"
+      local:layout_constraintTop_toBottomOf="@id/btnCategory"
+      local:layout_constraintStart_toEndOf="@id/imgAvatar" />
+  <TextView
+      android:id="@+id/tvPostDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Vài giây trước"
+      android:layout_marginLeft="8dp"
+      local:layout_constraintTop_toBottomOf="@id/tvUserFullName"
+      local:layout_constraintStart_toEndOf="@id/imgAvatar" />
+  <TextView
+      android:id="@+id/tvSeperator"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="-"
+      android:layout_marginLeft="8dp"
+      local:layout_constraintStart_toEndOf="@id/tvPostDate"
+      local:layout_constraintTop_toTopOf="@id/tvPostDate" />
+  <TextView
+      android:id="@+id/tvLocation"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Đà Nẵng"
+      android:layout_marginLeft="8dp"
+      local:layout_constraintTop_toTopOf="@id/tvPostDate"
+      local:layout_constraintStart_toEndOf="@id/tvSeperator" />
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="2"
+      local:MvxBind="Text Description"
+      local:layout_constraintStart_toStartOf="@id/btnCategory"
+      local:layout_constraintTop_toBottomOf="@id/tvPostDate" />
+</android.support.constraint.ConstraintLayout>

@@ -12,8 +12,8 @@ using System.Collections.Generic;
 using Android.Runtime;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
-using Xamarin.Facebook.Login.Widget;
 using Object = Java.Lang.Object;
+using Result = Android.App.Result;
 
 namespace GiveAndTake.Droid.Views
 {

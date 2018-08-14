@@ -6,10 +6,8 @@
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:gravity="center">
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textSize="@dimen/MediumTextSize"
-		android:textColor="#456123"
-		local:MvxBind="Text ProjectName"/>
+  <FrameLayout
+    android:id="@+id/content_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
 </LinearLayout>

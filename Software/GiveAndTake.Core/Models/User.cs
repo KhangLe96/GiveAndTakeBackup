@@ -13,7 +13,7 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "lastName")]
         public string LastName { get; set; }
 
-        [DataMember(Name = "userName")]
+        [DataMember(Name = "username")]
         public string UserName { get; set; }
 
         [DataMember(Name = "socialAccountId")]
@@ -22,7 +22,7 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "avatarUrl")]
         public string AvatarUrl { get; set; }
     }
-    public class UserProfile : BaseUser
+    public class User : BaseUser
     {
         public string Id { get; set; }
         public string Email { get; set; }
@@ -42,7 +42,7 @@ namespace GiveAndTake.Core.Models
     public class LoginResponse
     {
         [DataMember(Name = "profile", EmitDefaultValue = false)]
-        public UserProfile Profile { get; set; }
+        public User User { get; set; }
 
         [DataMember(Name = "token", EmitDefaultValue = false)]
         public string Token { get; set; }
