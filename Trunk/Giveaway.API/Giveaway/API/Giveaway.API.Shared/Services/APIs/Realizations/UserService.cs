@@ -6,6 +6,7 @@ using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.API.Shared.Responses.User;
 using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.EF.Exceptions;

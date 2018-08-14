@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
+using Giveaway.API.Shared.Responses.User;
 using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.Models.Database;
 

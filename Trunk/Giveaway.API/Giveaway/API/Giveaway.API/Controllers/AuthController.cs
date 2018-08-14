@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
 using DbService = Giveaway.Service.Services;
+using Giveaway.API.Shared.Responses.User;
 
 namespace Giveaway.API.Controllers
 {

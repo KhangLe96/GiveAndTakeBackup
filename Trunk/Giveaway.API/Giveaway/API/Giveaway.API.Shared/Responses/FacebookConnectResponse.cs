@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using Giveaway.API.Shared.Responses.User;
+using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Responses
 {

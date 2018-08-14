@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Giveaway.API.Shared.Responses
+namespace Giveaway.API.Shared.Responses.User
 {
   [DataContract]
   public enum UserGenderEnum

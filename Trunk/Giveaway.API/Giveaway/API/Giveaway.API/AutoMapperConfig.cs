@@ -3,6 +3,8 @@ using AutoMapper.Configuration;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Post;
+using Giveaway.API.Shared.Responses.Report;
+using Giveaway.API.Shared.Responses.User;
 using Giveaway.Data.Models.Database;
 
 namespace Giveaway.API
@@ -16,7 +18,7 @@ namespace Giveaway.API
             #region User
 
             cfg.CreateMap<User, Giveaway.API.Shared.Models.DTO.User>();
-            cfg.CreateMap<User, UserPostRespone>();
+            cfg.CreateMap<User, UserPostResponse>();
 
             #endregion
 
@@ -42,6 +44,7 @@ namespace Giveaway.API
                     map => map.MapFrom(source => source.EntityStatus.ToString()
                 ));
             cfg.CreateMap<PostCmsResponse, Post>();
+            cfg.CreateMap<Post, PostReportResponse>();
             cfg.CreateMap<PostRequest, Post>();
 
             #endregion
@@ -54,6 +57,12 @@ namespace Giveaway.API
             #endregion
 
             cfg.CreateMap<ProvinceCity, ProvinceCityResponse>();
+
+            #region Report
+
+            cfg.CreateMap<Report, ReportResponse>();
+
+            #endregion
 
             Mapper.Initialize(cfg);
         }

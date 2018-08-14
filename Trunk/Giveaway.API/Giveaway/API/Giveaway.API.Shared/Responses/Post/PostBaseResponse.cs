@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Giveaway.API.Shared.Responses.User;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -15,7 +16,7 @@ namespace Giveaway.API.Shared.Responses.Post
 
         [DataMember(Name = "user", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "user")]
-        public UserPostRespone User { get; set; }
+        public UserPostResponse User { get; set; }
 
         [DataMember(Name = "title")]
         [JsonProperty(PropertyName = "title")]
