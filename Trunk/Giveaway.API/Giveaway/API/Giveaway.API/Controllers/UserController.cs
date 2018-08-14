@@ -8,6 +8,7 @@ using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
+using Giveaway.API.Shared.Responses.User;
 
 namespace Giveaway.API.Controllers
 {

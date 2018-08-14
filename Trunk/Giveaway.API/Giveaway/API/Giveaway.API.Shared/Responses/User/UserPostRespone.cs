@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Giveaway.API.Shared.Responses
+namespace Giveaway.API.Shared.Responses.User
 {
     [DataContract]
-    public class UserPostRespone
+    public class UserPostResponse
     {
         [DataMember(Name = "id")]
         [JsonProperty(PropertyName = "id")]

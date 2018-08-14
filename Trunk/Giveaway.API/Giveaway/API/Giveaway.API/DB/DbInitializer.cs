@@ -20,6 +20,30 @@ namespace Giveaway.API.DB
             //SeedProvinceCity(services);
             //SeedPost(services);
             //SeedImage(services);
+            SeedReport(services);
+        }
+
+        private static void SeedReport(IServiceProvider services)
+        {
+            var userService = services.GetService<IUserService>();
+            var postService = services.GetService<IPostService>();
+            var reportService = services.GetService<IReportService>();
+
+            if (reportService.All().Any()) return;
+
+            Guid UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id;
+            reportService.Create(new Report()
+            {
+                UserId = UserId,
+                PostId = postService.All().Where(x => x.UserId == UserId).Take(1).ToList().ElementAt(0).Id,
+                Message = "xàm"
+            }, out _);
+            reportService.Create(new Report()
+            {
+                UserId = UserId,
+                PostId = postService.All().Where(x => x.UserId == UserId).Take(1).ToList().ElementAt(0).Id,
+                Message = "lừa đảo"
+            }, out _);
         }
 
         private static void SeedImage(IServiceProvider services)

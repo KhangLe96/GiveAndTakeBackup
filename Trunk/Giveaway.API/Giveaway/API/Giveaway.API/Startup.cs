@@ -74,6 +74,7 @@ namespace Giveaway.API
             services.AddSingleton<IPostService, PostService>();
             services.AddSingleton<IImageService, ImageService>();
             services.AddSingleton<IProviceCityService, ProviceCityService>();
+            services.AddSingleton<IReportService, ReportService>();
 
             //Use raven to send logs to sentry.io
             services.Configure<RavenOptions>(ConfigRoot.GetSection("RavenOptions"));

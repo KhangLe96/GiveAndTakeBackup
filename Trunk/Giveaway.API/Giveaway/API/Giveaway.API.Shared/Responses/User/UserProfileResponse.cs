@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using Giveaway.Data.Enums;
 using Newtonsoft.Json;
 
-namespace Giveaway.API.Shared.Responses
+namespace Giveaway.API.Shared.Responses.User
 {
 	[DataContract]
 	public class UserProfileResponse
