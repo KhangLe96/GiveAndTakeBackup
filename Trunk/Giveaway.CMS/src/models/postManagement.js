@@ -1,5 +1,3 @@
-import { routerRedux } from 'dva/router';
-import { message } from 'antd/lib/index';
 import { fetch, changePostCMSStatus, findPost, fetchPostInformation, changeAPostCMSStatus } from '../services/post';
 import { TABLE_PAGESIZE } from '../common/constants';
 

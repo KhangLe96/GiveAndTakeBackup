@@ -4,9 +4,9 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import { DateFormatDisplay, TABLE_PAGESIZE, ENG_VN_DICTIONARY, COLOR, STATUSES } from '../../../common/constants';
-import styles from './index.less';
-@connect(({ modals, postManagement }) => ({
-  ...modals, postManagement,
+// import styles from './index.less';
+@connect(({ modals, reportManagement }) => ({
+  ...modals, reportManagement,
 }))
 
 export default class index extends React.Component {
@@ -18,10 +18,10 @@ export default class index extends React.Component {
   componentWillMount() {
     const { dispatch } = this.props;
     const pageSize = TABLE_PAGESIZE;
-    const page = this.props.postManagement.currentPage;
+    const page = this.props.reportManagement.currentPage;
     const payload = { page, limit: pageSize };
     dispatch({
-      type: 'postManagement/fetch',
+      type: 'reportManagement/fetch',
       payload,
     });
   }
@@ -30,29 +30,35 @@ export default class index extends React.Component {
     const { dispatch } = this.props;
     const payload = { page, limit: pageSize };
     dispatch({
-      type: 'postManagement/fetch',
+      type: 'reportManagement/fetch',
       payload,
     });
   }
 
-  handleConfirmChangeStatus = (record) => {
-    const { dispatch, postManagement: { currentPage } } = this.props;
-    const statusCMS = record.statusCMS === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
-    dispatch({
-      type: 'postManagement/changePostCMSStatus',
-      payload: { statusCMS, id: record.id, page: currentPage },
-    });
+  handleConfirmWarning = (record) => {
+    // const { dispatch, postManagement: { currentPage } } = this.props;
+    // const statusCMS = record.statusCMS === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
+    // dispatch({
+    //   type: 'postManagement/changePostCMSStatus',
+    //   payload: { statusCMS, id: record.id, page: currentPage },
+    // });
   }
 
-  handleDisplayStatusButton = (record) => {
-    return (record.status === STATUSES.Activated ? STATUSES.Blocked : STATUSES.Activated);
+  handleConfirmChangeStatus = (record) => {
+    // const { dispatch, userManagement: { currentPage } } = this.props;
+    // const newStatus = record.status === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
+    // dispatch({
+    //   type: 'userManagement/changeStatus',
+    //   payload: { newStatus, id: record.id, page: currentPage },
+    // });
   }
+
   columns =
     [
       {
-        title: 'Tiêu đề',
+        title: 'Tiêu đề bài đăng',
         key: 'title',
-        render: record => <Link to={`/post-management/detail/${record.id}`}>{record.title}</Link>,
+        render: record => <Link to={`/post-management/detail/${record.post.id}`}>{record.post.title}</Link>,
       },
       {
         title: 'Người đăng',
@@ -60,49 +66,45 @@ export default class index extends React.Component {
         render: record => <Link to={`/user-management/detail/${record.user.id}`}>{record.user.username}</Link>,
       },
       {
-        title: 'Địa chỉ',
-        dataIndex: 'address.provinceCityName',
-        key: 'address.provinceCityName',
-      },
-      {
-        title: 'Category',
-        dataIndex: 'category',
-        key: 'category.categoryName',
-        render: category => <Link to={`/category-management/detail/${category.id}`}>{category.categoryName}</Link>,
-
-      },
-      {
-        title: 'Ngày đăng',
+        title: 'Ngày báo cáo',
         dataIndex: 'createdTime',
-        key: 'dayPost',
+        key: 'dayReport',
         render: val => <span>{moment.utc(val).local().format(DateFormatDisplay)}</span>,
       },
       {
-        title: 'Trạng thái',
-        dataIndex: 'statusCMS',
-        key: 'statusCMS',
-        render: val => ENG_VN_DICTIONARY[val],
-      }, {
+        title: 'Số lần người dùng bị cảnh báo',
+        dataIndex: 'warningNumber',
+        key: 'report.warningNumber',
+      },
+      {
         title: 'Hành động',
         key: 'Action',
         render: (record) => {
           let buttonContent = 'Khóa';
           let buttonIcon = 'lock';
           let newPostStatus = STATUSES.Blocked;
-          let popConfirmTitle = 'Bạn chắc chắn muốn khóa bài đăng này?';
-          if (record.statusCMS === STATUSES.Blocked) {
+          let popConfirmTitle = 'Bạn chắc chắn muốn khóa người dùng này?';
+          if (record.status === STATUSES.Blocked) {
             buttonContent = 'Mở khóa';
             buttonIcon = 'unlock';
             newPostStatus = STATUSES.Activated;
-            popConfirmTitle = 'Bạn có muốn mở lại bài đăng này?';
+            popConfirmTitle = 'Bạn có muốn mở lại người dùng này?';
           }
+
           return (
             <span>
+              <Popconfirm
+                title="Bạn chắc chắn muốn cảnh báo người dùng này"
+                onConfirm={() => this.handleConfirmWarning(record)}
+              >
+                <Button type="primary" icon={buttonIcon}>Cảnh báo</Button>
+              </Popconfirm>
+
               <Popconfirm
                 title={popConfirmTitle}
                 onConfirm={() => this.handleConfirmChangeStatus(record)}
               >
-                <Button type="primary" icon={buttonIcon} className={styles.buttonStyle}>{buttonContent}</Button>
+                <Button type="primary" icon={buttonIcon}>{buttonContent}</Button>
               </Popconfirm>
             </span >
           );
@@ -111,16 +113,16 @@ export default class index extends React.Component {
     ];
 
   render() {
-    const { postManagement: { posts, currentPage, totals } } = this.props;
+    const { reportManagement: { reports, currentPage, totals } } = this.props;
     return (
       <div>
         <div className="containerHeader">
-          <h1>Quản lý bài đăng</h1>
+          <h1>Quản lý báo cáo</h1>
         </div>
         <div className="containerBody">
           <Table
             columns={this.columns}
-            dataSource={posts && posts.map((post, key) => { return { ...post, key }; })}
+            dataSource={reports && reports.map((report, key) => { return { ...report, key }; })}
             pagination={{
               current: currentPage,
               onChange: this.onPageNumberChange,

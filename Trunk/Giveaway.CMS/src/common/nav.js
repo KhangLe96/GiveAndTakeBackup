@@ -16,7 +16,7 @@ export const getNavData = app => [
     children: [
       {
         name: 'Quản lý bài đăng',
-        path: 'post-management', // should use format report-management to have friendly url
+        path: 'post-management',
         icon: 'dashboard',
         children: [
           {
@@ -33,7 +33,7 @@ export const getNavData = app => [
       },
       {
         name: 'Quản lý người dùng',
-        path: 'user-management', // should use format report-management to have friendly url
+        path: 'user-management',
         icon: 'data',
         children: [
           {
@@ -67,6 +67,18 @@ export const getNavData = app => [
             name: 'Create new category',
             path: 'create',
             component: dynamicWrapper(app, ['categoryManagement'], () => import('../routes/CategoryManagement/Create')),
+          },
+        ],
+      },
+      {
+        name: 'Quản lý báo cáo',
+        path: 'report-management',
+        icon: 'data',
+        children: [
+          {
+            name: 'List report',
+            path: '',
+            component: dynamicWrapper(app, ['reportManagement'], () => import('../routes/ReportManagement/ReportList')),
           },
         ],
       },

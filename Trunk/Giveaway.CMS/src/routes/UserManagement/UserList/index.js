@@ -46,10 +46,9 @@ export default class index extends React.Component {
 
   handleDisplayRole = (record) => {
     if (record.role.length > 1) {
-      return (<text>{ENG_VN_DICTIONARY[record.role && record.role[0]]} , {ENG_VN_DICTIONARY[record.role && record.role[1]]}</text>)
-    }
-    else {
-      return (<text>{ENG_VN_DICTIONARY[record.role && record.role[0]]}</text>)
+      return (<text>{ENG_VN_DICTIONARY[record.role && record.role[0]]} , {ENG_VN_DICTIONARY[record.role && record.role[1]]}</text>);
+    } else {
+      return (<text>{ENG_VN_DICTIONARY[record.role && record.role[0]]}</text>);
     }
   }
 
@@ -104,7 +103,7 @@ export default class index extends React.Component {
               </Popconfirm>
             </span >
           );
-        }
+        },
       },
     ];
   render() {
