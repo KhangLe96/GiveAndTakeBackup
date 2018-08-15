@@ -6,7 +6,7 @@ using MvvmCross.Droid.Support.V7.AppCompat;
 namespace GiveAndTake.Droid
 {
 	[Activity(
-		Label = "SplashScreen"
+		Label = "Give And Take"
 		, MainLauncher = true
 		, NoHistory = true
 		, ScreenOrientation = ScreenOrientation.Portrait)]

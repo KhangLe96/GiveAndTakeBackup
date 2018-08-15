@@ -1,4 +1,17 @@
 <resources>
-	<dimen name="SmallTextSize">30dp</dimen>
-	<dimen name="MediumTextSize">40dp</dimen>
+	<dimen name="SmallTextSize">11sp</dimen>
+	<dimen name="post_description_text_size">11sp</dimen>
+	<dimen name="MediumTextSize">16sp</dimen>
+  <dimen name="margin_short">8dp</dimen>
+  <dimen name="margin_normal">16dp</dimen>
+  <dimen name="avatar_margin">16dp</dimen>
+  <dimen name="image_post_size">130dp</dimen>
+  <dimen name="image_multi_size">25dp</dimen>
+  <dimen name="image_avatar_size">35dp</dimen>
+  <dimen name="filter_height">40dp</dimen>
+  <dimen name="button_category_height">24dp</dimen>
+  <dimen name="button_request_height">9dp</dimen>
+  <dimen name="button_small_width">25dp</dimen>
+  <dimen name="button_small_height">12dp</dimen>
+  <dimen name="button_extension_height">3dp</dimen>
 </resources>

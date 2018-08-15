@@ -9,14 +9,14 @@ namespace GiveAndTake.Core.ViewModels
 {
     public class LoginViewModel : MvxViewModel
     {
-        private UserProfile profile;
-        public UserProfile Profile
+        private User user;
+        public User User
         {
-            get => profile;
+            get => user;
             set
             {
-                profile = value;
-                RaisePropertyChanged(() => Profile);
+                user = value;
+                RaisePropertyChanged(() => User);
             }
         }
 
@@ -32,15 +32,15 @@ namespace GiveAndTake.Core.ViewModels
             LoginCommand = new MvxCommand<BaseUser>(OnLoginSuccess);
         }
 
-        private void OnLoginSuccess(BaseUser user)
+        private void OnLoginSuccess(BaseUser baseUser)
         {
             try
             {
                 var client = new RestClient("http://192.168.76.1:8089/api/v1/user/login/facebook");
                 var request = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json };
-                request.AddBody(user);
+                request.AddBody(baseUser);
                 var response = client.Execute<LoginResponse>(request);
-                Profile = response.Data.Profile;
+                User = response.Data.User;
             }
             catch (Exception e)
             {
