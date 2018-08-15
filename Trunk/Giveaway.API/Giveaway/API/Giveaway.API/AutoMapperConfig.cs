@@ -19,6 +19,7 @@ namespace Giveaway.API
 
             cfg.CreateMap<User, Giveaway.API.Shared.Models.DTO.User>();
             cfg.CreateMap<User, UserPostResponse>();
+            cfg.CreateMap<User, UserReportResponse>();
 
             #endregion
 

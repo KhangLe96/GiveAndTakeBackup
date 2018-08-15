@@ -81,11 +81,9 @@ export default class index extends React.Component {
   }
 
   displayImage = (postInformation) => {
-    console.log(postInformation);
     if ((postInformation.images && postInformation.images.length === 0) || (postInformation.images && postInformation.images === null)) {
       return (<img src="./images/noImage.jpg" alt="" />);
-    }
-    else {
+    } else {
       return (
         (postInformation.images)
           ?
@@ -153,10 +151,10 @@ export default class index extends React.Component {
 
   render() {
     const { postManagement: { postInformation } } = this.props;
-    const postDetail = (postInformation !== null) ? this.renderDetail(postInformation) : null;
+    const postDetail = postInformation && this.renderDetail(postInformation);
     return (
       <div>
-        {(postDetail) || null}
+        {postDetail}
       </div>
     );
   }
