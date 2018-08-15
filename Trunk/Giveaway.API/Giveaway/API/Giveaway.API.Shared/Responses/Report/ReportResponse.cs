@@ -26,6 +26,10 @@ namespace Giveaway.API.Shared.Responses.Report
         [JsonProperty(PropertyName = "updatedTime")]
         public DateTimeOffset UpdatedTime { get; set; }
 
+        [DataMember(Name = "warningNumber")]
+        [JsonProperty(PropertyName = "warningNumber")]
+        public int WarningNumber { get; set; }
+
         [DataMember(Name = "user")]
         [JsonProperty(PropertyName = "user")]
         public UserPostResponse User { get; set; }

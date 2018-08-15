@@ -41,7 +41,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<ReportResponse> GetPagedReports(PagingQueryReportRequest request, out int total)
         {
-            var reports = _reportService.Include(x => x.Post).Include(x => x.User).Where(x => x.EntityStatus != EntityStatus.Deleted);
+            var reports = _reportService.Include(x => x.Post).Include(x => x.User.WarningMessages).Where(x => x.EntityStatus != EntityStatus.Deleted);
 
             total = reports.Count();
 

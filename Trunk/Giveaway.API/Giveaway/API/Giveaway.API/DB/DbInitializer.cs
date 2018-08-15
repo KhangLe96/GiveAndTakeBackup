@@ -18,9 +18,34 @@ namespace Giveaway.API.DB
             //SeedSuperAdmin(services);
             //SeedCategories(services);
             //SeedProvinceCity(services);
+
+            ////After all above seeds were finished
             //SeedPost(services);
+
+            ////After SeedPost was finished
             //SeedImage(services);
-            SeedReport(services);
+            //SeedReport(services);
+            //SeedWarning(services);
+        }
+
+        private static void SeedWarning(IServiceProvider services)
+        {
+            var userService = services.GetService<IUserService>();
+            var warningMessageService = services.GetService<IWarningMessageService>();
+
+            if (warningMessageService.All().Any()) return;
+
+            Guid UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id;
+            warningMessageService.Create(new WarningMessage()
+            {
+                UserId = UserId,
+                Message = "Hình ảnh chứa nội dung nhạy cảm"
+            }, out _);
+            warningMessageService.Create(new WarningMessage()
+            {
+                UserId = UserId,
+                Message = "Test"
+            }, out _);
         }
 
         private static void SeedReport(IServiceProvider services)
@@ -56,16 +81,12 @@ namespace Giveaway.API.DB
             {
                 PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
                 ImageUrl = "test1",
-                CreatedTime = DateTimeOffset.UtcNow,
-                UpdatedTime = DateTimeOffset.Now
             }, out _);
 
             imageService.Create(new Image()
             {
                 PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
                 ImageUrl = "test2",
-                CreatedTime = DateTimeOffset.UtcNow,
-                UpdatedTime = DateTimeOffset.Now
             }, out _);
         }
 
@@ -94,8 +115,6 @@ namespace Giveaway.API.DB
             postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
-                CreatedTime = DateTimeOffset.Now,
-                UpdatedTime = DateTimeOffset.UtcNow,
                 CategoryId = categoryService.All().ToList().ElementAt(0).Id,
                 Description = "Description",
                 Title = "test1",
@@ -106,8 +125,6 @@ namespace Giveaway.API.DB
             postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
-                CreatedTime = DateTimeOffset.Now,
-                UpdatedTime = DateTimeOffset.UtcNow,
                 CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
                 Description = "Abvfef",
                 Title = "test2",
@@ -118,8 +135,6 @@ namespace Giveaway.API.DB
             postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
-                CreatedTime = DateTimeOffset.Now,
-                UpdatedTime = DateTimeOffset.UtcNow,
                 CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
                 Description = "Abveeeeeeeeeeeeeee",
                 Title = "test3",
@@ -130,8 +145,6 @@ namespace Giveaway.API.DB
             postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
-                CreatedTime = DateTimeOffset.Now,
-                UpdatedTime = DateTimeOffset.UtcNow,
                 CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
                 Description = "Abv3333333333333",
                 Title = "test4",

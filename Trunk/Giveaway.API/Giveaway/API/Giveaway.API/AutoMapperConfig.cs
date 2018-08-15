@@ -56,11 +56,19 @@ namespace Giveaway.API
 
             #endregion
 
+            #region ProvinceCity
+
             cfg.CreateMap<ProvinceCity, ProvinceCityResponse>();
+
+            #endregion
 
             #region Report
 
-            cfg.CreateMap<Report, ReportResponse>();
+            cfg.CreateMap<Report, ReportResponse>()
+                .ForMember(
+                    destination => destination.WarningNumber,
+                    map => map.MapFrom(source => source.User.WarningMessages.Count)
+                );
 
             #endregion
 
