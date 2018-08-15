@@ -1,87 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+
+<android.support.constraint.ConstraintLayout 
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
   <ImageView
-      android:id="@+id/imgPost"
-      android:layout_width="130dp"
-      android:layout_height="130dp"
-      android:layout_marginBottom="8dp"
-      android:layout_marginLeft="8dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginTop="8dp"
-      android:scaleType="fitXY"
-      local:layout_constraintBottom_toBottomOf="parent"
-      local:layout_constraintStart_toStartOf="parent"
-      local:layout_constraintTop_toTopOf="parent" />
+    android:id="@+id/imgPost"
+    android:layout_width="@dimen/image_post_size"
+    android:layout_height="@dimen/image_post_size"
+    android:layout_marginBottom="@dimen/margin_short"
+    android:layout_marginLeft="@dimen/margin_short"
+    android:layout_marginStart="@dimen/margin_short"
+    android:layout_marginTop="@dimen/margin_short"
+    android:src="@drawable/postphoto"
+    android:scaleType="fitXY"
+    local:layout_constraintBottom_toBottomOf="parent"
+    local:layout_constraintStart_toStartOf="parent"
+    local:layout_constraintTop_toTopOf="parent" />
   <ImageView
-      android:id="@+id/imgMultiImages"
-      android:layout_width="25dp"
-      android:layout_height="25dp"
-      android:layout_marginRight="8dp"
-      android:layout_marginBottom="8dp"
-      local:layout_constraintBottom_toBottomOf="@+id/imgPost"
-      local:layout_constraintEnd_toEndOf="@+id/imgPost" />
+    android:id="@+id/imgMultiImages"
+    android:src="@drawable/multiphoto"
+    android:layout_width="@dimen/image_multi_size"
+    android:layout_height="@dimen/image_multi_size"
+    android:layout_marginRight="@dimen/margin_short"
+    android:layout_marginBottom="@dimen/margin_short"
+    local:layout_constraintBottom_toBottomOf="@+id/imgPost"
+    local:layout_constraintEnd_toEndOf="@+id/imgPost" />
   <Button
-      android:id="@+id/btnCategory"
-      android:layout_width="wrap_content"
-      android:layout_height="30dp"
-      android:layout_marginLeft="8dp"
-      android:layout_marginStart="8dp"
-      android:background="@color/com_facebook_button_send_background_color"
-      android:text="Sách"
-      android:textColor="#fff"
-      android:textAllCaps="false"
-      local:layout_constraintStart_toEndOf="@+id/imgPost"
-      local:layout_constraintTop_toTopOf="@+id/imgPost" />
+    android:id="@+id/btnCategory"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/button_category_height"
+    android:layout_marginLeft="@dimen/margin_short"
+    android:layout_marginStart="@dimen/margin_short"
+    android:background="@drawable/category_bg"
+    android:textColor="#fff"
+    android:textAllCaps="false"
+    local:layout_constraintStart_toEndOf="@+id/imgPost"
+    local:layout_constraintTop_toTopOf="@+id/imgPost"
+    local:MvxBind="Text CategoryName" />
   <ImageView
-      android:id="@+id/imgAvatar"
-      android:layout_width="35dp"
-      android:layout_height="35dp"
-      android:layout_marginTop="8dp"
-      local:layout_constraintTop_toBottomOf="@id/btnCategory"
-      local:layout_constraintStart_toStartOf="@id/btnCategory" />
+    android:id="@+id/imgAvatar"
+    android:layout_width="@dimen/image_avatar_size"
+    android:layout_height="@dimen/image_avatar_size"
+    android:layout_marginTop="@dimen/margin_short"
+    android:src="@drawable/avatar"
+    local:layout_constraintTop_toBottomOf="@id/btnCategory"
+    local:layout_constraintStart_toStartOf="@id/btnCategory" />
   <TextView
-      android:id="@+id/tvUserFullName"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Thao Nguyen"
-      android:textSize="18sp"
-      android:textColor="#000"
-      android:layout_marginLeft="8dp"
-      local:layout_constraintTop_toBottomOf="@id/btnCategory"
-      local:layout_constraintStart_toEndOf="@id/imgAvatar" />
+    android:id="@+id/tvUserFullName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/MediumTextSize"
+    android:textColor="#000"
+    android:layout_marginLeft="@dimen/avatar_margin"
+    android:layout_marginTop="@dimen/margin_short"
+    local:layout_constraintTop_toBottomOf="@id/btnCategory"
+    local:layout_constraintStart_toEndOf="@id/imgAvatar"
+    local:MvxBind="Text UserName" />
   <TextView
-      android:id="@+id/tvPostDate"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Vài giây trước"
-      android:layout_marginLeft="8dp"
-      local:layout_constraintTop_toBottomOf="@id/tvUserFullName"
-      local:layout_constraintStart_toEndOf="@id/imgAvatar" />
+    android:id="@+id/tvPostDate"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Vài giây trước"
+    android:textSize="@dimen/SmallTextSize"
+    android:layout_marginLeft="@dimen/avatar_margin"
+    local:layout_constraintTop_toBottomOf="@id/tvUserFullName"
+    local:layout_constraintStart_toEndOf="@id/imgAvatar" />
   <TextView
-      android:id="@+id/tvSeperator"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="-"
-      android:layout_marginLeft="8dp"
-      local:layout_constraintStart_toEndOf="@id/tvPostDate"
-      local:layout_constraintTop_toTopOf="@id/tvPostDate" />
+    android:id="@+id/tvSeperator"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="-"
+    android:textSize="@dimen/SmallTextSize"
+    android:layout_marginLeft="@dimen/margin_short"
+    local:layout_constraintStart_toEndOf="@id/tvPostDate"
+    local:layout_constraintTop_toTopOf="@id/tvPostDate" />
   <TextView
-      android:id="@+id/tvLocation"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Đà Nẵng"
-      android:layout_marginLeft="8dp"
-      local:layout_constraintTop_toTopOf="@id/tvPostDate"
-      local:layout_constraintStart_toEndOf="@id/tvSeperator" />
+    android:id="@+id/tvLocation"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/SmallTextSize"
+    android:layout_marginLeft="@dimen/margin_short"
+    local:layout_constraintTop_toTopOf="@id/tvPostDate"
+    local:layout_constraintStart_toEndOf="@id/tvSeperator"
+    local:MvxBind="Text Address" />
   <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:lines="2"
-      local:MvxBind="Text Description"
-      local:layout_constraintStart_toStartOf="@id/btnCategory"
-      local:layout_constraintTop_toBottomOf="@id/tvPostDate" />
+    android:id="@+id/tvDescription"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/margin_short"
+    android:layout_marginTop="@dimen/margin_short"
+    android:lines="2"
+    android:minLines="2"
+    android:singleLine="false"
+    local:MvxBind="Text Description"
+    android:text="Đi qua những rung rinh, những xao xuyến nhẹ, cũng thấm thía cảm giác ngậm ngùi nuối tiếc cho những mối tình không dám nói thành lời nên giờ thì cho những xúc cảm ấy được cất thành âm nhạc ha 🎶\r\nLời từ trái tim chân thành nên nói chung hơi bị tâm đắc với sản phẩm lần này"
+    local:layout_constraintStart_toStartOf="@id/btnCategory"
+    local:layout_constraintEnd_toEndOf="parent"
+    local:layout_constraintTop_toBottomOf="@id/tvPostDate" />
+
+
+  <LinearLayout
+    android:id="@+id/linearlayout"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/button_small_height"
+    android:layout_marginRight="@dimen/margin_short"
+    android:layout_marginTop="@dimen/avatar_margin"
+    android:orientation="horizontal"
+    android:weightSum="4"
+    local:layout_constraintBottom_toBottomOf="@+id/imgPost"
+    local:layout_constraintEnd_toEndOf="parent"
+    local:layout_constraintStart_toStartOf="@id/tvDescription"
+    local:layout_constraintTop_toBottomOf="@+id/tvDescription">
+
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:gravity="bottom"
+      android:layout_weight="1">
+
+      <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="@dimen/button_small_width"
+        android:layout_height="@dimen/button_request_height"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/request_off" />
+
+      <TextView
+        android:id="@+id/tvRequestCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15"
+        android:textSize="@dimen/SmallTextSize" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:gravity="center|bottom">
+
+      <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="@dimen/button_small_width"
+        android:layout_height="@dimen/button_small_height"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/heart_off" />
+
+      <TextView
+        android:id="@+id/tvAppreciationCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15"
+        android:textSize="@dimen/SmallTextSize" />
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:gravity="right|bottom">
+
+      <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="@dimen/button_small_width"
+        android:layout_height="@dimen/button_small_height"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/comment" />
+
+      <TextView
+        android:id="@+id/tvCommentCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15"
+        android:textSize="@dimen/SmallTextSize" />
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:gravity="right|bottom">
+
+      <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="@dimen/button_small_width"
+        android:layout_height="@dimen/button_extension_height"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/extention" />
+    </LinearLayout>
+  </LinearLayout>
+
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    local:layout_constraintTop_toBottomOf="@id/linearlayout"
+    local:layout_constraintBottom_toBottomOf="parent"
+    android:layout_margin="@dimen/margin_short"
+    android:background="#0fbcf9"/>
+
 </android.support.constraint.ConstraintLayout>

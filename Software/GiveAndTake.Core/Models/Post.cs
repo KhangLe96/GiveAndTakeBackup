@@ -22,16 +22,16 @@ namespace GiveAndTake.Core.Models
 
     public class Post
     {
-        public string StatusApp { get; set; }
         public string Id { get; set; }
-        public User User { get; set; }
+        public string PostStatus { get; set; }
+        public string CategoryName { get; set; }
+        public string UserName { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime CreatedTime { get; set; }
         public DateTime UpdatedTime { get; set; }
-        public List<object> Images { get; set; }
-        public Address Address { get; set; }
-        public Category Category { get; set; }
+        public List<string> Images { get; set; }
+        public string Address { get; set; }
     }
 
     public class Pagination
