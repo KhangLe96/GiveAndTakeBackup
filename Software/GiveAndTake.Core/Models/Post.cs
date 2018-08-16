@@ -10,16 +10,6 @@ namespace GiveAndTake.Core.Models
         public string ProvinceCityName { get; set; }
     }
 
-    public class Category
-    {
-        public string Id { get; set; }
-        public string CategoryName { get; set; }
-        public object CategoryImageUrl { get; set; }
-        public string Status { get; set; }
-        public DateTime CreatedTime { get; set; }
-        public DateTime UpdatedTime { get; set; }
-    }
-
     public class Post
     {
         public string Id { get; set; }
