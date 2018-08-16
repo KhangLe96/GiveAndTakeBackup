@@ -1,17 +1,14 @@
-﻿using Android.App;
+﻿using Android.Runtime;
+using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views
 {
-    [MvxActivityPresentation]
-    [Activity(Label = "User Profile")]
-    public class UserProfileView : BaseActivity
+    [MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
+    [Register(nameof(UserProfileView))]
+    public class UserProfileView : BaseFragment
     {
         protected override int LayoutId => Resource.Layout.UserProfileView;
-        protected override void InitView()
-        {
-
-        }
     }
 }

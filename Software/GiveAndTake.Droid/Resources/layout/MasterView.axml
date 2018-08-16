@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/linearLayout">
-		<ImageView
-			android:layout_marginLeft="80dp"
-			android:layout_marginRight="80dp"
-			android:layout_marginTop="10dp"
-			android:layout_marginBottom="10dp"
-			android:layout_width="@dimen/HeaderWidth"
-			android:layout_height="@dimen/HeaderHeight"
-			android:src="@drawable/Top_logo" />
-	</LinearLayout>
-	<View
-		android:layout_width="match_parent"
-		android:layout_height="1dp"
-		android:background="@color/colorSeparateHeaderLine"
-		android:layout_below="@+id/linearLayout" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout">
+        <ImageView
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="@dimen/HeaderWidth"
+            android:layout_height="@dimen/HeaderHeight"
+            android:src="@drawable/Top_logo" />
+    </LinearLayout>
+    <View
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSeparateHeaderLine"
+        android:layout_below="@+id/linearLayout" />
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/seperator" />
 </RelativeLayout>
