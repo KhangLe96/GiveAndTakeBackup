@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace GiveAndTake.Core.Models
@@ -65,6 +66,15 @@ namespace GiveAndTake.Core.Models
 
         [DataMember(Name = "address")]
         public ProvinceCity ProvinceCity { get; set; }
+
+        [DataMember(Name = "appreciationCount")]
+        public int AppreciationCount { get; set; }
+
+        [DataMember(Name = "requestCount")]
+        public int RequestCount { get; set; }
+
+        [DataMember(Name = "commentCount")]
+        public int CommentCount { get; set; }
     }
 
     public class Pagination
