@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 

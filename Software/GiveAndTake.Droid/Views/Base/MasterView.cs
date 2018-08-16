@@ -1,11 +1,9 @@
 ﻿using Android.App;
-using Android.OS;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
-using MvvmCross.Platforms.Android.Views;
 
 namespace GiveAndTake.Droid.Views.Base
 {
-	[MvxActivityPresentation]
+    [MvxActivityPresentation]
 	[Activity(Label = "View for HomeViewModel")]
 	public class MasterView : BaseActivity
 	{
