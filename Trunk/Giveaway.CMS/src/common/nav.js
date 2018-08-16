@@ -78,7 +78,7 @@ export const getNavData = app => [
           {
             name: 'List report',
             path: '',
-            component: dynamicWrapper(app, ['reportManagement'], () => import('../routes/ReportManagement/ReportList')),
+            component: dynamicWrapper(app, ['reportManagement', 'userManagement'], () => import('../routes/ReportManagement/ReportList')),
           },
         ],
       },

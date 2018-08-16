@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
 using Giveaway.API.Shared.Requests;
+using Giveaway.API.Shared.Requests.User;
+using Giveaway.API.Shared.Requests.Warning;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Post;
 using Giveaway.API.Shared.Responses.Report;
 using Giveaway.API.Shared.Responses.User;
+using Giveaway.API.Shared.Responses.Warning;
 using Giveaway.Data.Models.Database;
 
 namespace Giveaway.API
@@ -19,7 +22,11 @@ namespace Giveaway.API
 
             cfg.CreateMap<User, Giveaway.API.Shared.Models.DTO.User>();
             cfg.CreateMap<User, UserPostResponse>();
-            cfg.CreateMap<User, UserReportResponse>();
+            cfg.CreateMap<User, UserReportResponse>()
+                .ForMember(
+                    destination => destination.Status,
+                    map => map.MapFrom(source => source.EntityStatus.ToString()
+                ));
 
             #endregion
 
@@ -70,6 +77,13 @@ namespace Giveaway.API
                     destination => destination.WarningNumber,
                     map => map.MapFrom(source => source.User.WarningMessages.Count)
                 );
+
+            #endregion
+
+            #region Warning
+
+            cfg.CreateMap<WarningMessage, WarningResponse>();
+            cfg.CreateMap<WarningRequest, WarningMessage>();
 
             #endregion
 

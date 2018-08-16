@@ -13,6 +13,9 @@ namespace Giveaway.Data.Models.Database
         [MaxLength(50)]
         public string CategoryName { get; set; }
 
+        //[Required]
+        //public string BackgroundColor { get; set; }
+
         public string ImageUrl { get; set; }
 
         [Required]
