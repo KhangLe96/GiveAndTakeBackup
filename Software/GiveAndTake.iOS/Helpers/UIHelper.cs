@@ -19,6 +19,23 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
+		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor)
+		{
+			var view = new UIView
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				BackgroundColor = backgroundColor
+			};
+
+			view.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
+				NSLayoutConstraint.Create(view, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
+			});
+
+			return view;
+		}
+
 		public static UIFont GetFont(FontType fontType, nfloat fontSize)
 		{
 			switch (fontType)
