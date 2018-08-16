@@ -7,12 +7,12 @@ namespace GiveAndTake.Droid.Views.Base
 {
 	[MvxActivityPresentation]
 	[Activity(Label = "View for HomeViewModel")]
-	public class MasterView : MvxActivity
+	public class MasterView : BaseActivity
 	{
-		protected override void OnCreate(Bundle bundle)
-		{
-			base.OnCreate(bundle);
-			SetContentView(Resource.Layout.MasterView);
-		}
+	    protected override int LayoutId => Resource.Layout.MasterView;
+
+        protected override void InitView()
+	    {
+	    }
 	}
 }
