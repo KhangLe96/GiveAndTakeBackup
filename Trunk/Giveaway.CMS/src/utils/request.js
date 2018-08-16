@@ -68,7 +68,7 @@ export default function request(url, options) {
   const newOptions = { ...defaultOptions, ...opts };
   if (newOptions.method === 'GET') {
     url += `/?${stringify(newOptions.body)}`;
-    newOptions.body = undefined;;
+    newOptions.body = undefined;
   }
   if (newOptions.method === 'POST'
     || newOptions.method === 'PUT'

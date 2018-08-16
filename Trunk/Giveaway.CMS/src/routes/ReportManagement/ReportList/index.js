@@ -1,8 +1,9 @@
 import React from 'react';
-import { Table, Divider, Button, Popconfirm } from 'antd';
+import { Table, Divider, Button, Popconfirm, message } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
+import { CollectionCreateForm } from './formReport';
 import { DateFormatDisplay, TABLE_PAGESIZE, ENG_VN_DICTIONARY, COLOR, STATUSES } from '../../../common/constants';
 import styles from './index.less';
 @connect(({ modals, reportManagement, userManagement }) => ({
@@ -12,6 +13,9 @@ import styles from './index.less';
 export default class index extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = { visible: false };
+
     this.onPageNumberChange = this.onPageNumberChange.bind(this);
   }
 
@@ -35,15 +39,6 @@ export default class index extends React.Component {
     });
   }
 
-  // handleConfirmWarning = (record) => {
-  //   const { dispatch, reportManagement: { currentPage } } = this.props;
-  //   const statusCMS = record.statusCMS === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
-  //   dispatch({
-  //     type: 'postManagement/changePostCMSStatus',
-  //     payload: { statusCMS, id: record.id, page: currentPage },
-  //   });
-  // }
-
   handleConfirmChangeStatus = (record) => {
     const { dispatch, reportManagement: { currentPage } } = this.props;
     const newStatus = record.status === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
@@ -53,6 +48,41 @@ export default class index extends React.Component {
       callback: () => this.onPageNumberChange(currentPage, TABLE_PAGESIZE),
     });
   }
+
+  // functions handles report button
+  showModal = () => {
+    this.setState({ visible: true });
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+  handleCreate = (userId) => {
+    const form = this.formRef.props.form;
+    let message = '';
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      message = values.message;
+
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+
+    const { dispatch, reportManagement: { currentPage } } = this.props;
+    dispatch({
+      type: 'reportManagement/createWarningMessage',
+      payload: { message, userId, page: currentPage },
+    });
+  }
+
+  saveFormRef = (formRef) => {
+    this.formRef = formRef;
+  }
+  // end functions handles report button
 
   columns =
     [
@@ -98,12 +128,13 @@ export default class index extends React.Component {
 
           return (
             <span>
-              <Popconfirm
-                title="Bạn chắc chắn muốn cảnh báo người dùng này"
-                onConfirm={() => this.handleConfirmWarning(record)}
-              >
-                <Button type="primary" icon={buttonIcon} className={styles.buttonStyle}>Cảnh báo</Button>
-              </Popconfirm>
+              <Button type="primary" onClick={this.showModal} icon={buttonIcon} className={styles.buttonStyle}>Cảnh báo</Button>
+              <CollectionCreateForm
+                wrappedComponentRef={this.saveFormRef}
+                visible={this.state.visible}
+                onCancel={this.handleCancel}
+                onCreate={() => this.handleCreate(record.user.id)}
+              />
               <Popconfirm
                 title={popConfirmTitle}
                 onConfirm={() => this.handleConfirmChangeStatus(record.user)}

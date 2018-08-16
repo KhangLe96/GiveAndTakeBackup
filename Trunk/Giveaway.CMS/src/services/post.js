@@ -24,12 +24,6 @@ export async function changePostCMSStatus(params) {
   return request(`${ROOT_PATH}/cms/status/${id}`, options);
 }
 
-// export async function findPost(params) {
-//   return request(`${ROOT_PATH}?${stringify(params)}`, {
-//     method: 'GET',
-//   });
-// }
-
 export async function fetchPostInformation(params) {
   const { id } = params;
   const options = {
