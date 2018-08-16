@@ -30,17 +30,17 @@
         android:background="@drawable/category_bg"
         android:textColor="#fff"
         android:textAllCaps="false"
-        local:MvxBind="Text CategoryName"
+        local:MvxBind="Text Category.CategoryName"
         android:layout_alignTop="@id/imgPost"
         android:layout_toRightOf="@id/imgPost" />
-    <ImageView
+  <giveandtake.droid.controls.CustomCircleImageView
         android:id="@+id/imgAvatar"
         android:layout_width="@dimen/image_avatar_size"
         android:layout_height="@dimen/image_avatar_size"
         android:layout_marginTop="@dimen/margin_short"
-        android:src="@drawable/avatar"
         android:layout_below="@id/btnCategory"
-        android:layout_alignStart="@id/btnCategory" />
+        android:layout_alignStart="@id/btnCategory"
+        local:MvxBind="ImageUrl User.AvatarUrl"/>
     <TextView
         android:id="@+id/tvUserFullName"
         android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
         android:textColor="#000"
         android:layout_marginLeft="@dimen/avatar_margin"
         android:layout_marginTop="@dimen/margin_short"
-        local:MvxBind="Text UserName"
+        local:MvxBind="Text User.UserName"
         android:layout_toRightOf="@id/imgAvatar"
         android:layout_below="@id/btnCategory" />
     <TextView
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/SmallTextSize"
         android:layout_marginLeft="@dimen/margin_short"
-        local:MvxBind="Text Address"
+        local:MvxBind="Text ProvinceCity.ProvinceCityName"
         android:layout_toRightOf="@id/tvSeperator"
         android:layout_below="@id/tvUserFullName" />
     <TextView
