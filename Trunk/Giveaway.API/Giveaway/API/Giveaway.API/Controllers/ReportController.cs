@@ -10,10 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Giveaway.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/v1/Report")]
+    [Route("api/v1/report")]
     public class ReportController : Controller
     {
-        //private readonly IPostService<PostAppResponse> _postService;
         private readonly IReportService _reportService;
 
         public ReportController(IReportService reportService)

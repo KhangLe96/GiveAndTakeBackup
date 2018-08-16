@@ -32,7 +32,7 @@ namespace Giveaway.API.Shared.Responses.Report
 
         [DataMember(Name = "user")]
         [JsonProperty(PropertyName = "user")]
-        public UserPostResponse User { get; set; }
+        public UserReportResponse User { get; set; }
 
         [DataMember(Name = "post")]
         [JsonProperty(PropertyName = "post")]

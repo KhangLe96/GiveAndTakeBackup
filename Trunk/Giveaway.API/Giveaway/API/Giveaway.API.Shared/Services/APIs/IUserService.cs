@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Giveaway.API.Shared.Requests;
+using Giveaway.API.Shared.Requests.User;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.User;
 using Giveaway.Data.EF.DTOs.Requests;

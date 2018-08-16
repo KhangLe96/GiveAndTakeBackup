@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace Giveaway.API.Shared.Requests
+namespace Giveaway.API.Shared.Requests.User
 {
     [DataContract]
 	public class UserProfileRequest
