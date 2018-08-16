@@ -5,6 +5,7 @@ using System.Net;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
+using Giveaway.API.Shared.Requests.User;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.User;
 using Giveaway.Data.EF;
