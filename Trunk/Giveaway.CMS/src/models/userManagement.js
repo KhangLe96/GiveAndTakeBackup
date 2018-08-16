@@ -29,7 +29,7 @@ export default {
         });
       }
     },
-    * changeStatus({ payload }, { call, put }) {
+    * changeStatus({ payload, callback }, { call, put }) {
       const response = yield call(changeStatus, payload);
       if (response) {
         yield put({
@@ -39,6 +39,9 @@ export default {
             limit: TABLE_PAGESIZE,
           },
         });
+        if (callback) {
+          callback();
+        }
       }
     },
     * changeStatusProfile({ payload }, { call, put }) {

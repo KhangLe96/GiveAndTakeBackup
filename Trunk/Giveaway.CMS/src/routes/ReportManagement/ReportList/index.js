@@ -4,9 +4,9 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import { DateFormatDisplay, TABLE_PAGESIZE, ENG_VN_DICTIONARY, COLOR, STATUSES } from '../../../common/constants';
-// import styles from './index.less';
-@connect(({ modals, reportManagement }) => ({
-  ...modals, reportManagement,
+import styles from './index.less';
+@connect(({ modals, reportManagement, userManagement }) => ({
+  ...modals, reportManagement, userManagement,
 }))
 
 export default class index extends React.Component {
@@ -35,22 +35,23 @@ export default class index extends React.Component {
     });
   }
 
-  handleConfirmWarning = (record) => {
-    // const { dispatch, postManagement: { currentPage } } = this.props;
-    // const statusCMS = record.statusCMS === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
-    // dispatch({
-    //   type: 'postManagement/changePostCMSStatus',
-    //   payload: { statusCMS, id: record.id, page: currentPage },
-    // });
-  }
+  // handleConfirmWarning = (record) => {
+  //   const { dispatch, reportManagement: { currentPage } } = this.props;
+  //   const statusCMS = record.statusCMS === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
+  //   dispatch({
+  //     type: 'postManagement/changePostCMSStatus',
+  //     payload: { statusCMS, id: record.id, page: currentPage },
+  //   });
+  // }
 
   handleConfirmChangeStatus = (record) => {
-    // const { dispatch, userManagement: { currentPage } } = this.props;
-    // const newStatus = record.status === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
-    // dispatch({
-    //   type: 'userManagement/changeStatus',
-    //   payload: { newStatus, id: record.id, page: currentPage },
-    // });
+    const { dispatch, reportManagement: { currentPage } } = this.props;
+    const newStatus = record.status === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
+    dispatch({
+      type: 'userManagement/changeStatus',
+      payload: { newStatus, id: record.id, page: currentPage },
+      callback: () => this.onPageNumberChange(currentPage, TABLE_PAGESIZE),
+    });
   }
 
   columns =
@@ -68,8 +69,13 @@ export default class index extends React.Component {
       {
         title: 'Ngày báo cáo',
         dataIndex: 'createdTime',
-        key: 'dayReport',
+        key: 'createdTime',
         render: val => <span>{moment.utc(val).local().format(DateFormatDisplay)}</span>,
+      },
+      {
+        title: 'Nội dung báo cáo',
+        dataIndex: 'message',
+        key: 'message',
       },
       {
         title: 'Số lần người dùng bị cảnh báo',
@@ -78,13 +84,12 @@ export default class index extends React.Component {
       },
       {
         title: 'Hành động',
-        key: 'Action',
         render: (record) => {
           let buttonContent = 'Khóa';
           let buttonIcon = 'lock';
           let newPostStatus = STATUSES.Blocked;
           let popConfirmTitle = 'Bạn chắc chắn muốn khóa người dùng này?';
-          if (record.status === STATUSES.Blocked) {
+          if (record.user.status === STATUSES.Blocked) {
             buttonContent = 'Mở khóa';
             buttonIcon = 'unlock';
             newPostStatus = STATUSES.Activated;
@@ -97,14 +102,13 @@ export default class index extends React.Component {
                 title="Bạn chắc chắn muốn cảnh báo người dùng này"
                 onConfirm={() => this.handleConfirmWarning(record)}
               >
-                <Button type="primary" icon={buttonIcon}>Cảnh báo</Button>
+                <Button type="primary" icon={buttonIcon} className={styles.buttonStyle}>Cảnh báo</Button>
               </Popconfirm>
-
               <Popconfirm
                 title={popConfirmTitle}
-                onConfirm={() => this.handleConfirmChangeStatus(record)}
+                onConfirm={() => this.handleConfirmChangeStatus(record.user)}
               >
-                <Button type="primary" icon={buttonIcon}>{buttonContent}</Button>
+                <Button type="primary" icon={buttonIcon} className={styles.buttonStyle}>{buttonContent}</Button>
               </Popconfirm>
             </span >
           );
