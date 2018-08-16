@@ -63,6 +63,8 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CustomCircleImageView.cs" />
+    <Compile Include="Controls\CustomRoundedImageView.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
@@ -78,6 +80,8 @@
     <Compile Include="Views\Base\MasterView.cs" />
     <Compile Include="Views\HomeView.cs" />
     <Compile Include="Views\LoginView.cs" />
+    <Compile Include="Views\PostDetailView.cs" />
+    <Compile Include="Views\UserProfileView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -109,6 +113,9 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Glide.Xamarin">
+      <Version>4.1.1</Version>
+    </PackageReference>
     <PackageReference Include="MvvmCross">
       <Version>6.1.2</Version>
     </PackageReference>
@@ -121,6 +128,9 @@
     <PackageReference Include="MvvmCross.Droid.Support.V7.RecyclerView">
       <Version>6.1.2</Version>
     </PackageReference>
+    <PackageReference Include="Refractored.Controls.CircleImageView">
+      <Version>1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Constraint.Layout">
       <Version>1.1.2</Version>
     </PackageReference>
@@ -130,7 +140,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\" />
+    <AndroidResource Include="Resources\drawable\my_avatar.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GiveAndTake.Core\GiveAndTake.Core.csproj">
@@ -188,7 +198,7 @@
     <AndroidResource Include="Resources\drawable\PostPhoto.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\avatar.png" />
+    <AndroidResource Include="Resources\drawable\default_avatar.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\comment.png" />
@@ -219,6 +229,19 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\tony.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\default_post.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PostDetailView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\UserProfileView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
