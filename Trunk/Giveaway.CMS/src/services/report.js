@@ -12,3 +12,13 @@ export async function fetch(params) {
   };
   return request(`${ROOT_PATH}/list`, options);
 }
+
+export async function createWarningMessage(params) {
+  const options = {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  };
+  return request('/warning/create', options);
+}

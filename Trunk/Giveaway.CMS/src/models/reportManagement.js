@@ -1,4 +1,4 @@
-import { fetch } from '../services/report';
+import { fetch, createWarningMessage } from '../services/report';
 import { TABLE_PAGESIZE } from '../common/constants';
 
 const DEFAULT_CURRENT_PAGE = 1;
@@ -37,6 +37,18 @@ export default {
       }
     },
 
+    * createWarningMessage({ payload }, { call, put }) {
+      const response = yield call(createWarningMessage, payload);
+      if (response) {
+        yield put({
+          type: 'fetch',
+          payload: {
+            limit: TABLE_PAGESIZE,
+            page: payload.page || DEFAULT_CURRENT_PAGE,
+          },
+        });
+      }
+    },
   },
 
   reducers: {
