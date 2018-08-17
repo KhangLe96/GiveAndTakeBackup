@@ -52,6 +52,7 @@ namespace GiveAndTake.Core.Services
 				NetworkStatus = NetworkStatus.Success
 			};
 
+            // Ipv6 -> wrong
 			if (!CrossConnectivity.Current.IsConnected)
 			{
 				response.NetworkStatus = NetworkStatus.NoWifi;

@@ -29,4 +29,11 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "updatedTime")]
         public DateTime UpdatedTime { get; set; }
     }
+
+    [DataContract]
+    public class A
+    {
+        [DataMember(Name = "results")]
+        public List<Category> Categories { get; set; }
+    }
 }

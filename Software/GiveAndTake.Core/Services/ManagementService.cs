@@ -23,8 +23,8 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Get(AppConstants.GetCategories);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    //_dataModel.Categories = JsonHelper.Deserialize<List<Category>>(response.RawContent);
-                    var categories = JsonHelper.Deserialize<List<Category>>(response.RawContent);
+                    _dataModel.Categories = JsonHelper.Deserialize<List<Category>>(response.RawContent);
+                    var categories = JsonHelper.Deserialize<A>(response.RawContent);
                 }
             });
         }
