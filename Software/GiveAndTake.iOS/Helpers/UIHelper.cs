@@ -19,10 +19,10 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
-		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor)
+		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor) 
 		{
 			var view = new UIView
-			{
+            {
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				BackgroundColor = backgroundColor
 			};
@@ -35,6 +35,63 @@ namespace GiveAndTake.iOS.Helpers
 
 			return view;
 		}
+
+	    public static UIImageView CreateImageView(nfloat height, nfloat width)
+	    {
+	        var view = new UIImageView
+            {
+	            TranslatesAutoresizingMaskIntoConstraints = false
+	        };
+
+	        view.AddConstraints(new[]
+	        {
+	            NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
+	            NSLayoutConstraint.Create(view, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
+	        });
+
+            return view;
+	    }
+
+        public static UIButton CreateButton(string title, string color)
+	    {
+            var label = CreateLabel(UIColor.Clear, DimensionHelper.SmallTextSize);
+	        label.Text = title;
+            return new UIButton(label.Frame) {BackgroundColor = ColorHelper.ToUIColor(color)};
+	    }
+
+	    public static UISearchBar CreateSearchBar(nfloat height, nfloat width)
+	    {
+	        var view = new UISearchBar
+	        {
+	            TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = UIColor.White
+	        };
+
+	        view.AddConstraints(new[]
+	        {
+	            NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
+	            NSLayoutConstraint.Create(view, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
+	        });
+
+	        return view;
+	    }
+
+        public static UIButton CreateImageButton(nfloat height, nfloat width, string imagePath)
+	    {
+	        var button = new UIButton
+	        {
+	            TranslatesAutoresizingMaskIntoConstraints = false
+	        };
+
+	        button.AddConstraints(new[]
+	        {
+	            NSLayoutConstraint.Create(button, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
+	            NSLayoutConstraint.Create(button, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
+	        });
+
+            button.SetBackgroundImage(new UIImage(imagePath), UIControlState.Normal);
+	        return button;
+	    }
 
 		public static UIFont GetFont(FontType fontType, nfloat fontSize)
 		{

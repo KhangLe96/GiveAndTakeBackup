@@ -146,6 +146,10 @@ namespace GiveAndTake.Core.ViewModels
 
         #region Constructor
 
+        public PostViewModel()
+        {
+        }
+
         public PostViewModel(Post post)
         {
             InitFields(post);

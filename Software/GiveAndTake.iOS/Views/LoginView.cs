@@ -1,7 +1,5 @@
-﻿using System;
-//using Facebook.CoreKit;
+﻿//using Facebook.CoreKit;
 //using Facebook.LoginKit;
-using Foundation;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Views.Base;

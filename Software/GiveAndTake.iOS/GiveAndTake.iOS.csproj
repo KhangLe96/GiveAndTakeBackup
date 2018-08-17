@@ -76,6 +76,7 @@
     <Compile Include="Views\Base\BaseView.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
+    <Compile Include="Views\HomeView.cs" />
     <Compile Include="Views\LoginView.cs" />
     <BundleResource Include="Resources\Images\splashscreen.png" />
     <BundleResource Include="Resources\Images\LoginLogo.png" />
@@ -83,6 +84,18 @@
     <BundleResource Include="Resources\Images\google_button.png" />
     <BundleResource Include="Resources\Images\header_bar.png" />
     <BundleResource Include="Resources\Images\Top_logo.png" />
+    <BundleResource Include="Resources\Images\default_avatar.png" />
+    <BundleResource Include="Resources\Images\extension.png" />
+    <BundleResource Include="Resources\Images\filter_button.png" />
+    <BundleResource Include="Resources\Images\heart_off.png" />
+    <BundleResource Include="Resources\Images\multiphoto.png" />
+    <BundleResource Include="Resources\Images\request_off.png" />
+    <BundleResource Include="Resources\Images\sort_button.png" />
+    <BundleResource Include="Resources\Images\category_button.png" />
+    <BundleResource Include="Resources\Images\comment.png" />
+    <Compile Include="Views\PostView.cs" />
+    <Compile Include="Views\UserProfileView.cs" />
+    <BundleResource Include="Resources\Images\default_post.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
@@ -103,11 +116,8 @@
     <Reference Include="MvvmCross, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmCross.6.1.2\lib\xamarinios10\MvvmCross.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Connectivity, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\Xamarin.iOS10\Plugin.Connectivity.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Connectivity.Abstractions, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\Xamarin.iOS10\Plugin.Connectivity.Abstractions.dll</HintPath>
+    <Reference Include="RestSharp, Version=106.3.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.3.1\lib\netstandard2.0\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

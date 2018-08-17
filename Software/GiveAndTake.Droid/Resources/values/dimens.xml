@@ -1,6 +1,4 @@
 <resources>
-	<dimen name="SmallTextSize">30dp</dimen>
-	<dimen name="MediumTextSize">40dp</dimen>
   <dimen name="HeaderWidth">220dp</dimen>
   <dimen name="HeaderHeight">30dp</dimen>
 	<dimen name="SmallTextSize">11sp</dimen>

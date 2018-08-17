@@ -5931,17 +5931,17 @@ namespace GiveAndTake.Droid
 		public partial class Dimension
 		{
 			
-			// aapt resource value: 0x7f0b00b1
-			public const int HeaderHeight = 2131427505;
-			
-			// aapt resource value: 0x7f0b00b0
-			public const int HeaderWidth = 2131427504;
-			
 			// aapt resource value: 0x7f0b00af
-			public const int MediumTextSize = 2131427503;
+			public const int HeaderHeight = 2131427503;
 			
 			// aapt resource value: 0x7f0b00ae
-			public const int SmallTextSize = 2131427502;
+			public const int HeaderWidth = 2131427502;
+			
+			// aapt resource value: 0x7f0b00b2
+			public const int MediumTextSize = 2131427506;
+			
+			// aapt resource value: 0x7f0b00b0
+			public const int SmallTextSize = 2131427504;
 			
 			// aapt resource value: 0x7f0b0025
 			public const int abc_action_bar_content_inset_material = 2131427365;
@@ -6477,8 +6477,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0b00ad
 			public const int notification_top_pad_large_text = 2131427501;
 			
-			// aapt resource value: 0x7f0b00b2
-			public const int post_description_text_size = 2131427506;
+			// aapt resource value: 0x7f0b00b1
+			public const int post_description_text_size = 2131427505;
 			
 			// aapt resource value: 0x7f0b006c
 			public const int tooltip_corner_radius = 2131427436;
