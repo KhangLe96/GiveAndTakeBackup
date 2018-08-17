@@ -1,11 +1,12 @@
-﻿using Giveaway.Data.Enums;
+﻿using Giveaway.API.Shared.Requests.Image;
+using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Giveaway.API.Shared.Requests
+namespace Giveaway.API.Shared.Requests.Post
 {
     public class PostRequest
     {

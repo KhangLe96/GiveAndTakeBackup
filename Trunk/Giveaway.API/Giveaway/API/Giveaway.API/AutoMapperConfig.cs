@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
 using Giveaway.API.Shared.Requests;
+using Giveaway.API.Shared.Requests.Image;
+using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Requests.User;
 using Giveaway.API.Shared.Requests.Warning;
 using Giveaway.API.Shared.Responses;
+using Giveaway.API.Shared.Responses.Category;
+using Giveaway.API.Shared.Responses.Image;
 using Giveaway.API.Shared.Responses.Post;
+using Giveaway.API.Shared.Responses.ProviceCity;
 using Giveaway.API.Shared.Responses.Report;
 using Giveaway.API.Shared.Responses.User;
 using Giveaway.API.Shared.Responses.Warning;

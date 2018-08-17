@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Giveaway.API.Shared.Requests
+namespace Giveaway.API.Shared.Requests.Image
 {
     public class ImageRequest
     {

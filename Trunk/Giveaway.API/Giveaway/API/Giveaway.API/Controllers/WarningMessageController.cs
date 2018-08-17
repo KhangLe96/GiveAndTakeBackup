@@ -21,6 +21,11 @@ namespace Giveaway.API.Controllers
             _warningMessageService = warningMessageService;
         }
 
+        /// <summary>
+        /// Create an warning message for an user
+        /// </summary>
+        /// <param name="warningRequest"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost("create")]
         [Produces("application/json")]

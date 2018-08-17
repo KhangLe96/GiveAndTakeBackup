@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Giveaway.API.Shared.Requests
+namespace Giveaway.API.Shared.Requests.Post
 {
     [DataContract]
     public class PagingQueryPostRequest : BasePagingQueryRequest

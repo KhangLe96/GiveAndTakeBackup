@@ -8,6 +8,7 @@ using Giveaway.Data.EF;
 using Microsoft.AspNetCore.Authorization;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Responses.Post;
+using Giveaway.API.Shared.Requests.Post;
 
 namespace Giveaway.API.Controllers
 {
