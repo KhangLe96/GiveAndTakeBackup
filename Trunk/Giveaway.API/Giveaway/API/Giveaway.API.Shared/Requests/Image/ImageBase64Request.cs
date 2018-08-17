@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Giveaway.API.Shared.Requests
+namespace Giveaway.API.Shared.Requests.Image
 {
     [DataContract]
     public class ImageBase64Request

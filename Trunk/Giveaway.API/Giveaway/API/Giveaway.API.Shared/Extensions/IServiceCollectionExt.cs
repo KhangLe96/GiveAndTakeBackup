@@ -19,7 +19,7 @@ namespace Giveaway.API.Shared.Extensions
             services.AddSingleton(typeof(IPostService<>), typeof(PostService<>));
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-			var interfaceAssemblies = new [] { typeof(IServiceCollectionExt).GetTypeInfo().Assembly};
+			var interfaceAssemblies = new [] { typeof(IServiceCollectionExt).GetTypeInfo().Assembly, typeof(Service.Services.IPostService).GetTypeInfo().Assembly};
 			
 			foreach (var assembly in assemblies.Where(m => m.FullName.Contains("Giveaway")))
 			{

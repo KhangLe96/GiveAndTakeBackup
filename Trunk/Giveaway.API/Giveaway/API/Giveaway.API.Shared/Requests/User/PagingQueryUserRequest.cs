@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using Giveaway.Data.Enums;
 
-namespace Giveaway.API.Shared.Requests
+namespace Giveaway.API.Shared.Requests.User
 {
     [DataContract]
     public class PagingQueryUserRequest : BasePagingQueryRequest

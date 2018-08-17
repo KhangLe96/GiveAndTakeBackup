@@ -1,4 +1,5 @@
 ﻿using Giveaway.API.Shared.Requests;
+using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Post;
 using System;

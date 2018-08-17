@@ -1,4 +1,7 @@
-﻿using Giveaway.API.Shared.Responses.User;
+﻿using Giveaway.API.Shared.Responses.Category;
+using Giveaway.API.Shared.Responses.Image;
+using Giveaway.API.Shared.Responses.ProviceCity;
+using Giveaway.API.Shared.Responses.User;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

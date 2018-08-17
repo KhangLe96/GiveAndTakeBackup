@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
-namespace Giveaway.API.Shared.Requests
+namespace Giveaway.API.Shared.Requests.Category
 {
     [DataContract]
     public class CategoryRequest

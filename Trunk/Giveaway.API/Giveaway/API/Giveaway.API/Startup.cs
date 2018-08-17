@@ -67,16 +67,6 @@ namespace Giveaway.API
             services.AddAuthentication(JwtHelper.ConfigureAuthenticationOptions)
                 .AddJwtBearer(Const.Jwt.DefaultScheme, JwtHelper.ConfigureJwtBearerOptions);
 
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<ICategoryService, CategoryService>();
-            services.AddSingleton<IRoleService, RoleService>();
-            services.AddSingleton<IUserRoleService, UserRoleService>();
-            services.AddSingleton<IPostService, PostService>();
-            services.AddSingleton<IImageService, ImageService>();
-            services.AddSingleton<IProviceCityService, ProviceCityService>();
-            services.AddSingleton<IReportService, ReportService>();
-            services.AddSingleton<IWarningMessageService, WarningMessageService>();
-
             //Use raven to send logs to sentry.io
             services.Configure<RavenOptions>(ConfigRoot.GetSection("RavenOptions"));
             //Add HTTPContextAccessor as Singleton
