@@ -6,15 +6,15 @@ using MvvmCross.ViewModels;
 namespace GiveAndTake.Core
 {
     public class App : MvxApplication
-	{
-		public override void Initialize()
-		{
-			CreatableTypes()
-				.EndingWith("Service")
-				.AsInterfaces()
-				.RegisterAsLazySingleton();
+    {
+        public override void Initialize()
+        {
+            CreatableTypes()
+                .EndingWith("Service")
+                .AsInterfaces()
+                .RegisterAsLazySingleton();
 
-			RegisterAppStart<MasterViewModel>();
-		}
-	}
+            RegisterAppStart<TabNavigationViewModel>();
+        }
+    }
 }

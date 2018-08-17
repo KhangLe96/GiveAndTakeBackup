@@ -83,6 +83,10 @@
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\PostDetailView.cs" />
     <Compile Include="Views\UserProfileView.cs" />
+    <Compile Include="Views\TabNavigation.cs" />
+    <Compile Include="Views\TestFragment1.cs" />
+    <Compile Include="Views\TestFragment2.cs" />
+    <Compile Include="DroidConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -154,6 +158,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\SplashScreen.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TabNavigation.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TestFragment1.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TestFragment2.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

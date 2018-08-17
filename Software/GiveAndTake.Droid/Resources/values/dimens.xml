@@ -18,4 +18,5 @@
   <dimen name="button_small_width">25dp</dimen>
   <dimen name="button_small_height">12dp</dimen>
   <dimen name="button_extension_height">3dp</dimen>
+  <dimen name="TabNavigationHeight">40dp</dimen>
 </resources>
