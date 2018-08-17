@@ -12,29 +12,6 @@ namespace GiveAndTake.Core.Models
         public string ProvinceCityName { get; set; }
     }
 
-    [DataContract]
-    public class Category
-    {
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
-
-        [DataMember(Name = "categoryName")]
-        public string CategoryName { get; set; }
-
-        [DataMember(Name = "categoryImageUrl")]
-        public object CategoryImageUrl { get; set; }
-
-        [DataMember(Name = "status")]
-        public string Status { get; set; }
-
-        [DataMember(Name = "createdTime")]
-        public DateTime CreatedTime { get; set; }
-
-        [DataMember(Name = "updatedTime")]
-        public DateTime UpdatedTime { get; set; }
-    }
-
-
     public class Post
     {
         [DataMember(Name = "id")]

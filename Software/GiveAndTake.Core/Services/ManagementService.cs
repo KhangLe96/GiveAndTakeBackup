@@ -8,11 +8,9 @@ namespace GiveAndTake.Core.Services
     public class ManagementService : IManagementService
     {
         private readonly RestClient _apiHelper;
-        private readonly IDataModel _dataModel;
 
-        public ManagementService(IDataModel dataModel)
+        public ManagementService()
         {
-            _dataModel = dataModel;
             _apiHelper = new RestClient();
         }
 
@@ -23,8 +21,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Get(AppConstants.GetCategories);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    _dataModel.Categories = JsonHelper.Deserialize<List<Category>>(response.RawContent);
-                    var categories = JsonHelper.Deserialize<A>(response.RawContent);
+                    var categories = JsonHelper.Deserialize<CategoryList>(response.RawContent);
                 }
             });
         }

@@ -12,10 +12,10 @@ namespace GiveAndTake.Core.Models
         public string Id { get; set; }
 
         [DataMember(Name = "categoryName")]
-        public string Name { get; set; }
+        public string CategoryName { get; set; }
 
         [DataMember(Name = "categoryImageUrl")]
-        public string Image { get; set; }
+        public string CategoryImageUrl { get; set; }
         
         [DataMember(Name = "status")]
         public string Status { get; set; }
@@ -31,7 +31,7 @@ namespace GiveAndTake.Core.Models
     }
 
     [DataContract]
-    public class A
+    public class CategoryList
     {
         [DataMember(Name = "results")]
         public List<Category> Categories { get; set; }
