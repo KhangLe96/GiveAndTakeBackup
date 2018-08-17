@@ -12,6 +12,7 @@ namespace GiveAndTake.Core.Models
         public string ProvinceCityName { get; set; }
     }
 
+    [DataContract]
     public class Post
     {
         [DataMember(Name = "id")]
@@ -54,22 +55,11 @@ namespace GiveAndTake.Core.Models
         public int CommentCount { get; set; }
     }
 
-    public class Pagination
-    {
-        [DataMember(Name = "totals")]
-        public int Totals { get; set; }
-
-        [DataMember(Name = "page")]
-        public int Page { get; set; }
-
-        [DataMember(Name = "limit")]
-        public int Limit { get; set; }
-    }
-
-    public class PostResponse
+    [DataContract]
+    public class PostList
     {
         [DataMember(Name = "results")]
-        public List<Post> Results { get; set; }
+        public List<Post> postList { get; set; }
 
         [DataMember(Name = "pagination")]
         public Pagination Pagination { get; set; }

@@ -22,6 +22,7 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "avatarUrl")]
         public string AvatarUrl { get; set; }
     }
+
     public class User : BaseUser
     {
         public string Id { get; set; }

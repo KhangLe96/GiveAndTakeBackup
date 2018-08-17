@@ -10,7 +10,7 @@ namespace GiveAndTake.Core.ViewModels.Base
 		public MasterViewModel()
 	    {
 	        var managementService = Mvx.Resolve<IManagementService>();
-	        managementService.GetCategories();
+	        managementService.GetPostDetail("bb7c1224-86b6-4c00-8a62-dc1d619abef8");
         }
      }
 }
