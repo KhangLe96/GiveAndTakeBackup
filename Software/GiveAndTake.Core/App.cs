@@ -1,4 +1,5 @@
 ﻿using GiveAndTake.Core.ViewModels;
+using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.IoC;
 using MvvmCross.ViewModels;
 
@@ -13,7 +14,7 @@ namespace GiveAndTake.Core
 				.AsInterfaces()
 				.RegisterAsLazySingleton();
 
-			RegisterAppStart<HomeViewModel>();
+			RegisterAppStart<MasterViewModel>();
 		}
 	}
 }
