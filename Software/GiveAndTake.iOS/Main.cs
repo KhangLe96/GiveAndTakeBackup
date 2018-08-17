@@ -1,5 +1,4 @@
-﻿using Facebook.CoreKit;
-using UIKit;
+﻿using UIKit;
 
 namespace GiveAndTake.iOS
 {

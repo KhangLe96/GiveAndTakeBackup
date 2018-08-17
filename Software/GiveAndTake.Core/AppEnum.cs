@@ -1,4 +1,7 @@
-﻿namespace GiveAndTake.Core
+﻿using System;
+using GiveAndTake.Core;
+
+namespace GiveAndTake.Core
 {
 	public enum FontType
 	{
@@ -10,4 +13,21 @@
 		Italic,
 		LightItalic
 	}
+
+    public enum RequestMethod
+    {
+        Get,
+        Put,
+        Post,
+        Delete
+    }
+
+    public enum NetworkStatus
+    {
+        Success,
+        NoWifi,
+        Timeout,
+        Exception
+    }
+
 }

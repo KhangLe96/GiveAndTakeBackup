@@ -1,6 +1,6 @@
 ﻿using System;
-using Facebook.CoreKit;
-using Facebook.LoginKit;
+//using Facebook.CoreKit;
+//using Facebook.LoginKit;
 using Foundation;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
@@ -15,11 +15,10 @@ namespace GiveAndTake.iOS.Views
     [MvxRootPresentation]
     public class LoginView : BaseView
     {
-        private LoginButton defaultLoginButton;
         private UIImageView logoImage;
         private UIButton customedLoginFacebookButton;
         private UIButton customedLoginGoogleButton;
-        public IMvxCommand<UserProfile> LoginCommand { get; set; }
+        public IMvxCommand<User> LoginCommand { get; set; }
 
         protected override void InitView()
         {
@@ -94,7 +93,7 @@ namespace GiveAndTake.iOS.Views
                     NSLayoutAttribute.CenterX, 1, -15)
             });
 
-            customedLoginFacebookButton.TouchUpInside += HandleLoginFacebook;
+            //customedLoginFacebookButton.TouchUpInside += HandleLoginFacebook;
         }
 
         private void InitLoginGoogleButton()
@@ -122,38 +121,38 @@ namespace GiveAndTake.iOS.Views
             });
         }
 
-        private void HandleLoginFacebook(object sender, EventArgs e)
-        {
-            // integrate with default login facebook button
-            var manager = new LoginManager();
-            manager.LogInWithReadPermissions(new[] { "public_profile" }, this, HandleLoginWithFacebook);
-        }
+        //private void HandleLoginFacebook(object sender, EventArgs e)
+        //{
+        //    // integrate with default login facebook button
+        //    var manager = new LoginManager();
+        //    manager.LogInWithReadPermissions(new[] { "public_profile" }, this, HandleLoginWithFacebook);
+        //}
 
-        private void HandleLoginWithFacebook(LoginManagerLoginResult result, NSError error)
-        {
-            if (error != null)
-            {
-                // handle error
-                return;
-            }
+        //private void HandleLoginWithFacebook(LoginManagerLoginResult result, NSError error)
+        //{
+        //    if (error != null)
+        //    {
+        //        // handle error
+        //        return;
+        //    }
 
-            if (result.IsCancelled)
-            {
-                // handle cancel
-                return;
-            }
+        //    if (result.IsCancelled)
+        //    {
+        //        // handle cancel
+        //        return;
+        //    }
 
-            var profile = Profile.CurrentProfile;
-            var userProfile = new UserProfile
-            {
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                UserName = profile.Name,
-                AvatarUrl = GetProfilePicture(profile.UserID),
-                SocialAccountId = profile.UserID
-            };
-            LoginCommand.Execute(userProfile);
-        }
+        //    var profile = Profile.CurrentProfile;
+        //    var userProfile = new User
+        //    {
+        //        FirstName = profile.FirstName,
+        //        LastName = profile.LastName,
+        //        UserName = profile.Name,
+        //        AvatarUrl = GetProfilePicture(profile.UserID),
+        //        SocialAccountId = profile.UserID
+        //    };
+        //    LoginCommand.Execute(userProfile);
+        //}
 
         private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
     }

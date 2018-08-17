@@ -1,15 +1,15 @@
-﻿using System;
-using Android.Graphics;
+﻿using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using GiveAndTake.Droid.Helpers;
+using MvvmCross.Droid.Support.V4;
 using MvvmCross.Platforms.Android.Binding.BindingContext;
-using MvvmCross.Platforms.Android.Views.Fragments;
+using System;
 
 namespace GiveAndTake.Droid.Views.Base
 {
-	public abstract class BaseFragment : MvxFragment
+    public abstract class BaseFragment : MvxFragment
 	{
 		public event EventHandler BackPressed;
 

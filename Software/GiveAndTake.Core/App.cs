@@ -5,7 +5,7 @@ using MvvmCross.ViewModels;
 
 namespace GiveAndTake.Core
 {
-	public class App : MvxApplication
+    public class App : MvxApplication
 	{
 		public override void Initialize()
 		{
@@ -14,7 +14,7 @@ namespace GiveAndTake.Core
 				.AsInterfaces()
 				.RegisterAsLazySingleton();
 
-			RegisterAppStart<HomeViewModel>();
+			RegisterAppStart<MasterViewModel>();
 		}
 	}
 }
