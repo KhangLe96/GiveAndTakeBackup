@@ -1,9 +1,12 @@
 ﻿using System;
 using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Services;
+using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using Newtonsoft.Json;
 using RestSharp;
+using RestClient = RestSharp.RestClient;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -36,11 +39,16 @@ namespace GiveAndTake.Core.ViewModels
         {
             try
             {
-                var client = new RestClient("http://192.168.76.1:8089/api/v1/user/login/facebook");
-                var request = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json };
-                request.AddBody(baseUser);
-                var response = client.Execute<LoginResponse>(request);
-                User = response.Data.User;
+                //var client = new RestClient("http://192.168.76.1:8089/api/v1/user/login/facebook");
+                //var request = new RestRequest(Method.POST) { RequestFormat = DataFormat.Json };
+                //request.AddBody(baseUser);
+                //var response = client.Execute<LoginResponse>(request);
+                //User = response.Data.User;
+
+                //-------
+                //var managementService = Mvx.Resolve<IManagementService>();
+                //managementService.GetUserInformationFacebook(baseUser);
+                
             }
             catch (Exception e)
             {

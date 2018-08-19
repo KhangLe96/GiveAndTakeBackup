@@ -10,33 +10,6 @@ using RestSharp;
 
 namespace GiveAndTake.Core.Services
 {
-    public struct PostStatus
-    {
-        public string status { get; set; }
-        public PostStatus(string newStatus)
-        {
-            status = newStatus;
-        }
-    }
-
-    public struct PostInformation
-    {
-        public ProvinceCity ProvinceCity { get; set; }
-        public Category Category { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public List<string> Images { get; set; }
-
-        public PostInformation(ProvinceCity provinceCity, Category category, string title, string description,
-            List<string> images)
-        {
-            ProvinceCity = provinceCity;
-            Category = category;
-            Title = title;
-            Description = description;
-            Images = images;
-        }
-    }
     public class ManagementService : IManagementService
     {
         private readonly RestClient _apiHelper;
@@ -54,6 +27,11 @@ namespace GiveAndTake.Core.Services
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
                     var categories = JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
+                }
+                else
+                {
+                    //Handle popup error cannot get data
+                    Debug.WriteLine("Error cannot get data");
                 }
             });
         }
@@ -74,16 +52,20 @@ namespace GiveAndTake.Core.Services
                 }
             });
         }
-
-        public void GetPostDetail(Post post)
+        public void GetPostDetail(string postId)
         {
             Task.Run(async () =>
             {
-                string parameters = $"/{post.Id}";
+                string parameters = $"/{postId}";
                 var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
                     var PostDetail = JsonHelper.Deserialize<Post>(response.RawContent);
+                }
+                else
+                {
+                    //Handle popup error cannot get data
+                    Debug.WriteLine("Error cannot get data");
                 }
             });
         }
@@ -98,13 +80,19 @@ namespace GiveAndTake.Core.Services
                 {
                     var PostOfUser = JsonHelper.Deserialize<PostList>(response.RawContent);
                 }
+                else
+                {
+                    //Handle popup error cannot get data
+                    Debug.WriteLine("Error cannot get data");
+                }
             });
         }
 
-        public void ChangeStatusOfPost(Post post)
+        public void ChangeStatusOfPost(Post post, string newStatus)  // Delete, change status of Post
         {
             Task.Run(async () =>
             {
+                post.PostStatus = newStatus;
                 var statusInString = JsonHelper.Serialize(post.PostStatus);
                 var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
                 string parameters = $"/{post.Id}";
@@ -122,5 +110,36 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Put(AppConstants.EditPost + parameters, content);
             });
         }
+
+        public void GetNotification(User user);
+
+        public void GetComment(Post post);
+
+        public void DeleteComment(Post post);
+
+        public void GetUserInformationFacebook(BaseUser baseUser)
+        {
+            Task.Run(async () =>
+            {
+                var userInformationInString = JsonHelper.Serialize(baseUser);
+                var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
+                var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
+                if (response != null && response.NetworkStatus == NetworkStatus.Success)
+                {
+                    var UserInformationFacebook = JsonHelper.Deserialize<LoginResponse>(response.RawContent);
+                }
+                else
+                {
+                    //Handle popup error cannot get data
+                    Debug.WriteLine("Error cannot get data");
+                }
+            });
+        }
+
+        public void GetRequest(Post post);
+
+        public void CreatePost();
+
+        public void ReportPost(Post post);
     }
 }

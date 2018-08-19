@@ -8,9 +8,14 @@ namespace GiveAndTake.Core.Services
     {
         void GetCategories();
         void GetPostList();
-        void GetPostDetail(Post post);
+        void GetPostDetail(string postId);
         void GetPostOfUser(User user);
-        void ChangeStatusOfPost(Post post);
+        void ChangeStatusOfPost(Post post, string newStatus);
         void EditPost(Post post);
+        void GetUserInformationFacebook(BaseUser baseUser);
+        void GetRequest(Post post);
+        void CreatePost();
+        void GetNotification(User user);
+        void ReportPost(Post post);
     }
 }
