@@ -88,7 +88,7 @@ namespace GiveAndTake.Core.Services
             });
         }
 
-        public void ChangeStatusOfPost(Post post, string newStatus)  // Delete, change status of Post
+        public void ChangeStatusOfPost(Post post, string newStatus)  // open/close a  Post
         {
             Task.Run(async () =>
             {
@@ -111,13 +111,13 @@ namespace GiveAndTake.Core.Services
             });
         }
 
-        public void GetNotification(User user);
+        //public void GetNotification(User user);
 
-        public void GetComment(Post post);
+        //public void GetComment(Post post);
 
-        public void DeleteComment(Post post);
+        //public void DeleteComment(Post post);
 
-        public void GetUserInformationFacebook(BaseUser baseUser)
+        public void LoginFacebook(BaseUser baseUser)
         {
             Task.Run(async () =>
             {
@@ -126,7 +126,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var UserInformationFacebook = JsonHelper.Deserialize<LoginResponse>(response.RawContent);
+                    var LoginFacebook = JsonHelper.Deserialize<LoginResponse>(response.RawContent);
                 }
                 else
                 {
@@ -136,10 +136,63 @@ namespace GiveAndTake.Core.Services
             });
         }
 
-        public void GetRequest(Post post);
+        //public void GetRequest(Post post);
 
-        public void CreatePost();
+        public void CreatePost(Post post)
+        {
+            Task.Run(async () =>
+            {
+                var postInformationInString = JsonHelper.Serialize(post);
+                var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
+                var response = await _apiHelper.Post(AppConstants.CreatePost, content);
+                if (response != null && response.NetworkStatus == NetworkStatus.Success)
+                {
+                    var PostInformation = JsonHelper.Deserialize<Post>(response.RawContent);
+                }
+                else
+                {
+                    //Handle popup error cannot get data
+                    Debug.WriteLine("Error cannot get data");
+                }
+            });
+        }
 
-        public void ReportPost(Post post);
+        //public void ReportPost(Post post);
+
+        public void GetCurrentUserProfile()
+        {
+            Task.Run(async () =>
+            {
+                var response = await _apiHelper.Get(AppConstants.GetCurrentProfile);
+                if (response != null && response.NetworkStatus == NetworkStatus.Success)
+                {
+                    var UserInformation = JsonHelper.Deserialize<Post>(response.RawContent);
+                }
+                else
+                {
+                    //Handle popup error cannot get data
+                    Debug.WriteLine("Error cannot get data");
+                }
+            });
+        }
+
+        public void UpdateCurrentUserProfile(User user)
+        {
+            Task.Run(async () =>
+            {
+                var userInformationInString = JsonHelper.Serialize(user);
+                var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
+                var response = await _apiHelper.Get(AppConstants.GetCurrentProfile);
+                if (response != null && response.NetworkStatus == NetworkStatus.Success)
+                {
+                    var UserInformation = JsonHelper.Deserialize<User>(response.RawContent);
+                }
+                else
+                {
+                    //Handle popup error cannot get data
+                    Debug.WriteLine("Error cannot get data");
+                }
+            });
+        }
     }
 }

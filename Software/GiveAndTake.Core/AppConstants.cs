@@ -13,5 +13,8 @@
 	    public const string ChangeStatusOfPost = "post/app/status";
 	    public const string EditPost = "post/app/update";
 	    public const string LoginFacebook = "user/login/facebook";
+	    public const string CreatePost = "post/app/create";
+	    public const string GetCurrentProfile = "/user";
+
 	}
 }
