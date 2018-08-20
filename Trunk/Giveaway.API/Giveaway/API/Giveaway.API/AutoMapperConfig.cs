@@ -48,14 +48,18 @@ namespace Giveaway.API
             cfg.CreateMap<Post, PostAppResponse>()
                 .ForMember(
                     destination => destination.Status,
-                    map => map.MapFrom(source => source.PostStatus.ToString()
-                ));
+                    map => map.MapFrom(source => source.PostStatus.ToString())
+                );
             cfg.CreateMap<PostAppResponse, Post>();
             cfg.CreateMap<Post, PostCmsResponse>()
                 .ForMember(
                     destination => destination.EntityStatus,
-                    map => map.MapFrom(source => source.EntityStatus.ToString()
-                ));
+                    map => map.MapFrom(source => source.EntityStatus.ToString())
+                )
+                .ForMember(
+                    destination => destination.Status,
+                    map => map.MapFrom(source => source.PostStatus.ToString())
+                );
             cfg.CreateMap<PostCmsResponse, Post>();
             cfg.CreateMap<Post, PostReportResponse>();
             cfg.CreateMap<PostRequest, Post>();
