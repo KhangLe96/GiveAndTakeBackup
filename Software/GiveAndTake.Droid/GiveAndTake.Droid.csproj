@@ -83,6 +83,10 @@
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\PostDetailView.cs" />
     <Compile Include="Views\UserProfileView.cs" />
+    <Compile Include="Views\TabNavigation.cs" />
+    <Compile Include="Views\TestFragment1.cs" />
+    <Compile Include="Views\TestFragment2.cs" />
+    <Compile Include="DroidConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -154,6 +158,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\SplashScreen.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TabNavigation.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TestFragment1.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TestFragment2.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -246,6 +265,42 @@
     <AndroidResource Include="Resources\layout\UserProfileView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\tab_navigation_icon_conversation.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\tab_navigation_icon_home.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\tab_navigation_icon_notification.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\tab_navigation_icon_profile.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\conversation_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\conversation_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\home_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\home_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\notification_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\notification_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\profile_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\profile_on.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
