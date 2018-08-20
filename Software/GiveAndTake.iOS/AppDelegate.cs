@@ -3,8 +3,6 @@ using GiveAndTake.Core;
 using MvvmCross.Platforms.Ios.Core;
 //using Facebook.CoreKit;
 //using Facebook.LoginKit;
-using GiveAndTake.iOS.Helpers;
-using GiveAndTake.iOS.Views.Base;
 using UIKit;
 
 namespace GiveAndTake.iOS

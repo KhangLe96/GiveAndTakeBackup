@@ -5,9 +5,9 @@ namespace GiveAndTake.iOS.Helpers
 {
 	public static class ResolutionHelper
 	{
-		private const int BASE_DEVICE_SIZE = 320;
-		private const int TABLET_BASE_DEVICE_SIZE = 768;
-		private const float BASE_RATE = 0.9f;
+		private const int BaseDeviceSize = 320;
+		private const int TabletBaseDeviceSize = 768;
+		private const float BaseRate = 0.9f;
 
 		public static nfloat Width { get; private set; }
 		public static nfloat Height { get; private set; }
@@ -27,7 +27,7 @@ namespace GiveAndTake.iOS.Helpers
 			Width = UIScreen.MainScreen.Bounds.Width;
 			Height = UIScreen.MainScreen.Bounds.Height - StatusHeight;
 
-			DimensionHelper.Rate = (float)(Math.Min(Width, Height) / (IsTablet ? TABLET_BASE_DEVICE_SIZE : BASE_DEVICE_SIZE)) * BASE_RATE;
+			DimensionHelper.Rate = (float)(Math.Min(Width, Height) / (IsTablet ? TabletBaseDeviceSize : BaseDeviceSize)) * BaseRate;
 		}
 	}
 }

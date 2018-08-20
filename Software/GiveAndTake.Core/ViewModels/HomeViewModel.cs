@@ -3,20 +3,19 @@ using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels
 {
     public class HomeViewModel : BaseViewModel
     {
-        private List<PostItemViewModel> postViewModels;
+        private List<PostItemViewModel> _postViewModels;
 
         public List<PostItemViewModel> PostViewModels
         {
-            get => postViewModels;
+            get => _postViewModels;
             set
             {
-                postViewModels = value;
+                _postViewModels = value;
                 RaisePropertyChanged(() => PostViewModels);
             }
         }

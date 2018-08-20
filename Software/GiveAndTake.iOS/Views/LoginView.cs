@@ -13,9 +13,9 @@ namespace GiveAndTake.iOS.Views
     [MvxRootPresentation]
     public class LoginView : BaseView
     {
-        private UIImageView logoImage;
-        private UIButton customedLoginFacebookButton;
-        private UIButton customedLoginGoogleButton;
+        private UIImageView _logoImage;
+        private UIButton _customedLoginFacebookButton;
+        private UIButton _customedLoginGoogleButton;
         public IMvxCommand<User> LoginCommand { get; set; }
 
         protected override void InitView()
@@ -46,48 +46,48 @@ namespace GiveAndTake.iOS.Views
 
         private void InitLogoImage()
         {
-            logoImage = new UIImageView { TranslatesAutoresizingMaskIntoConstraints = false, Image = UIImage.FromFile("Images/LoginLogo.png")};
+            _logoImage = new UIImageView { TranslatesAutoresizingMaskIntoConstraints = false, Image = UIImage.FromFile("Images/LoginLogo.png")};
 
-            logoImage.AddConstraints(new[]
+            _logoImage.AddConstraints(new[]
             {
-                NSLayoutConstraint.Create(logoImage, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
+                NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
                     NSLayoutAttribute.NoAttribute, 1, 150),
-                NSLayoutConstraint.Create(logoImage, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
+                NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
                     NSLayoutAttribute.NoAttribute, 1, 200)
             });
 
-            View.Add(logoImage);
+            View.Add(_logoImage);
 
             View.AddConstraints(new[]
             {
-                NSLayoutConstraint.Create(logoImage, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
+                NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
                     NSLayoutAttribute.Top, 1, 130),
-                NSLayoutConstraint.Create(logoImage, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
+                NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
                     NSLayoutAttribute.CenterX, 1, 0)
             });
         }
 
         private void InitLoginFbButton()
         {
-            customedLoginFacebookButton = new UIButton { TranslatesAutoresizingMaskIntoConstraints = false };
+            _customedLoginFacebookButton = new UIButton { TranslatesAutoresizingMaskIntoConstraints = false };
 
-            customedLoginFacebookButton.AddConstraints(new[]
+            _customedLoginFacebookButton.AddConstraints(new[]
             {
-                NSLayoutConstraint.Create(customedLoginFacebookButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
+                NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
                     NSLayoutAttribute.NoAttribute, 1, 40),
-                NSLayoutConstraint.Create(customedLoginFacebookButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
+                NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
                     NSLayoutAttribute.NoAttribute, 1, 100)
             });
 
-            customedLoginFacebookButton.SetBackgroundImage(new UIImage("Images/facebook_button"), UIControlState.Normal);
+            _customedLoginFacebookButton.SetBackgroundImage(new UIImage("Images/facebook_button"), UIControlState.Normal);
 
-            View.Add(customedLoginFacebookButton);
+            View.Add(_customedLoginFacebookButton);
 
             View.AddConstraints(new[]
             {
-                NSLayoutConstraint.Create(customedLoginFacebookButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, logoImage,
+                NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _logoImage,
                     NSLayoutAttribute.Bottom, 1, 20),
-                NSLayoutConstraint.Create(customedLoginFacebookButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+                NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
                     NSLayoutAttribute.CenterX, 1, -15)
             });
 
@@ -96,25 +96,25 @@ namespace GiveAndTake.iOS.Views
 
         private void InitLoginGoogleButton()
         {
-            customedLoginGoogleButton = new UIButton() { TranslatesAutoresizingMaskIntoConstraints = false };
+            _customedLoginGoogleButton = new UIButton() { TranslatesAutoresizingMaskIntoConstraints = false };
 
-            customedLoginGoogleButton.AddConstraints(new[]
+            _customedLoginGoogleButton.AddConstraints(new[]
             {
-                NSLayoutConstraint.Create(customedLoginGoogleButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
+                NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
                     NSLayoutAttribute.NoAttribute, 1, 40),
-                NSLayoutConstraint.Create(customedLoginGoogleButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
+                NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
                     NSLayoutAttribute.NoAttribute, 1, 100)
             });
 
-            customedLoginGoogleButton.SetBackgroundImage(new UIImage("Images/google_button"), UIControlState.Normal);
+            _customedLoginGoogleButton.SetBackgroundImage(new UIImage("Images/google_button"), UIControlState.Normal);
 
-            View.Add(customedLoginGoogleButton);
+            View.Add(_customedLoginGoogleButton);
 
             View.AddConstraints(new[]
             {
-                NSLayoutConstraint.Create(customedLoginGoogleButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, logoImage,
+                NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _logoImage,
                     NSLayoutAttribute.Bottom, 1, 20),
-                NSLayoutConstraint.Create(customedLoginGoogleButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
+                NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
                     NSLayoutAttribute.CenterX, 1, 15)
             });
         }

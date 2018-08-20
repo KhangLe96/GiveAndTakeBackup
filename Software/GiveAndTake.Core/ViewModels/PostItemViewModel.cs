@@ -8,7 +8,7 @@ namespace GiveAndTake.Core.ViewModels
     {
         #region Properties
 
-        private Post _post;
+        private readonly Post _post;
 
         private string _categoryName;
 
@@ -18,122 +18,122 @@ namespace GiveAndTake.Core.ViewModels
             set => SetProperty(ref _categoryName, value);
         }
 
-        private string userName;
+        private string _userName;
 
         public string UserName
         {
-            get => userName;
+            get => _userName;
             set
             {
-                userName = value;
+                _userName = value;
                 RaisePropertyChanged(() => UserName);
             }
         }
 
-        private string avatarUrl;
+        private string _avatarUrl;
 
         public string AvatarUrl
         {
-            get => avatarUrl;
+            get => _avatarUrl;
             set
             {
-                avatarUrl = value;
+                _avatarUrl = value;
                 RaisePropertyChanged(() => AvatarUrl);
             }
         }
 
-        private string description;
+        private string _description;
 
         public string Description
         {
-            get => description;
+            get => _description;
             set
             {
-                description = value;
+                _description = value;
                 RaisePropertyChanged(() => Description);
             }
         }
 
-        private string createdTime;
+        private string _createdTime;
 
         public string CreatedTime
         {
-            get => createdTime;
+            get => _createdTime;
             set
             {
-                createdTime = value;
+                _createdTime = value;
                 RaisePropertyChanged(() => CreatedTime);
             }
         }
 
-        private string address;
+        private string _address;
 
         public string Address
         {
-            get => address;
+            get => _address;
             set
             {
-                address = value;
+                _address = value;
                 RaisePropertyChanged(() => Address);
             }
         }
 
-        private string postImage;
+        private string _postImage;
 
         public string PostImage
         {
-            get => postImage;
+            get => _postImage;
             set
             {
-                postImage = value;
+                _postImage = value;
                 RaisePropertyChanged(() => PostImage);
             }
         }
 
-        private int requestCount;
+        private int _requestCount;
 
         public int RequestCount
         {
-            get => requestCount;
+            get => _requestCount;
             set
             {
-                requestCount = value;
+                _requestCount = value;
                 RaisePropertyChanged(() => RequestCount);
             }
         }
 
-        private int appreciationCount;
+        private int _appreciationCount;
 
         public int AppreciationCount
         {
-            get => appreciationCount;
+            get => _appreciationCount;
             set
             {
-                appreciationCount = value;
+                _appreciationCount = value;
                 RaisePropertyChanged(() => AppreciationCount);
             }
         }
 
-        private int commentCount;
+        private int _commentCount;
 
         public int CommentCount
         {
-            get => commentCount;
+            get => _commentCount;
             set
             {
-                commentCount = value;
+                _commentCount = value;
                 RaisePropertyChanged(() => CommentCount);
             }
         }
 
-        private bool hasManyPostPhotos;
+        private bool _hasManyPostPhotos;
 
         public bool HasManyPostPhotos
         {
-            get => hasManyPostPhotos;
+            get => _hasManyPostPhotos;
             set
             {
-                hasManyPostPhotos = value;
+                _hasManyPostPhotos = value;
                 RaisePropertyChanged(() => HasManyPostPhotos);
             }
         }

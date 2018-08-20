@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GiveAndTake.Core.Helpers;
-using GiveAndTake.Core;
+﻿using GiveAndTake.Core.Helpers;
 using Newtonsoft.Json;
 
 namespace GiveAndTake.Core.Models

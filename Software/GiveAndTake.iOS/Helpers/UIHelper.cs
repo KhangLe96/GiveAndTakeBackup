@@ -4,7 +4,7 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
 {
-	public static class UIHelper
+	public static class UiHelper
 	{
 		public static UILabel CreateLabel(UIColor textColor, nfloat fontSize, FontType fontType = FontType.Regular)
 		{

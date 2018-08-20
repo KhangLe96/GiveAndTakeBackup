@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using GiveAndTake.Core.Models;
-using RestSharp;
+﻿using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.Services
 {

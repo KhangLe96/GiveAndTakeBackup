@@ -1,12 +1,9 @@
-﻿using System;
-using GiveAndTake.Core.Helpers;
+﻿using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using RestSharp;
 
 namespace GiveAndTake.Core.Services
 {
@@ -60,7 +57,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var PostDetail = JsonHelper.Deserialize<Post>(response.RawContent);
+                    var postDetail = JsonHelper.Deserialize<Post>(response.RawContent);
                 }
                 else
                 {
@@ -78,7 +75,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Get(AppConstants.GetPostOfUser + parameters);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var PostOfUser = JsonHelper.Deserialize<PostList>(response.RawContent);
+                    var postOfUser = JsonHelper.Deserialize<PostList>(response.RawContent);
                 }
                 else
                 {
@@ -126,7 +123,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var LoginFacebook = JsonHelper.Deserialize<LoginResponse>(response.RawContent);
+                    var loginFacebook = JsonHelper.Deserialize<LoginResponse>(response.RawContent);
                 }
                 else
                 {
@@ -147,7 +144,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Post(AppConstants.CreatePost, content);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var PostInformation = JsonHelper.Deserialize<Post>(response.RawContent);
+                    var postInformation = JsonHelper.Deserialize<Post>(response.RawContent);
                 }
                 else
                 {
@@ -166,7 +163,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Get(AppConstants.GetCurrentProfile);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var UserInformation = JsonHelper.Deserialize<Post>(response.RawContent);
+                    var userInformation = JsonHelper.Deserialize<Post>(response.RawContent);
                 }
                 else
                 {
@@ -185,7 +182,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Get(AppConstants.GetCurrentProfile);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var UserInformation = JsonHelper.Deserialize<User>(response.RawContent);
+                    var userInformation = JsonHelper.Deserialize<User>(response.RawContent);
                 }
                 else
                 {
