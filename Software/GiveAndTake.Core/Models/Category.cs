@@ -31,9 +31,10 @@ namespace GiveAndTake.Core.Models
     }
 
     [DataContract]
-    public class CategoryList
+    public class CategoryResponse
     {
         [DataMember(Name = "results")]
         public List<Category> Categories { get; set; }
     }
+
 }
