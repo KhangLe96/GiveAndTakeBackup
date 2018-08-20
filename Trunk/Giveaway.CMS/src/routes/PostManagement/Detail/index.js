@@ -124,20 +124,24 @@ export default class index extends React.Component {
           </Row>
           <Row>
             <Col span={8}><h2> Trạng thái </h2></Col>
-            <Col span={8}><h2> Category </h2></Col>
+            <Col span={8}><h2> Trạng thái trên ứng dụng di động</h2></Col>
             <Col span={8}><h2> Ngày tạo </h2></Col>
           </Row>
           <Row>
             <Col span={8}><h3 className={styles.statusText}> {ENG_VN_DICTIONARY[statusCMS]}</h3></Col>
-            <Col span={8}><h3> <a className={styles.detailText} onClick={() => this.handleRedirectToCategoryDetail(category)}> {category.categoryName}</a></h3></Col>
+            <Col span={8}><h3 className={styles.statusText}> {ENG_VN_DICTIONARY[statusApp]}</h3></Col>
             <Col span={8}><h3> {this.handleDateAndTimeFormat(createdTime)} </h3></Col>
           </Row>
           <Row>
-            <Col span={8}><h2> Trạng thái trên ứng dụng di động</h2></Col>
+            <Col span={8}><h2> Category </h2></Col>
+          </Row>
+          <Row>
+            <Col span={8}><h3> <a className={styles.detailText} onClick={() => this.handleRedirectToCategoryDetail(category)}> {category.categoryName}</a></h3></Col>
+          </Row>
+          <Row>
             <Col span={8}><h2> Mô tả </h2></Col>
           </Row>
           <Row>
-            <Col span={8}><h3 className={styles.statusText}> {ENG_VN_DICTIONARY[statusApp]}</h3></Col>
             <Col><h3> {description} </h3></Col>
           </Row>
           <br /><br /><br /><br />
