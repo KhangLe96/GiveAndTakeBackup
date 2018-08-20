@@ -9,9 +9,9 @@ namespace GiveAndTake.Core.ViewModels
 {
     public class HomeViewModel : BaseViewModel
     {
-        private List<PostViewModel> postViewModels;
+        private List<PostItemViewModel> postViewModels;
 
-        public List<PostViewModel> PostViewModels
+        public List<PostItemViewModel> PostViewModels
         {
             get => postViewModels;
             set
@@ -25,14 +25,12 @@ namespace GiveAndTake.Core.ViewModels
         public IMvxAsyncCommand ShowShortPostCommand { get; set; }
         public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 
-        public override Task Initialize()
+        public HomeViewModel()
         {
             var posts = InitPosts();
-            PostViewModels = posts.Select(post => new PostViewModel(post)).ToList();
-
-            return base.Initialize();
+            PostViewModels = posts.Select(post => new PostItemViewModel(post)).ToList();
         }
-
+      
         private static List<Post> InitPosts()
         {
             return new List<Post>

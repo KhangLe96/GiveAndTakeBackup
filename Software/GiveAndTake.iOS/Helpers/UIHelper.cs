@@ -52,28 +52,26 @@ namespace GiveAndTake.iOS.Helpers
             return view;
 	    }
 
-        public static UIButton CreateButton(string title, string color)
-	    {
-            var label = CreateLabel(UIColor.Clear, DimensionHelper.SmallTextSize);
-	        label.Text = title;
-            return new UIButton(label.Frame) {BackgroundColor = ColorHelper.ToUIColor(color)};
-	    }
-
 	    public static UISearchBar CreateSearchBar(nfloat height, nfloat width)
 	    {
-	        var view = new UISearchBar
+	        var searchBar = new UISearchBar
 	        {
 	            TranslatesAutoresizingMaskIntoConstraints = false,
-                BackgroundColor = UIColor.White
+                BackgroundImage = new UIImage()
 	        };
 
-	        view.AddConstraints(new[]
+	        searchBar.Layer.CornerRadius = DimensionHelper.FilterSize / 2;
+	        searchBar.Layer.MasksToBounds = true;
+	        searchBar.Layer.BorderColor = ColorHelper.BlueColor.CGColor;
+	        searchBar.Layer.BorderWidth = DimensionHelper.SeperatorHeight;
+
+	        searchBar.AddConstraints(new[]
 	        {
-	            NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
-	            NSLayoutConstraint.Create(view, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
+	            NSLayoutConstraint.Create(searchBar, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
+	            NSLayoutConstraint.Create(searchBar, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
 	        });
 
-	        return view;
+	        return searchBar;
 	    }
 
         public static UIButton CreateImageButton(nfloat height, nfloat width, string imagePath)
@@ -93,7 +91,31 @@ namespace GiveAndTake.iOS.Helpers
 	        return button;
 	    }
 
-		public static UIFont GetFont(FontType fontType, nfloat fontSize)
+	    public static UITableView CreateTableView(nfloat width, nfloat height)
+	    {
+	        var tableView = new UITableView
+	        {
+	            TranslatesAutoresizingMaskIntoConstraints = false,
+	            ScrollEnabled = true,
+	            SeparatorColor = UIColor.Clear
+            };
+
+	        if (width > 0)
+	        {
+	            tableView.AddConstraint(NSLayoutConstraint.Create(tableView, NSLayoutAttribute.Width,
+	                NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, width));
+	        }
+
+	        if (height > 0)
+	        {
+	            tableView.AddConstraint(NSLayoutConstraint.Create(tableView, NSLayoutAttribute.Height,
+	                NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, height));
+	        }
+
+	        return tableView;
+	    }
+
+        public static UIFont GetFont(FontType fontType, nfloat fontSize)
 		{
 			switch (fontType)
 			{

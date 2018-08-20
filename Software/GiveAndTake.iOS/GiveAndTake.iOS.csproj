@@ -93,7 +93,8 @@
     <BundleResource Include="Resources\Images\sort_button.png" />
     <BundleResource Include="Resources\Images\category_button.png" />
     <BundleResource Include="Resources\Images\comment.png" />
-    <Compile Include="Views\PostView.cs" />
+    <Compile Include="Views\TableViewCells\PostItemViewCell.cs" />
+    <Compile Include="Views\TableViewSources\PostItemTableViewSource.cs" />
     <Compile Include="Views\UserProfileView.cs" />
     <BundleResource Include="Resources\Images\default_post.png" />
     <None Include="Info.plist">
@@ -169,6 +170,7 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controls\" />
     <Folder Include="Views\Popups\" />
   </ItemGroup>
   <ItemGroup>

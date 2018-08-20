@@ -4,22 +4,18 @@ using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels
 {
-    public class PostViewModel : BaseViewModel
+    public class PostItemViewModel : BaseViewModel
     {
         #region Properties
 
-        public Post Post { get; set; }
+        private Post _post;
 
-        private string categoryName;
+        private string _categoryName;
 
         public string CategoryName
         {
-            get => categoryName;
-            set
-            {
-                categoryName = value;
-                RaisePropertyChanged(() => CategoryName);
-            }
+            get => $"   {_categoryName}   ";
+            set => SetProperty(ref _categoryName, value);
         }
 
         private string userName;
@@ -146,31 +142,27 @@ namespace GiveAndTake.Core.ViewModels
 
         #region Constructor
 
-        public PostViewModel()
-        {
+       public PostItemViewModel(Post post)
+       {
+           _post = post;
+           Init();
+           InitCommand();
         }
 
-        public PostViewModel(Post post)
+        private void Init()
         {
-            InitFields(post);
-            InitCommand();
-        }
-
-        private void InitFields(Post post)
-        {
-            Post = post;
-            CategoryName = post.Category.CategoryName;
-            AvatarUrl = post.User.AvatarUrl;
-            UserName = post.User.FullName;
-            CreatedTime = post.CreatedTime.ToShortDateString();
-            Address = post.ProvinceCity.ProvinceCityName;
-            Description = post.Description;
+            CategoryName = _post.Category.CategoryName;
+            AvatarUrl = _post.User.AvatarUrl;
+            UserName = _post.User.FullName;
+            CreatedTime = _post.CreatedTime.ToShortDateString();
+            Address = _post.ProvinceCity.ProvinceCityName;
+            Description = _post.Description;
             //PostImage = post.Images.FirstOrDefault();
             //HasManyPostPhotos = post.Images.Count > 1;
             HasManyPostPhotos = true;
-            AppreciationCount = post.AppreciationCount;
-            RequestCount = post.RequestCount;
-            CommentCount = post.CommentCount;
+            AppreciationCount = _post.AppreciationCount;
+            RequestCount = _post.RequestCount;
+            CommentCount = _post.CommentCount;
         }
 
         private void InitCommand()
