@@ -102,7 +102,7 @@ export default class index extends React.Component {
   }
 
   renderDetail(postInformation) {
-    const { id, user, title, description, images, address, createdTime, statusCMS, category } = postInformation !== null ? postInformation : null;
+    const { id, user, title, description, images, address, createdTime, statusCMS, statusApp, category } = postInformation !== null ? postInformation : null;
     return (
       <div>
         <div className="containerHeader">
@@ -133,9 +133,11 @@ export default class index extends React.Component {
             <Col span={8}><h3> {this.handleDateAndTimeFormat(createdTime)} </h3></Col>
           </Row>
           <Row>
-            <Col><h2> Mô tả </h2></Col>
+            <Col span={8}><h2> Trạng thái trên ứng dụng di động</h2></Col>
+            <Col span={8}><h2> Mô tả </h2></Col>
           </Row>
           <Row>
+            <Col span={8}><h3 className={styles.statusText}> {ENG_VN_DICTIONARY[statusApp]}</h3></Col>
             <Col><h3> {description} </h3></Col>
           </Row>
           <br /><br /><br /><br />

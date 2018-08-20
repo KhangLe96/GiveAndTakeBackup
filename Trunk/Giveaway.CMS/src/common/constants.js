@@ -23,9 +23,9 @@ export const STATUSES = {
 
 export const ENG_VN_DICTIONARY = {
   Activated: 'Đang kích hoạt',
-  Blocked: 'Đang khóa',
-  Close: 'Đóng',
-  Open: 'Mở',
+  Blocked: 'Đã khóa',
+  Close: 'Đã Đóng',
+  Open: 'Đang Mở',
   User: 'Người dùng',
   Admin: 'Admin',
   Male: 'Nam',

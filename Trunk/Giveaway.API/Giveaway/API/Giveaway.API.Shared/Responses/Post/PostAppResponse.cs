@@ -12,8 +12,6 @@ namespace Giveaway.API.Shared.Responses.Post
     [DataContract]
     public class PostAppResponse : PostBaseResponse
     {
-        [DataMember(Name = "statusApp", EmitDefaultValue = false)]
-        [JsonProperty(PropertyName = "statusApp")]
-        public string Status { get; set; }
+        
     }
 }
