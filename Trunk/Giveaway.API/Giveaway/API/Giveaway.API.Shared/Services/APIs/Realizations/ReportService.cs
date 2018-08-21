@@ -5,11 +5,8 @@ using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Report;
 using Giveaway.Data.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-//REVIEW: remove unused namespace
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {

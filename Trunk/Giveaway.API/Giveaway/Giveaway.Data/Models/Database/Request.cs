@@ -21,5 +21,4 @@ namespace Giveaway.Data.Models.Database
         public virtual Post Post { get; set; }
         public virtual Response Response { get; set; }
     }
-
 }

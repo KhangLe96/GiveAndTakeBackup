@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Giveaway.API.Shared.Responses;
+﻿using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Report;
 using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Mvc;
-//REVIEW: remove unused
+using System.Collections.Generic;
 
 namespace Giveaway.API.Controllers
 {

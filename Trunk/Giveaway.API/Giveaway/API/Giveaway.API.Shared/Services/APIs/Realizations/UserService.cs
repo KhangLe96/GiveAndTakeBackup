@@ -105,8 +105,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			_userRoleService.CreateUserRole(userId, normalUserRoleId);
 		}
 
-		public LoginResponse
-			LoginWithFacebook(FacebookConnectRequest request)
+		public LoginResponse LoginWithFacebook(FacebookConnectRequest request)
 		{
 			var user = _userService.FirstOrDefault(u => string.Equals(u.SocialAccountId, request.SocialAccountId));
 			if (user == null)
@@ -125,8 +124,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			}
 			if (user.EntityStatus != EntityStatus.Activated)
 			{
-				throw new BadRequestException("User has been blocked");
-				//REVIEW: message should be a key. Ex: UserHasBeenBlocked. Front end team will generate message by language from this key.
+				throw new BadRequestException(Const.Error.BadRequest);
 			}
 			return GenerateLoginResponse(user);
 		}
