@@ -8,6 +8,7 @@ using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+//REVIEW: Remove unused namespace
 namespace Giveaway.API.Controllers
 {
     [Produces("application/json")]
