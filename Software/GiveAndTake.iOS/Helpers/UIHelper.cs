@@ -1,5 +1,6 @@
 ﻿using GiveAndTake.Core;
 using System;
+using GiveAndTake.iOS.Controls;
 using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
@@ -36,11 +37,12 @@ namespace GiveAndTake.iOS.Helpers
 			return view;
 		}
 
-	    public static UIImageView CreateImageView(nfloat height, nfloat width)
+	    public static CustomUIImage CreateCustomImageView(nfloat height, nfloat width, string imagePath)
 	    {
-	        var view = new UIImageView
+	        var view = new CustomUIImage
             {
-	            TranslatesAutoresizingMaskIntoConstraints = false
+	            TranslatesAutoresizingMaskIntoConstraints = false,
+                Image = new UIImage(imagePath)
 	        };
 
 	        view.AddConstraints(new[]

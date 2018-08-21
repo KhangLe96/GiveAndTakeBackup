@@ -1,10 +1,12 @@
-﻿using System;
-using Foundation;
+﻿using Foundation;
 using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
+using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
+using System;
+using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -12,7 +14,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
     [Register("PostItemViewCell")]
     public class PostItemViewCell : MvxTableViewCell
     {
-        private UIImageView _imagePost, _imgMultiImages, _imgAvatar, _imgRequest, _imgAppeciation, _imgExtension, _imgComment;
+        private CustomUIImage _imgMultiImages, _imgRequest, _imgAppeciation, _imgExtension, _imgComment, _imagePost, _imgAvatar;
         private UIButton _btnCategory;
         private UILabel _lbUserName, _lbPostDate, _lbSeperator, _lbPostAddress, _lbPostDescription, _lbRequestCount, _lbAppreciationCount, _lbCommentCount;
         private UIView _reactionArea;
@@ -27,9 +29,54 @@ namespace GiveAndTake.iOS.Views.TableViewCells
         {
             var set = this.CreateBindingSet<PostItemViewCell, PostItemViewModel>();
 
-            set.Bind(_btnCategory)
+			set.Bind(_imagePost)
+				.For(v => v.ImageUrl)
+				.To(vm => vm.PostImage);
+
+	        set.Bind(_imagePost.Tap())
+		        .For(v => v.Command)
+		        .To(vm => vm.ShowPostDetailCommand);
+
+			set.Bind(_btnCategory)
                 .For("Title")
                 .To(vm => vm.CategoryName);
+
+	        set.Bind(_imgAvatar)
+		        .For(v => v.ImageUrl)
+		        .To(vm => vm.AvatarUrl);
+
+	        set.Bind(_imgAvatar.Tap())
+		        .For(v => v.Command)
+		        .To(vm => vm.ShowPostDetailCommand);
+
+			set.Bind(_lbUserName)
+                .To(vm => vm.UserName);
+
+	        set.Bind(_lbUserName.Tap())
+		        .For(v => v.Command)
+		        .To(vm => vm.ShowGiverProfileCommand);
+
+	        set.Bind(_lbPostDate)
+                .To(vm => vm.CreatedTime);
+
+	        set.Bind(_lbPostAddress)
+                .To(vm => vm.Address);
+
+	        set.Bind(_lbPostDescription)
+                .To(vm => vm.Description);
+
+	        set.Bind(_lbPostDescription.Tap())
+		        .For(v => v.Command)
+		        .To(vm => vm.ShowPostDetailCommand);
+
+	        set.Bind(_lbRequestCount)
+                .To(vm => vm.RequestCount);
+
+	        set.Bind(_lbAppreciationCount)
+                .To(vm => vm.AppreciationCount);
+
+	        set.Bind(_lbCommentCount)
+                .To(vm => vm.CommentCount);
 
             set.Apply();
         }
@@ -51,8 +98,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitPostPhoto()
         {
-            _imagePost = UiHelper.CreateImageView(DimensionHelper.ImagePostSize, DimensionHelper.ImagePostSize);
-            _imagePost.Image = new UIImage("Images/default_post");
+            _imagePost = UiHelper.CreateCustomImageView(DimensionHelper.ImagePostSize, DimensionHelper.ImagePostSize, "Images/default_post");
             _imagePost.Layer.CornerRadius = 10;
             _imagePost.ClipsToBounds = true;
 
@@ -69,8 +115,9 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitMultiImageView()
         {
-            _imgMultiImages = UiHelper.CreateImageView(DimensionHelper.ImageMultiSize, DimensionHelper.ImageMultiSize);
-            _imgMultiImages.Image = new UIImage("Images/multiphoto");
+            _imgMultiImages = UiHelper.CreateCustomImageView(DimensionHelper.ImageMultiSize, DimensionHelper.ImageMultiSize, "Images/multiphoto");
+            _imgMultiImages.Layer.CornerRadius = DimensionHelper.ImageMultiSize / 2;
+            _imgMultiImages.ClipsToBounds = true;
 
             ContentView.AddSubview(_imgMultiImages);
 
@@ -113,8 +160,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitAvatarImageView()
         {
-            _imgAvatar = UiHelper.CreateImageView(DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize);
-            _imgAvatar.Image = new UIImage("Images/default_avatar");
+            _imgAvatar = UiHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize, "Images/default_avatar");
 
             ContentView.AddSubview(_imgAvatar);
 
@@ -194,7 +240,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
         private void InitPostDescriptionLabel()
         {
             _lbPostDescription = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDescriptionTextSize);
-            _lbPostDescription.Text = "There\'s a girl but I let her get away\r\nIt\'s all my fault \'cause pride got in the way";
             _lbPostDescription.Lines = 2;
 
             ContentView.AddSubview(_lbPostDescription);
@@ -237,8 +282,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
         private void InitRequestIcon()
         {
             _imgRequest =
-                UiHelper.CreateImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth);
-            _imgRequest.Image = new UIImage("Images/request_off");
+                UiHelper.CreateCustomImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, "Images/request_off");
 
             _reactionArea.AddSubview(_imgRequest);
 
@@ -269,8 +313,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitAppeciationIcon()
         {
-            _imgAppeciation = UiHelper.CreateImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth);
-            _imgAppeciation.Image = new UIImage("Images/heart_off");
+            _imgAppeciation = UiHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, "Images/heart_off");
 
             _reactionArea.AddSubview(_imgAppeciation);
 
@@ -301,8 +344,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitCommentIcon()
         {
-            _imgComment = UiHelper.CreateImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth);
-            _imgComment.Image = new UIImage("Images/comment");
+            _imgComment = UiHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, "Images/comment");
 
             _reactionArea.AddSubview(_imgComment);
 
@@ -333,8 +375,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitExtensionIcon()
         {
-            _imgExtension = UiHelper.CreateImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth);
-            _imgExtension.Image = new UIImage("Images/extension");
+            _imgExtension = UiHelper.CreateCustomImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, "Images/extension");
 
             _reactionArea.AddSubview(_imgExtension);
 
