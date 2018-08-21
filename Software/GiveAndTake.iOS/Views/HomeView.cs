@@ -27,7 +27,7 @@ namespace GiveAndTake.iOS.Views
 
         private void InitFilterButton()
         {
-            _btnFilter = UiHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/filter_button");
+            _btnFilter = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/filter_button");
 
             View.Add(_btnFilter);
             View.AddConstraints(new []
@@ -41,7 +41,7 @@ namespace GiveAndTake.iOS.Views
 
         private void InitSortButton()
         {
-            _btnSort = UiHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/sort_button");
+            _btnSort = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/sort_button");
 
             View.Add(_btnSort);
             View.AddConstraints(new[]
@@ -55,7 +55,7 @@ namespace GiveAndTake.iOS.Views
 
         private void InitCategoryButton()
         {
-            _btnCategory = UiHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/category_button");
+            _btnCategory = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/category_button");
             View.Add(_btnCategory);
             View.AddConstraints(new[]
             {
@@ -68,7 +68,7 @@ namespace GiveAndTake.iOS.Views
 
         private void InitSearchView()
         {
-            _searchBar = UiHelper.CreateSearchBar(DimensionHelper.FilterSize, DimensionHelper.FilterSize);
+            _searchBar = UIHelper.CreateSearchBar(DimensionHelper.FilterSize, DimensionHelper.FilterSize);
             View.Add(_searchBar);
             View.AddConstraints(new[]
             {
@@ -83,7 +83,7 @@ namespace GiveAndTake.iOS.Views
 
         private void InitPostsTableView()
         {
-            _postsTableView = UiHelper.CreateTableView(0, 0);
+            _postsTableView = UIHelper.CreateTableView(0, 0);
             _postTableViewSource = new PostItemTableViewSource(_postsTableView);
             _postsTableView.Source = _postTableViewSource;
             View.Add(_postsTableView);

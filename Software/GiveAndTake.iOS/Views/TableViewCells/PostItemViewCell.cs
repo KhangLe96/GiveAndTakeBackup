@@ -5,13 +5,13 @@ using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
-using System;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
+using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
 {
-    [Register("PostItemViewCell")]
+	[Register("PostItemViewCell")]
     public class PostItemViewCell : MvxTableViewCell
     {
         private CustomUIImage _imgMultiImages, _imgRequest, _imgAppeciation, _imgExtension, _imgComment, _imagePost, _imgAvatar;
@@ -98,7 +98,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitPostPhoto()
         {
-            _imagePost = UiHelper.CreateCustomImageView(DimensionHelper.ImagePostSize, DimensionHelper.ImagePostSize, "Images/default_post");
+            _imagePost = UIHelper.CreateCustomImageView(DimensionHelper.ImagePostSize, DimensionHelper.ImagePostSize, "Images/default_post");
             _imagePost.Layer.CornerRadius = 10;
             _imagePost.ClipsToBounds = true;
 
@@ -115,7 +115,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitMultiImageView()
         {
-            _imgMultiImages = UiHelper.CreateCustomImageView(DimensionHelper.ImageMultiSize, DimensionHelper.ImageMultiSize, "Images/multiphoto");
+            _imgMultiImages = UIHelper.CreateCustomImageView(DimensionHelper.ImageMultiSize, DimensionHelper.ImageMultiSize, "Images/multiphoto");
             _imgMultiImages.Layer.CornerRadius = DimensionHelper.ImageMultiSize / 2;
             _imgMultiImages.ClipsToBounds = true;
 
@@ -137,7 +137,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
                 TranslatesAutoresizingMaskIntoConstraints = false
             };
             _btnCategory.SetTitleColor(UIColor.White, UIControlState.Normal);
-            _btnCategory.Font = UiHelper.GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
+            _btnCategory.Font = UIHelper.GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
             _btnCategory.BackgroundColor = ColorHelper.ToUiColor("0fbcf9");
             _btnCategory.Layer.CornerRadius = DimensionHelper.ButtonCategoryHeight / 2;
 
@@ -160,7 +160,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitAvatarImageView()
         {
-            _imgAvatar = UiHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize, "Images/default_avatar");
+            _imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize, "Images/default_avatar");
 
             ContentView.AddSubview(_imgAvatar);
 
@@ -175,8 +175,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitUserNameLabel()
         {
-            _lbUserName = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize);
-            _lbUserName.Text = "Quốc Trần";
+            _lbUserName = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize);
 
             ContentView.AddSubview(_lbUserName);
 
@@ -191,8 +190,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitPostDateLabel()
         {
-            _lbPostDate = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
-            _lbPostDate.Text = "Vài giây trước";
+            _lbPostDate = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
 
             ContentView.AddSubview(_lbPostDate);
 
@@ -207,7 +205,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitSeperatorLabel()
         {
-            _lbSeperator = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
+            _lbSeperator = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
             _lbSeperator.Text = "-";
 
             ContentView.AddSubview(_lbSeperator);
@@ -223,8 +221,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitPostAddressLabel()
         {
-            _lbPostAddress = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
-            _lbPostAddress.Text = "Đà Nẵng";
+            _lbPostAddress = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
 
             ContentView.AddSubview(_lbPostAddress);
 
@@ -239,8 +236,9 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitPostDescriptionLabel()
         {
-            _lbPostDescription = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDescriptionTextSize);
+            _lbPostDescription = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDescriptionTextSize);
             _lbPostDescription.Lines = 2;
+	        _lbPostDescription.LineBreakMode = UILineBreakMode.TailTruncation;
 
             ContentView.AddSubview(_lbPostDescription);
 
@@ -282,7 +280,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
         private void InitRequestIcon()
         {
             _imgRequest =
-                UiHelper.CreateCustomImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, "Images/request_off");
+                UIHelper.CreateCustomImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, "Images/request_off");
 
             _reactionArea.AddSubview(_imgRequest);
 
@@ -297,7 +295,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitRequestCountLabel()
         {
-            _lbRequestCount = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
+            _lbRequestCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
             _lbRequestCount.Text = "15";
 
             _reactionArea.AddSubview(_lbRequestCount);
@@ -313,7 +311,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitAppeciationIcon()
         {
-            _imgAppeciation = UiHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, "Images/heart_off");
+            _imgAppeciation = UIHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, "Images/heart_off");
 
             _reactionArea.AddSubview(_imgAppeciation);
 
@@ -328,7 +326,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitAppeciationCountLabel()
         {
-            _lbAppreciationCount = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
+            _lbAppreciationCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
             _lbAppreciationCount.Text = "20";
 
             _reactionArea.AddSubview(_lbAppreciationCount);
@@ -344,7 +342,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitCommentIcon()
         {
-            _imgComment = UiHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, "Images/comment");
+            _imgComment = UIHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, "Images/comment");
 
             _reactionArea.AddSubview(_imgComment);
 
@@ -359,7 +357,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitCommentCountLabel()
         {
-            _lbCommentCount = UiHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
+            _lbCommentCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
             _lbCommentCount.Text = "20";
 
             _reactionArea.AddSubview(_lbCommentCount);
@@ -375,7 +373,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitExtensionIcon()
         {
-            _imgExtension = UiHelper.CreateCustomImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, "Images/extension");
+            _imgExtension = UIHelper.CreateCustomImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, "Images/extension");
 
             _reactionArea.AddSubview(_imgExtension);
 
@@ -390,7 +388,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
         private void InitSeperatorLine()
         {
-            var seperator = UiHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.ToUiColor("0fbcf9"));
+            var seperator = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.ToUiColor("0fbcf9"));
 
             ContentView.AddSubview(seperator);
 

@@ -3,17 +3,20 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Controls
 {
-    public class CustomUIImage : UIImageView
+	public class CustomUIImage : UIImageView
     {
+	    private string _imageUrl;
         public string ImageUrl
         {
-            get => throw new System.NotImplementedException();
+            get => _imageUrl;
             set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    ImageService.Instance.LoadUrl(value).Into(this);
-                }
+	                _imageUrl = value;
+					//ImageService.Instance.LoadUrl(value).Into(this);
+					
+				}
             }
         }
     }

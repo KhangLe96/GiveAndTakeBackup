@@ -59,7 +59,7 @@ namespace GiveAndTake.iOS.Views.Base
 
         private void InitLabel()
         {
-            var label = UiHelper.CreateLabel(UIColor.Black, 24, FontType.Bold);
+            var label = UIHelper.CreateLabel(UIColor.Black, 24, FontType.Bold);
             label.Text = "Master View";
             ContainerView.Add(label);
             ContainerView.AddConstraints(new[]

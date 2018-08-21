@@ -16,7 +16,7 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitLabel()
 		{
-			var label = UiHelper.CreateLabel(UIColor.Black, 24, FontType.Bold);
+			var label = UIHelper.CreateLabel(UIColor.Black, 24, FontType.Bold);
 			label.Text = "Post Detail View";
 			View.Add(label);
 			View.AddConstraints(new[]
