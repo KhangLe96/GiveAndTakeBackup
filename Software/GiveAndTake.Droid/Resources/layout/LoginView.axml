@@ -24,14 +24,15 @@
             android:src="@drawable/facebook_button"
             android:background="@null"
             android:scaleType="fitXY" />
-        <ImageButton
-            android:id="@+id/btnGg"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/google_button"
-            android:background="@null"
-            android:scaleType="fitXY" />
+		<ImageButton
+			android:id="@+id/btnGg"
+			android:layout_width="100dp"
+			android:layout_height="match_parent"
+			android:layout_marginLeft="20dp"
+			android:src="@drawable/google_button"
+			android:background="@null"
+			android:scaleType="fitXY"
+			android:visibility="gone" />
     </LinearLayout>
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btnFbDefault"

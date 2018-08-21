@@ -96,14 +96,14 @@ namespace GiveAndTake.iOS.Views
 
         private void InitLoginGoogleButton()
         {
-            _customedLoginGoogleButton = new UIButton() { TranslatesAutoresizingMaskIntoConstraints = false };
+            _customedLoginGoogleButton = new UIButton { TranslatesAutoresizingMaskIntoConstraints = false };
 
             _customedLoginGoogleButton.AddConstraints(new[]
             {
                 NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
-                    NSLayoutAttribute.NoAttribute, 1, 40),
+                    NSLayoutAttribute.NoAttribute, 1, 0),
                 NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
-                    NSLayoutAttribute.NoAttribute, 1, 100)
+                    NSLayoutAttribute.NoAttribute, 1, 0)
             });
 
             _customedLoginGoogleButton.SetBackgroundImage(new UIImage("Images/google_button"), UIControlState.Normal);
