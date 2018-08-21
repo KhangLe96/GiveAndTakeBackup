@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 
 namespace GiveAndTake.Core.Models
 {
-    [DataContract]
-    public class ProvinceCity
-    {
-        [DataMember(Name = "provinceCityName")]
-        public string ProvinceCityName { get; set; }
-    }
-
     [DataContract]
     public class Post
     {
@@ -53,15 +45,5 @@ namespace GiveAndTake.Core.Models
 
         [DataMember(Name = "commentCount")]
         public int CommentCount { get; set; }
-    }
-
-    [DataContract]
-    public class PostList
-    {
-        [DataMember(Name = "results")]
-        public List<Post> postList { get; set; }
-
-        [DataMember(Name = "pagination")]
-        public Pagination Pagination { get; set; }
     }
 }

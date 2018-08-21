@@ -1,5 +1,4 @@
-﻿using GiveAndTake.Core.Services;
-using MvvmCross;
+﻿using MvvmCross;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 

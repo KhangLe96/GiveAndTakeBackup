@@ -1,7 +1,4 @@
-﻿using System;
-using GiveAndTake.Core;
-
-namespace GiveAndTake.Core
+﻿namespace GiveAndTake.Core
 {
 	public enum FontType
 	{

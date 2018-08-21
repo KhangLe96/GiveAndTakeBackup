@@ -22,9 +22,9 @@ namespace GiveAndTake.Droid.Views
 
     public class LoginView : BaseActivity
     {
-        private ICallbackManager callbackManager;
+        private ICallbackManager _callbackManager;
 
-        private readonly List<string> permissions = new List<string> { "public_profile" };
+        private readonly List<string> _permissions = new List<string> { "public_profile" };
 
         public IMvxCommand<BaseUser> LoginCommand { get; set; }
         
@@ -51,7 +51,7 @@ namespace GiveAndTake.Droid.Views
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
+            _callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
         }
 
         private void InitFacebookButton()
@@ -63,13 +63,13 @@ namespace GiveAndTake.Droid.Views
                 HandleError = OnLoginError
             };
 
-            callbackManager = CallbackManagerFactory.Create();
+            _callbackManager = CallbackManagerFactory.Create();
 
-            LoginManager.Instance.RegisterCallback(callbackManager, loginCallback);
+            LoginManager.Instance.RegisterCallback(_callbackManager, loginCallback);
 
             FindViewById<ImageButton>(Resource.Id.btnFb).Click += delegate
             {
-                LoginManager.Instance.LogInWithReadPermissions(this, permissions);
+                LoginManager.Instance.LogInWithReadPermissions(this, _permissions);
             };
         }
 

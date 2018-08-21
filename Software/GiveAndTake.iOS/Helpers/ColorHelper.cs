@@ -7,12 +7,12 @@ namespace GiveAndTake.iOS.Helpers
 	public static class ColorHelper
 
 	{
-		public static UIColor GreyColor => ToUIColor("83847f");
-		public static UIColor ErrorColor => ToUIColor("F01010");
-		public static UIColor BlueColor => ToUIColor("0fbcf9");
+		public static UIColor GreyColor => ToUiColor("83847f");
+		public static UIColor ErrorColor => ToUiColor("F01010");
+		public static UIColor BlueColor => ToUiColor("0fbcf9");
 
 
-		public static UIColor ToUIColor(string hexString)
+		public static UIColor ToUiColor(string hexString)
 		{
 			if (string.IsNullOrWhiteSpace(hexString))
 			{

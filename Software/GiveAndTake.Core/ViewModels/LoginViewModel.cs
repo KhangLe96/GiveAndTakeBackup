@@ -1,24 +1,19 @@
 ﻿using System;
 using GiveAndTake.Core.Models;
-using GiveAndTake.Core.Services;
-using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
-using Newtonsoft.Json;
-using RestSharp;
-using RestClient = RestSharp.RestClient;
 
 namespace GiveAndTake.Core.ViewModels
 {
     public class LoginViewModel : MvxViewModel
     {
-        private User user;
+        private User _user;
         public User User
         {
-            get => user;
+            get => _user;
             set
             {
-                user = value;
+                _user = value;
                 RaisePropertyChanged(() => User);
             }
         }

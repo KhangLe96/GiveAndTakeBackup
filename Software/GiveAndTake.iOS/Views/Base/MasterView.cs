@@ -9,8 +9,8 @@ namespace GiveAndTake.iOS.Views.Base
     public class MasterView : BaseView
     {
         public UIView ContainerView { get; set; }
-        private UIView headerBar;
-        private UIImageView logoView;
+        private UIView _headerBar;
+        private UIImageView _logoView;
 
         protected override void InitView()
         {
@@ -21,26 +21,26 @@ namespace GiveAndTake.iOS.Views.Base
 
         private void InitHeaderBar()
         {
-			headerBar = new UIView { TranslatesAutoresizingMaskIntoConstraints = false };
-            logoView = new UIImageView { TranslatesAutoresizingMaskIntoConstraints = false, Image = UIImage.FromFile("Images/Top_logo.png") };
+			_headerBar = new UIView { TranslatesAutoresizingMaskIntoConstraints = false };
+            _logoView = new UIImageView { TranslatesAutoresizingMaskIntoConstraints = false, Image = UIImage.FromFile("Images/Top_logo.png") };
 
-            View.Add(headerBar); 
+            View.Add(_headerBar); 
 			View.AddConstraints(new[]
             {
-                NSLayoutConstraint.Create(headerBar, NSLayoutAttribute.Width, NSLayoutRelation.Equal, View, NSLayoutAttribute.Width, 1, 0),
-                NSLayoutConstraint.Create(headerBar, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 100),
-                NSLayoutConstraint.Create(headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View, NSLayoutAttribute.Top, 1, 0),
+                NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Width, NSLayoutRelation.Equal, View, NSLayoutAttribute.Width, 1, 0),
+                NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 100),
+                NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View, NSLayoutAttribute.Top, 1, 0),
             });
 
-			headerBar.Add(logoView);
-			headerBar.AddConstraints(new[]
+			_headerBar.Add(_logoView);
+			_headerBar.AddConstraints(new[]
             {
                 //NSLayoutConstraint.Create(logoView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 220),
-                NSLayoutConstraint.Create(logoView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 30),
-                NSLayoutConstraint.Create(logoView, NSLayoutAttribute.Left , NSLayoutRelation.Equal, headerBar, NSLayoutAttribute.Left, 1, 100),
-                NSLayoutConstraint.Create(logoView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, headerBar, NSLayoutAttribute.Right, 1, -100),
-                NSLayoutConstraint.Create(logoView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, headerBar, NSLayoutAttribute.Top, 1, 40),
-                NSLayoutConstraint.Create(logoView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, headerBar, NSLayoutAttribute.Bottom, 1, -40),
+                NSLayoutConstraint.Create(_logoView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 30),
+                NSLayoutConstraint.Create(_logoView, NSLayoutAttribute.Left , NSLayoutRelation.Equal, _headerBar, NSLayoutAttribute.Left, 1, 100),
+                NSLayoutConstraint.Create(_logoView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _headerBar, NSLayoutAttribute.Right, 1, -100),
+                NSLayoutConstraint.Create(_logoView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar, NSLayoutAttribute.Top, 1, 40),
+                NSLayoutConstraint.Create(_logoView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _headerBar, NSLayoutAttribute.Bottom, 1, -40),
             });
         }
 
@@ -51,7 +51,7 @@ namespace GiveAndTake.iOS.Views.Base
             View.AddConstraints(new []
             {
                 NSLayoutConstraint.Create(ContainerView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, View, NSLayoutAttribute.Width, 1, 0),
-                NSLayoutConstraint.Create(ContainerView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, headerBar, NSLayoutAttribute.Bottom, 1, 0),
+                NSLayoutConstraint.Create(ContainerView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar, NSLayoutAttribute.Bottom, 1, 0),
                 NSLayoutConstraint.Create(ContainerView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, 0),
                 NSLayoutConstraint.Create(ContainerView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, 0),
             });
@@ -59,7 +59,7 @@ namespace GiveAndTake.iOS.Views.Base
 
         private void InitLabel()
         {
-            var label = UIHelper.CreateLabel(UIColor.Black, 24, FontType.Bold);
+            var label = UiHelper.CreateLabel(UIColor.Black, 24, FontType.Bold);
             label.Text = "Master View";
             ContainerView.Add(label);
             ContainerView.AddConstraints(new[]

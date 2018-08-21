@@ -1,6 +1,4 @@
-﻿using MvvmCross;
-using GiveAndTake.Core;
-using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
