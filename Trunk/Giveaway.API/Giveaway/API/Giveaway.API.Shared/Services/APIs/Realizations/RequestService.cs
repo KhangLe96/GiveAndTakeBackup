@@ -76,6 +76,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return updated;
         }
 
+        public bool Delete(Guid requestId)
+        {
+            bool updated = _requestService.UpdateStatus(requestId, EntityStatus.Deleted.ToString()) != null;
+            if (updated == false)
+                throw new InternalServerErrorException(Error.InternalServerError);
+
+            return updated;
+        }
+
         #region Utils
 
         private void ChangeStatus(StatusRequest statusRequest, Request request)
