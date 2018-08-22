@@ -67,40 +67,49 @@
   <ItemGroup>
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
+    <Compile Include="Helpers\Keys.cs" />
     <Compile Include="Helpers\ResolutionHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
-    <Compile Include="Helpers\Keys.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Views\Base\BaseView.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
-    <Compile Include="Views\HomeView.cs" />
-    <Compile Include="Views\LoginView.cs" />
-    <BundleResource Include="Resources\Images\splashscreen.png" />
-    <BundleResource Include="Resources\Images\LoginLogo.png" />
-    <BundleResource Include="Resources\Images\facebook_button.png" />
-    <BundleResource Include="Resources\Images\google_button.png" />
-    <BundleResource Include="Resources\Images\header_bar.png" />
     <BundleResource Include="Resources\Images\Top_logo.png" />
-    <BundleResource Include="Resources\Images\default_avatar.png" />
-    <BundleResource Include="Resources\Images\extension.png" />
-    <BundleResource Include="Resources\Images\filter_button.png" />
-    <BundleResource Include="Resources\Images\heart_off.png" />
-    <BundleResource Include="Resources\Images\multiphoto.png" />
-    <BundleResource Include="Resources\Images\request_off.png" />
-    <BundleResource Include="Resources\Images\sort_button.png" />
     <BundleResource Include="Resources\Images\category_button.png" />
     <BundleResource Include="Resources\Images\comment.png" />
-    <Compile Include="Views\TableViewCells\PostItemViewCell.cs" />
-    <Compile Include="Views\TableViewSources\PostItemTableViewSource.cs" />
-    <Compile Include="Views\UserProfileView.cs" />
+    <BundleResource Include="Resources\Images\default_avatar.png" />
     <BundleResource Include="Resources\Images\default_post.png" />
+    <BundleResource Include="Resources\Images\extension.png" />
+    <BundleResource Include="Resources\Images\facebook_button.png" />
+    <BundleResource Include="Resources\Images\filter_button.png" />
+    <BundleResource Include="Resources\Images\google_button.png" />
+    <BundleResource Include="Resources\Images\header_bar.png" />
+    <BundleResource Include="Resources\Images\heart_off.png" />
+    <BundleResource Include="Resources\Images\LoginLogo.png" />
+    <BundleResource Include="Resources\Images\Multiphoto.png" />
+    <BundleResource Include="Resources\Images\request_off.png" />
+    <BundleResource Include="Resources\Images\sort_button.png" />
+    <BundleResource Include="Resources\Images\splashscreen.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon1024.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon120.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon152.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon167.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon180.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon40.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon58.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon60.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon76.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon80.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon87.png" />
     <Content Include="Entitlements.plist" />
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <None Include="packages.config" />
@@ -112,18 +121,26 @@
     <BundleResource Include="Resources\Fonts\HelveticaNeue-LightItalic.ttf" />
     <BundleResource Include="Resources\Fonts\HelveticaNeue-Medium.ttf" />
     <BundleResource Include="Resources\Fonts\HelveticaNeue-Thin.ttf" />
+    <Compile Include="Views\HomeView.cs" />
+    <Compile Include="Views\LoginView.cs" />
+    <Compile Include="Views\UserProfileView.cs" />
+    <Compile Include="Views\TableViewCells\PostItemViewCell.cs" />
+    <Compile Include="Views\TableViewSources\PostItemTableViewSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvvmCross, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmCross.6.1.2\lib\xamarinios10\MvvmCross.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=106.3.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.3.1\lib\netstandard2.0\RestSharp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="FFImageLoading">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.4.3.840\lib\Xamarin.iOS10\FFImageLoading.dll</HintPath>
+    </Reference>
+    <Reference Include="FFImageLoading.Platform">
+      <HintPath>..\packages\Xamarin.FFImageLoading.2.4.3.840\lib\Xamarin.iOS10\FFImageLoading.Platform.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -170,7 +187,6 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\" />
     <Folder Include="Views\Popups\" />
   </ItemGroup>
   <ItemGroup>

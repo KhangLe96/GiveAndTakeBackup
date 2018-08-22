@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiveAndTake.Core", "GiveAndTake.Core\GiveAndTake.Core.csproj", "{D618A4B3-243A-4CD6-BDE2-D31FD4341494}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiveAndTake.Core", "GiveAndTake.Core\GiveAndTake.Core.csproj", "{D618A4B3-243A-4CD6-BDE2-D31FD4341494}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiveAndTake.iOS", "GiveAndTake.iOS\GiveAndTake.iOS.csproj", "{80A96B52-6758-4BDB-B0B4-CEA4CA155C60}"
 EndProject
