@@ -26,8 +26,7 @@ namespace Giveaway.API.DB
             //SeedImage(services);
             //SeedReport(services);
             //SeedWarning(services);
-
-            SeedRequest(services);
+            //SeedRequest(services);
         }
 
         private static void SeedRequest(IServiceProvider services)

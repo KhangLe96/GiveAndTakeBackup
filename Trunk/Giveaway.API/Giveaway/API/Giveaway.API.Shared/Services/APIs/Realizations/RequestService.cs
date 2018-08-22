@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
-using Giveaway.API.Shared.Exceptions;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests.Request;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Request;
-using Giveaway.API.Shared.Responses.Response;
 using Giveaway.Data.EF;
+using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
+using Giveaway.Data.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using static Giveaway.Data.EF.Const;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -25,11 +25,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _requestService = requestService;
         }
 
-        public PagingQueryResponse<RequestResponse> GetRequesttForPaging(IDictionary<string, string> @params)
+        public PagingQueryResponse<RequestPostResponse> GetRequesttForPaging(IDictionary<string, string> @params)
         {
             var request = @params.ToObject<PagingQueryRequestPostRequest>();
             var reports = GetPagedRequests(request, out var total);
-            return new PagingQueryResponse<RequestResponse>
+            return new PagingQueryResponse<RequestPostResponse>
             {
                 Data = reports,
                 PageInformation = new PageInformation
@@ -41,9 +41,26 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
+        public RequestPostResponse Create(RequestPostRequest requestRepost)
+        {
+            var request = Mapper.Map<Request>(requestRepost);
+            request.Id = Guid.NewGuid();
+
+            _requestService.Create(request, out var isPostSaved);
+            if(isPostSaved == false)
+            {
+                throw new InternalServerErrorException(Error.InternalServerError);
+            }
+            
+            var requestDb = _requestService.Include(x => x.Post).Include(x => x.Response).FirstAsync(x => x.Id == request.Id).Result;
+            var postResponse = Mapper.Map<RequestPostResponse>(requestDb);
+
+            return postResponse;
+        }
+
         #region Utils
 
-        private List<RequestResponse> GetPagedRequests(PagingQueryRequestPostRequest request, out int total)
+        private List<RequestPostResponse> GetPagedRequests(PagingQueryRequestPostRequest request, out int total)
         {
             var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (requests == null)
@@ -61,7 +78,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return requests
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)
-                .Select(x => Mapper.Map<RequestResponse>(x))
+                .Select(x => Mapper.Map<RequestPostResponse>(x))
                 .ToList();
         }
 
