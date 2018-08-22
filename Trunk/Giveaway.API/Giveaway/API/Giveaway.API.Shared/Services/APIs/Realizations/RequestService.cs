@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Request;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Request;
@@ -58,7 +59,42 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return postResponse;
         }
 
+        public bool UpdateStatus(Guid requestId, StatusRequest statusRequest)
+        {
+            var request = _requestService.Find(requestId);
+            if (request == null)
+            {
+                throw new BadRequestException(Const.Error.NotFound);
+            }
+
+            ChangeStatus(statusRequest, request);
+
+            bool updated = _requestService.Update(request);
+            if (updated == false)
+                throw new InternalServerErrorException(Error.InternalServerError);
+
+            return updated;
+        }
+
         #region Utils
+
+        private void ChangeStatus(StatusRequest statusRequest, Request request)
+        {
+            if (statusRequest.UserStatus == RequestStatus.Approved.ToString())
+            {
+                request.RequestStatus = RequestStatus.Approved;
+            }
+            else if (statusRequest.UserStatus == RequestStatus.Pending.ToString())
+            {
+                request.RequestStatus = RequestStatus.Pending;
+            }
+            else if (statusRequest.UserStatus == RequestStatus.Rejected.ToString())
+            {
+                request.RequestStatus = RequestStatus.Rejected;
+            }
+            else
+                throw new BadRequestException(Error.BadRequest);
+        }
 
         private List<RequestPostResponse> GetPagedRequests(PagingQueryRequestPostRequest request, out int total)
         {
