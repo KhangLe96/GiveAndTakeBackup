@@ -62,5 +62,13 @@ namespace Giveaway.API.Controllers
         {
             return _requestService.UpdateStatus(requestId, request);
         }
+
+        [Authorize]
+        [HttpDelete("delete/{requestId}")]
+        [Produces("application/json")]
+        public bool Delete(Guid requestId)
+        {
+            return _requestService.Delete(requestId);
+        }
     }
 }
