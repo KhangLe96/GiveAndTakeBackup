@@ -2,6 +2,7 @@
 using AutoMapper.Configuration;
 using Giveaway.API.Shared.Requests.Image;
 using Giveaway.API.Shared.Requests.Post;
+using Giveaway.API.Shared.Requests.Request;
 using Giveaway.API.Shared.Requests.Warning;
 using Giveaway.API.Shared.Responses.Category;
 using Giveaway.API.Shared.Responses.Image;
@@ -97,15 +98,16 @@ namespace Giveaway.API
 
             #region Request
 
-            cfg.CreateMap<Request, RequestResponse>()
+            cfg.CreateMap<Request, RequestPostResponse>()
                 .ForMember(
                     destination => destination.RequestStatus,
                     map => map.MapFrom(source => source.RequestStatus.ToString())
                 );
+            cfg.CreateMap<RequestPostRequest, Request>();
 
             #endregion
 
-            #region ResponseRequest
+            #region Request
 
             cfg.CreateMap<Response, ResponseRequestResponse>();
 

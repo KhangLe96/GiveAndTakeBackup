@@ -8,7 +8,7 @@ using System.Text;
 namespace Giveaway.API.Shared.Responses.Request
 {
     [DataContract]
-    public class RequestResponse
+    public class RequestPostResponse
     {
         [DataMember(Name = "id")]
         [JsonProperty(PropertyName = "id")]
