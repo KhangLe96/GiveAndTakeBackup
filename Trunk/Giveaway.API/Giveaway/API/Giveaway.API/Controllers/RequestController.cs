@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Giveaway.API.Shared.Extensions;
+﻿using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Request;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Request;
 using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
 namespace Giveaway.API.Controllers
 {
@@ -48,6 +47,20 @@ namespace Giveaway.API.Controllers
         {
             request.UserId = User.GetUserId();
             return _requestService.Create(request);
+        }
+
+        /// <summary>
+        /// Change status of request: Approved, Pending, Rejected
+        /// </summary>
+        /// <param name="requestId"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut("status/{requestId}")]
+        [Produces("application/json")]
+        public bool UpdateStatus(Guid requestId, [FromBody]StatusRequest request)
+        {
+            return _requestService.UpdateStatus(requestId, request);
         }
     }
 }
