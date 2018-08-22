@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Giveaway.Data.Enums;
+using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Giveaway.Data.Enums;
 
 namespace Giveaway.Data.Models.Database
 {
@@ -15,6 +16,7 @@ namespace Giveaway.Data.Models.Database
         public string RequestMessage { get; set; }
 
         [Required]
+        [DefaultValue(RequestStatus.Pending)]
         public RequestStatus RequestStatus { get; set; }
 
         public virtual User User { get; set; }

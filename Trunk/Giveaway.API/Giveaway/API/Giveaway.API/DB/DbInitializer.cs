@@ -26,6 +26,32 @@ namespace Giveaway.API.DB
             //SeedImage(services);
             //SeedReport(services);
             //SeedWarning(services);
+
+            SeedRequest(services);
+        }
+
+        private static void SeedRequest(IServiceProvider services)
+        {
+            var userService = services.GetService<IUserService>();
+            var postService = services.GetService<IPostService>();
+            var requestService = services.GetService<IRequestService>();
+
+            if (requestService.All().Any()) return;
+
+            Guid UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id;
+
+            requestService.Create(new Request()
+            {
+                UserId = UserId,
+                PostId = postService.All().Where(x => x.UserId == UserId).Take(1).ToList().ElementAt(0).Id,
+                RequestMessage = "Request Message"
+            }, out _);
+            requestService.Create(new Request()
+            {
+                UserId = UserId,
+                PostId = postService.All().Where(x => x.UserId == UserId).Take(1).ToList().ElementAt(0).Id,
+                RequestMessage = "Tôi thuộc tổ chức từ thiện ABC"
+            }, out _);
         }
 
         private static void SeedWarning(IServiceProvider services)

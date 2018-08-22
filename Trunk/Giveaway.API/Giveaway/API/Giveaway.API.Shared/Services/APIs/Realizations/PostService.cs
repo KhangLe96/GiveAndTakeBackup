@@ -65,15 +65,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
             _postService.Create(post, out var isPostSaved);
             
-            //Save images of Post
-            if (isPostSaved)
-            {
-                CreateImage(post);
-            } else
-            {
-                throw new InternalServerErrorException("Internal Error");
-            }
-            
             var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
             var postResponse = Mapper.Map<PostAppResponse>(postDb);
 
