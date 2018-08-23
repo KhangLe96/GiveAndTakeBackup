@@ -1,12 +1,12 @@
 ﻿using Foundation;
 using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
-using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using System;
+using FFImageLoading.Cross;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -14,7 +14,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 	[Register("PostItemViewCell")]
     public class PostItemViewCell : MvxTableViewCell
     {
-        private CustomUIImage _imgMultiImages, _imgRequest, _imgAppeciation, _imgExtension, _imgComment, _imagePost, _imgAvatar;
+        private MvxCachedImageView _imgMultiImages, _imgRequest, _imgAppeciation, _imgExtension, _imgComment, _imagePost, _imgAvatar;
         private UIButton _btnCategory;
         private UILabel _lbUserName, _lbPostDate, _lbSeperator, _lbPostAddress, _lbPostDescription, _lbRequestCount, _lbAppreciationCount, _lbCommentCount;
         private UIView _reactionArea;
@@ -30,7 +30,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
             var set = this.CreateBindingSet<PostItemViewCell, PostItemViewModel>();
 
 			set.Bind(_imagePost)
-				.For(v => v.ImageUrl)
+				.For(v => v.ImagePath)
 				.To(vm => vm.PostImage);
 
 	        set.Bind(_imagePost.Tap())
@@ -42,7 +42,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
                 .To(vm => vm.CategoryName);
 
 	        set.Bind(_imgAvatar)
-		        .For(v => v.ImageUrl)
+		        .For(v => v.ImagePath)
 		        .To(vm => vm.AvatarUrl);
 
 	        set.Bind(_imgAvatar.Tap())

@@ -1,6 +1,6 @@
 ﻿using GiveAndTake.Core;
 using System;
-using GiveAndTake.iOS.Controls;
+using FFImageLoading.Cross;
 using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
@@ -37,9 +37,9 @@ namespace GiveAndTake.iOS.Helpers
 			return view;
 		}
 
-	    public static CustomUIImage CreateCustomImageView(nfloat height, nfloat width, string imagePath)
+	    public static MvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string imagePath)
 	    {
-	        var view = new CustomUIImage
+	        var view = new MvxCachedImageView
             {
 	            TranslatesAutoresizingMaskIntoConstraints = false,
                 Image = new UIImage(imagePath)
