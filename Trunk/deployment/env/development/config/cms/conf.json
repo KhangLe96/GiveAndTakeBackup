@@ -1,0 +1,20 @@
+{
+  "active_environment": "development",
+  "environments": {
+    "development": {
+      "API_URL": "http://192.168.51.137:8089/api/v1",
+      "API_UPLOAD_URL": "http://192.168.51.137:8090/api/"
+    },
+    "production": {
+      "API_URL": "http://192.168.51.137:8069/api/v1",
+      "API_UPLOAD_URL": "http://192.168.51.137:8070/api/"
+    },
+    "local": {
+      "API_URL": "http://localhost:8089/api/v1",
+      "API_UPLOAD_URL": "http://localhost:8090/api/"
+    },
+    "integratedAPI":{
+      "API_URL":"http://localhost:8089/api/v1"
+    }
+  }
+}
