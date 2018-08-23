@@ -85,6 +85,8 @@ export default {
           type: 'getACategory',
           payload: { id: payload.id },
         });
+        //REVIEW: should show message to inform user that he has updated successfully.
+        //Should navigate to list page
         yield put({
           type: 'getCategories',
           payload: {},

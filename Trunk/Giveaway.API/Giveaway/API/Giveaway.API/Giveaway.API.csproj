@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Content\" />
+    <Folder Include="Content\Post\15fb6359-6588-4138-976c-631bf036130b\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
