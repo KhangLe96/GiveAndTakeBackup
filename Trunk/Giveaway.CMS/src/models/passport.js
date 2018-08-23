@@ -94,7 +94,7 @@ export default {
         payload: false,
       });
       if (response && response.token !== undefined) {
-        message.success('Đăng nhập thành công.')
+        message.success('Đăng nhập thành công.');
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('currentUser', JSON.stringify(response));
         yield put({
@@ -178,6 +178,7 @@ export default {
       });
       localStorage.removeItem('isLoggedIn'); // clear login status
       localStorage.removeItem('currentUser'); // clear current User login_tokken
+      // / REVIEW: Should show message to notify user that your request has updated successfully
 
       yield put({
         type: 'notifications/resetFetchingStatusInterval',
