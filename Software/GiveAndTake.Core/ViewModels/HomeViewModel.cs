@@ -10,7 +10,7 @@ namespace GiveAndTake.Core.ViewModels
     {
         private List<PostItemViewModel> _postViewModels;
 
-        public List<PostItemViewModel> PostViewModels
+	    public List<PostItemViewModel> PostViewModels
         {
             get => _postViewModels;
             set
@@ -20,7 +20,7 @@ namespace GiveAndTake.Core.ViewModels
             }
         }
 
-        public IMvxAsyncCommand ShowFilterCommand { get; set; }
+	    public IMvxAsyncCommand ShowFilterCommand { get; set; }
         public IMvxAsyncCommand ShowShortPostCommand { get; set; }
         public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 
@@ -28,9 +28,12 @@ namespace GiveAndTake.Core.ViewModels
         {
             var posts = InitPosts();
             PostViewModels = posts.Select(post => new PostItemViewModel(post)).ToList();
-        }
-      
-        private static List<Post> InitPosts()
+
+	        ShowCategoriesCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupCategoriesViewModel>());
+		}
+
+
+	    private static List<Post> InitPosts()
         {
             return new List<Post>
             {
