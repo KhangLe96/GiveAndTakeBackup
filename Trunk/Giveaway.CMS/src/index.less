@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css?family=Lobster|Oswald:300,400|Roboto:300,400,500,600&subset=vietnamese');
+@import "~antd/lib/style/themes/default.less";
+
+html, body, :global(#root) {
+  height: 100%;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.globalSpin {
+  width: 100%;
+  margin: 40px 0 !important;
+}
+
+:global {
+  .ant-dropdown {
+    box-shadow: @box-shadow-base;
+  }
+}
+
+:global {
+  @media @desktop {
+    .fixed_width_content {
+      width: @main-max-width;
+    }
+  }
+  a.ghost_link {
+    color: @white;
+  }
+  a.flex_vcenter_link {
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+  .icon {
+    color: @gray-icon;
+    font-size: 16px;
+    display: block;
+  }
+
+  .no_border_wrapper {
+  }
+  .ant-select-dropdown-menu-item-active, .ant-select-dropdown-menu-item-selected {
+    font-weight: 500 !important;
+  }
+}
+
+:global {
+
+  .pull-left {
+    label{
+      float: left;
+    }
+  }
+
+  .search-btn-container {
+    .search-btn {
+      margin-top: 3px;
+      background-color: @orange !important;
+      border-color: @orange !important;
+      color: white !important;
+      padding: 0 20px;
+      height: 30px;
+    }
+    .ant-btn-clicked:after {
+      border-color: @yellow;
+      color: @yellow;
+    }
+  }
+
+  .custom_grid {
+    border: 1px solid @border-color-base;
+    border-radius: 4px;
+    div[class^='ant-col-'] {
+      border-right: 1px solid @border-color-base;
+      border-bottom: 1px solid @border-color-base;
+    }
+    div[class^='ant-col-']:last-child {
+      border-right: none;
+      border-bottom: 1px solid @border-color-base;
+    }
+    div[class^='ant-row-']:last-child {
+      div[class^='ant-col-'] {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .ant-tooltip-inner {
+    background-color: @primary-color !important;
+    max-width: 300px !important;
+  }
+  .ant-tooltip-arrow {
+    border-top-color: @primary-color !important;
+  }
+
+  .containerHeader {
+    background: #fff;
+    padding: 5px 20px;
+    margin-bottom: 20px !important;
+    font-size: 22px;
+    font-weight: bolder;
+    border: #efefef @border-style-base @border-width-base;
+    border-radius: 5px;
+  }
+
+  .containerBody {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+  }
+
+  .rightButton {
+    display: inline-block;
+    float: right;
+  }
+
+  h1{
+    font-size: 22px;
+    font-weight: bolder;
+    display: inline-block;
+  }
+}

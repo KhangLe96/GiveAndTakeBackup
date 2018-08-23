@@ -1,0 +1,91 @@
+/* use css to set position of modal */
+.vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.vertical-center-modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+
+.vertical-center-modal .ant-modal {
+  display: inline-block;
+  vertical-align: middle;
+  top: 0;
+  text-align: left;
+}
+
+.button_login {
+  margin-right: 20px;
+  color: @white;
+}
+
+.login {
+  padding: 25px;
+  @media @smartphone {
+    padding: 0;
+  }
+  .title {
+    font-weight: 500;
+    font-size: 25px;
+    margin-bottom: 10px;
+    color: @black;
+    text-align: center;
+  }
+  .input {
+    input, button {
+      height: 50px;
+      width: 100%;
+    }
+    margin-bottom: 20px;
+    .remember_account {
+      a {
+        float: right;
+      }
+    }
+    .button_login_action {
+      background: @link-active-color;
+    }
+  }
+  .bottom_title {
+    text-align: center;
+    margin-bottom: 50px;
+    span {
+      color: @gray-text;
+      margin-right: 5px;
+    }
+  }
+  .input_facebook {
+    margin-top: -8px;
+    button {
+      width: 100%;
+      background: #435b9a;
+      height: 50px;
+      strong {
+        margin-right: 30px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .or {
+    border-top: @gray-line solid 1px;
+    text-align: center;
+    margin-top: 37px;
+    p {
+      position: relative;
+      background: @white;
+      text-align: center;
+      display: inline;
+      top: -11px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+}
+

@@ -1,0 +1,24 @@
+@import "../../../themes/default";
+
+.weekBox {
+  display: inline-block;
+  .week {
+    display: grid;
+    grid-auto-rows: auto auto;
+    grid-template-columns: 100%;
+    width: 100px;
+    border-radius: 5px;
+    border: @border-color-base dashed 1px;
+    padding: 5px 10px;
+    margin: 5px;
+    background: @light-gray;
+    .current_week {
+      font-weight: 500;
+      color: #000c17;
+      font-size: 16px;
+    }
+    .date{
+      font-size: 12px;
+    }
+  }
+}
