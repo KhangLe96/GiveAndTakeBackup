@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Helpers;
+using Giveaway.API.Shared.Models;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Responses;
@@ -142,9 +144,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
         #region Utils
+
         private void CreateImage(Post post)
         {
-            var imageDBs = InitListImageDB(post);
+            var imageBase64Requests = InitImageBase64Requests(post);
+            var imageUrls = ConvertBase64(imageBase64Requests);
+            var imageDBs = InitListImageDB(post.Id, imageUrls);
+
             _imageService.CreateMany(imageDBs, out var isImageSaved);
 
             if (!isImageSaved)
@@ -153,16 +159,49 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<Image> InitListImageDB(Post post)
+        private List<ImageBase64Request> InitImageBase64Requests(Post post)
+        {
+            var requests = new List<ImageBase64Request>();
+            foreach(var image in post.Images)
+            {
+                requests.Add(new ImageBase64Request()
+                {
+                    Id = post.Id.ToString(),
+                    Type = "Post",
+                    File = image.ImageUrl   
+                });
+            }
+
+            return requests;
+        }
+
+        private List<string> ConvertBase64(List<ImageBase64Request> requests)
+        {
+            var imageUrls = new List<string>();
+            if (requests != null)
+            {
+                foreach (var request in requests)
+                {
+                    var url = UploadImageHelper.PostBase64Image(request);
+                    imageUrls.Add(url);
+                }
+
+                return imageUrls;
+            }
+
+            return imageUrls;
+        }
+
+        private List<Image> InitListImageDB(Guid postId, List<string> imageUrls)
         {
             var imageList = new List<Image>();
-            foreach(var image in post.Images)
+            foreach(var image in imageUrls)
             {
                 imageList.Add(new Image()
                 {
                     Id = Guid.NewGuid(),
-                    PostId = post.Id,
-                    ImageUrl = image.ImageUrl,
+                    PostId = postId,
+                    ImageUrl = image,
                 });
             }
 
