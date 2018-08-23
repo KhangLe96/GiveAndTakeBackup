@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import { message } from 'antd/lib/index';
+import { message } from 'antd';
 import { fetch, deletePost, changeStatus, getProfile } from '../services/user';
 import { TABLE_PAGESIZE } from '../common/constants';
 
@@ -32,6 +32,8 @@ export default {
     * changeStatus({ payload, callback }, { call, put }) {
       const response = yield call(changeStatus, payload);
       if (response) {
+        // / REVIEW: Should show message to notify user that your request has updated successfully
+        // / Example: message.success('Thay đổi trạng thái tài khoản thành công.');
         yield put({
           type: 'fetch',
           payload: {
