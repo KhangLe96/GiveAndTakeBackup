@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
+using Giveaway.API.Shared.Models.DTO;
 using Giveaway.API.Shared.Requests.Image;
 using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Requests.Request;
@@ -25,9 +26,9 @@ namespace Giveaway.API
 
             #region User
 
-            cfg.CreateMap<User, Giveaway.API.Shared.Models.DTO.User>();
-            cfg.CreateMap<User, UserPostResponse>();
-            cfg.CreateMap<User, UserReportResponse>()
+            cfg.CreateMap<Data.Models.Database.User, Giveaway.API.Shared.Models.DTO.User>();
+            cfg.CreateMap<Data.Models.Database.User, UserPostResponse>();
+            cfg.CreateMap<Data.Models.Database.User, UserReportResponse>()
                 .ForMember(
                     destination => destination.Status,
                     map => map.MapFrom(source => source.EntityStatus.ToString()
@@ -37,9 +38,9 @@ namespace Giveaway.API
 
             #region Category
 
-            cfg.CreateMap<Category, Shared.Models.DTO.Category>();
-            cfg.CreateMap<Category, CategoryResponse>();
-            cfg.CreateMap<CategoryResponse, Category>();
+            cfg.CreateMap<Data.Models.Database.Category, Shared.Models.DTO.Category>();
+            cfg.CreateMap<Data.Models.Database.Category, CategoryResponse>();
+            cfg.CreateMap<CategoryResponse, Data.Models.Database.Category>();
 
             #endregion
 
@@ -70,6 +71,7 @@ namespace Giveaway.API
 
             cfg.CreateMap<Image, ImageResponse>();
             cfg.CreateMap<ImageRequest, Image>();
+            cfg.CreateMap<ImageDTO, Image>();
 
             #endregion
 
