@@ -1,18 +1,16 @@
 ﻿using Android.App;
-using Android.OS;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
-using MvvmCross.Platforms.Android.Views;
 
 namespace GiveAndTake.Droid.Views.Base
 {
-	[MvxActivityPresentation]
+    [MvxActivityPresentation]
 	[Activity(Label = "View for HomeViewModel")]
-	public class MasterView : MvxActivity
+	public class MasterView : BaseActivity
 	{
-		protected override void OnCreate(Bundle bundle)
-		{
-			base.OnCreate(bundle);
-			SetContentView(Resource.Layout.MasterView);
-		}
+	    protected override int LayoutId => Resource.Layout.MasterView;
+
+        protected override void InitView()
+	    {
+	    }
 	}
 }

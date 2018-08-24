@@ -1,42 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.Content.PM;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using MvvmCross.Droid.Support.V4;
-using MvvmCross.Platforms.Android.Views;
+﻿using Android.App;
+using MvvmCross.Droid.Support.V7.AppCompat;
 
 namespace GiveAndTake.Droid.Views.Base
-{    
-	[Activity]
+{
+    [Activity]
+    public abstract class BaseActivity : MvxAppCompatActivity
+    {
+        protected abstract int LayoutId { get; }
 
-	public abstract class BaseActivity :MvxActivity
-	{
-		protected abstract int LayoutId { get; }
-		
-		protected override void OnViewModelSet()
-		{
+        protected override void OnViewModelSet()
+        {
+            base.OnViewModelSet();
 
-			base.OnViewModelSet();
+            if (ViewModel != null)
+            {
+                SetContentView(LayoutId);
+                InitView();
+                CreateBinding();
+            }
+        }
 
-			if (ViewModel != null)
-			{
+        protected abstract void InitView();
 
-				SetContentView(LayoutId);
-				InitView();
-				CreateBinding();
-			}
-		}
-
-		protected abstract void InitView();
-
-		protected virtual void CreateBinding() { }
-	}
+        protected virtual void CreateBinding()
+        {
+        }
+    }
 }
