@@ -4,14 +4,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 
 namespace Giveaway.API.Shared.Helpers
 {
     public static class ContentHelper
-	{
-		private static IHostingEnvironment Environment => ServiceProviderHelper.Current.GetService<IHostingEnvironment>();
+    {
+        private static IHostingEnvironment Environment => ServiceProviderHelper.Current.GetService<IHostingEnvironment>();
 
         public static IEnumerable<string> ReadDirectory(string dir)
         {
@@ -48,6 +50,12 @@ namespace Giveaway.API.Shared.Helpers
             return pageUri.Scheme + "://" + pageUri.Host + ":" + pageUri.Port + "/content/" + type + "/" + id + "/" + fileName;
         }
 
+        public static string GetLocalImageUrl(string type, string id, string fileName)
+        {
+            var pageUri = GetUri();
+            return Path.Combine(Environment.ContentRootPath, "Content", type, id, fileName);
+        }
+
         public static Uri GetUri()
         {
             var contextAccessor = ServiceProviderHelper.Current.GetService<IHttpContextAccessor>();
@@ -68,10 +76,36 @@ namespace Giveaway.API.Shared.Helpers
             return returnValue;
         }
 
-		public static string GetPath(string dir)
-		{
-			var path = Path.Combine(GetRootPath(), dir);
-			return CreateIfNotExist(path);
-		}
-	}
+        public static string GetPath(string dir)
+        {
+            var path = Path.Combine(GetRootPath(), dir);
+            return CreateIfNotExist(path);
+        }
+
+        public static Image Resize(Image image, int newWidth, int maxHeight, bool onlyResizeIfWider)
+        {
+            if (onlyResizeIfWider && image.Width <= newWidth) newWidth = image.Width;
+
+            var newHeight = image.Height * newWidth / image.Width;
+            if (newHeight > maxHeight)
+            {
+                // Resize with height instead  
+                newWidth = image.Width * maxHeight / image.Height;
+                newHeight = maxHeight;
+            }
+
+            var res = new Bitmap(newWidth, newHeight);
+
+            using (var graphic = Graphics.FromImage(res))
+            {
+                graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphic.SmoothingMode = SmoothingMode.HighQuality;
+                graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphic.CompositingQuality = CompositingQuality.HighQuality;
+                graphic.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+
+            return res;
+        }
+    }
 }
