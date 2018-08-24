@@ -17,4 +17,8 @@
   <dimen name="button_small_height">12dp</dimen>
   <dimen name="button_extension_height">3dp</dimen>
   <dimen name="TabNavigationHeight">40dp</dimen>
+  <dimen name="popup_line_width">300dp</dimen>
+  <dimen name="popup_line_height">4dp</dimen>
+  <dimen name="popup_button_width">150dp</dimen>
+  <dimen name="popup_button_height">30dp</dimen>
 </resources>

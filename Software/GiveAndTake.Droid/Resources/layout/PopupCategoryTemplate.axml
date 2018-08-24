@@ -8,5 +8,6 @@
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		local:MvxBind="Text CategoryName"/>
+		local:MvxBind="Text CategoryName"
+	android:layout_margin="@dimen/margin_short"/>
 </LinearLayout>

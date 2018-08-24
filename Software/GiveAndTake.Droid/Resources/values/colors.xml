@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2c3e50</color>
-    <color name="colorPrimaryDark">#1B3147</color>
+    <color name="colorPrimary">#3fb8ea</color>
+    <color name="colorPrimaryDark">#0d70b2</color>
     <color name="colorAccent">#3498db</color>
 	<color name="colorSeparateHeaderLine">#cccccc</color>
 	<color name="black">#000</color>
-	<color name="white">#000</color>
+	<color name="white">#fff</color>
+	<color name="line">#7dbef4</color>
+	<color name="default_text_color">#7dbef4</color>
+	<color name="default_popup_text_color">#cccccc</color>
   <color name="tab_navigation_background">#FFFFFF</color>
   <color name="tab_navigation_chosen_background">#1CB8EA</color>
 </resources>

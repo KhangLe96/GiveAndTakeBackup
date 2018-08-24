@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center">
+	<ImageView
+		android:layout_width="@dimen/popup_line_width"
+		android:layout_height="@dimen/popup_line_height"
+		android:src="@drawable/popup_line"
+	android:layout_marginTop="@dimen/margin_normal"
+	android:layout_marginBottom="@dimen/margin_short"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,9 +26,12 @@
         local:MvxBind="ItemsSource CategoryViewModels"
         local:MvxItemTemplate="@layout/popupcategorytemplate" />
 	<Button
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:textColor="@color/black"
+		android:layout_width="@dimen/popup_button_width"
+		android:layout_height="@dimen/popup_button_height"
+		android:textColor="@color/white"
 		android:textSize="@dimen/MediumTextSize"
-		android:text="Xong" />
+		android:text="Xong"
+		android:background="@drawable/popup_button_bg"
+	android:layout_marginBottom="@dimen/margin_normal"
+	android:textAllCaps="false"/>
 </LinearLayout>
