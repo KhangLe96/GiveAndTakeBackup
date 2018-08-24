@@ -105,13 +105,13 @@ namespace Giveaway.API.DB
             imageService.Create(new Image()
             {
                 PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
-                ImageUrl = "test1",
+                //ImageUrl = "test1",
             }, out _);
 
             imageService.Create(new Image()
             {
                 PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
-                ImageUrl = "test2",
+                //ImageUrl = "test2",
             }, out _);
         }
 
@@ -125,7 +125,7 @@ namespace Giveaway.API.DB
                 ProvinceCityName = "daklak",
                 CreatedTime = DateTimeOffset.Now,
                 UpdatedTime = DateTimeOffset.UtcNow,
-            }, out _); 
+            }, out _);
         }
 
         private static void SeedPost(IServiceProvider services)
@@ -183,9 +183,9 @@ namespace Giveaway.API.DB
         {
             var roleService = services.GetService<IRoleService>();
             if (roleService.All().Any()) return;
-            roleService.Create(new Role {RoleName = Const.Roles.User}, out _);
-            roleService.Create(new Role {RoleName = Const.Roles.Admin }, out _);
-            roleService.Create(new Role {RoleName = Const.Roles.SuperAdmin }, out _);
+            roleService.Create(new Role { RoleName = Const.Roles.User }, out _);
+            roleService.Create(new Role { RoleName = Const.Roles.Admin }, out _);
+            roleService.Create(new Role { RoleName = Const.Roles.SuperAdmin }, out _);
         }
 
         private static void SeedAdmin(IServiceProvider services)
