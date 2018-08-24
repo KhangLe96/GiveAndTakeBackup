@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="MvvmCross" Version="6.1.2" />
+    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.1.2" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.3.840" />
   </ItemGroup>
 

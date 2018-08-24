@@ -10,4 +10,10 @@
 		android:layout_height="wrap_content"
 		local:MvxBind="Text CategoryName"
 	android:layout_margin="@dimen/margin_short"/>
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:layout_margin="@dimen/margin_short"
+		android:background="#0fbcf9"
+		local:MvxBind="Visibility Visibility(!IsLastViewInList)"/>
 </LinearLayout>

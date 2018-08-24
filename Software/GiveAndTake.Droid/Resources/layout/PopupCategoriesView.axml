@@ -17,7 +17,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/MediumTextSize"
 		android:textStyle="bold"
-        android:text="Lọc Theo Khu Vực" />
+        android:text="Phân Loại" />
     <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"

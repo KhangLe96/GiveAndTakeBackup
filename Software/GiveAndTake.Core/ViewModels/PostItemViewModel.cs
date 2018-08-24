@@ -138,16 +138,25 @@ namespace GiveAndTake.Core.ViewModels
             }
         }
 
-        #endregion
+	    private bool _isLastViewInList;
 
-        #region Constructor
+	    public bool IsLastViewInList
+	    {
+		    get => _isLastViewInList;
+		    set => SetProperty(ref _isLastViewInList, value);
+	    }
 
-       public PostItemViewModel(Post post)
-       {
-           _post = post;
-           Init();
-           InitCommand();
-        }
+		#endregion
+
+		#region Constructor
+
+		public PostItemViewModel(Post post, bool isLast = false)
+		{
+			_post = post;
+			Init();
+			InitCommand();
+			IsLastViewInList = isLast;
+		}
 
         private void Init()
         {
