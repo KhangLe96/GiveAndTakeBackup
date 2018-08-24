@@ -2,7 +2,7 @@
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class PostDetailViewModel : BaseViewModel
-	{
-	}
+    public class PostDetailViewModel : BaseViewModel
+    {
+    }
 }

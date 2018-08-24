@@ -2,7 +2,8 @@
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class UserProfileViewModel : BaseViewModel
-	{
-	}
+    public class UserProfileViewModel : BaseViewModel
+    {
+
+    }
 }
