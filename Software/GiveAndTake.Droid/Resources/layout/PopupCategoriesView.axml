@@ -9,8 +9,8 @@
 		android:layout_width="@dimen/popup_line_width"
 		android:layout_height="@dimen/popup_line_height"
 		android:src="@drawable/popup_line"
-	android:layout_marginTop="@dimen/margin_normal"
-	android:layout_marginBottom="@dimen/margin_short"/>
+		android:layout_marginTop="@dimen/margin_normal"
+		android:layout_marginBottom="@dimen/margin_short"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_short"
-        local:MvxBind="ItemsSource CategoryViewModels"
+        local:MvxBind="ItemsSource CategoryViewModels; ItemClick ItemClickCommand"
         local:MvxItemTemplate="@layout/popupcategorytemplate" />
 	<Button
 		android:layout_width="@dimen/popup_button_width"
@@ -32,6 +32,7 @@
 		android:textSize="@dimen/MediumTextSize"
 		android:text="Xong"
 		android:background="@drawable/popup_button_bg"
-	android:layout_marginBottom="@dimen/margin_normal"
-	android:textAllCaps="false"/>
+		android:layout_marginBottom="@dimen/margin_normal"
+		android:textAllCaps="false"
+		local:MvxBind="Click FindPostCommand"/>
 </LinearLayout>

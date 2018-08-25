@@ -8,6 +8,8 @@ namespace GiveAndTake.Droid.Helpers
 {
 	public static class ColorHelper
 	{
+		public static Color Default => ToColor("e4e4e4");
+
 		public static Color FromColorId(int colorId)
 		{
 			return new Color(ContextCompat.GetColor(Application.Context, colorId));

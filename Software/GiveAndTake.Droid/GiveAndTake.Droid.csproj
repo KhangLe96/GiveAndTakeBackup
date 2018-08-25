@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Controls\CustomCircleImageView.cs" />
     <Compile Include="Controls\CustomRoundedImageView.cs" />
+    <Compile Include="Controls\CustomTextView.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />

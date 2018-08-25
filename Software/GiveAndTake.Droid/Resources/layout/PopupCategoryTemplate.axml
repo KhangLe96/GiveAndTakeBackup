@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 	android:gravity="center">
-	<TextView
+	<giveandtake.droid.controls.CustomTextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		local:MvxBind="Text CategoryName"
+		local:MvxBind="Text CategoryName; IsSelected IsSelected"
 	android:layout_margin="@dimen/margin_short"/>
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
 		android:layout_margin="@dimen/margin_short"
-		android:background="#0fbcf9"
+		android:background="@color/divider"
 		local:MvxBind="Visibility Visibility(!IsLastViewInList)"/>
 </LinearLayout>

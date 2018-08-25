@@ -1,6 +1,7 @@
 ﻿using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Widget;
 using GiveAndTake.Core.ViewModels;
 using MvvmCross.Droid.Support.Design;
 using MvvmCross.Platforms.Android.Binding.BindingContext;

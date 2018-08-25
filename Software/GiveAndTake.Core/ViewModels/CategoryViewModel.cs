@@ -26,14 +26,29 @@ namespace GiveAndTake.Core.ViewModels
 	    public bool IsLastViewInList
 	    {
 		    get => _isLastViewInList;
-		    set => SetProperty(ref _isLastViewInList, value);
+			set
+			{
+				_isLastViewInList = value;
+				RaisePropertyChanged(() => IsLastViewInList);
+			}
 		}
 
-	    public CategoryViewModel(Category category, bool isLast = false)
+	    private bool _isSelected;
+
+	    public bool IsSelected
+	    {
+		    get => _isSelected;
+		    set
+		    {
+			    _isSelected = value; 
+			    RaisePropertyChanged(() => IsSelected);
+		    }
+	    }
+
+	    public CategoryViewModel(Category category)
 		{
 			Id = category.Id;
 			CategoryName = category.CategoryName;
-			IsLastViewInList = isLast;
 		}
 	}
 }
