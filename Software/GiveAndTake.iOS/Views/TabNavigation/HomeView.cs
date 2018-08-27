@@ -28,6 +28,12 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			InitPostsTableView();
 		}
 
+		public override void ViewWillAppear(bool animated)
+		{
+			base.ViewWillAppear(animated);
+			NavigationController?.SetNavigationBarHidden(true, animated);
+		}
+
 		private void InitFilterButton()
 		{
 			_btnFilter = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/filter_button");

@@ -1,5 +1,6 @@
 ﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels
