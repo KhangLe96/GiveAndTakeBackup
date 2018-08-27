@@ -9,8 +9,8 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 namespace GiveAndTake.Droid.Views
 {
 	[MvxDialogFragmentPresentation]
-	[Register(nameof(PopupCategoriesView))]
-	public class PopupCategoriesView : MvxBottomSheetDialogFragment<PopupCategoriesViewModel>
+	[Register(nameof(PopupLocationFilter))]
+	public class PopupLocationFilter : MvxBottomSheetDialogFragment<PopupLocationFilterViewModel>
 	{
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{

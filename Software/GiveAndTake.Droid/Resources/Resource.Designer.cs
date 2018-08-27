@@ -7605,7 +7605,7 @@ namespace GiveAndTake.Droid
 			public const int right_side = 2131493078;
 			
 			// aapt resource value: 0x7f0c00df
-			public const int rvCategories = 2131493087;
+			public const int rvItems = 2131493087;
 			
 			// aapt resource value: 0x7f0c00c4
 			public const int rvPosts = 2131493060;
@@ -8123,10 +8123,10 @@ namespace GiveAndTake.Droid
 			public const int notification_template_part_time = 2130968644;
 			
 			// aapt resource value: 0x7f040045
-			public const int PopupCategoriesView = 2130968645;
+			public const int PopupItemTemplate = 2130968645;
 			
 			// aapt resource value: 0x7f040046
-			public const int PopupCategoryTemplate = 2130968646;
+			public const int PopupView = 2130968646;
 			
 			// aapt resource value: 0x7f040047
 			public const int PostDetailView = 2130968647;

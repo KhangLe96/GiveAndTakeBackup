@@ -1,11 +1,10 @@
 ﻿using Android.Runtime;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
 using Android.Views;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Views.Base;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.Droid.Support.V7.RecyclerView;
-using MvvmCross.Platforms.Android.Binding.BindingContext;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views
@@ -14,6 +13,7 @@ namespace GiveAndTake.Droid.Views
 	[Register(nameof(HomeView))]
 	public class HomeView : BaseFragment
 	{
+		private MvxRecyclerView rvPopupItems;
 		protected override int LayoutId => Resource.Layout.HomeView;
 	}
 }

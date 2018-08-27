@@ -17,14 +17,14 @@
         android:textColor="@color/black"
         android:textSize="@dimen/MediumTextSize"
 		android:textStyle="bold"
-        android:text="Phân Loại" />
+        local:MvxBind="Text Title" />
     <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
-        android:id="@+id/rvCategories"
+        android:id="@+id/rvItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_short"
-        local:MvxBind="ItemsSource CategoryViewModels; ItemClick ItemClickCommand"
-        local:MvxItemTemplate="@layout/popupcategorytemplate" />
+		local:MvxBind="ItemsSource PopupItemViewModels; ItemClick ItemClickCommand"
+        local:MvxItemTemplate="@layout/popupitemtemplate" />
 	<Button
 		android:layout_width="@dimen/popup_button_width"
 		android:layout_height="@dimen/popup_button_height"
@@ -34,5 +34,5 @@
 		android:background="@drawable/popup_button_bg"
 		android:layout_marginBottom="@dimen/margin_normal"
 		android:textAllCaps="false"
-		local:MvxBind="Click FindPostCommand"/>
+		local:MvxBind="Click ClosePopupCommand"/>
 </LinearLayout>

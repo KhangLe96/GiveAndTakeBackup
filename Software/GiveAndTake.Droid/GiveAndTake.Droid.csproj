@@ -77,6 +77,8 @@
     <Compile Include="Views\HomeView.cs" />
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\PopupCategoriesView.cs" />
+    <Compile Include="Views\PopupLocationFilter.cs" />
+    <Compile Include="Views\PopupShortFilterView.cs" />
     <Compile Include="Views\PostDetailView.cs" />
     <Compile Include="Views\UserProfileView.cs" />
     <Compile Include="Views\TabNavigation.cs" />
@@ -302,12 +304,7 @@
     <AndroidResource Include="Resources\drawable\profile_on.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\PopupCategoriesView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\PopupCategoryTemplate.axml">
+    <AndroidResource Include="Resources\layout\PopupView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -319,6 +316,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\post_divider.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupItemTemplate.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -12,7 +12,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 	{
 		private List<PostItemViewModel> _postViewModels;
 		private readonly List<Post> _posts;
-		private Category currentCategory;
+		private string currentCategory, currentShortFilter, currentLocationFilter;
 
 		public List<PostItemViewModel> PostViewModels
 		{
@@ -33,16 +33,50 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_posts = InitPosts();
 			PostViewModels = _posts.Select(post => new PostItemViewModel(post, IsLast(post))).ToList();
 			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
+			ShowShortPostCommand = new MvxAsyncCommand(ShowShortFilterView);
+			ShowFilterCommand = new MvxAsyncCommand(ShowLocationFilterView);
 		}
 
-		private async Task<Category> ShowCategories()
+		private async Task<string> ShowCategories()
 		{
-			var c = await NavigationService.Navigate<PopupCategoriesViewModel, Category, Category>(currentCategory);
-			if (c != null)
+			if (currentCategory == null)
 			{
-				currentCategory = c;
+				currentCategory = AppConstants.DefaultCategory;
 			}
-			return c;
+			var category = await NavigationService.Navigate<PopupCategoriesViewModel, string, string>(currentCategory);
+			if (category != null)
+			{
+				currentCategory = category;
+			}
+			return category;
+		}
+
+		private async Task<string> ShowShortFilterView()
+		{
+			if (currentShortFilter == null)
+			{
+				currentShortFilter = AppConstants.DefaultShortFilter;
+			}
+			var shortFilter = await NavigationService.Navigate<PopupShortFilterViewModel, string, string>(currentShortFilter);
+			if (shortFilter != null)
+			{
+				currentShortFilter = shortFilter;
+			}
+			return shortFilter;
+		}
+
+		private async Task<string> ShowLocationFilterView()
+		{
+			if (currentLocationFilter == null)
+			{
+				currentLocationFilter = AppConstants.DefaultShortFilter;
+			}
+			var locationFilter = await NavigationService.Navigate<PopupLocationFilterViewModel, string, string>(currentLocationFilter);
+			if (locationFilter != null)
+			{
+				currentLocationFilter = locationFilter;
+			}
+			return locationFilter;
 		}
 
 		private bool IsLast(Post post) => _posts.GetPosition(post) + 1 == _posts.Count;
