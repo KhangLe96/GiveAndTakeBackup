@@ -1,12 +1,10 @@
-﻿//using Facebook.CoreKit;
-//using Facebook.LoginKit;
-
-using System;
+﻿using System;
 using Facebook.CoreKit;
 using Facebook.LoginKit;
 using Foundation;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
+using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
@@ -51,7 +49,7 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitLogoImage()
 		{
-			_logoImage = new UIImageView { TranslatesAutoresizingMaskIntoConstraints = false, Image = UIImage.FromFile("Images/LoginLogo.png") };
+			_logoImage = new UIImageView { TranslatesAutoresizingMaskIntoConstraints = false, Image = UIImage.FromFile(ImageHelper.LoginLogo) };
 
 			_logoImage.AddConstraints(new[]
 			{
@@ -84,7 +82,7 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.NoAttribute, 1, 100)
 			});
 
-			_customedLoginFacebookButton.SetBackgroundImage(new UIImage("Images/facebook_button"), UIControlState.Normal);
+			_customedLoginFacebookButton.SetBackgroundImage(new UIImage(ImageHelper.FacebookButton), UIControlState.Normal);
 
 			View.Add(_customedLoginFacebookButton);
 
@@ -112,7 +110,7 @@ namespace GiveAndTake.iOS.Views
 
 			});
 
-			_customedLoginGoogleButton.SetBackgroundImage(new UIImage("Images/google_button"), UIControlState.Normal);
+			_customedLoginGoogleButton.SetBackgroundImage(new UIImage(ImageHelper.GoogleButton), UIControlState.Normal);
 
 			View.Add(_customedLoginGoogleButton);
 

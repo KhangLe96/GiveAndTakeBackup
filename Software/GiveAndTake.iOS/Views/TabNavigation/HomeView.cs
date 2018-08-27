@@ -1,5 +1,4 @@
-﻿using GiveAndTake.Core.ViewModels;
-using GiveAndTake.Core.ViewModels.TabNavigation;
+﻿using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
@@ -14,7 +13,9 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		WrapInNavigationController = true)]
 	public class HomeView : BaseView
 	{
-		private UIButton _btnFilter, _btnSort, _btnCategory;
+		private UIButton _btnFilter;
+		private UIButton _btnSort;
+		private UIButton _btnCategory;
 		private UISearchBar _searchBar;
 		private UITableView _postsTableView;
 		private PostItemTableViewSource _postTableViewSource;

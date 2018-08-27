@@ -29,9 +29,10 @@ namespace GiveAndTake.iOS.Helpers
         public static nfloat PostCellHeight { get; private set; }
 	    public static nfloat ButtonTextSize { get; set; }
 	    public static nfloat SeperatorHeight { get; set; }
+		public static nfloat PostPhotoCornerRadius { get; set; }
 
 
-	    public static void InitStaticVariable()
+		public static void InitStaticVariable()
 		{
 			SmallTextSize = 11 * Rate;
 			ButtonTextSize = 12 * Rate;
@@ -54,6 +55,7 @@ namespace GiveAndTake.iOS.Helpers
 		    ButtonSmallHeight = 12 * Rate;
 		    ButtonExtensionHeight = 3 * Rate;
 		    ButtonExtensionWidth = 10 * Rate;
+			PostPhotoCornerRadius = 7 * Rate;
 		    SeperatorHeight = 0.5f * Rate;
 		    PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
 		}

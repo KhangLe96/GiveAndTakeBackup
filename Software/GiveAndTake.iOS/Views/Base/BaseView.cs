@@ -17,6 +17,7 @@ namespace GiveAndTake.iOS.Views.Base
 
 			ResolutionHelper.RefreshStaticVariable();
 			DimensionHelper.InitStaticVariable();
+			ImageHelper.InitStaticVariable();
 
 			base.ViewDidLoad();
 

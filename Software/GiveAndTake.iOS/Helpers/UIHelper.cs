@@ -20,38 +20,35 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
-		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor)
+		public static UIView CreateView(nfloat height, nfloat width)
 		{
-			var view = new UIView
-			{
-				TranslatesAutoresizingMaskIntoConstraints = false,
-				BackgroundColor = backgroundColor
-			};
+			var view = new UIView { TranslatesAutoresizingMaskIntoConstraints = false };
 
-			view.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
-				NSLayoutConstraint.Create(view, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
-			});
+			AddWidthHeight(height, width, view);
 
 			return view;
 		}
 
-		public static MvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string imagePath)
+		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor)
 		{
-			var view = new MvxCachedImageView
+			var view = CreateView(height, width);
+			view.BackgroundColor = backgroundColor;
+			return view;
+		}
+
+		public static MvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string imagePath, nfloat cornerRadius = default(nfloat))
+		{
+			var imageView = new MvxCachedImageView
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				Image = new UIImage(imagePath)
 			};
+			imageView.Layer.CornerRadius = cornerRadius;
+			imageView.ClipsToBounds = true;
 
-			view.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
-				NSLayoutConstraint.Create(view, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
-			});
+			AddWidthHeight(height, width, imageView);
 
-			return view;
+			return imageView;
 		}
 
 		public static UISearchBar CreateSearchBar(nfloat height, nfloat width)
@@ -67,11 +64,7 @@ namespace GiveAndTake.iOS.Helpers
 			searchBar.Layer.BorderColor = ColorHelper.BlueColor.CGColor;
 			searchBar.Layer.BorderWidth = DimensionHelper.SeperatorHeight;
 
-			searchBar.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(searchBar, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
-				NSLayoutConstraint.Create(searchBar, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
-			});
+			AddWidthHeight(height, width, searchBar);
 
 			return searchBar;
 		}
@@ -83,11 +76,7 @@ namespace GiveAndTake.iOS.Helpers
 				TranslatesAutoresizingMaskIntoConstraints = false
 			};
 
-			button.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(button, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , height),
-				NSLayoutConstraint.Create(button, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0 , width)
-			});
+			AddWidthHeight(height, width, button);
 
 			button.SetBackgroundImage(new UIImage(imagePath), UIControlState.Normal);
 			return button;
@@ -102,17 +91,7 @@ namespace GiveAndTake.iOS.Helpers
 				SeparatorColor = UIColor.Clear
 			};
 
-			if (width > 0)
-			{
-				tableView.AddConstraint(NSLayoutConstraint.Create(tableView, NSLayoutAttribute.Width,
-					NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, width));
-			}
-
-			if (height > 0)
-			{
-				tableView.AddConstraint(NSLayoutConstraint.Create(tableView, NSLayoutAttribute.Height,
-					NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, height));
-			}
+			AddWidthHeight(height, width, tableView);
 
 			return tableView;
 		}
@@ -135,6 +114,27 @@ namespace GiveAndTake.iOS.Helpers
 					return UIFont.FromName("HelveticaNeue-Italic", fontSize);
 				default:
 					return UIFont.FromName("HelveticaNeue", fontSize);
+			}
+		}
+
+		private static void AddWidthHeight(nfloat height, nfloat width, UIView view)
+		{
+			if (width != 0)
+			{
+				view.AddConstraints(new[]
+				{
+					NSLayoutConstraint.Create(view, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
+						NSLayoutAttribute.NoAttribute, 0, width)
+				});
+			}
+
+			if (height != 0)
+			{
+				view.AddConstraints(new[]
+				{
+					NSLayoutConstraint.Create(view, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
+						NSLayoutAttribute.NoAttribute, 0, height)
+				});
 			}
 		}
 	}

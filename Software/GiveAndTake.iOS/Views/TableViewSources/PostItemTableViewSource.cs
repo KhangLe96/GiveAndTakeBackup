@@ -11,8 +11,7 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 	{
 		private const string CellId = "PostItemViewCell";
 
-		public PostItemTableViewSource(UITableView tableView)
-			: base(tableView)
+		public PostItemTableViewSource(UITableView tableView) : base(tableView)
 		{
 			tableView.RegisterClassForCellReuse(typeof(PostItemViewCell), new NSString(CellId));
 		}

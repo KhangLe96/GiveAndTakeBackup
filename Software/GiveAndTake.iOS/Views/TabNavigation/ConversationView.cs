@@ -17,20 +17,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.Add(testLabel);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(testLabel,
-					NSLayoutAttribute.CenterX,
-					NSLayoutRelation.Equal,
-					View,
-					NSLayoutAttribute.CenterX,
-					1,
-					0),
-				NSLayoutConstraint.Create(testLabel,
-					NSLayoutAttribute.CenterY,
-					NSLayoutRelation.Equal,
-					View,
-					NSLayoutAttribute.CenterY,
-					1,
-					0)
+				NSLayoutConstraint.Create(testLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0),
+				NSLayoutConstraint.Create(testLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterY, 1, 0)
 			});
 		}
 

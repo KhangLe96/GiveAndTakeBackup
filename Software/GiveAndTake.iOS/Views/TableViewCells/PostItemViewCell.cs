@@ -14,9 +14,22 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 	[Register(nameof(PostItemViewCell))]
 	public class PostItemViewCell : MvxTableViewCell
 	{
-		private MvxCachedImageView _imgMultiImages, _imgRequest, _imgAppeciation, _imgExtension, _imgComment, _imagePost, _imgAvatar;
+		private MvxCachedImageView _imgMultiImages;
+		private MvxCachedImageView _imgRequest;
+		private MvxCachedImageView _imgAppeciation;
+		private MvxCachedImageView _imgExtension;
+		private MvxCachedImageView _imgComment;
+		private MvxCachedImageView _imagePost;
+		private MvxCachedImageView _imgAvatar;
 		private UIButton _btnCategory;
-		private UILabel _lbUserName, _lbPostDate, _lbSeperator, _lbPostAddress, _lbPostDescription, _lbRequestCount, _lbAppreciationCount, _lbCommentCount;
+		private UILabel _lbUserName;
+		private UILabel _lbPostDate;
+		private UILabel _lbSeperator;
+		private UILabel _lbPostAddress;
+		private UILabel _lbPostDescription;
+		private UILabel _lbRequestCount;
+		private UILabel _lbAppreciationCount;
+		private UILabel _lbCommentCount;
 		private UIView _reactionArea;
 
 		public PostItemViewCell(IntPtr handle) : base(handle)
@@ -98,9 +111,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitPostPhoto()
 		{
-			_imagePost = UIHelper.CreateCustomImageView(DimensionHelper.ImagePostSize, DimensionHelper.ImagePostSize, "Images/default_post");
-			_imagePost.Layer.CornerRadius = 10;
-			_imagePost.ClipsToBounds = true;
+			_imagePost = UIHelper.CreateCustomImageView(DimensionHelper.ImagePostSize, DimensionHelper.ImagePostSize, ImageHelper.DefaultPost, DimensionHelper.PostPhotoCornerRadius);
 
 			ContentView.AddSubview(_imagePost);
 
@@ -115,8 +126,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitMultiImageView()
 		{
-			_imgMultiImages = UIHelper.CreateCustomImageView(DimensionHelper.ImageMultiSize, DimensionHelper.ImageMultiSize, "Images/multiphoto");
-			_imgMultiImages.ClipsToBounds = true;
+			_imgMultiImages = UIHelper.CreateCustomImageView(DimensionHelper.ImageMultiSize, DimensionHelper.ImageMultiSize, ImageHelper.Multiphoto);
 
 			ContentView.AddSubview(_imgMultiImages);
 
@@ -137,7 +147,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			};
 			_btnCategory.SetTitleColor(UIColor.White, UIControlState.Normal);
 			_btnCategory.Font = UIHelper.GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
-			_btnCategory.BackgroundColor = ColorHelper.ToUiColor("0fbcf9");
+			_btnCategory.BackgroundColor = ColorHelper.BlueColor;
 			_btnCategory.Layer.CornerRadius = DimensionHelper.ButtonCategoryHeight / 2;
 
 			_btnCategory.AddConstraints(new[]
@@ -159,7 +169,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitAvatarImageView()
 		{
-			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize, "Images/default_avatar");
+			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize, ImageHelper.DefaultAvatar, DimensionHelper.ImageAvatarSize / 2);
 
 			ContentView.AddSubview(_imgAvatar);
 
@@ -279,7 +289,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitRequestIcon()
 		{
 			_imgRequest =
-				UIHelper.CreateCustomImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, "Images/request_off");
+				UIHelper.CreateCustomImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, ImageHelper.RequestOff);
 
 			_reactionArea.AddSubview(_imgRequest);
 
@@ -295,7 +305,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitRequestCountLabel()
 		{
 			_lbRequestCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
-			_lbRequestCount.Text = "15";
 
 			_reactionArea.AddSubview(_lbRequestCount);
 
@@ -310,7 +319,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitAppeciationIcon()
 		{
-			_imgAppeciation = UIHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, "Images/heart_off");
+			_imgAppeciation = UIHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, ImageHelper.HeartOff);
 
 			_reactionArea.AddSubview(_imgAppeciation);
 
@@ -326,7 +335,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitAppeciationCountLabel()
 		{
 			_lbAppreciationCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
-			_lbAppreciationCount.Text = "20";
 
 			_reactionArea.AddSubview(_lbAppreciationCount);
 
@@ -341,7 +349,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitCommentIcon()
 		{
-			_imgComment = UIHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, "Images/comment");
+			_imgComment = UIHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, ImageHelper.CommentIcon);
 
 			_reactionArea.AddSubview(_imgComment);
 
@@ -357,7 +365,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitCommentCountLabel()
 		{
 			_lbCommentCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
-			_lbCommentCount.Text = "20";
 
 			_reactionArea.AddSubview(_lbCommentCount);
 
@@ -372,7 +379,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitExtensionIcon()
 		{
-			_imgExtension = UIHelper.CreateCustomImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, "Images/extension");
+			_imgExtension = UIHelper.CreateCustomImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, ImageHelper.Extension);
 
 			_reactionArea.AddSubview(_imgExtension);
 
@@ -387,7 +394,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitSeperatorLine()
 		{
-			var seperator = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.ToUiColor("0fbcf9"));
+			var seperator = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
 
 			ContentView.AddSubview(seperator);
 
