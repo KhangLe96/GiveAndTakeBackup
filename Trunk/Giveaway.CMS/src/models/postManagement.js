@@ -54,6 +54,7 @@ export default {
     * changeAPostCMSStatus({ payload }, { call, put }) {
       const response = yield call(changeAPostCMSStatus, payload);
       if (response) {
+        // / REVIEW: Should show message to notify user that your request has updated successfully
         yield put({
           type: 'fetchPostInformation',
           payload,
@@ -74,6 +75,7 @@ export default {
     * changePostCMSStatus({ payload }, { call, put }) {
       const response = yield call(changePostCMSStatus, payload);
       if (response) {
+        // / REVIEW: Should show message to notify user that your request has updated successfully
         yield put({
           type: 'fetch',
           payload: {

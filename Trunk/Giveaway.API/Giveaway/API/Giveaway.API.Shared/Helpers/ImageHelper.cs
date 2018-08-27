@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Giveaway.API.Shared.Helpers
-{ 
+{
     public static class ImageHelper
     {
         private const float MediumImageScale = 0.65f; // Compared to big image
@@ -41,7 +42,7 @@ namespace Giveaway.API.Shared.Helpers
             }
         }
 
-       
+
         public static Avatar SavePhoto(Guid userId, byte[] data, string webRoot, string folderName)
         {
             var userFolder = GenerateUserFolder(userId);
@@ -125,6 +126,17 @@ namespace Giveaway.API.Shared.Helpers
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
+            }
+        }
+
+        public static byte[] ImageToByteArray(System.Drawing.Image imageIn)
+        {
+            using (var ms = new MemoryStream())
+            {
+                var coder = imageIn.RawFormat;
+                if (coder == null || (coder != ImageFormat.Jpeg && coder != ImageFormat.Png && coder != ImageFormat.Gif)) coder = ImageFormat.Jpeg;
+                imageIn.Save(ms, coder);
+                return ms.ToArray();
             }
         }
     }

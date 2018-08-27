@@ -28,6 +28,7 @@ export default {
     * create({ payload }, { call, put }) {
       const response = yield call(createCategory, payload);
       if (response) {
+        // / REVIEW: Should show message to notify user that your request has updated successfully
         yield put(routerRedux.push('/category-management'));
         yield put({
           type: 'getCategories',
@@ -78,6 +79,8 @@ export default {
     * update({ payload }, { call, put }) {
       const response = yield call(updateCategory, payload.category, payload.id);
       if (response) {
+        // / REVIEW: Should show message to notify user that your request has updated successfully
+        // / Should navigate to list page after update category
         yield put({
           type: 'getACategory',
           payload: { id: payload.id },
