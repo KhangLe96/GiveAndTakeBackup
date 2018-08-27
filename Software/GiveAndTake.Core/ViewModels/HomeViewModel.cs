@@ -3,6 +3,7 @@ using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MvvmCross.Binding.Extensions;
 
 namespace GiveAndTake.Core.ViewModels
@@ -11,6 +12,7 @@ namespace GiveAndTake.Core.ViewModels
     {
         private List<PostItemViewModel> _postViewModels;
 	    private readonly List<Post> _posts;
+	    private Category currentCategory ;
 
 	    public List<PostItemViewModel> PostViewModels
         {
@@ -30,8 +32,15 @@ namespace GiveAndTake.Core.ViewModels
         {
             _posts = InitPosts();
             PostViewModels = _posts.Select(post => new PostItemViewModel(post, IsLast(post))).ToList();
-	        ShowCategoriesCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupCategoriesViewModel>());
+			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
 		}
+
+	    private async Task<Category> ShowCategories()
+	    {
+		    var c =  await NavigationService.Navigate<PopupCategoriesViewModel, Category, Category>(currentCategory);
+		    currentCategory = c;
+		    return c;
+	    }
 
 	    private bool IsLast(Post post) => _posts.GetPosition(post) + 1 == _posts.Count;
 

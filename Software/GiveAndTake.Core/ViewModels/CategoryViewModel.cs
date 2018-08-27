@@ -5,7 +5,8 @@ namespace GiveAndTake.Core.ViewModels
 {
 	public class CategoryViewModel : BaseViewModel
     {
-	    private string _id;
+		public Category Category { get; set; }
+		private string _id;
 
 	    public string Id
 	    {
@@ -46,7 +47,8 @@ namespace GiveAndTake.Core.ViewModels
 	    }
 
 	    public CategoryViewModel(Category category)
-		{
+	    {
+		    Category = category;
 			Id = category.Id;
 			CategoryName = category.CategoryName;
 		}

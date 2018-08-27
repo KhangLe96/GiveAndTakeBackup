@@ -6,15 +6,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using MvvmCross.Commands;
 using System;
+using MvvmCross.ViewModels;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class PopupCategoriesViewModel : BaseViewModel
-    {
+	public class PopupCategoriesViewModel : BaseViewModel<Category, Category>
+	{
 	    public IMvxCommand<CategoryViewModel> ItemClickCommand { get; set; }
 	    public IMvxAsyncCommand FindPostCommand { get; set; }
 	    private List<CategoryViewModel> _categoryViewModels;
 	    private readonly List<Category> _categories;
+	    private Category selectedCategory;
 
 	    public List<CategoryViewModel> CategoryViewModels
 	    {
@@ -26,12 +28,17 @@ namespace GiveAndTake.Core.ViewModels
 		    }
 	    }
 
-		public PopupCategoriesViewModel()
+	    public PopupCategoriesViewModel()
 		{
 			_categories = InitCategories();
-			CategoryViewModels = _categories.Select(GenerateCategoryViewModel).ToList();
-			ItemClickCommand = new MvxCommand<CategoryViewModel>(OnItemClick);
-			FindPostCommand = new MvxAsyncCommand(() => NavigationService.Close(this));
+		}
+
+	    public override void Prepare(Category category)
+	    {
+		    selectedCategory = category ?? _categories.FirstOrDefault(c => c.CategoryName == AppConstants.DefaultCategory);
+		    CategoryViewModels = _categories.Select(GenerateCategoryViewModel).ToList();
+		    ItemClickCommand = new MvxCommand<CategoryViewModel>(OnItemClick);
+		    FindPostCommand = new MvxAsyncCommand(() => NavigationService.Close(this, selectedCategory));
 		}
 
 		private void OnItemClick(CategoryViewModel categoryViewModel)
@@ -40,15 +47,17 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				viewModel.IsSelected = viewModel == categoryViewModel;
 			}
+
+			selectedCategory = categoryViewModel.Category;
 		}
 
 	    private CategoryViewModel GenerateCategoryViewModel(Category c) => new CategoryViewModel(c)
 	    {
 		    IsLastViewInList = IsLastCategory(c),
-		    IsSelected = IsDefaultCategory(c)
+		    IsSelected = GetCategorySelectState(c)
 	    };
 
-	    private bool IsDefaultCategory(Category category) => category.CategoryName == AppConstants.DefaultCategory;
+	    private bool GetCategorySelectState(Category category) => category.CategoryName == selectedCategory.CategoryName;
 
 	    private bool IsLastCategory(Category c) => _categories.GetPosition(c) + 1 == _categories.Count;
 
@@ -60,5 +69,5 @@ namespace GiveAndTake.Core.ViewModels
 		    new Category {CategoryName = "Đồ dùng điện tử"},
 		    new Category {CategoryName = "Tất cả"}
 	    };
-    }
+	}
 }
