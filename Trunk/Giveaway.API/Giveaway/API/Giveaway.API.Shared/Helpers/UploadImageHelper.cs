@@ -27,7 +27,7 @@ namespace Giveaway.API.Shared.Helpers
                     //Resize the original image above
                     string localUrl = ContentHelper.GetLocalImageUrl(request.Type, request.Id, fileName);
                     Image image = Image.FromFile(localUrl);
-                    image = ContentHelper.Resize(image, 500, 300, true);
+                    image = ContentHelper.Resize(image, image.Width/2, image.Height/2, true);
                     bytes = ImageHelper.ImageToByteArray(image);
 
                     StreamWrite(bytes, path, out fileName);
