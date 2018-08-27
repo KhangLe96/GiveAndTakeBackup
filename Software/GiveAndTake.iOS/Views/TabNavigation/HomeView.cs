@@ -1,4 +1,5 @@
 ﻿using GiveAndTake.Core.ViewModels;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
@@ -6,9 +7,11 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
 
-namespace GiveAndTake.iOS.Views
+namespace GiveAndTake.iOS.Views.TabNavigation
 {
-	[MvxRootPresentation]
+	[MvxTabPresentation(TabIconName = "Images/home_off",
+		TabSelectedIconName = "Images/home_on",
+		WrapInNavigationController = true)]
 	public class HomeView : BaseView
 	{
 		private UIButton _btnFilter, _btnSort, _btnCategory;
