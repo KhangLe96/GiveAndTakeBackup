@@ -74,15 +74,15 @@
     <Compile Include="Views\Base\BaseFragment.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
-    <Compile Include="Views\HomeView.cs" />
+    <Compile Include="Views\TabNavigation\ConversationView.cs" />
+    <Compile Include="Views\TabNavigation\HomeView.cs" />
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\PopupCategoriesView.cs" />
+    <Compile Include="Views\TabNavigation\NotificationView.cs" />
     <Compile Include="Views\PostDetailView.cs" />
+    <Compile Include="Views\TabNavigation\ProfileView.cs" />
     <Compile Include="Views\UserProfileView.cs" />
-    <Compile Include="Views\TabNavigation.cs" />
-    <Compile Include="Views\TestFragment1.cs" />
-    <Compile Include="Views\TestFragment2.cs" />
-    <Compile Include="DroidConstants.cs" />
+    <Compile Include="Views\TabNavigation\TabNavigationView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -162,16 +162,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\TabNavigation.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\TestFragment1.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\TestFragment2.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -302,12 +292,12 @@
     <AndroidResource Include="Resources\drawable\profile_on.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\PopupCategoriesView.axml">
+    <AndroidResource Include="Resources\layout\ConversationView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\PopupCategoryTemplate.axml">
+    <AndroidResource Include="Resources\layout\NotificationView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -319,6 +309,15 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\post_divider.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ProfileView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupCategoriesView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupCategoryTemplate.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

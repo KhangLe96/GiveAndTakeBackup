@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
-using MvvmCross.ViewModels;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
-	public class TabNavigationViewModel : MvxViewModel
+	public class TabNavigationViewModel : BaseViewModel
 	{
 		public TabNavigationViewModel()
 		{
