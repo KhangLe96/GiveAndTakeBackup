@@ -69,7 +69,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			if (currentLocationFilter == null)
 			{
-				currentLocationFilter = AppConstants.DefaultShortFilter;
+				currentLocationFilter = AppConstants.DefaultLocationFilter;
 			}
 			var locationFilter = await NavigationService.Navigate<PopupLocationFilterViewModel, string, string>(currentLocationFilter);
 			if (locationFilter != null)
