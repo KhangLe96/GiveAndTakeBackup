@@ -13,7 +13,7 @@ namespace GiveAndTake.Core
 				.AsInterfaces()
 				.RegisterAsLazySingleton();
 
-			RegisterAppStart<HomeViewModel>();
+			RegisterAppStart<TabNavigationViewModel>();
 		}
 	}
 }
