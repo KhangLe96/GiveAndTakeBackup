@@ -2,14 +2,14 @@
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Views;
-using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Droid.Support.V4;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views
 {
-    [MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
+	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
     public class TabNavigation : MvxFragment<TabNavigationViewModel>
     {
         private TabLayout _tabLayout;

@@ -1,11 +1,11 @@
-﻿using GiveAndTake.Core.Models;
-using GiveAndTake.Core.ViewModels.Base;
-using MvvmCross.Commands;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using GiveAndTake.Core.Models;
+using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Binding.Extensions;
+using MvvmCross.Commands;
 
-namespace GiveAndTake.Core.ViewModels
+namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
     public class HomeViewModel : BaseViewModel
     {
