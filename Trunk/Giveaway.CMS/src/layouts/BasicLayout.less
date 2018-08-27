@@ -1,0 +1,311 @@
+@import "~antd/lib/style/themes/default.less";
+
+.header {
+  padding: 0 40px 0 0;
+  background: @menu-dark-bg;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+  position: relative;
+  color: white;
+  display: block;
+  :global {
+    .anticon {
+      color: @white;
+    }
+    .anticon-menu-fold:hover, .anticon-menu-unfold:hover {
+      background: @blue;
+    }
+  }
+}
+
+.logo {
+  height: 64px;
+  position: relative;
+  line-height: 64px;
+  transition: all .3s;
+  background: @menu-dark-bg;
+  z-index: 15;
+  text-align: center;
+  a {
+  }
+  img {
+    display: inline-block;
+    vertical-align: middle;
+    height: 32px;
+    margin-top: -10px;
+    position: relative;
+    margin-right: 10px;
+  }
+  h1 {
+    color: #fff;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+    margin: 0 0 0 12px;
+    font-family: 'Roboto', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-weight: 600;
+  }
+}
+
+:global(.ant-layout-sider-collapsed) .logo {
+  > a {
+    width: 32px;
+  }
+}
+
+.trigger {
+  font-size: 20px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: all .3s;
+  padding: 0 24px;
+  &:hover {
+    background: @primary-1;
+  }
+}
+
+@media screen and (max-width: @screen-xs) {
+  .trigger {
+    display: none;
+  }
+}
+
+.right {
+  float: right;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-items: center;
+  justify-content: end;
+  align-content: center;
+  align-items: center;
+  .action {
+    cursor: pointer;
+    padding: 0 20px;
+    display: inline-block;
+    transition: all .3s;
+    height: 67px;
+    top: -3px;
+    position: relative;
+    > i {
+      font-size: 16px;
+      vertical-align: middle;
+    }
+    &:global(.ant-popover-open),
+    &:hover {
+      background: @blue;
+    }
+  }
+  .search {
+    padding: 0;
+    margin: 0 12px;
+    &:hover {
+      background: transparent;
+    }
+  }
+  .account {
+    .avatar {
+      color: @primary-color;
+      background: rgba(255, 255, 255, .85);
+      vertical-align: middle;
+    }
+  }
+}
+
+.menu {
+  :global(.anticon) {
+    margin-right: 8px;
+  }
+  :global(.ant-dropdown-menu-item) {
+    width: 160px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+:global {
+  .ant-layout {
+    overflow-x: hidden;
+  }
+}
+
+.sider {
+  min-height: 100vh;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+  position: relative;
+  z-index: 10;
+  :global {
+    .ant-menu-dark, .ant-menu-dark .ant-menu-inline.ant-menu-sub {
+      background: white !important;
+      color: @black;
+      box-shadow: none;
+      a {
+        color: @black;
+      }
+    }
+
+    .ant-menu-item {
+      height: 55px;
+      margin: 0 !important;
+      border-left: 3px solid @white;
+      border-bottom: 1px solid @light-gray;
+      a {
+        line-height: 55px;
+      }
+      & > a {
+        color: @black;
+      }
+      & > a:hover {
+        color: @blue;
+      }
+      img {
+        width: 28px;
+        height: 28px;
+        margin-left: -10px;
+        margin-right: 10px;
+        margin-top: -2px;
+      }
+    }
+    .ant-menu-item-active {
+      background: @white;
+      border-left: 3px solid @blue;
+      a {
+        color: @blue !important;
+      }
+      //&>a:hover{
+      //  color: @white;
+      //}
+    }
+    .ant-menu-item-selected {
+      background: @white !important;
+      border-left: 3px solid @blue;
+      a {
+        color: @blue !important;
+      }
+      & > a:hover {
+        color: @blue !important;
+      }
+
+    }
+    .ant-menu-submenu-title {
+      color: @black;
+    }
+    .ant-menu-submenu-active {
+      color: @blue;
+      .ant-menu-submenu-title {
+        color: @blue;
+      }
+    }
+    .ant-layout-sider-children {
+      background: white;
+    }
+    .ant-menu-submenu-open {
+    }
+  }
+}
+
+.shared_flex_wrap_center() {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.shared_menu_wrapper_style() {
+  .anticon {
+    font-size: 26px;
+    position: relative;
+    top: 3px;
+  }
+  .ant-popover-inner-content {
+    padding: 10px 0;
+    width: 235px;
+  }
+  .ant-menu {
+    border: 0;
+  }
+  .ant-menu-item-divider {
+    margin: 10px 0;
+  }
+  .ant-popover-content {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background: white;
+  }
+  .ant-menu-item {
+    line-height: 35px;
+    height: 35px;
+    margin-bottom: 0;
+    font-size: 15px;
+    color: @gray-text;
+    &:hover {
+      color: @blue;
+    }
+  }
+}
+
+:global(#profile_dropdown_container) {
+  width: 50px;
+  .shared_flex_wrap_center();
+
+  :global {
+    .shared_menu_wrapper_style();
+
+    //override shared styles
+    .ant-popover {
+      top: 61px !important;
+      left: -50px !important;
+    }
+    .ant-popover-arrow {
+      margin-top: 1px !important;
+      right: 30px !important;
+      left: auto;
+    }
+  }
+}
+
+.header_profile_avatar {
+  margin-right: 15px;
+  :global {
+    .ant-avatar {
+      height: 45px;
+      width: 45px;
+      border-radius: 45px;
+      line-height: 45px;
+    }
+  }
+}
+
+.profile_info {
+  padding: 0 15px 5px 15px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  border-bottom: 1px solid @light-gray;
+  margin-bottom: 5px;
+  h1 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .detail {
+    font-size: 11px;
+    margin-left: 15px;
+  }
+}
+
+.menu_wrapper {
+  height: @nav-height;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  align-content: center;
+  justify-content: right;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}

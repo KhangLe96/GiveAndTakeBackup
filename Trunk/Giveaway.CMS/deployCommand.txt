@@ -1,0 +1,16 @@
+cd /www/rollcallapp
+git clean -d -f
+git pull origin master
+cd RollCall.CMS
+sudo npm install
+sudo npm run build
+
+git reset HEAD~1
+
+cd RollCallAPI/API/RollCall.API
+dotnet build --configuration Release
+
+cd /www/rollcallapp/RollCallAPI/API/RollCall.API
+
+
+/www/rollcallapp/RollCallAPI/API/RollCall.API/bin/Release/netcoreapp2.0

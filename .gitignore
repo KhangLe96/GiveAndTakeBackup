@@ -548,5 +548,8 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+# ignore appsettings configuration files
+
+
 # dependencies
 Trunk/Giveaway.CMS/node_modules

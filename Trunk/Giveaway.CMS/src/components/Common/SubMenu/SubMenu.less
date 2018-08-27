@@ -1,0 +1,49 @@
+@import "../../../themes/default";
+
+.sub_menu {
+  height: 68px;
+
+  .fake_tab {
+    height: 68px;
+    background: white;
+    box-shadow: 0px 2px 3px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .tab {
+    position: relative;
+    top: -68px;
+    height: 68px;
+    :global {
+      .ant-tabs-nav {
+        background: @white;
+        height: 68px;
+        vertical-align: middle;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .ant-tabs-tab-active {
+        color: @blue;
+      }
+
+      .ant-tabs-tab {
+        vertical-align: middle;
+        margin-top: 5px;
+      }
+
+      .ant-tabs-ink-bar {
+        height: 4px !important;
+        background-color: @blue;
+      }
+
+      .ant-layout-content {
+        height: 68px;
+      }
+
+      .ant-tabs-nav-wrap {
+        margin-bottom: 0px;
+      }
+    }
+  }
+
+}
