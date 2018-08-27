@@ -104,15 +104,15 @@ namespace Giveaway.API.DB
             imageService.Create(new Image()
             {
                 PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
-                OriginalImage = "http://thongnhat.com.vn/wp-content/uploads/2017/08/219-24-%C4%91%E1%BB%8F-2.jpg",
-                ResizedImage = "http://thongnhat.com.vn/wp-content/uploads/2017/08/219-24-%C4%91%E1%BB%8F-2.jpg"
+                OriginalImage = "https://kenh14cdn.com/2017/batchdsc6378-1506763247398.jpg",
+                ResizedImage = "https://kenh14cdn.com/2017/batchdsc6378-1506763247398.jpg"
             }, out _);
 
             imageService.Create(new Image()
             {
                 PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
-                OriginalImage = "https://media3.scdn.vn/img2/2018/4_20/set-5-bo-quan-ao-tre-em-bo-nuoc-giai-khat-5-mau-ctks02-1m4G3-Yhmequ_simg_c052db_598x598_max.jpg",
-                ResizedImage = "https://media3.scdn.vn/img2/2018/4_20/set-5-bo-quan-ao-tre-em-bo-nuoc-giai-khat-5-mau-ctks02-1m4G3-Yhmequ_simg_c052db_598x598_max.jpg"
+                OriginalImage = "http://hoanhap.vn/Data/article/mainimages/original/article19849.jpg",
+                ResizedImage = "http://hoanhap.vn/Data/article/mainimages/original/article19849.jpg"
             }, out _);
         }
 
