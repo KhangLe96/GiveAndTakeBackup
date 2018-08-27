@@ -13,20 +13,18 @@ namespace Giveaway.API.DB
     {
         public static void Seed(IServiceProvider services)
         {
-            //SeedRoles(services);
-            //SeedAdmin(services);
-            //SeedSuperAdmin(services);
-            //SeedCategories(services);
-            //SeedProvinceCity(services);
+            SeedRoles(services);
+            SeedAdmin(services);
+            SeedSuperAdmin(services);
+            SeedCategories(services);
+            SeedProvinceCity(services);
 
-            ////After all above seeds were finished
-            //SeedPost(services);
+            SeedPost(services);
 
-            ////After SeedPost was finished
-            //SeedImage(services);
-            //SeedReport(services);
-            //SeedWarning(services);
-            //SeedRequest(services);
+            SeedImage(services);
+            SeedReport(services);
+            SeedWarning(services);
+            SeedRequest(services);
         }
 
         private static void SeedRequest(IServiceProvider services)
@@ -35,7 +33,7 @@ namespace Giveaway.API.DB
             var postService = services.GetService<IPostService>();
             var requestService = services.GetService<IRequestService>();
 
-            if (requestService.All().Any()) return;
+            if (!postService.All().Any() || requestService.All().Any()) return;
 
             Guid UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id;
 
@@ -43,7 +41,8 @@ namespace Giveaway.API.DB
             {
                 UserId = UserId,
                 PostId = postService.All().Where(x => x.UserId == UserId).Take(1).ToList().ElementAt(0).Id,
-                RequestMessage = "Request Message"
+                RequestMessage = "Chúng em thuộc chi đoàn Đại học Bách Khoa, hiện chi đoàn đang thực hiện chiến dịch mùa hè xanh, đến giúp đỡ các vùng gặp khó khăn nên chúng em đang kêu gọi các nhà" +
+                " hảo tâm đóng góp."
             }, out _);
             requestService.Create(new Request()
             {
@@ -58,7 +57,7 @@ namespace Giveaway.API.DB
             var userService = services.GetService<IUserService>();
             var warningMessageService = services.GetService<IWarningMessageService>();
 
-            if (warningMessageService.All().Any()) return;
+            if (!userService.All().Any() || warningMessageService.All().Any()) return;
 
             Guid UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id;
             warningMessageService.Create(new WarningMessage()
@@ -69,7 +68,7 @@ namespace Giveaway.API.DB
             warningMessageService.Create(new WarningMessage()
             {
                 UserId = UserId,
-                Message = "Test"
+                Message = "Vui lòng không đăng tin quảng cáo"
             }, out _);
         }
 
@@ -79,20 +78,20 @@ namespace Giveaway.API.DB
             var postService = services.GetService<IPostService>();
             var reportService = services.GetService<IReportService>();
 
-            if (reportService.All().Any()) return;
+            if (!userService.All().Any() || !postService.All().Any() || reportService.All().Any()) return;
 
             Guid UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id;
             reportService.Create(new Report()
             {
                 UserId = UserId,
                 PostId = postService.All().Where(x => x.UserId == UserId).Take(1).ToList().ElementAt(0).Id,
-                Message = "xàm"
+                Message = "Tin quảng cáo"
             }, out _);
             reportService.Create(new Report()
             {
                 UserId = UserId,
                 PostId = postService.All().Where(x => x.UserId == UserId).Take(1).ToList().ElementAt(0).Id,
-                Message = "lừa đảo"
+                Message = "Đã xác nhận cho nhưng khi đến nhận không liên lạc được"
             }, out _);
         }
 
@@ -101,17 +100,19 @@ namespace Giveaway.API.DB
             var imageService = services.GetService<IImageService>();
             var postService = services.GetService<IPostService>();
 
-            if (imageService.All().Any()) return;
+            if (!postService.All().Any() || imageService.All().Any()) return;
             imageService.Create(new Image()
             {
                 PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
-                //ImageUrl = "test1",
+                OriginalImage = "http://thongnhat.com.vn/wp-content/uploads/2017/08/219-24-%C4%91%E1%BB%8F-2.jpg",
+                ResizedImage = "http://thongnhat.com.vn/wp-content/uploads/2017/08/219-24-%C4%91%E1%BB%8F-2.jpg"
             }, out _);
 
             imageService.Create(new Image()
             {
                 PostId = postService.All().Take(1).ToList().ElementAt(0).Id,
-                //ImageUrl = "test2",
+                OriginalImage = "https://media3.scdn.vn/img2/2018/4_20/set-5-bo-quan-ao-tre-em-bo-nuoc-giai-khat-5-mau-ctks02-1m4G3-Yhmequ_simg_c052db_598x598_max.jpg",
+                ResizedImage = "https://media3.scdn.vn/img2/2018/4_20/set-5-bo-quan-ao-tre-em-bo-nuoc-giai-khat-5-mau-ctks02-1m4G3-Yhmequ_simg_c052db_598x598_max.jpg"
             }, out _);
         }
 
@@ -122,60 +123,129 @@ namespace Giveaway.API.DB
             var pv = proviceCityService.Create(new ProvinceCity()
             {
                 Id = Guid.NewGuid(),
-                ProvinceCityName = "daklak",
-                CreatedTime = DateTimeOffset.Now,
-                UpdatedTime = DateTimeOffset.UtcNow,
+                ProvinceCityName = "Đà Nẵng",
             }, out _);
         }
 
         private static void SeedPost(IServiceProvider services)
         {
+            var roleService = services.GetService<IRoleService>();
             var postService = services.GetService<IPostService>();
             var proviceCityService = services.GetService<IProviceCityService>();
             var categoryService = services.GetService<ICategoryService>();
             var userService = services.GetService<IUserService>();
 
-            if (postService.All().Any()) return;
+            if (!roleService.All().Any() || !userService.All().Any() || !proviceCityService.All().Any() || !categoryService.All().Any() || postService.All().Any()) return;
 
             postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
                 CategoryId = categoryService.All().ToList().ElementAt(0).Id,
-                Description = "Description",
-                Title = "test1",
+                Description = "Mới chuyển nhà nên có 1 vài đồ không dùng tới nữa, mọi người xem cái nào dùng được thì liên hệ mình nhé",
+                Title = "Đồ nội thất cũ",
                 PostStatus = PostStatus.Open,
-                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
-                UserId = userService.All().Take(1).ToList().ElementAt(0).Id
+                ProvinceCityId = proviceCityService.All().ToList().ElementAt(0).Id,
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
             postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
-                CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
-                Description = "Abvfef",
-                Title = "test2",
+                CategoryId = categoryService.All().ToList().ElementAt(1).Id,
+                Description = "Điện thoại cũ không dùng tới, còn dùng gọi tốt, lên mạng thì hơi chậm. Mọi người quan tâm thì liên hệ mình",
+                Title = "Điện thoại cũ",
                 PostStatus = PostStatus.Open,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
-                UserId = userService.All().Take(1).ToList().ElementAt(0).Id
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
             postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
-                CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
-                Description = "Abveeeeeeeeeeeeeee",
-                Title = "test3",
+                CategoryId = categoryService.All().ToList().ElementAt(2).Id,
+                Description = "Còn nhiều quần áo cho bé còn dùng tốt, bé lớn rồi nên không mặc vừa nữa. Chị em nào có trẻ nhỏ thì liên hệ nhé.",
+                Title = "Quần áo cho bé",
                 PostStatus = PostStatus.Open,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
-                UserId = userService.All().Take(1).ToList().ElementAt(0).Id
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
             postService.Create(new Post
             {
                 Id = Guid.NewGuid(),
-                CategoryId = categoryService.All().Take(1).ToList().ElementAt(0).Id,
-                Description = "Abv3333333333333",
-                Title = "test4",
+                CategoryId = categoryService.All().ToList().ElementAt(3).Id,
+                Description = "Vỏ chai lọ, lon bia, nước ngọt sau tết còn rất nhiều. Ai đến thì mình cho luôn",
+                Title = "Vỏ chai lọ, lon",
                 PostStatus = PostStatus.Open,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
-                UserId = userService.All().Take(1).ToList().ElementAt(0).Id
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CategoryId = categoryService.All().ToList().ElementAt(4).Id,
+                Description = "Nhà có nhiều cún con, ai thích nuôi thì liên hệ sớm nhé",
+                Title = "Cho chó con",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CategoryId = categoryService.All().ToList().ElementAt(5).Id,
+                Description = "Nhà có nhiều mèo con, ai thích nuôi thì liên hệ sớm nhé",
+                Title = "Cho mèo con",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CategoryId = categoryService.All().ToList().ElementAt(6).Id,
+                Description = "Mới chuyển nhà nên có 1 vài đồ không dùng tới nữa, mọi người xem cái nào dùng được thì liên hệ mình nhé",
+                Title = "Đồ nội thất cũ",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CategoryId = categoryService.All().ToList().ElementAt(7).Id,
+                Description = "Điện thoại cũ không dùng tới, còn dùng gọi tốt, lên mạng thì hơi chậm. Mọi người quan tâm thì liên hệ mình",
+                Title = "Điện thoại cũ",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CategoryId = categoryService.All().ToList().ElementAt(8).Id,
+                Description = "Còn nhiều quần áo cho bé còn dùng tốt, bé lớn rồi nên không mặc vừa nữa. Chị em nào có trẻ nhỏ thì liên hệ nhé.",
+                Title = "Quần áo cho bé",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CategoryId = categoryService.All().ToList().ElementAt(0).Id,
+                Description = "Vỏ chai lọ, lon bia, nước ngọt sau tết còn rất nhiều. Ai đến thì mình cho luôn",
+                Title = "Vỏ chai lọ, lon",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
+            }, out _);
+            postService.Create(new Post
+            {
+                Id = Guid.NewGuid(),
+                CategoryId = categoryService.All().ToList().ElementAt(3).Id,
+                Description = "Nhà có nhiều cún con, ai thích nuôi thì liên hệ sớm nhé",
+                Title = "Cho chó con",
+                PostStatus = PostStatus.Open,
+                ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
+                UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
         }
 
@@ -266,78 +336,46 @@ namespace Giveaway.API.DB
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Tất cả danh mục",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
-                    CategoryName = "bất động sản",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
+                    CategoryName = "Không thuộc danh mục nào",
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Xe cộ",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
-                    CategoryName = "đồ điện tử",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
+                    CategoryName = "Đồ điện tử",
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
-                    CategoryName = "mẹ và bé",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
+                    CategoryName = "Mẹ và bé",
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
-                    CategoryName = "Thời trang, đồ dùng cá nhân",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
+                    CategoryName = "Đồ dùng cá nhân",
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Nội ngoại thất, đồ gia dụng",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
-                },
-                new Category
-                {
-                    Id = Guid.NewGuid(),
-                    CategoryName = "Giải trí, thể thao, sở thích",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Thú cưng",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
-                    CategoryName = "Đồ dùng văn phòng, công nông nghiệp",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
-                },
-                new Category
-                {
-                    Id = Guid.NewGuid(),
-                    CategoryName = "Dịch vụ, du lịch",
-                    CreatedTime = DateTimeOffset.UtcNow,
-                    UpdatedTime = DateTimeOffset.UtcNow
+                    CategoryName = "Văn phòng phẩm",
                 }
             };
             return categories;
