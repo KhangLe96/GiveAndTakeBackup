@@ -38,7 +38,7 @@ namespace GiveAndTake.Core.Models
 	}
 
 	[DataContract]
-	public class Image
+	public class PostImage
 	{
 		[DataMember(Name = "imageUrl")]
 		public string ImageData { get; set; }
@@ -61,19 +61,19 @@ namespace GiveAndTake.Core.Models
 	public class CreatePost
 	{
 		[DataMember(Name = "title")]
-		public string PostTitle { get; set; }
+		public string Title { get; set; }
 
 		[DataMember(Name = "description")]
 		public string Description { get; set; }
 
 		[DataMember(Name = "images")]
-		public List<Image> PostImages { get; set; }
+		public List<PostImage> PostImages { get; set; }
 
 		[DataMember(Name = "categoryId")]
 		public string PostCategory { get; set; }
 
 		[DataMember(Name = "provinceCityId")]
-		public string PostAddress { get; set; }
+		public string Address { get; set; }
 
 	}
 	[DataContract]
