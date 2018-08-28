@@ -404,7 +404,7 @@ class BasicLayout extends React.PureComponent {
                   ),
                 )
               }
-              <Redirect exact from="/" to="/dashboard" />
+              <Redirect exact from="/" to="/post-management" />
             </Switch>
             <GlobalFooter
               links={[{
