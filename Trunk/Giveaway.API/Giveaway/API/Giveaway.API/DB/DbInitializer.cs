@@ -16,15 +16,82 @@ namespace Giveaway.API.DB
             SeedRoles(services);
             SeedAdmin(services);
             SeedSuperAdmin(services);
+            SeedUser(services);
             SeedCategories(services);
             SeedProvinceCity(services);
-
             SeedPost(services);
-
             SeedImage(services);
             SeedReport(services);
             SeedWarning(services);
             SeedRequest(services);
+        }
+
+        private static void SeedUser(IServiceProvider services)
+        {
+            var userService = services.GetService<IUserService>();
+            var roleService = services.GetService<IRoleService>();
+            var userRoleService = services.GetService<IUserRoleService>();
+            var userRole = roleService.FirstOrDefault(r => r.RoleName == Const.Roles.User);
+
+            if (userRoleService.Where(ur => ur.RoleId == userRole.Id).Count() > 2) return;
+            var securePassword = userService.GenerateSecurePassword(Const.DefaultAdminPassword);
+            var users = new List<User>
+            {
+                new User
+                {
+                    UserName = "Khang Lê",
+                    Email = "Khang.Le@gmail.com",
+                    FirstName = "Khang",
+                    LastName = "Lê",
+                    Address = "Đà Nẵng",
+                    PasswordSalt = securePassword.Salt,
+                    PasswordHash = securePassword.Hash,
+                    PhoneNumber = "01672734732",
+                    BirthDate = new DateTime(1996, 3, 17),
+                    Gender = Gender.Male
+                },
+                new User
+                {
+                    UserName = "Tài Quốc",
+                    Email = "Quoc.Tai@gmail.com",
+                    FirstName = "Tài",
+                    LastName = "Quốc",
+                    Address = "Đà Nẵng",
+                    PasswordSalt = securePassword.Salt,
+                    PasswordHash = securePassword.Hash,
+                    PhoneNumber = "01672734732",
+                    BirthDate = new DateTime(1996, 3, 5),
+                    Gender = Gender.Male
+                },
+                new User
+                {
+                    UserName = "Lâm Nguyễn",
+                    Email = "Quoc.Tai@gmail.com",
+                    FirstName = "Lâm",
+                    LastName = "Nguyễn",
+                    Address = "Đà Nẵng",
+                    PasswordSalt = securePassword.Salt,
+                    PasswordHash = securePassword.Hash,
+                    PhoneNumber = "0123456789",
+                    BirthDate = new DateTime(1996, 3, 5),
+                    Gender = Gender.Male
+                },
+                new User
+                {
+                    UserName = "Quốc Trần",
+                    Email = "Quoc.Tran@gmail.com",
+                    FirstName = "Quốc",
+                    LastName = "Trần",
+                    Address = "Đà Nẵng",
+                    PasswordSalt = securePassword.Salt,
+                    PasswordHash = securePassword.Hash,
+                    PhoneNumber = "0123456789",
+                    BirthDate = new DateTime(1996, 3, 5),
+                    Gender = Gender.Male
+                },
+            };
+
+            CreateUser(users, userService, userRoleService, userRole);
         }
 
         private static void SeedRequest(IServiceProvider services)
@@ -328,7 +395,7 @@ namespace Giveaway.API.DB
             }
         }
 
-        public static List<Category> CategoryInit()
+        private static List<Category> CategoryInit()
         {
             var categories = new List<Category>
             {
@@ -379,6 +446,18 @@ namespace Giveaway.API.DB
                 }
             };
             return categories;
+        }
+
+        private static void CreateUser(List<User> users, IUserService userService, IUserRoleService userRoleService, Role userRole)
+        {
+            foreach(var user in users)
+            {
+                var createdUser = userService.Create(user, out var isSaved);
+                if (isSaved)
+                {
+                    userRoleService.Create(new UserRole { UserId = createdUser.Id, RoleId = userRole.Id }, out _);
+                }
+            }
         }
     }
 }
