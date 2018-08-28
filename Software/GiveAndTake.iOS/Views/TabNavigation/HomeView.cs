@@ -3,6 +3,7 @@ using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
 
@@ -113,6 +114,18 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 			set.Bind(_postTableViewSource)
 				.To(vm => vm.PostViewModels);
+
+			set.Bind(_btnCategory.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowCategoriesCommand);
+
+			set.Bind(_btnFilter.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowFilterCommand);
+
+			set.Bind(_btnSort.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowShortPostCommand);
 
 			set.Apply();
 		}

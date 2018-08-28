@@ -1,15 +1,16 @@
 ﻿using GiveAndTake.Core;
 using System;
 using FFImageLoading.Cross;
+using GiveAndTake.iOS.Controls;
 using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
 {
 	public static class UIHelper
 	{
-		public static UILabel CreateLabel(UIColor textColor, nfloat fontSize, FontType fontType = FontType.Regular)
+		public static PopupItemLabel CreateLabel(UIColor textColor, nfloat fontSize, FontType fontType = FontType.Regular)
 		{
-			var label = new UILabel
+			var label = new PopupItemLabel
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				LineBreakMode = UILineBreakMode.WordWrap,
@@ -32,7 +33,9 @@ namespace GiveAndTake.iOS.Helpers
 		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor)
 		{
 			var view = CreateView(height, width);
+
 			view.BackgroundColor = backgroundColor;
+
 			return view;
 		}
 
@@ -96,6 +99,23 @@ namespace GiveAndTake.iOS.Helpers
 			return tableView;
 		}
 
+		public static UIButton CreateButton(nfloat height, nfloat width, UIColor color, nfloat cornerRadius)
+		{
+			var button = new UIButton
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false
+			};
+			button.SetTitleColor(UIColor.White, UIControlState.Normal);
+			button.Font = GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
+			button.BackgroundColor = color;
+			button.Layer.CornerRadius = cornerRadius;
+			button.Layer.MasksToBounds = true;
+
+			AddWidthHeight(height, width, button);
+
+			return button;
+		}
+
 		public static UIFont GetFont(FontType fontType, nfloat fontSize)
 		{
 			switch (fontType)
@@ -136,6 +156,14 @@ namespace GiveAndTake.iOS.Helpers
 						NSLayoutAttribute.NoAttribute, 0, height)
 				});
 			}
+		}
+
+		public static UIView CreatePopupLine(nfloat height, nfloat width, UIColor color, nfloat cornerRadius)
+		{
+			var line = CreateView(height, width, color);
+			line.Layer.CornerRadius = cornerRadius;
+			line.Layer.MasksToBounds = true;
+			return line;
 		}
 	}
 }

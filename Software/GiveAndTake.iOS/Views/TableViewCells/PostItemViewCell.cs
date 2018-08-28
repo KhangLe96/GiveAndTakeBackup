@@ -1,12 +1,11 @@
-﻿using Foundation;
-using GiveAndTake.Core;
+﻿using FFImageLoading.Cross;
+using Foundation;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using System;
-using FFImageLoading.Cross;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -141,20 +140,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitCategoryButton()
 		{
-			_btnCategory = new UIButton
-			{
-				TranslatesAutoresizingMaskIntoConstraints = false
-			};
-			_btnCategory.SetTitleColor(UIColor.White, UIControlState.Normal);
-			_btnCategory.Font = UIHelper.GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
-			_btnCategory.BackgroundColor = ColorHelper.BlueColor;
-			_btnCategory.Layer.CornerRadius = DimensionHelper.ButtonCategoryHeight / 2;
-
-			_btnCategory.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
-					NSLayoutAttribute.NoAttribute, 1, DimensionHelper.ButtonCategoryHeight)
-			});
+			_btnCategory = UIHelper.CreateButton(DimensionHelper.ButtonCategoryHeight, 0, ColorHelper.BlueColor, DimensionHelper.ButtonCategoryHeight / 2);
 
 			ContentView.AddSubview(_btnCategory);
 

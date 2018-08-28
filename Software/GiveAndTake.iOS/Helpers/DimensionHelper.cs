@@ -30,7 +30,11 @@ namespace GiveAndTake.iOS.Helpers
 	    public static nfloat ButtonTextSize { get; set; }
 	    public static nfloat SeperatorHeight { get; set; }
 		public static nfloat PostPhotoCornerRadius { get; set; }
-
+		public static nfloat PopupLineWidth { get; set; }
+		public static nfloat PopupLineHeight { get; set; }
+		public static nfloat PopupButtonWidth { get; set; }
+		public static nfloat PopupButtonHeight { get; set; }
+		public static nfloat PopupCellHeight { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -58,6 +62,11 @@ namespace GiveAndTake.iOS.Helpers
 			PostPhotoCornerRadius = 7 * Rate;
 		    SeperatorHeight = 0.5f * Rate;
 		    PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
+			PopupLineWidth = 50 * Rate;
+			PopupLineHeight = 4 * Rate;
+			PopupButtonWidth = 150 * Rate;
+			PopupButtonHeight = 30 * Rate;
+			PopupCellHeight = 40 * Rate;
 		}
 	}
 }
