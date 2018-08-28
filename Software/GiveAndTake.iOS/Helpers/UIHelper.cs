@@ -21,6 +21,27 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
+		public static UIImageView CreateImageView(nfloat width, nfloat height, UIColor backgroundColor)
+		{
+			var imageView = new UIImageView
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				BackgroundColor = backgroundColor
+			};
+
+			if (width > 0)
+			{
+				imageView.AddConstraint(NSLayoutConstraint.Create(imageView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, width));
+			}
+
+			if (height > 0)
+			{
+				imageView.AddConstraint(NSLayoutConstraint.Create(imageView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, height));
+			}
+
+			return imageView;
+		}
+
 		public static UIView CreateView(nfloat height, nfloat width)
 		{
 			var view = new UIView { TranslatesAutoresizingMaskIntoConstraints = false };

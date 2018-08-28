@@ -44,7 +44,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_btnFilter, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, DimensionHelper.MarginShort),
+					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight + DimensionHelper.HeaderBarHeight),
 				NSLayoutConstraint.Create(_btnFilter, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginNormal)
 			});
@@ -57,8 +57,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.Add(_btnSort);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnSort, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(_btnSort, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnFilter,
+					NSLayoutAttribute.Top, 1, 0),
 				NSLayoutConstraint.Create(_btnSort, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnFilter,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.MarginNormal)
 			});
@@ -70,8 +70,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.Add(_btnCategory);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnFilter,
+					NSLayoutAttribute.Top, 1, 0),
 				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnSort,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.MarginNormal)
 			});
@@ -83,8 +83,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.Add(_searchBar);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnFilter,
+					NSLayoutAttribute.Top, 1, 0),
 				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnCategory,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,

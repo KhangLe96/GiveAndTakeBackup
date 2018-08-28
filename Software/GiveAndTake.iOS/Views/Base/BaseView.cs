@@ -14,7 +14,7 @@ namespace GiveAndTake.iOS.Views.Base
 				MultipleTouchEnabled = false
 			};
 
-			ResolutionHelper.RefreshStaticVariable();
+			ResolutionHelper.InitStaticVariable();
 			DimensionHelper.InitStaticVariable();
 			ImageHelper.InitStaticVariable();
 
