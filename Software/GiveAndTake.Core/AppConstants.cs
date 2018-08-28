@@ -17,7 +17,7 @@
 	    public const string EditPost = "post/app/update";
 	    public const string LoginFacebook = "user/login/facebook";
 	    public const string CreatePost = "post/app/create";
-	    public const string GetCurrentProfile = "/user";
-
+	    public const string GetUserProfile = "user";
+		public const string Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlF1b2MgVGFpIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMmQxZDIwYzMtNTQ3ZC00NTQwLTg1YjktMWUwMDA4ZDcyM2JkIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IlF1b2MgVGFpIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJuYmYiOjE1MzQ3NTgzNTksImV4cCI6MTUzNzM1MDM1OSwiaXNzIjoiR2l2ZWF3YXkiLCJhdWQiOiJFdmVyeW9uZSJ9.rMl3OCtCiq6zTPkmI6JxzwEUsiZh7RznFVVpt-pNICc";
 	}
 }

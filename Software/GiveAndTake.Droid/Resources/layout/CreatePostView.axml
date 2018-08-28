@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	<LinearLayout 
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/PopupField">
+		<Button
+			android:text="Province City"
+			android:layout_width="200dp"
+			android:layout_height="40dp"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="15dp"
+			android:background="#f3f3f3"
+			android:textColor="#cccccc"/>
+		<Button
+			android:text="Category"
+			android:layout_width="200dp"
+			android:layout_height="40dp"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="15dp"
+			android:background="#f3f3f3"
+			android:textColor="#cccccc" />			
+	</LinearLayout>
+	<EditText
+		android:textColor="#cccccc"
+		android:background="#f3f3f3"
+		android:id="@+id/PostTitle"
+		android:hint="Tiêu đề"
+		android:layout_width="match_parent"
+		android:layout_centerHorizontal="true"
+		android:layout_height="40dp"
+		android:layout_below="@+id/PopupField"
+		android:layout_marginTop="15dp" />
+	<EditText
+		android:textColor="#cccccc"
+		android:background="#f3f3f3"
+		android:id="@+id/PostDescription"
+		android:hint="Mô tả ..."
+		android:layout_width="match_parent"
+		android:layout_height="320dp"
+		android:layout_below="@+id/PostTitle"
+		android:layout_marginTop="15dp" />
+	<Button
+		android:text="Choose"
+		android:id="@+id/ChoosePicture"
+		android:layout_width="wrap_content"
+		android:layout_height="30dp"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentRight="true"
+		android:layout_marginTop="15dp"
+		android:background="#f3f3f3"
+		android:textColor="#cccccc"
+		android:layout_below="@+id/PostDescription"/>
+	<Button
+		android:text="Take"
+		android:layout_width="wrap_content"
+		android:layout_height="30dp"
+		android:layout_centerHorizontal="true"
+		android:layout_toLeftOf="@+id/ChoosePicture"
+		android:layout_marginTop="15dp"
+		android:layout_marginRight="5dp"
+		android:background="#f3f3f3"
+		android:textColor="#cccccc" 
+		local:MvxBind="Click TakePictureCommand"
+		android:layout_below="@+id/PostDescription"/>	
+	<LinearLayout 
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/ConfirmField"
+		android:layout_below="@+id/ChoosePicture" >
+		<Button
+			android:text="Hủy"
+			android:layout_width="200dp"
+			android:layout_height="40dp"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="15dp"
+			android:background="#f3f3f3"
+			android:textColor="#cccccc"/>
+		<Button
+			android:text="Đăng"
+			android:layout_width="200dp"
+			android:layout_height="40dp"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="15dp"
+			android:background="#f3f3f3"
+			android:textColor="#cccccc" />			
+	</LinearLayout>
+</RelativeLayout>
