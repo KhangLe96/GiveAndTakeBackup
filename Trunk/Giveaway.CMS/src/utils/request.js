@@ -43,7 +43,6 @@ function checkEmptyResponse(response) {
 }
 
 function prepareJsonData(text_response) {
-  console.log(text_response, "re");
   if (text_response.length === 0) {
     return {};
   }
