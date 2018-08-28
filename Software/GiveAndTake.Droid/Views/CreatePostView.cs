@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Android.App;
 using Android.Content;
 using Android.Runtime;
 using Android.Views;
@@ -18,18 +17,21 @@ namespace GiveAndTake.Droid.Views
 	[Register(nameof(CreatePostView))]
     public class CreatePostView : BaseFragment
 	{
-		private View _view;
 		protected override int LayoutId => Resource.Layout.CreatePostView;
+		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
+		public IMvxCommand SubmitCommand { get; set; }
 
-        protected override void InitView(View view)
+		private View _view;
+		readonly List<byte[]> _image = new List<byte[]>();
+
+		private Button _choosePictureButton;
+
+		protected override void InitView(View view)
         {
 	        _view = view;
 			InitChoosePicture();
-		}
-
-		readonly List<byte[]> image = new List<byte[]>();
-
-		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
+			InitSubmit();
+        }
 
 		protected override void CreateBinding()
 		{
@@ -41,21 +43,41 @@ namespace GiveAndTake.Droid.Views
 				.For(v => v.ImageCommand)
 				.To(vm => vm.ImageCommand);
 
+			bindingSet.Bind(this)
+				.For(v => v.SubmitCommand)
+				.To(vm => vm.SubmitCommand);
+
 			bindingSet.Apply();
+		}
+
+		private void InitSubmit()
+		{
+			Button submitButton = _view.FindViewById<Button>(Resource.Id.Submit);
+			submitButton.Click += delegate
+			{
+				SubmitCommand.Execute(null);
+			};
 		}
 
 		private void InitChoosePicture()
 		{
-			Button choosePictureButton = _view.FindViewById<Button>(Resource.Id.ChoosePicture);
-			choosePictureButton.Click += delegate
-			{
-				Intent intent = new Intent();
-				intent.SetType("image/*");
-				intent.PutExtra(Intent.ExtraAllowMultiple, true);
-				intent.SetAction(Intent.ActionGetContent);
-				//StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 9001);
-				Activity.StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 9001);
-			};
+			_choosePictureButton = _view.FindViewById<Button>(Resource.Id.ChoosePicture);
+			_choosePictureButton.Click += ChoosePictureButton_Click;
+		}
+
+		public override void OnDestroyView()
+		{
+			base.OnDestroyView();
+			_choosePictureButton.Click -= ChoosePictureButton_Click;
+		}
+
+		private void ChoosePictureButton_Click(object sender, System.EventArgs e)
+		{
+			Intent intent = new Intent();
+			intent.SetType("image/*");
+			intent.PutExtra(Intent.ExtraAllowMultiple, true);
+			intent.SetAction(Intent.ActionGetContent);
+			StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 9001);
 		}
 
 		public override void OnActivityResult(int requestCode, int resultCode, Intent data)
@@ -63,7 +85,7 @@ namespace GiveAndTake.Droid.Views
 			base.OnActivityResult(requestCode, resultCode, data);
 			if (requestCode == 9001)
 			{
-				if (data != null && data.ClipData != null)
+				if (data?.ClipData != null)
 				{
 
 					var imageCount = data.ClipData.ItemCount;
@@ -71,10 +93,10 @@ namespace GiveAndTake.Droid.Views
 					{
 						var selectedImage = data.ClipData.GetItemAt(i).Uri;
 						var imageInByte = ConvertUriToByte(selectedImage);
-						image.Add(imageInByte);
+						_image.Add(imageInByte);
 					}
 
-					ImageCommand.Execute(image);
+					ImageCommand.Execute(_image);
 				}
 				else
 				{
@@ -82,12 +104,8 @@ namespace GiveAndTake.Droid.Views
 					{
 						var selectedImage = Android.Net.Uri.Parse(data.DataString);
 						var imageInByte = ConvertUriToByte(selectedImage);
-						image.Add(imageInByte);
-						ImageCommand.Execute(image);
-					}
-					else
-					{
-						return;
+						_image.Add(imageInByte);
+						ImageCommand.Execute(_image);
 					}
 				}
 			}

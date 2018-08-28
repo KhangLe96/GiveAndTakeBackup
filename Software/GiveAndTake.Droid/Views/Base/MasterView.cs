@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views.Base

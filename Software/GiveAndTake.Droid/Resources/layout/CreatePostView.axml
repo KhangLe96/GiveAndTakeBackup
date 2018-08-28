@@ -30,13 +30,14 @@
 	<EditText
 		android:textColor="#cccccc"
 		android:background="#f3f3f3"
-		android:id="@+id/PostTitle"
+		android:id="@+id/Title"
 		android:hint="Tiêu đề"
 		android:layout_width="match_parent"
 		android:layout_centerHorizontal="true"
 		android:layout_height="40dp"
 		android:layout_below="@+id/PopupField"
-		android:layout_marginTop="15dp" />
+		android:layout_marginTop="15dp" 
+		local:MvxBind="Text PostTitle"/>
 	<EditText
 		android:textColor="#cccccc"
 		android:background="#f3f3f3"
@@ -44,8 +45,9 @@
 		android:hint="Mô tả ..."
 		android:layout_width="match_parent"
 		android:layout_height="320dp"
-		android:layout_below="@+id/PostTitle"
-		android:layout_marginTop="15dp" />
+		android:layout_below="@+id/Title"
+		android:layout_marginTop="15dp" 
+		local:MvxBind="Text PostDescription"/>
 	<Button
 		android:text="Choose"
 		android:id="@+id/ChoosePicture"
@@ -84,6 +86,7 @@
 			android:background="#f3f3f3"
 			android:textColor="#cccccc"/>
 		<Button
+			android:id="@+id/Submit"
 			android:text="Đăng"
 			android:layout_width="200dp"
 			android:layout_height="40dp"
