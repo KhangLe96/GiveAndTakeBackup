@@ -10,12 +10,10 @@ function checkStatus(response) {
     return response;
   }
 
-  const { dispatch } = this.props;
   if (response.status === 401) {
     localStorage.clear();
     return;
   }
-
   const error = new Error(response.statusText);
   error.response = response;
   throw error;
@@ -45,6 +43,7 @@ function checkEmptyResponse(response) {
 }
 
 function prepareJsonData(text_response) {
+  console.log(text_response, "re");
   if (text_response.length === 0) {
     return {};
   }
@@ -91,7 +90,7 @@ export default function request(url, options) {
       }
     })
     .catch((error) => {
-      return error;
+      return { type: 'Error', message: error.message || 'Error without message.'}
     });
 }
 
