@@ -17,7 +17,7 @@ export const getNavData = app => [
       {
         name: 'Quản lý bài đăng',
         path: 'post-management',
-        icon: 'dashboard',
+        icon: 'news',
         children: [
           {
             name: 'List post',
@@ -34,7 +34,7 @@ export const getNavData = app => [
       {
         name: 'Quản lý người dùng',
         path: 'user-management',
-        icon: 'data',
+        icon: 'user',
         children: [
           {
             name: 'List User',
@@ -51,7 +51,7 @@ export const getNavData = app => [
       {
         name: 'Quản lý danh mục',
         path: 'category-management',
-        icon: 'data',
+        icon: 'gift',
         children: [
           {
             name: 'List category',
@@ -73,7 +73,7 @@ export const getNavData = app => [
       {
         name: 'Quản lý báo cáo',
         path: 'report-management',
-        icon: 'data',
+        icon: 'sms',
         children: [
           {
             name: 'List report',

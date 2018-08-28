@@ -63,15 +63,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PostAppResponse Create(PostRequest postRequest)
         {
+            postRequest.Id = Guid.NewGuid();
             var post = Mapper.Map<Post>(postRequest);
-            post.Id = Guid.NewGuid();
+            post.Images = null;
 
             _postService.Create(post, out var isPostSaved);
 
-            var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
-            var postResponse = Mapper.Map<PostAppResponse>(postDb);
+            if(isPostSaved)
+            {
+                CreateImage(postRequest);
 
-            return postResponse;
+                var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
+                var postResponse = Mapper.Map<PostAppResponse>(postDb);
+
+                return postResponse;
+            }
+            else
+            {
+                throw new InternalServerErrorException("Internal Error");
+            }
         }
 
         public PostAppResponse Update(Guid id, PostRequest postRequest)

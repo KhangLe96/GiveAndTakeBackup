@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
+using System.Windows.Input;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
@@ -13,12 +14,14 @@ namespace GiveAndTake.Core.ViewModels
 {
 	public class CreatePostViewModel : BaseViewModel
 	{
-		List<Image> _postImages = new List<Image>();
-		List<byte[]> ImageByte = new List<byte[]>();
+		private readonly List<PostImage> _postImages = new List<PostImage>();
+		private readonly List<byte[]> _imageBytes = new List<byte[]>();
 
 		public string ProjectName => AppConstants.AppTitle;
-
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
+
+		private ICommand _submitCommand;
+		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
 
@@ -52,12 +55,12 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void InitCommand()
 		{
-			ImageCommand = new MvxCommand<List<byte[]>>(InitCreateNewPost);
+			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
 		}
 
 		private MvxCommand _takePictureCommand;
 
-		public System.Windows.Input.ICommand TakePictureCommand
+		public ICommand TakePictureCommand
 		{
 			get
 			{
@@ -76,28 +79,43 @@ namespace GiveAndTake.Core.ViewModels
 			var memoryStream = new MemoryStream();
 			pictureStream.CopyTo(memoryStream);
 			Bytes = memoryStream.ToArray();
-			ImageByte.Add(Bytes);
-			InitCreateNewPost(ImageByte);
+			_imageBytes.Add(Bytes);
+			InitNewImage(_imageBytes);
 		}
 
-		public void InitCreateNewPost(List<byte[]> ImageByte)
+		public void InitNewImage(List<byte[]> imageByte)
 		{
-			for (int i = 0; i < ImageByte.Count; i++)
+			for (int i = 0; i < imageByte.Count; i++)
 			{
-				var image = new Image()
+				var image = new PostImage()
 				{
-					ImageData = ConvertToBase64String(ImageByte[i]),
+					ImageData = ConvertToBase64String(imageByte[i]),
 				};
 				_postImages.Add(image);
 			}
+		}
+
+		public void InitSubmit()
+		{
+			if (_postImages == null || !_postImages.Any())
+			{
+				// Show message
+				return;
+			}
+
+			InitCreateNewPost();
+		}
+
+		public void InitCreateNewPost()
+		{
 			var managementService = Mvx.Resolve<IManagementService>();
 			var post = new CreatePost()
 			{
-				PostTitle = "Test Upload Multiple Image",
-				Description = "Successfuly! Congratulation. It's too easy. Test upload base64String API. Please make an function to convert base64 code Image -> Image to display on CMS",
+				Title = PostTitle,
+				Description = PostDescription,
 				PostImages = _postImages,
-				PostCategory = "029a9247-3e01-49b6-98eb-eb41f0b2ab16",
-				PostAddress = "82023f0f-10e8-4b71-948e-bd6cf346ca0e",
+				PostCategory = "07187ea7-da4a-4d9d-9131-dcf5cac006d6",
+				Address = "d785b6e2-95c5-4d71-a2c4-1b10d064fe84",
 			};
 			managementService.CreatePost(post);
 		}
