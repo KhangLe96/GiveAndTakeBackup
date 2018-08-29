@@ -8,7 +8,7 @@ namespace GiveAndTake.Core.ViewModels.Base
 {
 	public abstract class BaseViewModel : MvxViewModel
 	{
-        private IMvxNavigationService _navigationService;
+		private IMvxNavigationService _navigationService;
 		public override IMvxNavigationService NavigationService => _navigationService ?? (_navigationService = Mvx.Resolve<IMvxNavigationService>());
 	}
 

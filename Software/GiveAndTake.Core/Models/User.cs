@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace GiveAndTake.Core.Models
@@ -16,7 +17,7 @@ namespace GiveAndTake.Core.Models
         //public int AppreciationNumber { get; set; }
 
         [DataMember(Name = "birthdate")]
-        public DateTime BirthDate { get; set; }
+        public DateTimeOffset? BirthDate { get; set; }
 
         //public string PasswordSalt { get; set; }
         //public string PasswordHash { get; set; }
@@ -33,6 +34,12 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "gender")]
         public string Gender { get; set; }
 
-        //public DateTimeOffset LastLogin { get; set; }
-    }
+	    [DataMember(Name = "role")]
+		public List<string> Role { get; set; }
+
+	    [DataMember(Name = "status ")]
+		public string Status { get; set; }
+
+		//public DateTimeOffset LastLogin { get; set; }
+	}
 }

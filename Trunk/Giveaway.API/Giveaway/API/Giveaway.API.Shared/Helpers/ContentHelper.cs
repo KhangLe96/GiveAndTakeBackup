@@ -47,7 +47,7 @@ namespace Giveaway.API.Shared.Helpers
         public static string GetImageUrl(string type, string id, string fileName)
         {
             var pageUri = GetUri();
-            return Path.Combine(pageUri.Scheme, pageUri.Host, pageUri.Port.ToString(), "Content", type, id, fileName);
+            return pageUri.Scheme + "://" + pageUri.Host + ":" + pageUri.Port + "/content/" + type + "/" + id + "/" + fileName;
         }
 
         public static string GetLocalImageUrl(string type, string id, string fileName)
