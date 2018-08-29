@@ -1,17 +1,40 @@
 ﻿using Android.App;
-using Android.Content;
+using Android.OS;
+using GiveAndTake.Core.ViewModels.Base;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views.Base
 {
-    [MvxActivityPresentation]
+	[MvxActivityPresentation]
 	[Activity(Label = "View for HomeViewModel")]
 	public class MasterView : BaseActivity
 	{
-	    protected override int LayoutId => Resource.Layout.MasterView;
+		protected override int LayoutId => Resource.Layout.MasterView;
+		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
+		protected override void InitView()
+		{
+		}
 
-        protected override void InitView()
-	    {
-	    }
+		protected override void CreateBinding()
+		{
+			base.CreateBinding();
+			base.CreateBinding();
+			var bindingSet = this.CreateBindingSet<MasterView, MasterViewModel>();
+			bindingSet.Bind(this)
+				.For(v => v.ShowInitialViewModelsCommand)
+				.To(vm => vm.ShowInitialViewModelsCommand);
+			bindingSet.Apply();
+		}
+
+		protected override void OnCreate(Bundle bundle)
+		{
+			base.OnCreate(bundle);
+			if (bundle == null)
+			{
+				ShowInitialViewModelsCommand.Execute();
+			}
+		}
 	}
 }

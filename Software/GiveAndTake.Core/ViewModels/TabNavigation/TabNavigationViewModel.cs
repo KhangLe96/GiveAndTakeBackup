@@ -8,12 +8,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
 	public class TabNavigationViewModel : BaseViewModel
 	{
-		public TabNavigationViewModel()
-		{
-			ShowInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels);
-		}
+		private IMvxAsyncCommand _showInitialViewModelsCommand;
+		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
+			_showInitialViewModelsCommand ??
+			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));
 
-		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; private set; }
 		private async Task ShowInitialViewModels()
 		{
 			var tasks = new List<Task>
