@@ -40,7 +40,7 @@ namespace GiveAndTake.Core.Models
 	[DataContract]
 	public class PostImage
 	{
-		[DataMember(Name = "imageUrl")]
+		[DataMember(Name = "image")]
 		public string ImageData { get; set; }
 	}
 
