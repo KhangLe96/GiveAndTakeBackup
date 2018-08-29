@@ -2,11 +2,12 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import { fetch, deletePost, changeStatus, getProfile } from '../services/user';
 import { TABLE_PAGESIZE } from '../common/constants';
+import ErrorHelper from '../helpers/ErrorHelper';
 
 const DEFAULT_CURRENT_PAGE = 1;
 
 export default {
-  namespace: 'userManagement', /* should be the same with file name */
+  namespace: 'userManagement',
 
   state: {
     users: [],
@@ -18,7 +19,9 @@ export default {
   effects: {
     * fetch({ payload }, { call, put }) {
       const response = yield call(fetch, payload);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         yield put({
           type: 'save',
           payload: {
@@ -31,9 +34,10 @@ export default {
     },
     * changeStatus({ payload, callback }, { call, put }) {
       const response = yield call(changeStatus, payload);
-      if (response) {
-        // / REVIEW: Should show message to notify user that your request has updated successfully
-        // / Example: message.success('Thay đổi trạng thái tài khoản thành công.');
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
+        message.success('Cập nhật trạng thái thành công!');
         yield put({
           type: 'fetch',
           payload: {
@@ -48,7 +52,9 @@ export default {
     },
     * changeStatusProfile({ payload }, { call, put }) {
       const response = yield call(changeStatus, payload);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         yield put({
           type: 'getProfile',
           payload,
@@ -57,7 +63,9 @@ export default {
     },
     * getProfile({ payload }, { call, put }) {
       const response = yield call(getProfile, payload);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         yield put({
           type: 'save',
           payload: {

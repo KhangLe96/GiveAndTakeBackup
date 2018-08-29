@@ -2,10 +2,7 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd';
 import EventEmitter from 'events';
 import { fetchMe, forgotPassword, login, register, updateProfile } from '../services/passport';
-import { STATUS_VERIFIED } from '../common/constants';
 import ErrorHelper from '../helpers/ErrorHelper';
-import { diffInSeconds } from '../helpers/DateTimeHelper';
-import { queryProfileMe } from '../services/user';
 
 const emitter = new EventEmitter();
 
