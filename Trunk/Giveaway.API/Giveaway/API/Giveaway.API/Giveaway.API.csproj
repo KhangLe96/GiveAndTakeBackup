@@ -15,13 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\Content\**" />
-    <Content Remove="wwwroot\Content\**" />
-    <EmbeddedResource Remove="wwwroot\Content\**" />
-    <None Remove="wwwroot\Content\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
@@ -48,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\Content\Post\" />
   </ItemGroup>
 
 </Project>
