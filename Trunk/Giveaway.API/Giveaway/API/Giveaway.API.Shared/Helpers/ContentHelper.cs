@@ -33,7 +33,7 @@ namespace Giveaway.API.Shared.Helpers
 
         public static string GetRootPath()
         {
-            var path = Path.Combine(Environment.ContentRootPath, "Content");
+            var path = Path.Combine(Environment.WebRootPath, "Content");
             return CreateIfNotExist(path);
         }
 
@@ -53,7 +53,7 @@ namespace Giveaway.API.Shared.Helpers
         public static string GetLocalImageUrl(string type, string id, string fileName)
         {
             var pageUri = GetUri();
-            return Path.Combine(Environment.ContentRootPath, "Content", type, id, fileName);
+            return Path.Combine(Environment.WebRootPath, "Content", type, id, fileName);
         }
 
         public static Uri GetUri()
@@ -70,7 +70,6 @@ namespace Giveaway.API.Shared.Helpers
 
         public static string EncodeTo64(string toEncode)
         {
-
             byte[] toEncodeAsBytes = System.Text.Encoding.ASCII.GetBytes(toEncode);
             string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;

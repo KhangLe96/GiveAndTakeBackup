@@ -9,12 +9,21 @@ namespace GiveAndTake.Core
 	{
 		public override void Initialize()
 		{
-			CreatableTypes()
-				.EndingWith("Service")
-				.AsInterfaces()
-				.RegisterAsLazySingleton();
+			base.Initialize();
 
 			RegisterAppStart<MasterViewModel>();
+		}
+
+		protected void RegisterHelpers()
+		{
+			Mvx.LazyConstructAndRegisterSingleton<IDataModel, DataModel>();
+			var dataModel = new DataModel();
+			Mvx.RegisterSingleton(dataModel);
+		}
+
+		protected void RegisterServices()
+		{
+			Mvx.RegisterType<IManagementService, ManagementService>();
 		}
 	}
 }

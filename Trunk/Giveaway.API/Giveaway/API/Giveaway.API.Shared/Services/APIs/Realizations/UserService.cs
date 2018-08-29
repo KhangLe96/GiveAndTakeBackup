@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using Giveaway.API.Shared.Constants;
-using Giveaway.API.Shared.Extensions;
+﻿using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.User;
@@ -14,13 +9,18 @@ using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
+using Giveaway.Util.Constants;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-	/// <inheritdoc />
-	public class UserService : IUserService
+    /// <inheritdoc />
+    public class UserService : IUserService
 	{
 		#region Properties
 
@@ -68,7 +68,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var isUpdated = _userService.Update(user);
 			if (!isUpdated)
 			{
-				throw new InternalServerErrorException(Const.Error.InternalServerError);
+				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 			}
 			return true;
 		}
@@ -125,7 +125,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			}
 			if (user.EntityStatus != EntityStatus.Activated)
 			{
-				throw new BadRequestException(Const.Error.BlockedUser);
+				throw new BadRequestException(CommonConstant.Error.BlockedUser);
 			}
 			return GenerateLoginResponse(user);
 		}

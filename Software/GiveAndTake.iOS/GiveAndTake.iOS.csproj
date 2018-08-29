@@ -65,6 +65,8 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\PopupItemLabel.cs" />
+    <Compile Include="CustomControls\HeaderBarView.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\ResolutionHelper.cs" />
@@ -144,6 +146,7 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Folder Include="Resources\Images\" />
     <Folder Include="Views\Popups\" />
