@@ -24,7 +24,7 @@ namespace GiveAndTake.Droid.Views
 		private View _view;
 		readonly List<byte[]> _image = new List<byte[]>();
 
-		private Button _choosePictureButton;
+		private ImageButton _choosePictureButton;
 
 		protected override void InitView(View view)
         {
@@ -61,7 +61,7 @@ namespace GiveAndTake.Droid.Views
 
 		private void InitChoosePicture()
 		{
-			_choosePictureButton = _view.FindViewById<Button>(Resource.Id.ChoosePicture);
+			_choosePictureButton = _view.FindViewById<ImageButton>(Resource.Id.ChoosePicture);
 			_choosePictureButton.Click += ChoosePictureButton_Click;
 		}
 
