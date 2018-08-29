@@ -7,7 +7,7 @@ using ConflictException = Giveaway.API.Shared.Exceptions.ConflictException;
 
 namespace Giveaway.API.Shared.Filters
 {
-	public class JsonExceptionFilter : IExceptionFilter
+    public class JsonExceptionFilter : IExceptionFilter
 	{
 		private const int BadRequestCode = 400;
 		private const int SystemFailureCode = 500;

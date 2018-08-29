@@ -1,7 +1,6 @@
 ﻿using Giveaway.Data.Enums;
 using Giveaway.Data.Models;
 using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Giveaway.API.Shared.Models.DTO

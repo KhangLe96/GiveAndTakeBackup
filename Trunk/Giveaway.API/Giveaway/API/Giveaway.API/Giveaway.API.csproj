@@ -15,18 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Content\Post\15fb6359-6588-4138-976c-631bf036130b\**" />
-    <Content Remove="Content\Post\15fb6359-6588-4138-976c-631bf036130b\**" />
-    <EmbeddedResource Remove="Content\Post\15fb6359-6588-4138-976c-631bf036130b\**" />
-    <None Remove="Content\Post\15fb6359-6588-4138-976c-631bf036130b\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Content\Post\" />
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
@@ -50,6 +38,10 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
