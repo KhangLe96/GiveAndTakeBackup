@@ -1,98 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout 
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-	<LinearLayout 
-		android:orientation="horizontal"
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:id="@+id/PopupField">
+		android:id="@+id/SpinnerBar">
 		<Button
+			android:layout_width="wrap_content"
 			android:text="Province City"
-			android:layout_width="200dp"
+			android:id="@+id/ProvinceCity"
+			android:layout_weight="1"
 			android:layout_height="40dp"
-			android:layout_centerHorizontal="true"
+			android:layout_marginRight="5dp"
 			android:layout_marginTop="15dp"
-			android:background="#f3f3f3"
+			android:layout_marginLeft="10dp"
+			android:background="@drawable/post_editText_bg"
 			android:textColor="#cccccc"/>
 		<Button
+			android:layout_width="wrap_content"
 			android:text="Category"
-			android:layout_width="200dp"
+			android:id="@+id/Category"
+			android:layout_weight="1"
 			android:layout_height="40dp"
-			android:layout_centerHorizontal="true"
+			android:layout_marginLeft="5dp"
 			android:layout_marginTop="15dp"
-			android:background="#f3f3f3"
-			android:textColor="#cccccc" />			
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="10dp"
+			android:background="@drawable/post_editText_bg"
+			android:textColor="#cccccc" 
+			local:MvxBind="Click ShowCategoriesCommand"/>
 	</LinearLayout>
 	<EditText
 		android:textColor="#cccccc"
-		android:background="#f3f3f3"
+		android:background="@drawable/post_editText_bg"
 		android:id="@+id/Title"
 		android:hint="Tiêu đề"
 		android:layout_width="match_parent"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
 		android:layout_centerHorizontal="true"
 		android:layout_height="40dp"
-		android:layout_below="@+id/PopupField"
-		android:layout_marginTop="15dp" 
+		android:layout_below="@+id/SpinnerBar"
+		android:layout_marginTop="15dp"
+		android:paddingLeft="10dp"
 		local:MvxBind="Text PostTitle"/>
 	<EditText
 		android:textColor="#cccccc"
-		android:background="#f3f3f3"
 		android:id="@+id/PostDescription"
 		android:hint="Mô tả ..."
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:background="@drawable/post_editText_bg"
 		android:layout_width="match_parent"
-		android:layout_height="320dp"
+		android:layout_height="350dp"
 		android:layout_below="@+id/Title"
-		android:layout_marginTop="15dp" 
-		local:MvxBind="Text PostDescription"/>
-	<Button
-		android:text="Choose"
-		android:id="@+id/ChoosePicture"
-		android:layout_width="wrap_content"
-		android:layout_height="30dp"
-		android:layout_centerHorizontal="true"
-		android:layout_alignParentRight="true"
 		android:layout_marginTop="15dp"
-		android:background="#f3f3f3"
-		android:textColor="#cccccc"
-		android:layout_below="@+id/PostDescription"/>
-	<Button
-		android:text="Take"
-		android:layout_width="wrap_content"
-		android:layout_height="30dp"
-		android:layout_centerHorizontal="true"
+		android:gravity ="center"
+		local:MvxBind="Text PostDescription"/>
+	<ImageButton
+		android:id="@+id/ChoosePicture"
+		android:layout_width="25dp"
+		android:layout_height="20dp"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="10dp"
+		android:layout_marginTop="15dp"
+		android:background="#FFFFFF"
+		android:src="@drawable/gallery_button"
+		android:layout_below="@+id/PostDescription"
+		android:scaleType="fitXY"/>
+	<ImageButton
+		android:layout_width="25dp"
+		android:layout_height="20dp"
 		android:layout_toLeftOf="@+id/ChoosePicture"
 		android:layout_marginTop="15dp"
-		android:layout_marginRight="5dp"
-		android:background="#f3f3f3"
-		android:textColor="#cccccc" 
+		android:layout_marginRight="30dp"
+		android:background="#FFFFFF"
+		android:src="@drawable/takePicture_button"
 		local:MvxBind="Click TakePictureCommand"
-		android:layout_below="@+id/PostDescription"/>	
-	<LinearLayout 
-		android:orientation="horizontal"
+		android:layout_below="@+id/PostDescription"
+		android:scaleType="fitXY"/>
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/ConfirmField"
-		android:layout_below="@+id/ChoosePicture" >
+		android:layout_height="match_parent"
+		android:layout_below="@+id/ChoosePicture">
 		<Button
+			android:layout_width="wrap_content"
+			android:layout_below="@+id/ChoosePicture"
 			android:text="Hủy"
-			android:layout_width="200dp"
-			android:layout_height="40dp"
-			android:layout_centerHorizontal="true"
-			android:layout_marginTop="15dp"
-			android:background="#f3f3f3"
-			android:textColor="#cccccc"/>
+			android:layout_weight="1"
+			android:layout_height="30dp"
+			android:layout_marginRight="5dp"
+			android:layout_marginLeft="10dp"
+			android:layout_marginTop="10dp"
+			android:background="@drawable/popup_button_bg"
+			android:textColor="#fff"/>
 		<Button
+			android:layout_width="wrap_content"
 			android:id="@+id/Submit"
 			android:text="Đăng"
-			android:layout_width="200dp"
-			android:layout_height="40dp"
-			android:layout_centerHorizontal="true"
-			android:layout_marginTop="15dp"
-			android:background="#f3f3f3"
-			android:textColor="#cccccc" />			
+			android:layout_weight="1"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="10dp"
+			android:layout_height="30dp"
+			android:layout_marginTop="10dp"
+			android:background="@drawable/popup_button_bg"
+			android:textColor="#fff" />
 	</LinearLayout>
 </RelativeLayout>
