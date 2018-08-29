@@ -65,6 +65,8 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\PopupItemLabel.cs" />
+    <Compile Include="CustomControls\HeaderBarView.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
@@ -78,6 +80,9 @@
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
     <BundleResource Include="Resources\Images\my_avatar.png" />
+    <Compile Include="Views\Popups\PopupCategoriesView.cs" />
+    <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
+    <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />
     <Compile Include="Views\LoginView.cs" />
     <Compile Include="Views\PostDetailView.cs" />
@@ -221,9 +226,7 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Popups\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\GiveAndTake.Core\GiveAndTake.Core.csproj">
       <Project>{d618a4b3-243a-4cd6-bde2-d31fd4341494}</Project>

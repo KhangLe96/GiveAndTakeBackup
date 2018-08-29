@@ -5,7 +5,6 @@ using UIKit;
 namespace GiveAndTake.iOS.Views.Base
 {
 	public abstract class BaseView : MvxViewController
-
 	{
 		public override void ViewDidLoad()
 		{
@@ -15,7 +14,7 @@ namespace GiveAndTake.iOS.Views.Base
 				MultipleTouchEnabled = false
 			};
 
-			ResolutionHelper.RefreshStaticVariable();
+			ResolutionHelper.InitStaticVariable();
 			DimensionHelper.InitStaticVariable();
 			ImageHelper.InitStaticVariable();
 
