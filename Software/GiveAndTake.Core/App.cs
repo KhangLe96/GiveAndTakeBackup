@@ -1,5 +1,7 @@
-﻿using GiveAndTake.Core.ViewModels;
+﻿using GiveAndTake.Core.Models;
+using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.TabNavigation;
+using MvvmCross;
 using MvvmCross.IoC;
 using MvvmCross.ViewModels;
 
@@ -9,12 +11,25 @@ namespace GiveAndTake.Core
 	{
 		public override void Initialize()
 		{
-			CreatableTypes()
-				.EndingWith("Service")
-				.AsInterfaces()
-				.RegisterAsLazySingleton();
+			base.Initialize();
+
+			RegisterHelpers();
+
+			RegisterServices();
 
 			RegisterAppStart<TabNavigationViewModel>();
+		}
+
+		protected void RegisterHelpers()
+		{
+			Mvx.LazyConstructAndRegisterSingleton<IDataModel, DataModel>();
+			var dataModel = new DataModel();
+			Mvx.RegisterSingleton(dataModel);
+		}
+
+		protected void RegisterServices()
+		{
+
 		}
 	}
 }

@@ -2,8 +2,8 @@
 
 namespace GiveAndTake.Core.Models
 {
-    public interface IDataModel
-    {
-        ICollection<Category> Categories { get; set; }
-    }
+	public interface IDataModel
+	{
+		ICollection<Category> Categories { get; set; }
+	}
 }
