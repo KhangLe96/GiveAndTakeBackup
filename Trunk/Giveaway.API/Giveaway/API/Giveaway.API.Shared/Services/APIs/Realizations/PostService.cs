@@ -179,7 +179,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 {
                     Id = post.Id.ToString(),
                     Type = "Post",
-                    File = image.ImageUrl
+                    File = image.Image
                 });
             }
 
