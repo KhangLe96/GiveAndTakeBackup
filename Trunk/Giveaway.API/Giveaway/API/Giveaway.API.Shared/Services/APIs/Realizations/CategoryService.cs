@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Giveaway.API.Shared.Exceptions;
+﻿using Giveaway.API.Shared.Exceptions;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Category;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Category;
-using Giveaway.Data.EF;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
+using Giveaway.Util.Constants;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using CategoryRequest = Giveaway.Data.EF.DTOs.Requests.CategoryRequest;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -53,7 +53,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var createdCategory = _categoryService.Create(category, out var isSaved);
             if (!isSaved)
             {
-                throw new BadRequestException(Const.Error.BadRequest);
+                throw new BadRequestException(CommonConstant.Error.BadRequest);
             }
             return GenerateCategoryResponse(createdCategory);
         }
@@ -115,7 +115,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var isSaved = _categoryService.Update(category);
             if (!isSaved)
             {
-                throw new BadRequestException(Const.Error.BadRequest);
+                throw new BadRequestException(CommonConstant.Error.BadRequest);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var category = _categoryService.Find(id);
             if (category == null)
             {
-                throw new BadRequestException(Const.Error.NotFound);
+                throw new BadRequestException(CommonConstant.Error.NotFound);
             }
             return category;
         }

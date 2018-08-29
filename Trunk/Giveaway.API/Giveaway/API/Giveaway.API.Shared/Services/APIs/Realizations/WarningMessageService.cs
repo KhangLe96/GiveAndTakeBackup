@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using Giveaway.API.Shared.Requests.Warning;
 using Giveaway.API.Shared.Responses.Warning;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Models.Database;
-using static Giveaway.Data.EF.Const;
+using Giveaway.Util.Constants;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -24,7 +21,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var result = _warningMessageService.Create(warning, out var isSaved);
             if(!isSaved)
             {
-                throw new InternalServerErrorException(Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
             }
 
             var warningResponse = Mapper.Map<WarningResponse>(result);

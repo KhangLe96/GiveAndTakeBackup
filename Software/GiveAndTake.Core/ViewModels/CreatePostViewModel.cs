@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
@@ -16,12 +17,15 @@ namespace GiveAndTake.Core.ViewModels
 	{
 		private readonly List<PostImage> _postImages = new List<PostImage>();
 		private readonly List<byte[]> _imageBytes = new List<byte[]>();
+		private string currentCategory;
 
 		public string ProjectName => AppConstants.AppTitle;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 
 		private ICommand _submitCommand;
 		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
+
+		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
 
@@ -56,6 +60,21 @@ namespace GiveAndTake.Core.ViewModels
 		private void InitCommand()
 		{
 			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
+			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
+		}
+
+		private async Task<string> ShowCategories()
+		{
+			if (currentCategory == null)
+			{
+				currentCategory = AppConstants.DefaultCategory;
+			}
+			var category = await NavigationService.Navigate<PopupCategoriesViewModel, string, string>(currentCategory);
+			if (category != null)
+			{
+				currentCategory = category;
+			}
+			return category;
 		}
 
 		private MvxCommand _takePictureCommand;

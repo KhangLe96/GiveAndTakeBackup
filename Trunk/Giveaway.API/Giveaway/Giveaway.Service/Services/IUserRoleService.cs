@@ -1,12 +1,13 @@
-﻿using System;
-using System.Linq;
-using Giveaway.Data.EF;
+﻿using Giveaway.Data.EF;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Models.Database;
+using Giveaway.Util.Constants;
+using System;
+using System.Linq;
 
 namespace Giveaway.Service.Services
 {
-   
+
     public interface IUserRoleService : IEntityService<UserRole>
     {
         string[] GetUserRoles(Guid userId);
@@ -25,12 +26,12 @@ namespace Giveaway.Service.Services
         {
             if (IsUserRoleExisted(userId, roleId))
             {
-                throw new BadRequestException(Const.Error.BadRequest);
+                throw new BadRequestException(CommonConstant.Error.BadRequest);
             }
             Create(new UserRole { RoleId = roleId, UserId = userId }, out bool isSaved);
             if (!isSaved)
             {
-                throw new InternalServerErrorException(Const.Error.BadRequest);
+                throw new InternalServerErrorException(CommonConstant.Error.BadRequest);
             }
             return true;
         }
