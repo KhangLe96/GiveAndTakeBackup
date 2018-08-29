@@ -10,6 +10,7 @@
 	<color name="divider">#e0eff7</color>
 	<color name="default_text_color">#e4e4e4</color>
 	<color name="default_popup_text_color">#cccccc</color>
+	<color name="default_editText_field_color">#F3F3F3</color>
   <color name="tab_navigation_background">#FFFFFF</color>
   <color name="tab_navigation_chosen_background">#1CB8EA</color>
 </resources>
