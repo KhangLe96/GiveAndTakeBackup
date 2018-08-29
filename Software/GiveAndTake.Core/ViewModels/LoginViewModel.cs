@@ -11,7 +11,7 @@ namespace GiveAndTake.Core.ViewModels
 	public class LoginViewModel : BaseViewModel
 	{
 		private readonly IDataModel _dataModel;
-		
+
 		private User _user;
 		public User User
 		{
@@ -36,18 +36,19 @@ namespace GiveAndTake.Core.ViewModels
 			LoginCommand = new MvxCommand<BaseUser>(OnLoginSuccess);
 		}
 
-        private void OnLoginSuccess(BaseUser baseUser)
-        {
-            try
-            {
+		private void OnLoginSuccess(BaseUser baseUser)
+		{
+			try
+			{
 				var managementService = Mvx.Resolve<IManagementService>();
 				managementService.LoginFacebook(baseUser);
-				NavigationService.Navigate<TabNavigationViewModel>();
+				NavigationService.Close(this);
+				NavigationService.Navigate<MasterViewModel>();
 			}
-            catch (Exception)
-            {
-                // login error, finish current screen and back to main screen
-            }
-        }
-    }
+			catch (Exception)
+			{
+				// login error, finish current screen and back to main screen
+			}
+		}
+	}
 }
