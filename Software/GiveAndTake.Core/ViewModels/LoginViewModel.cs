@@ -5,6 +5,7 @@ using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross;
 using MvvmCross.Commands;
 using System;
+using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -23,17 +24,12 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		public IMvxCommand<BaseUser> LoginCommand { get; set; }
+		private ICommand _loginCommand;
+		public ICommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxCommand<BaseUser>(OnLoginSuccess));
 
 		public LoginViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			InitCommand();
-		}
-
-		private void InitCommand()
-		{
-			LoginCommand = new MvxCommand<BaseUser>(OnLoginSuccess);
 		}
 
 		private void OnLoginSuccess(BaseUser baseUser)
