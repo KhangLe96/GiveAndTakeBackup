@@ -10,20 +10,28 @@
 		android:layout_height="wrap_content"
 		android:id="@+id/SpinnerBar">
 		<Button
+			android:textAllCaps="false"
+			android:textSize="15dp"
 			android:layout_width="wrap_content"
-			android:text="Province City"
+			android:text="Tỉnh/Thành phố"
+			android:gravity="center_vertical"
 			android:id="@+id/ProvinceCity"
 			android:layout_weight="1"
 			android:layout_height="40dp"
+			android:padding="10dp"
 			android:layout_marginRight="5dp"
 			android:layout_marginTop="15dp"
 			android:layout_marginLeft="10dp"
 			android:background="@drawable/post_editText_bg"
 			android:textColor="#cccccc"/>
 		<Button
+			android:textSize="15dp"
+			android:textAllCaps="false"
 			android:layout_width="wrap_content"
-			android:text="Category"
+			android:text="Loại..."
 			android:id="@+id/Category"
+			android:gravity="center_vertical"
+			android:padding="10dp"
 			android:layout_weight="1"
 			android:layout_height="40dp"
 			android:layout_marginLeft="5dp"
@@ -35,23 +43,28 @@
 			local:MvxBind="Click ShowCategoriesCommand"/>
 	</LinearLayout>
 	<EditText
+		android:textSize="15dp"
+		android:textAllCaps="false"
 		android:textColor="#cccccc"
 		android:background="@drawable/post_editText_bg"
 		android:id="@+id/Title"
 		android:hint="Tiêu đề"
+		android:padding="10dp"
 		android:layout_width="match_parent"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
-		android:layout_centerHorizontal="true"
 		android:layout_height="40dp"
 		android:layout_below="@+id/SpinnerBar"
 		android:layout_marginTop="15dp"
 		android:paddingLeft="10dp"
 		local:MvxBind="Text PostTitle"/>
 	<EditText
+		android:textSize="15dp"
+		android:textAllCaps="false"
 		android:textColor="#cccccc"
 		android:id="@+id/PostDescription"
 		android:hint="Mô tả ..."
+		android:padding="10dp"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
 		android:background="@drawable/post_editText_bg"
@@ -59,7 +72,7 @@
 		android:layout_height="350dp"
 		android:layout_below="@+id/Title"
 		android:layout_marginTop="15dp"
-		android:gravity ="center"
+		android:gravity ="top"
 		local:MvxBind="Text PostDescription"/>
 	<ImageButton
 		android:id="@+id/ChoosePicture"
@@ -77,7 +90,7 @@
 		android:layout_height="20dp"
 		android:layout_toLeftOf="@+id/ChoosePicture"
 		android:layout_marginTop="15dp"
-		android:layout_marginRight="30dp"
+		android:layout_marginRight="25dp"
 		android:background="#FFFFFF"
 		android:src="@drawable/takePicture_button"
 		local:MvxBind="Click TakePictureCommand"
@@ -88,6 +101,7 @@
 		android:layout_height="match_parent"
 		android:layout_below="@+id/ChoosePicture">
 		<Button
+			android:textAllCaps="false"
 			android:layout_width="wrap_content"
 			android:layout_below="@+id/ChoosePicture"
 			android:text="Hủy"
@@ -96,9 +110,10 @@
 			android:layout_marginRight="5dp"
 			android:layout_marginLeft="10dp"
 			android:layout_marginTop="10dp"
-			android:background="@drawable/popup_button_bg"
-			android:textColor="#fff"/>
+			android:background="@drawable/my_button_bg"
+			android:textColor="@color/colorPrimary"/>
 		<Button
+			android:textAllCaps="false"
 			android:layout_width="wrap_content"
 			android:id="@+id/Submit"
 			android:text="Đăng"
