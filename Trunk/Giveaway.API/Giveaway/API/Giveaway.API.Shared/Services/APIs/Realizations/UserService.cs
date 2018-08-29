@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using static Giveaway.Data.EF.Const;
 using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
 
@@ -172,7 +173,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		private List<UserProfileResponse> GetPagedUsers(PagingQueryUserRequest request)
 		{
-			var users = _userService.Where(u => u.EntityStatus != EntityStatus.Deleted);
+			var users = _userService.Where(u => u.EntityStatus != EntityStatus.Deleted && u.UserName != Const.DefaultSuperAdminUserName);
 			if (request.Name != null)
 			{
 				users = users.Where(u => u.FullName.Contains(request.Name));
