@@ -1,6 +1,7 @@
 import { Table, Button, Popconfirm, message } from 'antd';
 import { fetch, createWarningMessage } from '../services/report';
 import { TABLE_PAGESIZE } from '../common/constants';
+import ErrorHelper from './../helpers/ErrorHelper';
 
 
 const DEFAULT_CURRENT_PAGE = 1;
@@ -27,7 +28,9 @@ export default {
   effects: {
     * fetch({ payload }, { call, put }) {
       const response = yield call(fetch, payload);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         yield put({
           type: 'save',
           payload: {
@@ -41,8 +44,10 @@ export default {
 
     * createWarningMessage({ payload, callback }, { call, put }) {
       const response = yield call(createWarningMessage, payload);
-      if (response) {
-        callback();
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
+        message.success('Cảnh báo thành công!');
         yield put({
           type: 'fetch',
           payload: {
