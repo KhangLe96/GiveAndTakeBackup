@@ -6346,6 +6346,9 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f02006c
 			public const int avd_hide_password_3 = 2130837612;
 			
+			// aapt resource value: 0x7f0200b9
+			public const int avd_hide_password_3 = 2130837689;
+			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
@@ -6357,6 +6360,9 @@ namespace GiveAndTake.Droid
 			
 			// aapt resource value: 0x7f02006f
 			public const int avd_show_password_3 = 2130837615;
+			
+			// aapt resource value: 0x7f0200bc
+			public const int avd_show_password_3 = 2130837692;
 			
 			// aapt resource value: 0x7f020055
 			public const int design_bottom_navigation_item_background = 2130837589;

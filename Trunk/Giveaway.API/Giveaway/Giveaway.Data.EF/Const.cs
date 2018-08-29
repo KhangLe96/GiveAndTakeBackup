@@ -5,7 +5,7 @@ namespace Giveaway.Data.EF
     public static class Const
     {
         public const int VerificationCodeDuration = 3; // minutes
-        public const string DefaultSuperAdminUserName = "user123";
+        public const string DefaultSuperAdminUserName = "superAdmin";
         public const string DefaultSuperAdminPassword = "superadmin@123";
         public const string DefaultAdminUserName = "user123";
         public const string DefaultAdminPassword = "admin@123";
