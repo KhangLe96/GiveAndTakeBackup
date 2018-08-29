@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Giveaway.API.Shared.Constants;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
@@ -110,23 +111,32 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var user = _userService.FirstOrDefault(u => string.Equals(u.SocialAccountId, request.SocialAccountId));
 			if (user == null)
 			{
-				user = new User
-				{
-					FirstName = request.FirstName,
-					LastName = request.LastName,
-					UserName = request.SocialAccountId,
-					SocialAccountId = request.SocialAccountId,
-					AvatarUrl = request.AvatarUrl
-				};
+				user = new User();
+				UpdateBasicUserInformation(request, user);
 				UpdateUserPassword(Const.DefaultUserPassword, user);
 				user = _userService.Create(user, out bool isSaved);
 				CreateUserRole(user.Id, Const.Roles.User);
 			}
+			else
+			{
+				UpdateBasicUserInformation(request, user);
+				Update(user);
+				user = GetUser(user.Id);
+			}
 			if (user.EntityStatus != EntityStatus.Activated)
 			{
-				throw new BadRequestException(Const.Error.BadRequest);
+				throw new BadRequestException(Const.Error.BlockedUser);
 			}
 			return GenerateLoginResponse(user);
+		}
+
+		private static void UpdateBasicUserInformation(FacebookConnectRequest request, User user)
+		{
+			user.FirstName = request.FirstName;
+			user.LastName = request.LastName;
+			user.UserName = request.SocialAccountId;
+			user.SocialAccountId = request.SocialAccountId;
+			user.AvatarUrl = request.AvatarUrl;
 		}
 
 

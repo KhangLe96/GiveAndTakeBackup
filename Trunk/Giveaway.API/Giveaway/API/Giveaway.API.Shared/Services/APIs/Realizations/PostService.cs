@@ -2,6 +2,7 @@
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Models;
+using Giveaway.API.Shared.Models.DTO;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Responses;
@@ -60,13 +61,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        public PostAppResponse Create(PostRequest postRequest) 
+        public PostAppResponse Create(PostRequest postRequest)
         {
             var post = Mapper.Map<Post>(postRequest);
             post.Id = Guid.NewGuid();
 
             _postService.Create(post, out var isPostSaved);
-            
+
             var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
             var postResponse = Mapper.Map<PostAppResponse>(postDb);
 
@@ -80,7 +81,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 throw new BadRequestException(Const.Error.NotFound);
             }
-            
+
             try
             {
                 List<Image> oldImages = post.Images.ToList();
@@ -90,7 +91,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 if (updated)
                 {
                     DeleteOldImages(oldImages);
-                    CreateImage(post);
+                    CreateImage(postRequest);
                 }
                 else
                 {
@@ -129,7 +130,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 post.PostStatus = PostStatus.Open;
             }
-            else if(request.UserStatus == PostStatus.Close.ToString())
+            else if (request.UserStatus == PostStatus.Close.ToString())
             {
                 post.PostStatus = PostStatus.Close;
             }
@@ -145,11 +146,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         #region Utils
 
-        private void CreateImage(Post post)
+        private void CreateImage(PostRequest post)
         {
             var imageBase64Requests = InitImageBase64Requests(post);
-            var imageUrls = ConvertBase64(imageBase64Requests);
-            var imageDBs = InitListImageDB(post.Id, imageUrls);
+            var imagesDTO = ConvertFromBase64(imageBase64Requests);
+            var imageDBs = InitListImageDB(post.Id, imagesDTO);
 
             _imageService.CreateMany(imageDBs, out var isImageSaved);
 
@@ -159,49 +160,55 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<ImageBase64Request> InitImageBase64Requests(Post post)
+        private List<ImageBase64Request> InitImageBase64Requests(PostRequest post)
         {
             var requests = new List<ImageBase64Request>();
-            foreach(var image in post.Images)
+            foreach (var image in post.Images)
             {
                 requests.Add(new ImageBase64Request()
                 {
                     Id = post.Id.ToString(),
                     Type = "Post",
-                    File = image.ImageUrl   
+                    File = image.ImageUrl
                 });
             }
 
             return requests;
         }
 
-        private List<string> ConvertBase64(List<ImageBase64Request> requests)
+        private List<ImageDTO> ConvertFromBase64(List<ImageBase64Request> requests)
         {
-            var imageUrls = new List<string>();
+            var images = new List<ImageDTO>();
             if (requests != null)
             {
                 foreach (var request in requests)
                 {
                     var url = UploadImageHelper.PostBase64Image(request);
-                    imageUrls.Add(url);
+
+                    images.Add(new ImageDTO()
+                    {
+                        OriginalImage = url.ElementAt(0),
+                        ResizedImage = url.ElementAt(1),
+                    });
                 }
 
-                return imageUrls;
+                return images;
             }
 
-            return imageUrls;
+            return images;
         }
 
-        private List<Image> InitListImageDB(Guid postId, List<string> imageUrls)
+        private List<Image> InitListImageDB(Guid postId, List<ImageDTO> images)
         {
             var imageList = new List<Image>();
-            foreach(var image in imageUrls)
+            foreach (var image in images)
             {
                 imageList.Add(new Image()
                 {
                     Id = Guid.NewGuid(),
                     PostId = postId,
-                    ImageUrl = image,
+                    OriginalImage = image.OriginalImage,
+                    ResizedImage = image.ResizedImage
                 });
             }
 

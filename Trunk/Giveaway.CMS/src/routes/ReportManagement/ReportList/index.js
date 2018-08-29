@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Divider, Button, Popconfirm, message } from 'antd';
+import { Table, Button, Popconfirm, message } from 'antd';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
@@ -76,6 +76,7 @@ export default class index extends React.Component {
     dispatch({
       type: 'reportManagement/createWarningMessage',
       payload: { message, userId, page: currentPage },
+      callback: this.success,
     });
   }
 
@@ -83,6 +84,10 @@ export default class index extends React.Component {
     this.formRef = formRef;
   }
   // end functions handles report button
+
+  success = () => {
+    message.success('Cảnh báo thành công!', 3);
+  };
 
   columns =
     [

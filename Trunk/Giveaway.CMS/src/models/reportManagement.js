@@ -1,5 +1,7 @@
+import { Table, Button, Popconfirm, message } from 'antd';
 import { fetch, createWarningMessage } from '../services/report';
 import { TABLE_PAGESIZE } from '../common/constants';
+
 
 const DEFAULT_CURRENT_PAGE = 1;
 
@@ -37,9 +39,10 @@ export default {
       }
     },
 
-    * createWarningMessage({ payload }, { call, put }) {
+    * createWarningMessage({ payload, callback }, { call, put }) {
       const response = yield call(createWarningMessage, payload);
       if (response) {
+        callback();
         yield put({
           type: 'fetch',
           payload: {

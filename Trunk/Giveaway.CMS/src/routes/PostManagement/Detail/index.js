@@ -87,11 +87,11 @@ export default class index extends React.Component {
       return (
         (postInformation.images)
           ?
-          postInformation.images && postInformation.images.map((imageUrl) => {
+          postInformation.images && postInformation.images.map((image) => {
             return (
               <Col span={8} >
                 <Row className={styles.imageBox}>
-                  <img src={imageUrl.imageUrl} alt="" className={styles.imageBox} />
+                  <img src={image.originalImage} alt="" className={styles.imageBox} />
                 </Row>
               </Col>
             );
