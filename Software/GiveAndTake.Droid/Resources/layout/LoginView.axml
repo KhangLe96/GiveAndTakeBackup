@@ -4,38 +4,33 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:background="#0FBCF9">
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="130dp"
-        android:src="@drawable/LoginLogo"
-        android:scaleType="fitXY" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-        <ImageButton
-            android:id="@+id/btnFb"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/facebook_button"
-            android:background="@null"
-            android:scaleType="fitXY" />
-        <ImageButton
-            android:id="@+id/btnGg"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/google_button"
-            android:background="@null"
-            android:scaleType="fitXY" />
-    </LinearLayout>
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/btnFbDefault"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+    android:gravity="center"
+	android:background="@drawable/login_background">
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/login_logo" />
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/margin_normal"
+		android:text="@string/login_title"
+		android:textColor="@color/login_title_color"
+		android:textSize="@dimen/login_title_text_size"/>
+    <ImageButton
+		android:id="@+id/btnFb"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/facebook_button"
+		android:background="@null"
+		android:layout_marginTop="@dimen/margin_normal"/>
+	<ImageButton
+		android:id="@+id/btnGg"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/google_button"
+		android:background="@null"
+		android:layout_marginTop="@dimen/margin_normal"
+		android:layout_marginBottom="@dimen/margin_normal"
+		android:visibility="gone"/>
 </LinearLayout>

@@ -1,8 +1,7 @@
 ﻿using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels;
-using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross;
-using MvvmCross.IoC;
 using MvvmCross.ViewModels;
 
 namespace GiveAndTake.Core
@@ -17,7 +16,7 @@ namespace GiveAndTake.Core
 
 			RegisterServices();
 
-			RegisterAppStart<TabNavigationViewModel>();
+			RegisterAppStart<LoginViewModel>();
 		}
 
 		protected void RegisterHelpers()
@@ -29,7 +28,7 @@ namespace GiveAndTake.Core
 
 		protected void RegisterServices()
 		{
-
+			Mvx.RegisterType<IManagementService, ManagementService>();
 		}
 	}
 }
