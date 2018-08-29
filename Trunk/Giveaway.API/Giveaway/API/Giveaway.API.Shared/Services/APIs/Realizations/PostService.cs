@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Giveaway.API.Shared.Constants;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Models;
@@ -7,15 +8,14 @@ using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Post;
-using Giveaway.Data.EF;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
+using Giveaway.Util.Constants;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Giveaway.Data.EF.Const;
 using DbService = Giveaway.Service.Services;
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -57,7 +57,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
             catch
             {
-                throw new BadRequestException(Error.NotFound);
+                throw new BadRequestException(CommonConstant.Error.NotFound);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var post = _postService.Include(x => x.Images).FirstAsync(x => x.Id == id).Result;
             if (post == null)
             {
-                throw new BadRequestException(Const.Error.NotFound);
+                throw new BadRequestException(CommonConstant.Error.NotFound);
             }
 
             try
@@ -115,7 +115,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
             catch
             {
-                throw new InternalServerErrorException(Const.Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
             }
         }
 
@@ -123,7 +123,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
             bool updated = _postService.UpdateStatus(id, request.UserStatus) != null;
             if (updated == false)
-                throw new InternalServerErrorException(Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
             return updated;
         }
@@ -133,7 +133,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var post = _postService.Find(postId);
             if (post == null)
             {
-                throw new BadRequestException(Const.Error.NotFound);
+                throw new BadRequestException(CommonConstant.Error.NotFound);
             }
 
             if (request.UserStatus == PostStatus.Open.ToString())
@@ -145,11 +145,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 post.PostStatus = PostStatus.Close;
             }
             else
-                throw new BadRequestException(Error.BadRequest);
+                throw new BadRequestException(CommonConstant.Error.BadRequest);
 
             bool updated = _postService.Update(post);
             if (updated == false)
-                throw new InternalServerErrorException(Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
             return updated;
         }
@@ -232,7 +232,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 _imageService.Delete(x => x.Id == image.Id, out var isSaved);
 
                 if (isSaved == false)
-                    throw new InternalServerErrorException(Error.InternalServerError);
+                    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
             }
         }
 
@@ -245,12 +245,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
             catch
             {
-                throw new InternalServerErrorException(Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
             }
 
             if (string.IsNullOrEmpty(userId))
             {
-                if (platform == Platform.CMS)
+                if (platform == WebConstant.Platform.CMS)
                     //display Posts that were not deleted to Admin in CMS
                     posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted);
                 else
@@ -266,7 +266,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 }
                 catch
                 {
-                    throw new BadRequestException(Error.NotFound);
+                    throw new BadRequestException(CommonConstant.Error.NotFound);
                 }
             }
 

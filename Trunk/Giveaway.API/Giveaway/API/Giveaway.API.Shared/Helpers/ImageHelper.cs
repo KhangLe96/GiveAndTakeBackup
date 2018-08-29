@@ -1,13 +1,13 @@
-﻿using System;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Giveaway.API.Shared.Models;
+﻿using Giveaway.API.Shared.Models;
 using Giveaway.Data.EF;
 using Giveaway.Util.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using System;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Giveaway.API.Shared.Helpers
 {

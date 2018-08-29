@@ -1,14 +1,14 @@
-﻿using System.IO;
+﻿using Giveaway.Util.Utils;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using Giveaway.Util.Utils;
-using Microsoft.Extensions.Configuration;
 
 namespace Giveaway.API.Shared.Helpers
 {
-	public static class MailHelper
+    public static class MailHelper
 	{
 		private const string Host = "smtp.gmail.com";
 		private const int Port = 587;

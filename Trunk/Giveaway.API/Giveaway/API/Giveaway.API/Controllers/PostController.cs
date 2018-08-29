@@ -1,14 +1,14 @@
-﻿using Giveaway.API.Shared.Responses;
-using Giveaway.API.Shared.Services.APIs;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Giveaway.API.Shared.Requests;
-using System;
-using Giveaway.Data.EF;
-using Microsoft.AspNetCore.Authorization;
+﻿using Giveaway.API.Shared.Constants;
 using Giveaway.API.Shared.Extensions;
-using Giveaway.API.Shared.Responses.Post;
+using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Post;
+using Giveaway.API.Shared.Responses;
+using Giveaway.API.Shared.Responses.Post;
+using Giveaway.API.Shared.Services.APIs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
 namespace Giveaway.API.Controllers
 {
@@ -35,7 +35,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PagingQueryResponse<PostCmsResponse> GetListPostCMS([FromHeader]IDictionary<string, string> @params)
         {
-            return _postCmsService.GetPostForPaging(null, @params, Const.Platform.CMS);
+            return _postCmsService.GetPostForPaging(null, @params, WebConstant.Platform.CMS);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PagingQueryResponse<PostAppResponse> GetListPostApp([FromHeader]IDictionary<string, string> @params)
         {
-            return _postService.GetPostForPaging(null, @params, Const.Platform.App);
+            return _postService.GetPostForPaging(null, @params, WebConstant.Platform.App);
         }
 
         /// <summary>

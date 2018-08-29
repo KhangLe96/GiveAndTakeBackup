@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace Giveaway.API.Shared.Helpers
 {
-	public static class TextHelper
+    public static class TextHelper
 	{
 		private static string _vnCharactersWithTones = "áàảãạâấầẩẫậăắằẳẵặđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ";
 		private static string _replaceCharacters = "aaaaaaaaaaaaaaaaadeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyy";

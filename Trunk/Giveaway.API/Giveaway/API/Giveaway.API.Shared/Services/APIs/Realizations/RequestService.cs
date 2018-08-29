@@ -8,11 +8,11 @@ using Giveaway.Data.EF;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
+using Giveaway.Util.Constants;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Giveaway.Data.EF.Const;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -50,7 +50,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _requestService.Create(request, out var isPostSaved);
             if(isPostSaved == false)
             {
-                throw new InternalServerErrorException(Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
             }
             
             var requestDb = _requestService.Include(x => x.Post).Include(x => x.Response).FirstAsync(x => x.Id == request.Id).Result;
@@ -64,14 +64,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var request = _requestService.Find(requestId);
             if (request == null)
             {
-                throw new BadRequestException(Const.Error.NotFound);
+                throw new BadRequestException(CommonConstant.Error.NotFound);
             }
 
             ChangeStatus(statusRequest, request);
 
             bool updated = _requestService.Update(request);
             if (updated == false)
-                throw new InternalServerErrorException(Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
             return updated;
         }
@@ -80,7 +80,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
             bool updated = _requestService.UpdateStatus(requestId, EntityStatus.Deleted.ToString()) != null;
             if (updated == false)
-                throw new InternalServerErrorException(Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
             return updated;
         }
@@ -102,7 +102,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 request.RequestStatus = RequestStatus.Rejected;
             }
             else
-                throw new BadRequestException(Error.BadRequest);
+                throw new BadRequestException(CommonConstant.Error.BadRequest);
         }
 
         private List<RequestPostResponse> GetPagedRequests(PagingQueryRequestPostRequest request, out int total)
@@ -110,7 +110,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (requests == null)
             {
-                throw new BadRequestException(Const.Error.NotFound);
+                throw new BadRequestException(CommonConstant.Error.NotFound);
             }
 
             if (!string.IsNullOrEmpty(request.RequestStatus.ToString()))

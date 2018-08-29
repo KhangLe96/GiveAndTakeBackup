@@ -1,10 +1,10 @@
-﻿using System.Security.Cryptography;
+﻿using Giveaway.API.Shared.Extensions;
+using System.Security.Cryptography;
 using System.Text;
-using Giveaway.API.Shared.Extensions;
 
 namespace Giveaway.API.Shared.Helpers
 {
-	public static class HashHelper
+    public static class HashHelper
 	{
 		private static readonly HashAlgorithm Algorithm = new SHA256Managed();
 		private static readonly RNGCryptoServiceProvider CryptoServiceProvider = new RNGCryptoServiceProvider();
