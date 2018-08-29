@@ -1,5 +1,6 @@
-﻿using GiveAndTake.Core.ViewModels;
-using GiveAndTake.Core.ViewModels.TabNavigation;
+﻿using GiveAndTake.Core.Services;
+using GiveAndTake.Core.ViewModels;
+using MvvmCross;
 using MvvmCross.IoC;
 using MvvmCross.ViewModels;
 
@@ -14,7 +15,9 @@ namespace GiveAndTake.Core
 				.AsInterfaces()
 				.RegisterAsLazySingleton();
 
-			RegisterAppStart<TabNavigationViewModel>();
+			Mvx.RegisterType<IManagementService, ManagementService>();
+
+			RegisterAppStart<LoginViewModel>();
 		}
 	}
 }

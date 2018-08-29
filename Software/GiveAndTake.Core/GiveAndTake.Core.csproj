@@ -10,6 +10,7 @@
     <PackageReference Include="MvvmCross.Plugin.PictureChooser" Version="6.1.2" />
     <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="RestSharp" Version="106.3.1" />
     <PackageReference Include="Xam.Plugin.Connectivity" Version="3.2.0" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.3.840" />
   </ItemGroup>

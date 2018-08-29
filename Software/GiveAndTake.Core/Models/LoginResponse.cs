@@ -7,7 +7,7 @@ namespace GiveAndTake.Core.Models
     public class LoginResponse
     {
         [DataMember(Name = "profile", EmitDefaultValue = false)]
-        public User User { get; set; }
+        public User Profile { get; set; }
 
         [DataMember(Name = "token", EmitDefaultValue = false)]
         public string Token { get; set; }
