@@ -135,7 +135,7 @@ export default class index extends PureComponent {
               {getFieldDecorator('image')(<UploadImage />)}
             </FormItem> */}
             <FormItem>
-              <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '10%', left: '45%' }}>Cập nhập</Button>
+              <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '10%' }}>Cập nhập</Button>
             </FormItem>
           </Form>
         </div>
