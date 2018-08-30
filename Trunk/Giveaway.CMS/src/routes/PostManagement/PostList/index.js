@@ -65,7 +65,7 @@ export default class index extends React.Component {
         key: 'address.provinceCityName',
       },
       {
-        title: 'Category',
+        title: 'Danh mục',
         dataIndex: 'category',
         key: 'category.categoryName',
         render: category => <Link to={`/category-management/detail/${category.id}`}>{category.categoryName}</Link>,
