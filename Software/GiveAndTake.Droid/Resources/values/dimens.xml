@@ -22,4 +22,5 @@
   <dimen name="popup_button_width">150dp</dimen>
   <dimen name="popup_button_height">30dp</dimen>
   <dimen name="login_title_text_size">18sp</dimen>
+	<dimen name="margin_popup_item">4dp</dimen>
 </resources>

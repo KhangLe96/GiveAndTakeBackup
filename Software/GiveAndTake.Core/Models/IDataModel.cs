@@ -4,6 +4,9 @@ namespace GiveAndTake.Core.Models
 {
 	public interface IDataModel
 	{
-		ICollection<Category> Categories { get; set; }
+		List<Category> Categories { get; set; }
+		List<ProvinceCity> ProvinceCities { get; set; }
+		List<Post> Posts { get; set; }
+		LoginResponse LoginResponse { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System.Linq;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Commands;
@@ -154,28 +155,27 @@ namespace GiveAndTake.Core.ViewModels
 		public PostItemViewModel(Post post, bool isLast = false)
 		{
 			_post = post;
-			Init();
+			Init(isLast);
 			InitCommand();
-			IsLastViewInList = isLast;
 		}
 
-        private void Init()
-        {
-            CategoryName = _post.Category.CategoryName;
-            AvatarUrl = _post.User.AvatarUrl;
-            UserName = _post.User.FullName;
-            CreatedTime = _post.CreatedTime.ToShortDateString();
-            Address = _post.ProvinceCity.ProvinceCityName;
-            Description = _post.Description;
-            //PostImage = post.Images.FirstOrDefault();
-            //HasManyPostPhotos = post.Images.Count > 1;
-            HasManyPostPhotos = true;
-            AppreciationCount = _post.AppreciationCount;
-            RequestCount = _post.RequestCount;
-            CommentCount = _post.CommentCount;
-        }
+	    private void Init(bool isLast)
+	    {
+		    CategoryName = _post.Category.CategoryName;
+		    AvatarUrl = _post.User.AvatarUrl;
+		    UserName = _post.User.FullName == " " ? AppConstants.DefaultUserName : _post.User.FullName;
+		    CreatedTime = _post.CreatedTime.ToShortDateString();
+		    Address = _post.ProvinceCity.ProvinceCityName;
+		    Description = _post.Description;
+			PostImage = _post.Images.FirstOrDefault()?.ResizedImage;
+			HasManyPostPhotos = _post.Images.Count > 1;
+		    AppreciationCount = _post.AppreciationCount;
+		    RequestCount = _post.RequestCount;
+		    CommentCount = _post.CommentCount;
+		    IsLastViewInList = isLast;
+	    }
 
-        private void InitCommand()
+	    private void InitCommand()
         {
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<UserProfileViewModel>());
             ShowPostDetailCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PostDetailViewModel>());
