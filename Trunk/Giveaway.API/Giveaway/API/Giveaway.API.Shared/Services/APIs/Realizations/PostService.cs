@@ -241,7 +241,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             IEnumerable<Post> posts;
             try
             {
-                posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Include(x => x.User);
+                posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Include(x => x.User).Include(x => x.Requests).Include(x => x.Comments);
                 posts = SortPosts(request, posts);
             }
             catch
