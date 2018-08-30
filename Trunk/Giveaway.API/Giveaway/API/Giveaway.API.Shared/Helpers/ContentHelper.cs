@@ -1,4 +1,5 @@
-﻿using Giveaway.Util.Utils;
+﻿using Giveaway.API.Shared.Constants;
+using Giveaway.Util.Utils;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +34,7 @@ namespace Giveaway.API.Shared.Helpers
 
         public static string GetRootPath()
         {
-            var path = Path.Combine(Environment.WebRootPath, "Content");
+            var path = Path.Combine(Environment.WebRootPath, WebConstant.CONTENT);
             return CreateIfNotExist(path);
         }
 
@@ -53,7 +54,7 @@ namespace Giveaway.API.Shared.Helpers
         public static string GetLocalImageUrl(string type, string id, string fileName)
         {
             var pageUri = GetUri();
-            return Path.Combine(Environment.WebRootPath, "Content", type, id, fileName);
+            return Path.Combine(Environment.WebRootPath, WebConstant.CONTENT, type, id, fileName);
         }
 
         public static Uri GetUri()
@@ -62,7 +63,7 @@ namespace Giveaway.API.Shared.Helpers
 
             if (contextAccessor.HttpContext.Request.IsHttps)
             {
-                contextAccessor.HttpContext.Request.Scheme = "https";
+                contextAccessor.HttpContext.Request.Scheme = WebConstant.HTTPS;
             }
 
             return contextAccessor.HttpContext.Request.GetUri();

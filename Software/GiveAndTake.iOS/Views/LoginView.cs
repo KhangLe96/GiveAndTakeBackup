@@ -19,7 +19,7 @@ namespace GiveAndTake.iOS.Views
 		private UIImageView _logoImage;
 		private UIButton _customedLoginFacebookButton;
 		private UIButton _customedLoginGoogleButton;
-		public IMvxCommand<User> LoginCommand { get; set; }
+		public MvxCommand<BaseUser> LoginCommand { get; set; }
 
 		protected override void InitView()
 		{
@@ -153,7 +153,7 @@ namespace GiveAndTake.iOS.Views
 				AvatarUrl = GetProfilePicture(profile.UserID),
 				SocialAccountId = profile.UserID
 			};
-			LoginCommand.Execute(userProfile);
+			LoginCommand?.Execute(userProfile);
 		}
 
 		private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";

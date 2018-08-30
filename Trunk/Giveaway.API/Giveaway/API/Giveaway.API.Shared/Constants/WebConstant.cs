@@ -2,6 +2,9 @@
 {
     public static class WebConstant
     {
+        public static string CONTENT = "Content";
+        public static string HTTPS = "https";
+
         public class Platform
         {
             public const string App = "App";

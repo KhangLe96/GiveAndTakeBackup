@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -9,6 +10,10 @@ namespace GiveAndTake.Core.ViewModels
 		protected override List<string> InitPopupItems()
 		{
 			return new List<string> { "Đà Nẵng", "Tp Hồ Chí Minh", "Tất cả"};
+		}
+
+		public PopupLocationFilterViewModel(IDataModel dataModel) : base(dataModel)
+		{
 		}
 	}
 }

@@ -6,5 +6,8 @@
         public const string ApiSecret = "11CjbB-Cd-8wNammUQrzmADTuLhtECVq";
         public const double DefaultConfidence = 70;
         public const string TinyKey = "FgFc62kLGjvL2YHGzH7ckOfo1flEFSZQ";
+
+        public const string DESC = "desc";
+        public const string ASC = "asc";
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using FFImageLoading.Cross;
 using GiveAndTake.iOS.Controls;
+using GiveAndTake.iOS.CustomControls;
 using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
@@ -21,6 +22,17 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
+		public static HeaderBar CreateHeaderBar(nfloat width, nfloat height, UIColor backgroundColor)
+		{
+			var headerBar = new HeaderBar
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				BackgroundColor = backgroundColor,
+			};
+			AddWidthHeight(height, width, headerBar);
+			return headerBar;
+		}
+
 		public static UIImageView CreateImageView(nfloat width, nfloat height, UIColor backgroundColor)
 		{
 			var imageView = new UIImageView
@@ -28,17 +40,7 @@ namespace GiveAndTake.iOS.Helpers
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				BackgroundColor = backgroundColor
 			};
-
-			if (width > 0)
-			{
-				imageView.AddConstraint(NSLayoutConstraint.Create(imageView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, width));
-			}
-
-			if (height > 0)
-			{
-				imageView.AddConstraint(NSLayoutConstraint.Create(imageView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, height));
-			}
-
+			AddWidthHeight(height, width, imageView);
 			return imageView;
 		}
 

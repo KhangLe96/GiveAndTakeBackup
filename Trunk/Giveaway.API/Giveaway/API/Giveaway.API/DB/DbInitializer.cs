@@ -368,7 +368,7 @@ namespace Giveaway.API.DB
             var securePassword = userService.GenerateSecurePassword(Const.DefaultSuperAdminPassword);
             var user = new User
             {
-                UserName = "superAdmin",
+                UserName = Const.DefaultSuperAdminUserName,
                 Email = "superadmin@gmail.com",
                 FirstName = "Super",
                 LastName = "Admin",

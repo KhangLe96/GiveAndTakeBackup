@@ -1,11 +1,13 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System.Collections.Generic;
+using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.Services
 {
     public interface IManagementService
     {
-        void GetCategories();
-        void GetPostList();
+        List<Category> GetCategories();
+	    List<ProvinceCity> GetProvinceCities();
+		List<Post> GetPostList(string filterParams);
         void GetPostDetail(string postId);
         void GetPostOfUser(string userId);
         void ChangeStatusOfPost(string postId, string newStatus);

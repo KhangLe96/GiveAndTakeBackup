@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
+using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.ViewModels
 {
 	public class PopupShortFilterViewModel : PopupViewModel
 	{
 		public override string Title { get; set; } = "Xếp theo";
+
+		public PopupShortFilterViewModel(IDataModel dataModel) : base(dataModel)
+		{
+		}
 
 		protected override List<string> InitPopupItems()
 		{

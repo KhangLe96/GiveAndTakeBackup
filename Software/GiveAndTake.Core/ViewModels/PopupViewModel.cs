@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
@@ -8,6 +9,7 @@ namespace GiveAndTake.Core.ViewModels
 {
 	public abstract class PopupViewModel : BaseViewModel<string, string>
 	{
+		protected readonly IDataModel DataModel;
 		public IMvxCommand<PopupItemViewModel> ItemClickCommand { get; set; }
 		public IMvxAsyncCommand ClosePopupCommand { get; set; }
 		protected string SelectedItem;
@@ -26,8 +28,9 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		protected PopupViewModel()
+		protected PopupViewModel(IDataModel dataModel)
 		{
+			DataModel = dataModel;
 			_popupItems = InitPopupItems();
 			ClosePopupCommand = new MvxAsyncCommand(() => NavigationService.Close(this, SelectedItem));
 		}

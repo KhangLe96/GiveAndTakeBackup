@@ -5,7 +5,10 @@ namespace GiveAndTake.Core.Models
     [DataContract]
     public class ProvinceCity
     {
-        [DataMember(Name = "provinceCityName")]
+	    [DataMember(Name = "id")]
+	    public string Id { get; set; }
+
+		[DataMember(Name = "provinceCityName")]
         public string ProvinceCityName { get; set; }
     }
 }

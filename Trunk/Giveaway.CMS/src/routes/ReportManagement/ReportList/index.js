@@ -85,10 +85,6 @@ export default class index extends React.Component {
   }
   // end functions handles report button
 
-  success = () => {
-    message.success('Cảnh báo thành công!', 3);
-  };
-
   columns =
     [
       {
