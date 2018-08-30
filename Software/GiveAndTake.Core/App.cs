@@ -16,7 +16,7 @@ namespace GiveAndTake.Core
 
 			RegisterServices();
 
-			RegisterAppStart<LoginViewModel>();
+			RegisterAppStart<CreatePostViewModel>();
 		}
 
 		protected void RegisterHelpers()
