@@ -1,9 +1,6 @@
-import cx from 'classnames';
 import React, { PureComponent } from 'react';
-import { Alert, Button, Form, Icon, Input, Spin, Upload } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { connect } from 'dva';
-import { GoogleLogin } from 'react-google-login-component';
-import { Link } from 'dva/router';
 import UploadImage from './UploadImage';
 
 const FormItem = Form.Item;
@@ -51,12 +48,12 @@ export default class index extends PureComponent {
               <Input />
             )}
           </FormItem>
-          <FormItem
+          {/* <FormItem
             label="Hình ảnh"
           >
             {getFieldDecorator('image')(<UploadImage />)}
-          </FormItem>          
-          <Button type="primary" size="large" htmlType="submit" className="login-form-button">Tạo</Button>
+          </FormItem> */}
+          <Button type="primary" size="large" htmlType="submit" className="login-form-button" style={{ width: '10%' }}>Tạo</Button>
         </Form>
       </div>
     );

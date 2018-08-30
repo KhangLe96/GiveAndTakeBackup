@@ -94,7 +94,7 @@ export default class index extends React.Component {
                   });
                 }}
               >
-                <Button type="primary" icon="delete" disabled={record.doesHaveAnyPost} className={styles.buttonStyle}>Xóa</Button>
+                <Button type="danger" icon="delete" disabled={record.doesHaveAnyPost} className={styles.buttonStyle}>Xóa</Button>
               </Popconfirm>
             </span>
           );
