@@ -16,5 +16,8 @@ namespace Giveaway.API.Shared.Requests.Post
 
         [DataMember(Name = "provinceCityId")]
         public string ProvinceCityId { get; set; }
+
+        [DataMember(Name = "order")]
+        public string Order { get; set; }
     }
 }
