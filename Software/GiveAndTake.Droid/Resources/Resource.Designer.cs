@@ -7806,8 +7806,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0d00a1
 			public const int submit_area = 2131558561;
 			
-			// aapt resource value: 0x7f0d00f7
-			public const int tabLayout = 2131558647;
+			// aapt resource value: 0x7f0d00f6
+			public const int tabLayout = 2131558646;
 			
 			// aapt resource value: 0x7f0d0032
 			public const int tabMode = 2131558450;
@@ -7908,8 +7908,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0d0039
 			public const int useLogo = 2131558457;
 			
-			// aapt resource value: 0x7f0d00f6
-			public const int viewPager = 2131558646;
+			// aapt resource value: 0x7f0d00f7
+			public const int viewPager = 2131558647;
 			
 			// aapt resource value: 0x7f0d0016
 			public const int view_offset_helper = 2131558422;
