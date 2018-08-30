@@ -38,6 +38,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public HomeViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
+			//TODO : Get category to data model
+
+			if (_dataModel.Posts != null)
+			{
+				//Show Posts
+			}
+			else
+			{
+				//Call API to get Posts and display
+			}
 			UpdatePostViewModels();
 			InitCommand();
 		}
@@ -58,12 +68,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task ShowCategories()
 		{
-			var category = await NavigationService.Navigate<PopupCategoriesViewModel, string, string>(currentCategory);
-			if (category != null)
-			{
-				currentCategory = category;
-				UpdatePostViewModels();
-			}
+			//var category = await NavigationService.Navigate<PopupCategoriesViewModel, string, string>(currentCategory);
+			//if (category != null)
+			//{
+			//	currentCategory = category;
+			//	UpdatePostViewModels();
+			//}
+
+			var defaultCategory = _dataModel.Categories.First(cat => cat.Id == "1");
+
+			await NavigationService.Navigate<PopupCategoriesViewModel, Category>(defaultCategory);
 		}
 
 		private async Task ShowShortFilterView()

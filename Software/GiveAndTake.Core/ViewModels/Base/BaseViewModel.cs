@@ -10,13 +10,9 @@ namespace GiveAndTake.Core.ViewModels.Base
 	{
 		private IMvxNavigationService _navigationService;
 		public override IMvxNavigationService NavigationService => _navigationService ?? (_navigationService = Mvx.Resolve<IMvxNavigationService>());
-	}
 
-	public abstract class BaseViewModel<TParameter> : BaseViewModel, IMvxViewModel<TParameter>
-	{
-		public abstract void Prepare(TParameter parameter);
 	}
-
+	
 	//TODO: Not possible to name MvxViewModel, name is MvxViewModelResult for now
 	public abstract class BaseViewModelResult<TResult> : BaseViewModel, IMvxViewModelResult<TResult>
 	{
@@ -29,10 +25,5 @@ namespace GiveAndTake.Core.ViewModels.Base
 
 			base.ViewDestroy(viewFinishing);
 		}
-	}
-
-	public abstract class BaseViewModel<TParameter, TResult> : BaseViewModelResult<TResult>, IMvxViewModel<TParameter, TResult>
-	{
-		public abstract void Prepare(TParameter parameter);
 	}
 }
