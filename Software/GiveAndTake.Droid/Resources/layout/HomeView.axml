@@ -56,4 +56,11 @@
         android:layout_below="@id/btnFilter"
         local:MvxBind="ItemsSource PostViewModels"
         local:MvxItemTemplate="@layout/posttemplate" />
+	<android.support.design.widget.FloatingActionButton
+		   android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+	android:layout_alignParentBottom="true"
+	android:layout_alignParentRight="true"
+	 local:MvxBind="ItemsSource CreatePostCommand"
+	android:src="@drawable/new_post"/>
 </RelativeLayout>

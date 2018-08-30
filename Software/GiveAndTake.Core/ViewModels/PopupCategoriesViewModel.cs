@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using MvvmCross;
@@ -7,13 +8,18 @@ namespace GiveAndTake.Core.ViewModels
 {
 	public class PopupCategoriesViewModel : PopupViewModel
 	{
+		private readonly IManagementService _managementService = Mvx.Resolve<IManagementService>();
+
 		public override string Title { get; set; } = "Phân loại";
+
+		public PopupCategoriesViewModel(IDataModel dataModel) : base(dataModel)
+		{
+		}
 
 		protected override List<string> InitPopupItems()
 		{
-			var managementService = Mvx.Resolve<IManagementService>();
-			managementService.GetCategories();
-			return new List<string> { "Sách", "Quần áo", "Văn phòng phẩm", "Đồ dùng điện tử", "Tất cả" };
+			DataModel.Categories = _managementService.GetCategories();
+			return DataModel.Categories.Select(c => c.CategoryName).ToList();
 		}
 	}
 }

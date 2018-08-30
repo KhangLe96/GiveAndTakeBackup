@@ -4,11 +4,9 @@ using System.Runtime.Serialization;
 
 namespace GiveAndTake.Core.Models
 {
-
 	[DataContract]
 	public class Post : EditPost
 	{
-
 		[DataMember(Name = "statusApp")]
 		public string PostStatus { get; set; }
 
@@ -35,52 +33,8 @@ namespace GiveAndTake.Core.Models
 
 		[DataMember(Name = "commentCount")]
 		public int CommentCount { get; set; }
-	}
-
-	[DataContract]
-	public class PostImage
-	{
-		[DataMember(Name = "image")]
-		public string ImageData { get; set; }
-	}
-
-	[DataContract]
-	public class EditPost : CreatePost
-	{
-		[DataMember(Name = "id")]
-		public string PostId { get; set; }
-
-		//[DataMember(Name = "userId")]
-		//public string UserId { get; set; }
-
-		//[DataMember(Name = "postStatus")]
-		//public int Status { get; set; }
-	}
-
-	[DataContract]
-	public class CreatePost
-	{
-		[DataMember(Name = "title")]
-		public string Title { get; set; }
-
-		[DataMember(Name = "description")]
-		public string Description { get; set; }
 
 		[DataMember(Name = "images")]
-		public List<PostImage> PostImages { get; set; }
-
-		[DataMember(Name = "categoryId")]
-		public string PostCategory { get; set; }
-
-		[DataMember(Name = "provinceCityId")]
-		public string Address { get; set; }
-
+		public List<Image> Images { get; set; }
 	}
-	[DataContract]
-	public class PostStatus
-	{
-		[DataMember(Name = "status")]
-		public string Status { get; set; }
-	}
-
 }
