@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Binding.Extensions;
@@ -7,9 +7,9 @@ using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public abstract class PopupViewModel : BaseViewModel<string, string>
+	public abstract class PopupViewModel : BaseViewModel
 	{
-		protected readonly IDataModel DataModel;
+		private readonly IDataModel _dataModel;
 		public IMvxCommand<PopupItemViewModel> ItemClickCommand { get; set; }
 		public IMvxAsyncCommand ClosePopupCommand { get; set; }
 		protected string SelectedItem;
@@ -30,16 +30,36 @@ namespace GiveAndTake.Core.ViewModels
 
 		protected PopupViewModel(IDataModel dataModel)
 		{
-			DataModel = dataModel;
-			_popupItems = InitPopupItems();
+			_dataModel = dataModel;
+			//TODO : Get Categories to viewmodel
 			ClosePopupCommand = new MvxAsyncCommand(() => NavigationService.Close(this, SelectedItem));
 		}
 
 		public override void Prepare(string parameter)
 		{
 			SelectedItem = parameter;
-			PopupItemViewModels = _popupItems.Select(GeneratePopupItemViewModel).ToList();
 			ItemClickCommand = new MvxCommand<PopupItemViewModel>(OnItemClick);
+			InitCategoriesList();
+		}
+
+		private void InitCategoriesList()
+		{
+			var categoryItemViewModels = new List<PopupItemViewModel>();
+
+			foreach (var category in _dataModel.Categories)
+			{
+				var categoryItemViewModel = new PopupItemViewModel(category);
+				categoryItemViewModel.ItemSelected += OnCategorySelected;
+				categoryItemViewModels.Add(categoryItemViewModel);
+			}
+
+			PopupItemViewModels = categoryItemViewModels;
+		}
+
+		private void OnCategorySelected(object sender, EventArgs e)
+		{
+			var selectedCategory = sender as PopupItemViewModel;
+			//TODO Update data model with selected category
 		}
 
 		protected void OnItemClick(PopupItemViewModel popupItemViewModel)
@@ -50,8 +70,6 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			SelectedItem = popupItemViewModel.ItemName;
 		}
-
-		protected abstract List<string> InitPopupItems();
 
 		private PopupItemViewModel GeneratePopupItemViewModel(string name) => new PopupItemViewModel(name)
 		{
