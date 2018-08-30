@@ -242,6 +242,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             try
             {
                 posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Include(x => x.User);
+                posts = SortPosts(request, posts);
             }
             catch
             {
@@ -279,6 +280,20 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 .Take(request.Limit)
                 .Select(post => Mapper.Map<T>(post))
                 .ToList();
+        }
+
+        private IEnumerable<Post> SortPosts(PagingQueryPostRequest request, IEnumerable<Post> posts)
+        {
+            if (!string.IsNullOrEmpty(request.Order) && request.Order == AppConstant.ASC)
+            {
+                posts = posts.OrderBy(x => x.CreatedTime);
+            }
+            else
+            {
+                posts = posts.OrderByDescending(x => x.CreatedTime);
+            }
+
+            return posts;
         }
 
         private IEnumerable<Post> FilterPost(PagingQueryPostRequest request, IEnumerable<Post> posts)
