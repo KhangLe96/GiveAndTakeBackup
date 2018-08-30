@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\CustomCircleImageView.cs" />
+    <Compile Include="Controls\CustomProfileItem.cs" />
     <Compile Include="Controls\CustomRoundedImageView.cs" />
     <Compile Include="Controls\CustomTextView.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
@@ -472,6 +473,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\popup_bg.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_profile.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

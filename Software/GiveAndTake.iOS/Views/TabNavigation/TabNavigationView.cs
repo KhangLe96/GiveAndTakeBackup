@@ -1,6 +1,10 @@
-﻿using GiveAndTake.Core.ViewModels.TabNavigation;
+﻿using CoreGraphics;
+using FFImageLoading;
+using FFImageLoading.Cross;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Views;
 using UIKit;
 
@@ -9,13 +13,20 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 	public class TabNavigationView : MvxTabBarViewController<TabNavigationViewModel>
 	{
 		private HeaderBar _headerBar;
+		private MvxCachedImageView _imgAvatar;
 
 		public TabNavigationView()
 		{
-			//TODO
+			//TODO: Have a place to init all these variable for the whole app
 			ResolutionHelper.InitStaticVariable();
 			DimensionHelper.InitStaticVariable();
 			ImageHelper.InitStaticVariable();
+
+			var set = this.CreateBindingSet<TabNavigationView, TabNavigationViewModel>();
+			set.Bind(_imgAvatar)
+				.For(v => v.ImagePath)
+				.To(vm => vm.AvatarUrl);
+			set.Apply();
 
 			InitHeaderBar();
 		}
@@ -24,7 +35,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		{
 			base.ViewWillAppear(animated);
 			ViewModel.ShowInitialViewModelsCommand.Execute();
-			ConfigScreen(animated);
+			ConfigTabBar(animated);
 		}
 
 		private void InitHeaderBar()
@@ -42,10 +53,39 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 		}
 
-		private void ConfigScreen(bool animated)
+		private async void ConfigTabBar(bool animated)
 		{
-			TabBar.BarTintColor = UIColor.White;
+			TabBar.BackgroundColor = UIColor.White;
+			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize,
+				DimensionHelper.ImageAvatarSize, ImageHelper.AvtOn, DimensionHelper.ImageAvatarSize / 2);
+			await ImageService.Instance.LoadUrl(ViewModel.AvatarUrl).IntoAsync(_imgAvatar);
+			if (_imgAvatar.Bounds.Size == CGSize.Empty)
+			{
+				_imgAvatar.Bounds = new CGRect(0, 0, DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize);
+			}
+			TabBar.Items[3].Image = ConvertViewToImage(_imgAvatar);
+
+			_imgAvatar.Layer.BorderColor = ColorHelper.Primary.CGColor;
+			_imgAvatar.Layer.BorderWidth = DimensionHelper.RoundedImageBorderWidth;
+			TabBar.Items[3].SelectedImage = ConvertViewToImage(_imgAvatar);
+
+			foreach (var tabBarItem in TabBar.Items)
+			{
+				tabBarItem.Image = tabBarItem.Image
+					.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+				tabBarItem.SelectedImage = tabBarItem.SelectedImage
+					.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+			}
+
 			NavigationController?.SetNavigationBarHidden(true, animated);
+		}
+		private static UIImage ConvertViewToImage(UIView view)
+		{
+			UIGraphics.BeginImageContext(view.Bounds.Size);
+			view.Layer.RenderInContext(UIGraphics.GetCurrentContext());
+			var image = UIGraphics.GetImageFromCurrentImageContext();
+			UIGraphics.EndImageContext();
+			return image;
 		}
 	}
 }
