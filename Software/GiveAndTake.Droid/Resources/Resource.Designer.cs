@@ -4114,53 +4114,53 @@ namespace GiveAndTake.Droid
 		public partial class Animation
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int abc_fade_in = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int abc_fade_in = 2131099648;
 			
-			// aapt resource value: 0x7f050001
-			public const int abc_fade_out = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int abc_fade_out = 2131099649;
 			
-			// aapt resource value: 0x7f050002
-			public const int abc_grow_fade_in_from_bottom = 2131034114;
+			// aapt resource value: 0x7f060002
+			public const int abc_grow_fade_in_from_bottom = 2131099650;
 			
-			// aapt resource value: 0x7f050003
-			public const int abc_popup_enter = 2131034115;
+			// aapt resource value: 0x7f060003
+			public const int abc_popup_enter = 2131099651;
 			
-			// aapt resource value: 0x7f050004
-			public const int abc_popup_exit = 2131034116;
+			// aapt resource value: 0x7f060004
+			public const int abc_popup_exit = 2131099652;
 			
-			// aapt resource value: 0x7f050005
-			public const int abc_shrink_fade_out_from_bottom = 2131034117;
+			// aapt resource value: 0x7f060005
+			public const int abc_shrink_fade_out_from_bottom = 2131099653;
 			
-			// aapt resource value: 0x7f050006
-			public const int abc_slide_in_bottom = 2131034118;
+			// aapt resource value: 0x7f060006
+			public const int abc_slide_in_bottom = 2131099654;
 			
-			// aapt resource value: 0x7f050007
-			public const int abc_slide_in_top = 2131034119;
+			// aapt resource value: 0x7f060007
+			public const int abc_slide_in_top = 2131099655;
 			
-			// aapt resource value: 0x7f050008
-			public const int abc_slide_out_bottom = 2131034120;
+			// aapt resource value: 0x7f060008
+			public const int abc_slide_out_bottom = 2131099656;
 			
-			// aapt resource value: 0x7f050009
-			public const int abc_slide_out_top = 2131034121;
+			// aapt resource value: 0x7f060009
+			public const int abc_slide_out_top = 2131099657;
 			
-			// aapt resource value: 0x7f05000a
-			public const int design_bottom_sheet_slide_in = 2131034122;
+			// aapt resource value: 0x7f06000a
+			public const int design_bottom_sheet_slide_in = 2131099658;
 			
-			// aapt resource value: 0x7f05000b
-			public const int design_bottom_sheet_slide_out = 2131034123;
+			// aapt resource value: 0x7f06000b
+			public const int design_bottom_sheet_slide_out = 2131099659;
 			
-			// aapt resource value: 0x7f05000c
-			public const int design_snackbar_in = 2131034124;
+			// aapt resource value: 0x7f06000c
+			public const int design_snackbar_in = 2131099660;
 			
-			// aapt resource value: 0x7f05000d
-			public const int design_snackbar_out = 2131034125;
+			// aapt resource value: 0x7f06000d
+			public const int design_snackbar_out = 2131099661;
 			
-			// aapt resource value: 0x7f05000e
-			public const int tooltip_enter = 2131034126;
+			// aapt resource value: 0x7f06000e
+			public const int tooltip_enter = 2131099662;
 			
-			// aapt resource value: 0x7f05000f
-			public const int tooltip_exit = 2131034127;
+			// aapt resource value: 0x7f06000f
+			public const int tooltip_exit = 2131099663;
 			
 			static Animation()
 			{
@@ -4175,8 +4175,8 @@ namespace GiveAndTake.Droid
 		public partial class Animator
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int design_appbar_state_list_animator = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int design_appbar_state_list_animator = 2131165184;
 			
 			static Animator()
 			{
@@ -6346,9 +6346,6 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f02006c
 			public const int avd_hide_password_3 = 2130837612;
 			
-			// aapt resource value: 0x7f0200b9
-			public const int avd_hide_password_3 = 2130837689;
-			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
@@ -6360,9 +6357,6 @@ namespace GiveAndTake.Droid
 			
 			// aapt resource value: 0x7f02006f
 			public const int avd_show_password_3 = 2130837615;
-			
-			// aapt resource value: 0x7f0200bc
-			public const int avd_show_password_3 = 2130837692;
 			
 			// aapt resource value: 0x7f020055
 			public const int design_bottom_navigation_item_background = 2130837589;
@@ -6433,6 +6427,22 @@ namespace GiveAndTake.Droid
 			}
 			
 			private Drawable()
+			{
+			}
+		}
+		
+		public partial class Font
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int SanFranciscoDisplayLight = 2130968576;
+			
+			static Font()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Font()
 			{
 			}
 		}
@@ -6984,35 +6994,35 @@ namespace GiveAndTake.Droid
 		public partial class Integer
 		{
 			
-			// aapt resource value: 0x7f0e0000
-			public const int abc_config_activityDefaultDur = 2131623936;
+			// aapt resource value: 0x7f0f0000
+			public const int abc_config_activityDefaultDur = 2131689472;
 			
-			// aapt resource value: 0x7f0e0001
-			public const int abc_config_activityShortDur = 2131623937;
+			// aapt resource value: 0x7f0f0001
+			public const int abc_config_activityShortDur = 2131689473;
 			
-			// aapt resource value: 0x7f0e0005
-			public const int app_bar_elevation_anim_duration = 2131623941;
+			// aapt resource value: 0x7f0f0005
+			public const int app_bar_elevation_anim_duration = 2131689477;
 			
-			// aapt resource value: 0x7f0e0006
-			public const int bottom_sheet_slide_duration = 2131623942;
+			// aapt resource value: 0x7f0f0006
+			public const int bottom_sheet_slide_duration = 2131689478;
 			
-			// aapt resource value: 0x7f0e0002
-			public const int cancel_button_image_alpha = 2131623938;
+			// aapt resource value: 0x7f0f0002
+			public const int cancel_button_image_alpha = 2131689474;
 			
-			// aapt resource value: 0x7f0e0003
-			public const int config_tooltipAnimTime = 2131623939;
+			// aapt resource value: 0x7f0f0003
+			public const int config_tooltipAnimTime = 2131689475;
 			
-			// aapt resource value: 0x7f0e0004
-			public const int design_snackbar_text_max_lines = 2131623940;
+			// aapt resource value: 0x7f0f0004
+			public const int design_snackbar_text_max_lines = 2131689476;
 			
-			// aapt resource value: 0x7f0e0007
-			public const int hide_password_duration = 2131623943;
+			// aapt resource value: 0x7f0f0007
+			public const int hide_password_duration = 2131689479;
 			
-			// aapt resource value: 0x7f0e0008
-			public const int show_password_duration = 2131623944;
+			// aapt resource value: 0x7f0f0008
+			public const int show_password_duration = 2131689480;
 			
-			// aapt resource value: 0x7f0e0009
-			public const int status_bar_notification_info_maxnum = 2131623945;
+			// aapt resource value: 0x7f0f0009
+			public const int status_bar_notification_info_maxnum = 2131689481;
 			
 			static Integer()
 			{
@@ -7027,83 +7037,83 @@ namespace GiveAndTake.Droid
 		public partial class Layout
 		{
 			
-			// aapt resource value: 0x7f040000
-			public const int abc_action_bar_title_item = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int abc_action_bar_title_item = 2131034112;
 			
-			// aapt resource value: 0x7f040001
-			public const int abc_action_bar_up_container = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int abc_action_bar_up_container = 2131034113;
 			
-			// aapt resource value: 0x7f040002
-			public const int abc_action_menu_item_layout = 2130968578;
+			// aapt resource value: 0x7f050002
+			public const int abc_action_menu_item_layout = 2131034114;
 			
-			// aapt resource value: 0x7f040003
-			public const int abc_action_menu_layout = 2130968579;
+			// aapt resource value: 0x7f050003
+			public const int abc_action_menu_layout = 2131034115;
 			
-			// aapt resource value: 0x7f040004
-			public const int abc_action_mode_bar = 2130968580;
+			// aapt resource value: 0x7f050004
+			public const int abc_action_mode_bar = 2131034116;
 			
-			// aapt resource value: 0x7f040005
-			public const int abc_action_mode_close_item_material = 2130968581;
+			// aapt resource value: 0x7f050005
+			public const int abc_action_mode_close_item_material = 2131034117;
 			
-			// aapt resource value: 0x7f040006
-			public const int abc_activity_chooser_view = 2130968582;
+			// aapt resource value: 0x7f050006
+			public const int abc_activity_chooser_view = 2131034118;
 			
-			// aapt resource value: 0x7f040007
-			public const int abc_activity_chooser_view_list_item = 2130968583;
+			// aapt resource value: 0x7f050007
+			public const int abc_activity_chooser_view_list_item = 2131034119;
 			
-			// aapt resource value: 0x7f040008
-			public const int abc_alert_dialog_button_bar_material = 2130968584;
+			// aapt resource value: 0x7f050008
+			public const int abc_alert_dialog_button_bar_material = 2131034120;
 			
-			// aapt resource value: 0x7f040009
-			public const int abc_alert_dialog_material = 2130968585;
+			// aapt resource value: 0x7f050009
+			public const int abc_alert_dialog_material = 2131034121;
 			
-			// aapt resource value: 0x7f04000a
-			public const int abc_alert_dialog_title_material = 2130968586;
+			// aapt resource value: 0x7f05000a
+			public const int abc_alert_dialog_title_material = 2131034122;
 			
-			// aapt resource value: 0x7f04000b
-			public const int abc_dialog_title_material = 2130968587;
+			// aapt resource value: 0x7f05000b
+			public const int abc_dialog_title_material = 2131034123;
 			
-			// aapt resource value: 0x7f04000c
-			public const int abc_expanded_menu_layout = 2130968588;
+			// aapt resource value: 0x7f05000c
+			public const int abc_expanded_menu_layout = 2131034124;
 			
-			// aapt resource value: 0x7f04000d
-			public const int abc_list_menu_item_checkbox = 2130968589;
+			// aapt resource value: 0x7f05000d
+			public const int abc_list_menu_item_checkbox = 2131034125;
 			
-			// aapt resource value: 0x7f04000e
-			public const int abc_list_menu_item_icon = 2130968590;
+			// aapt resource value: 0x7f05000e
+			public const int abc_list_menu_item_icon = 2131034126;
 			
-			// aapt resource value: 0x7f04000f
-			public const int abc_list_menu_item_layout = 2130968591;
+			// aapt resource value: 0x7f05000f
+			public const int abc_list_menu_item_layout = 2131034127;
 			
-			// aapt resource value: 0x7f040010
-			public const int abc_list_menu_item_radio = 2130968592;
+			// aapt resource value: 0x7f050010
+			public const int abc_list_menu_item_radio = 2131034128;
 			
-			// aapt resource value: 0x7f040011
-			public const int abc_popup_menu_header_item_layout = 2130968593;
+			// aapt resource value: 0x7f050011
+			public const int abc_popup_menu_header_item_layout = 2131034129;
 			
-			// aapt resource value: 0x7f040012
-			public const int abc_popup_menu_item_layout = 2130968594;
+			// aapt resource value: 0x7f050012
+			public const int abc_popup_menu_item_layout = 2131034130;
 			
-			// aapt resource value: 0x7f040013
-			public const int abc_screen_content_include = 2130968595;
+			// aapt resource value: 0x7f050013
+			public const int abc_screen_content_include = 2131034131;
 			
-			// aapt resource value: 0x7f040014
-			public const int abc_screen_simple = 2130968596;
+			// aapt resource value: 0x7f050014
+			public const int abc_screen_simple = 2131034132;
 			
-			// aapt resource value: 0x7f040015
-			public const int abc_screen_simple_overlay_action_mode = 2130968597;
+			// aapt resource value: 0x7f050015
+			public const int abc_screen_simple_overlay_action_mode = 2131034133;
 			
-			// aapt resource value: 0x7f040016
-			public const int abc_screen_toolbar = 2130968598;
+			// aapt resource value: 0x7f050016
+			public const int abc_screen_toolbar = 2131034134;
 			
-			// aapt resource value: 0x7f040017
-			public const int abc_search_dropdown_item_icons_2line = 2130968599;
+			// aapt resource value: 0x7f050017
+			public const int abc_search_dropdown_item_icons_2line = 2131034135;
 			
-			// aapt resource value: 0x7f040018
-			public const int abc_search_view = 2130968600;
+			// aapt resource value: 0x7f050018
+			public const int abc_search_view = 2131034136;
 			
-			// aapt resource value: 0x7f040019
-			public const int abc_select_dialog_material = 2130968601;
+			// aapt resource value: 0x7f050019
+			public const int abc_select_dialog_material = 2131034137;
 			
 			// aapt resource value: 0x7f04001a
 			public const int design_bottom_navigation_item = 2130968602;
@@ -8561,8 +8571,8 @@ namespace GiveAndTake.Droid
 		public partial class Xml
 		{
 			
-			// aapt resource value: 0x7f070000
-			public const int Empty = 2131165184;
+			// aapt resource value: 0x7f080000
+			public const int Empty = 2131230720;
 			
 			static Xml()
 			{

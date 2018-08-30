@@ -1,19 +1,16 @@
 ﻿using GiveAndTake.Core.ViewModels.Base;
-using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
-using UIKit;
 
 namespace GiveAndTake.iOS.Views.Base
 {
 	[MvxRootPresentation]
 	public class MasterView : BaseView
 	{
-		private UILabel _lbProjectName;
+		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
 
-		protected override void InitView()
-		{
-			_lbProjectName = UIHelper.CreateLabel(UIColor.Blue, DimensionHelper.MediumTextSize);
+		protected override void InitView() { }
 
 			View.Add(_lbProjectName);
 
@@ -30,11 +27,17 @@ namespace GiveAndTake.iOS.Views.Base
 			base.CreateBinding();
 			var set = this.CreateBindingSet<MasterView, MasterViewModel>();
 
-			set.Bind(_lbProjectName)
-				.For(v => v.Text)
-				.To(vm => vm.ProjectName);
+			set.Bind(this)
+				.For(v => v.ShowInitialViewModelsCommand)
+				.To(vm => vm.ShowInitialViewModelsCommand);
 
 			set.Apply();
+		}
+
+		public override void ViewDidAppear(bool animated)
+		{
+			base.ViewDidAppear(animated);
+			ShowInitialViewModelsCommand.Execute();
 		}
 	}
 }

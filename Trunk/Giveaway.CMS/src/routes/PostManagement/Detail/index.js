@@ -133,7 +133,7 @@ export default class index extends React.Component {
             <Col span={8}><h3> {this.handleDateAndTimeFormat(createdTime)} </h3></Col>
           </Row>
           <Row>
-            <Col span={8}><h2> Category </h2></Col>
+            <Col span={8}><h2> Danh mục </h2></Col>
           </Row>
           <Row>
             <Col span={8}><h3> <a className={styles.detailText} onClick={() => this.handleRedirectToCategoryDetail(category)}> {category.categoryName}</a></h3></Col>

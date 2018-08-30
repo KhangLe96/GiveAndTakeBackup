@@ -1,5 +1,7 @@
+import { message } from 'antd';
 import { fetch, changePostCMSStatus, findPost, fetchPostInformation, changeAPostCMSStatus } from '../services/post';
 import { TABLE_PAGESIZE } from '../common/constants';
+import ErrorHelper from '../helpers/ErrorHelper';
 
 const DEFAULT_CURRENT_PAGE = 1;
 
@@ -28,7 +30,9 @@ export default {
   effects: {
     * fetch({ payload }, { call, put }) {
       const response = yield call(fetch, payload);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         yield put({
           type: 'save',
           payload: {
@@ -42,7 +46,9 @@ export default {
 
     * fetchPostInformation({ payload }, { call, put }) {
       const response = yield call(fetchPostInformation, payload);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         yield put({
           type: 'save',
           payload: {
@@ -53,8 +59,10 @@ export default {
     },
     * changeAPostCMSStatus({ payload }, { call, put }) {
       const response = yield call(changeAPostCMSStatus, payload);
-      if (response) {
-        // / REVIEW: Should show message to notify user that your request has updated successfully
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
+        message.success('Cập nhật trạng thái thành công');
         yield put({
           type: 'fetchPostInformation',
           payload,
@@ -74,8 +82,10 @@ export default {
 
     * changePostCMSStatus({ payload }, { call, put }) {
       const response = yield call(changePostCMSStatus, payload);
-      if (response) {
-        // / REVIEW: Should show message to notify user that your request has updated successfully
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
+        message.success('Cập nhật trạng thái thành công');
         yield put({
           type: 'fetch',
           payload: {

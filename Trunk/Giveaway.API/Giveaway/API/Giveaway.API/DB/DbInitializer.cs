@@ -185,7 +185,7 @@ namespace Giveaway.API.DB
 
         private static void SeedProvinceCity(IServiceProvider services)
         {
-            var proviceCityService = services.GetService<IProviceCityService>();
+            var proviceCityService = services.GetService<IProvinceCityService>();
             if (proviceCityService.All().Any()) return;
             var pv = proviceCityService.Create(new ProvinceCity()
             {
@@ -198,7 +198,7 @@ namespace Giveaway.API.DB
         {
             var roleService = services.GetService<IRoleService>();
             var postService = services.GetService<IPostService>();
-            var proviceCityService = services.GetService<IProviceCityService>();
+            var proviceCityService = services.GetService<IProvinceCityService>();
             var categoryService = services.GetService<ICategoryService>();
             var userService = services.GetService<IUserService>();
 
@@ -402,12 +402,7 @@ namespace Giveaway.API.DB
                 new Category
                 {
                     Id = Guid.NewGuid(),
-                    CategoryName = "Tất cả danh mục",
-                },
-                new Category
-                {
-                    Id = Guid.NewGuid(),
-                    CategoryName = "Không thuộc danh mục nào",
+                    CategoryName = "Khác",
                 },
                 new Category
                 {

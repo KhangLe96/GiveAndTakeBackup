@@ -50,6 +50,14 @@ namespace Giveaway.API
                 .ForMember(
                     destination => destination.Status,
                     map => map.MapFrom(source => source.PostStatus.ToString())
+                )
+                .ForMember(
+                    destination => destination.CommentCount,
+                    map => map.MapFrom(source => source.Comments.Count)
+                )
+                .ForMember(
+                    destination => destination.RequestCount,
+                    map => map.MapFrom(source => source.Requests.Count)
                 );
             cfg.CreateMap<PostAppResponse, Post>();
             cfg.CreateMap<Post, PostCmsResponse>()
