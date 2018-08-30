@@ -11,11 +11,11 @@ using System.Text;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-    public class ProviceCityService : IProviceCityService
+    public class ProvinceCityService : IProvinceCityService
     {
-        private readonly Service.Services.IProviceCityService _proviceCityService;
+        private readonly Service.Services.IProvinceCityService _proviceCityService;
 
-        public ProviceCityService(Service.Services.IProviceCityService proviceCityService)
+        public ProvinceCityService(Service.Services.IProvinceCityService proviceCityService)
         {
             _proviceCityService = proviceCityService;
         }

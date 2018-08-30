@@ -7,21 +7,21 @@ using System.Collections.Generic;
 namespace Giveaway.API.Controllers
 {
     [Produces("application/json")]
-    [Route("api/v1/provicecity")]
-    public class ProviceCityController : Controller
+    [Route("api/v1/provincecity")]
+    public class ProvinceCityController : Controller
     {
-        private readonly IProviceCityService _proviceCityService;
+        private readonly IProvinceCityService _provinceCityService;
 
-        public ProviceCityController(IProviceCityService proviceCityService)
+        public ProvinceCityController(IProvinceCityService provinceCityService)
         {
-            _proviceCityService = proviceCityService;
+            _provinceCityService = provinceCityService;
         }
 
         [HttpGet("list")]
         [Produces("application/json")]
         public PagingQueryResponse<ProvinceCityResponse> GetListProviceCity([FromHeader]IDictionary<string, string> @params)
         {
-            return _proviceCityService.GetPCForPaging(@params);
+            return _provinceCityService.GetPCForPaging(@params);
         }
     }
 }

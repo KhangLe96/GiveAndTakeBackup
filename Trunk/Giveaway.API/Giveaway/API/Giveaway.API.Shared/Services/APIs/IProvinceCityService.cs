@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Giveaway.API.Shared.Services.APIs
 {
-    public interface IProviceCityService
+    public interface IProvinceCityService
     {
         PagingQueryResponse<ProvinceCityResponse> GetPCForPaging(IDictionary<string, string> @params);
     }
