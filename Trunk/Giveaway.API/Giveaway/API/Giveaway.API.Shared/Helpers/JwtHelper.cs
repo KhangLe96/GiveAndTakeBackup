@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using Giveaway.API.Shared.Extensions;
+﻿using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Models;
 using Giveaway.API.Shared.Services.APIs;
 using Giveaway.Data.EF;
@@ -12,6 +6,12 @@ using Giveaway.Util.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
 
 namespace Giveaway.API.Shared.Helpers
 {

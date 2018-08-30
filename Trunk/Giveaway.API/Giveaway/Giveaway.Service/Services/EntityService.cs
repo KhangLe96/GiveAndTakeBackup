@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Giveaway.Data.EF;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
+using Giveaway.Util.Constants;
 
 namespace Giveaway.Service.Services
 {
@@ -44,7 +44,7 @@ namespace Giveaway.Service.Services
             {
                 if (baseEntity.EntityStatus == EntityStatus.Deleted)
                 {
-                    throw new BadRequestException(Const.Error.BadRequest);
+                    throw new BadRequestException(CommonConstant.Error.BadRequest);
                 }
             }
             return response;
@@ -98,12 +98,12 @@ namespace Giveaway.Service.Services
             }
             else
             {
-                throw new BadRequestException(Const.Error.BadRequest);
+                throw new BadRequestException(CommonConstant.Error.BadRequest);
             }
             var isUpdated = Update(entity);
             if (!isUpdated)
             {
-                throw new InternalServerErrorException(Const.Error.InternalServerError);
+                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
             }
             return entity;
         }

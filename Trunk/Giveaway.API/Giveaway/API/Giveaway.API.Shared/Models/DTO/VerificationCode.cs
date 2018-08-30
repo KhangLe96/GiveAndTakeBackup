@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Giveaway.API.Shared.Models.DTO
 {
-	[Table("VerificationCode")]
+    [Table("VerificationCode")]
     public class VerificationCode : BaseEntity
     {
 	    public string VerifiedCode  { get; set; }

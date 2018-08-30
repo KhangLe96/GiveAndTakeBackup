@@ -6,9 +6,9 @@ namespace GiveAndTake.iOS.Helpers
 {
 	public static class UIHelper
 	{
-		public static UILabel CreateLabel(UIColor textColor, nfloat fontSize, FontType fontType = FontType.Regular)
+		public static PopupItemLabel CreateLabel(UIColor textColor, nfloat fontSize, FontType fontType = FontType.Regular)
 		{
-			var label = new UILabel
+			var label = new PopupItemLabel
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				LineBreakMode = UILineBreakMode.WordWrap,
