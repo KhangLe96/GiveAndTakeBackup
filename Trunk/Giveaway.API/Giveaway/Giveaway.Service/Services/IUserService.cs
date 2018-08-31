@@ -52,7 +52,7 @@ namespace Giveaway.Service.Services
                 return new ResponseMessage(HttpStatusCode.BadRequest, "Vui lòng nhập mật khẩu.");
             }
 
-            var user = FirstOrDefault(x => string.Equals(x.UserName, request.UserName, StringComparison.InvariantCultureIgnoreCase));
+            var user = FirstOrDefault(x => string.Equals(x.UserName, request.UserName, StringComparison.InvariantCultureIgnoreCase) && x.EntityStatus == Data.Enums.EntityStatus.Activated);
 
             if (user == null)
             {
