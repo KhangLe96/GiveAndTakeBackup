@@ -1,19 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.ViewModels
 {
 	public class PopupShortFilterViewModel : PopupViewModel
 	{
-		public override string Title { get; set; } = "Xếp theo";
+		public override string Title => "Xếp theo";
+		protected override string SelectedItem => DataModel.SelectedSortFilter.FilterName ?? AppConstants.DefaultShortFilter;
+		protected override List<string> PopupItems =>DataModel.SortFilters.Select(filter => filter.FilterName).ToList();
 
 		public PopupShortFilterViewModel(IDataModel dataModel) : base(dataModel)
 		{
 		}
 
-		protected override List<string> InitPopupItems()
+		protected override Task OnCloseCommand()
 		{
-			return new List<string> { "Thời gian (mới nhất)", "Thời gian (cũ nhất)", "Lượt thích (nhiều nhất)", "Lượt thích (ít nhất)", "Ngẫu nhiên" };
+			DataModel.SelectedSortFilter = DataModel.SortFilters.First(filter => filter.FilterName == SelectedItem);
+			return base.OnCloseCommand();
 		}
 	}
 }

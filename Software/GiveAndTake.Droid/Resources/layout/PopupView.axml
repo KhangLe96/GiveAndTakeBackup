@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_short"
-		local:MvxBind="ItemsSource PopupItemViewModels; ItemClick ItemClickCommand"
+		local:MvxBind="ItemsSource PopupItemViewModels"
         local:MvxItemTemplate="@layout/popupitemtemplate" />
 	<Button
 		android:layout_width="@dimen/popup_button_width"

@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using GiveAndTake.Core.Services;
 using MvvmCross;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using System.Threading.Tasks;
 
 
 namespace GiveAndTake.Core.ViewModels.Base
@@ -11,8 +12,10 @@ namespace GiveAndTake.Core.ViewModels.Base
 		private IMvxNavigationService _navigationService;
 		public override IMvxNavigationService NavigationService => _navigationService ?? (_navigationService = Mvx.Resolve<IMvxNavigationService>());
 
+		private IManagementService _managementService;
+		public IManagementService ManagementService => _managementService ?? (_managementService = Mvx.Resolve<IManagementService>());
 	}
-	
+
 	//TODO: Not possible to name MvxViewModel, name is MvxViewModelResult for now
 	public abstract class BaseViewModelResult<TResult> : BaseViewModel, IMvxViewModelResult<TResult>
 	{

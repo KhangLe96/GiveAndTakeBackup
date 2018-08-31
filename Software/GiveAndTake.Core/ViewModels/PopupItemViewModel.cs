@@ -2,7 +2,6 @@
 using MvvmCross.Commands;
 using System;
 using System.Windows.Input;
-using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -10,19 +9,9 @@ namespace GiveAndTake.Core.ViewModels
 	{
 		public EventHandler ItemSelected { get; set; }
 		private MvxCommand _clickCommand;
-
 		public ICommand ClickCommand => _clickCommand;
 
-		private string _itemId;
-
-		public string ItemId
-		{
-			get => _itemId;
-			set => SetProperty(ref _itemId, value);
-		}
-
 		private string _itemName;
-
 		public string ItemName
 		{
 			get => _itemName;
@@ -30,7 +19,6 @@ namespace GiveAndTake.Core.ViewModels
 		}
 
 		private bool _isLastViewInList;
-
 		public bool IsLastViewInList
 		{
 			get => _isLastViewInList;
@@ -42,7 +30,6 @@ namespace GiveAndTake.Core.ViewModels
 		}
 
 		private bool _isSelected;
-
 		public bool IsSelected
 		{
 			get => _isSelected;
@@ -56,25 +43,11 @@ namespace GiveAndTake.Core.ViewModels
 		public PopupItemViewModel(string name)
 		{
 			ItemName = name;
-
 			InitCommand();
 		}
 
-		public PopupItemViewModel(Category category)
-		{
-			ItemName = category.CategoryName;
+		private void InitCommand() => _clickCommand = new MvxCommand(OnClickedCommand);
 
-			InitCommand();
-		}
-
-		private void InitCommand()
-		{
-			_clickCommand = new MvxCommand(OnClickedCommand);
-		}
-
-		private void OnClickedCommand()
-		{
-			ItemSelected?.Invoke(this, null);
-		}
+		private void OnClickedCommand() => ItemSelected?.Invoke(this, null);
 	}
 }

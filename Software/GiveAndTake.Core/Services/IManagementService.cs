@@ -16,5 +16,6 @@ namespace GiveAndTake.Core.Services
 		void CreatePost(CreatePost post);
 		void UpdateCurrentUserProfile(User user);
 	    void GetUserProfile(string userId);
+	    List<SortFilter> GetShortFilters();
     }
 }

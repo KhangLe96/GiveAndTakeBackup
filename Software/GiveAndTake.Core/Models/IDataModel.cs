@@ -6,7 +6,12 @@ namespace GiveAndTake.Core.Models
 	{
 		List<Category> Categories { get; set; }
 		List<ProvinceCity> ProvinceCities { get; set; }
+		List<SortFilter> SortFilters { get; set; }
 		List<Post> Posts { get; set; }
 		LoginResponse LoginResponse { get; set; }
+		Category SelectedCategory { get; set; }
+		ProvinceCity SelectedProvinceCity { get; set; }
+		SortFilter SelectedSortFilter { get; set; }
 	}
 }
+	

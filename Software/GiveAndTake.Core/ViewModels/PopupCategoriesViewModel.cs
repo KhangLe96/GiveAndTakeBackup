@@ -1,30 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using GiveAndTake.Core.Models;
+using System.Collections.Generic;
 using System.Linq;
-using GiveAndTake.Core.Models;
-using GiveAndTake.Core.Services;
-using MvvmCross;
-using MvvmCross.ViewModels;
+using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class PopupCategoriesViewModel : PopupViewModel, IMvxViewModel<Category>
+	public class PopupCategoriesViewModel : PopupViewModel
 	{
-		private readonly IManagementService _managementService = Mvx.Resolve<IManagementService>();
-
-		public override string Title { get; set; } = "Phân loại";
+		public override string Title => "Phân loại";
+		protected override string SelectedItem => DataModel.SelectedCategory?.CategoryName ?? AppConstants.DefaultItem;
+		protected override List<string> PopupItems => DataModel
+			.Categories
+			.Select(c => c.CategoryName)
+			.Append(AppConstants.DefaultItem)
+			.ToList();
 
 		public PopupCategoriesViewModel(IDataModel dataModel) : base(dataModel)
 		{
-
-		}
-		public void Prepare(Category category)
-		{
 		}
 
-		protected override List<string> InitPopupItems()
+		protected override Task OnCloseCommand()
 		{
-			DataModel.Categories = _managementService.GetCategories();
-			return DataModel.Categories.Select(c => c.CategoryName).ToList();
+			DataModel.SelectedCategory = DataModel.Categories.FirstOrDefault(c => c.CategoryName == SelectedItem);
+			return base.OnCloseCommand();
 		}
 	}
 }

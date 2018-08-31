@@ -35,8 +35,19 @@ namespace GiveAndTake.Core.Services
 
 	    public List<ProvinceCity> GetProvinceCities()
 	    {
-		    throw new System.NotImplementedException();
-	    }
+			return Task.Run(async () =>
+			{
+				var response = await _apiHelper.Get(AppConstants.GetProvinceCities);
+				if (response != null && response.NetworkStatus == NetworkStatus.Success)
+				{
+					return JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
+				}
+
+				//Handle popup error cannot get data
+				Debug.WriteLine("Error cannot get data");
+				return null;
+			}).Result.ProvinceCities;
+		}
 
 	    public List<Post> GetPostList(string filterParams)
         {
@@ -184,23 +195,29 @@ namespace GiveAndTake.Core.Services
 		    });
 		}
 
+	    public List<SortFilter> GetShortFilters() => new List<SortFilter>
+	    {
+			new SortFilter {FilterName = "Thời gian (mới nhất)", FilterTag = "desc"},
+			new SortFilter {FilterName = "Thời gian (cũ nhất)", FilterTag = "asc"}
+	    };
+
 		//public void CreateRequest(string postId);
 
-        //public void ReportPost(string postId);
+		//public void ReportPost(string postId);
 
-        //public void GetRequestOfPost(string postId);
+		//public void GetRequestOfPost(string postId);
 
 		//public void GetRequestOfUser(string userId);
 
-        //public void GetNotification(string userId);
+		//public void GetNotification(string userId);
 
-        //public void GetCommentList(string postId);
+		//public void GetCommentList(string postId);
 
-        //public void Comment(string postId);
+		//public void Comment(string postId);
 
 		//public void EditComment(string commentId);
 
-        //public void DeleteComment(string commentId;
+		//public void DeleteComment(string commentId;
 
-    }
+	}
 }

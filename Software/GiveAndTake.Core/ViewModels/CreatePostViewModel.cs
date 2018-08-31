@@ -17,7 +17,7 @@ namespace GiveAndTake.Core.ViewModels
 	{
 		private readonly List<PostImage> _postImages = new List<PostImage>();
 		private readonly List<byte[]> _imageBytes = new List<byte[]>();
-		private string currentCategory;
+		private Category currentCategory;
 
 		public string ProjectName => AppConstants.AppTitle;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
@@ -63,18 +63,9 @@ namespace GiveAndTake.Core.ViewModels
 			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
 		}
 
-		private async Task<string> ShowCategories()
+		private async Task ShowCategories()
 		{
-			if (currentCategory == null)
-			{
-				currentCategory = AppConstants.DefaultCategory;
-			}
-			var category = await NavigationService.Navigate<PopupCategoriesViewModel, string, string>(currentCategory);
-			if (category != null)
-			{
-				currentCategory = category;
-			}
-			return category;
+			await NavigationService.Navigate<PopupCategoriesViewModel>();
 		}
 
 		private MvxCommand _takePictureCommand;

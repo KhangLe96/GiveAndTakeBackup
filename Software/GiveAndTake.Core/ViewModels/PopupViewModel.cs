@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using GiveAndTake.Core.Models;
-using GiveAndTake.Core.ViewModels.Base;
+﻿using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.ViewModels
 {
 	public abstract class PopupViewModel : BaseViewModel
 	{
-		private readonly IDataModel _dataModel;
-		public IMvxCommand<PopupItemViewModel> ItemClickCommand { get; set; }
-		public IMvxAsyncCommand ClosePopupCommand { get; set; }
-		protected string SelectedItem;
-		private readonly List<string> _popupItems;
+		protected readonly IDataModel DataModel;
 
-		public abstract string Title { get; set; }
+		public IMvxAsyncCommand ClosePopupCommand { get; set; }
+		public abstract string Title { get; }
+		protected virtual string SelectedItem { get; set; }
+		protected abstract List<string> PopupItems { get; }
 
 		private List<PopupItemViewModel> _popupItemViewModels;
 		public List<PopupItemViewModel> PopupItemViewModels
@@ -30,55 +30,44 @@ namespace GiveAndTake.Core.ViewModels
 
 		protected PopupViewModel(IDataModel dataModel)
 		{
-			_dataModel = dataModel;
-			//TODO : Get Categories to viewmodel
-			ClosePopupCommand = new MvxAsyncCommand(() => NavigationService.Close(this, SelectedItem));
+			DataModel = dataModel;
+			PopupItemViewModels = InitPopupList();
+			ClosePopupCommand = new MvxAsyncCommand(OnCloseCommand);
 		}
 
-		public override void Prepare(string parameter)
+		protected virtual Task OnCloseCommand()
 		{
-			SelectedItem = parameter;
-			ItemClickCommand = new MvxCommand<PopupItemViewModel>(OnItemClick);
-			InitCategoriesList();
+			return NavigationService.Close(this);
 		}
 
-		private void InitCategoriesList()
+		private List<PopupItemViewModel> InitPopupList()
 		{
-			var categoryItemViewModels = new List<PopupItemViewModel>();
+			var itemViewModels = new List<PopupItemViewModel>();
 
-			foreach (var category in _dataModel.Categories)
+			foreach (var itemName in PopupItems)
 			{
-				var categoryItemViewModel = new PopupItemViewModel(category);
-				categoryItemViewModel.ItemSelected += OnCategorySelected;
-				categoryItemViewModels.Add(categoryItemViewModel);
+				var itemViewModel = new PopupItemViewModel(itemName)
+				{
+					IsLastViewInList = IsLast(itemName),
+					IsSelected = itemName == SelectedItem
+				};
+				itemViewModel.ItemSelected += OnItemSelected;
+				itemViewModels.Add(itemViewModel);
 			}
 
-			PopupItemViewModels = categoryItemViewModels;
+			return itemViewModels;
 		}
 
-		private void OnCategorySelected(object sender, EventArgs e)
-		{
-			var selectedCategory = sender as PopupItemViewModel;
-			//TODO Update data model with selected category
-		}
+		private bool IsLast(string name) => PopupItems.GetPosition(name) + 1 == PopupItems.Count;
 
-		protected void OnItemClick(PopupItemViewModel popupItemViewModel)
+		protected void OnItemSelected(object sender, EventArgs e)
 		{
-			foreach (var viewModel in _popupItemViewModels)
+			var selectedItemViewModel = sender as PopupItemViewModel;
+			foreach (var viewModel in PopupItemViewModels)
 			{
-				viewModel.IsSelected = viewModel == popupItemViewModel;
+				viewModel.IsSelected = viewModel == selectedItemViewModel;
 			}
-			SelectedItem = popupItemViewModel.ItemName;
+			SelectedItem = selectedItemViewModel?.ItemName;
 		}
-
-		private PopupItemViewModel GeneratePopupItemViewModel(string name) => new PopupItemViewModel(name)
-		{
-			IsLastViewInList = IsLast(name),
-			IsSelected = GetItemSelectState(name)
-		};
-
-		private bool IsLast(string name) => _popupItems.GetPosition(name) + 1 == _popupItems.Count;
-
-		private bool GetItemSelectState(string name) => name == SelectedItem;
 	}
 }

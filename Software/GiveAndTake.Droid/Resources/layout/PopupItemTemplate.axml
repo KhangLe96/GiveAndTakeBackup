@@ -8,7 +8,7 @@
 	<giveandtake.droid.controls.CustomTextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		local:MvxBind="Text ItemName; IsSelected IsSelected"
+		local:MvxBind="Text ItemName; IsSelected IsSelected; Click ClickCommand"
 	android:layout_margin="@dimen/margin_popup_item"/>
 	<TextView
 		android:layout_width="match_parent"
