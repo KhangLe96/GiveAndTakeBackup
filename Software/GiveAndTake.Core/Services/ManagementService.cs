@@ -53,8 +53,10 @@ namespace GiveAndTake.Core.Services
         {
             return Task.Run(async () =>
             {
-	            var parameters = $"?{filterParams}";
-				var response = await _apiHelper.Get(AppConstants.GetPostList + parameters);
+	            var url = string.IsNullOrEmpty(filterParams)
+		            ? AppConstants.GetPostList
+		            : string.Join("?", AppConstants.GetPostList, filterParams);
+				var response = await _apiHelper.Get(url);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
                     return JsonHelper.Deserialize<PostList>(response.RawContent);

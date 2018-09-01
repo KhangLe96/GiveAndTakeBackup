@@ -14,8 +14,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		public IMvxAsyncCommand ClosePopupCommand { get; set; }
 		public abstract string Title { get; }
-		protected virtual string SelectedItem { get; set; }
-		protected abstract List<string> PopupItems { get; }
+		protected abstract string SelectedItem { get; set; }
+		protected abstract List<string> PopupItems { get; set; }
 
 		private List<PopupItemViewModel> _popupItemViewModels;
 		public List<PopupItemViewModel> PopupItemViewModels
@@ -31,8 +31,13 @@ namespace GiveAndTake.Core.ViewModels
 		protected PopupViewModel(IDataModel dataModel)
 		{
 			DataModel = dataModel;
+		}
+
+		public override Task Initialize()
+		{
 			PopupItemViewModels = InitPopupList();
 			ClosePopupCommand = new MvxAsyncCommand(OnCloseCommand);
+			return base.Initialize();
 		}
 
 		protected virtual Task OnCloseCommand()

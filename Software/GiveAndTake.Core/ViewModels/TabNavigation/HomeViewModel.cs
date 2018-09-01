@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -63,7 +62,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.Categories = ManagementService.GetCategories();
 			_dataModel.ProvinceCities = ManagementService.GetProvinceCities();
 			_dataModel.SortFilters = ManagementService.GetShortFilters();
-			_dataModel.SelectedSortFilter = _dataModel.SortFilters.First();
 		}
 
 		private void UpdatePostViewModels()
@@ -74,10 +72,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private void InitCommand()
 		{
-			// TODO: fix bug
-			//ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
-			//ShowShortPostCommand = new MvxAsyncCommand(ShowShortFilterView);
-			//ShowFilterCommand = new MvxAsyncCommand(ShowLocationFilterView);
+			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
+			ShowShortPostCommand = new MvxAsyncCommand(ShowShortFilterView);
+			ShowFilterCommand = new MvxAsyncCommand(ShowLocationFilterView);
 			CreatePostCommand = new MvxAsyncCommand(() => NavigationService.Navigate<CreatePostViewModel>());
 			SearchCommand = new MvxCommand(OnSearchSubmit);
 		}
@@ -116,24 +113,29 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private string GetFilterParams()
 		{
-			var parameters = $"order={_dataModel.SelectedSortFilter.FilterTag}";
+			var parameters = new List<string>();
 
 			if (!string.IsNullOrEmpty(_currentQueryString))
 			{
-				parameters += $"&title={_currentQueryString}";
+				parameters.Add($"title={_currentQueryString}");
+			}
+
+			if (_dataModel.SelectedSortFilter != null)
+			{
+				parameters.Add($"order={_dataModel.SelectedSortFilter.FilterTag}");
 			}
 
 			if (_dataModel.SelectedCategory != null)
 			{
-				parameters += $"&categoryId={_dataModel.SelectedCategory.Id}";
+				parameters.Add($"categoryId={_dataModel.SelectedCategory.Id}");
 			}
 
 			if (_dataModel.SelectedProvinceCity != null)
 			{
-				parameters += $"&provinceCityId={_dataModel.SelectedProvinceCity.Id}";
+				parameters.Add($"provinceCityId={_dataModel.SelectedProvinceCity.Id}");
 			}
 
-			return parameters;
+			return string.Join("&", parameters);
 		}
 
 		private bool IsLast(Post post) => _dataModel.Posts.GetPosition(post) + 1 == _dataModel.Posts.Count;
