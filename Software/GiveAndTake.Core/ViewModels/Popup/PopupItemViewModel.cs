@@ -1,9 +1,9 @@
-﻿using GiveAndTake.Core.ViewModels.Base;
-using MvvmCross.Commands;
-using System;
+﻿using System;
 using System.Windows.Input;
+using GiveAndTake.Core.ViewModels.Base;
+using MvvmCross.Commands;
 
-namespace GiveAndTake.Core.ViewModels
+namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class PopupItemViewModel : BaseViewModel
 	{

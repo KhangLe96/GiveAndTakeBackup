@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Commands;
 
@@ -179,14 +181,21 @@ namespace GiveAndTake.Core.ViewModels
         {
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<UserProfileViewModel>());
             ShowPostDetailCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PostDetailViewModel>());
+	        ShowMessagePopupCommand = new MvxAsyncCommand(ShowMessageView);
         }
 
-        #endregion
+	    private async Task ShowMessageView()
+	    {
+		    var result = await NavigationService.Navigate<PopupMessageViewModel, bool>();
+	    }
+
+	    #endregion
 
         #region Methods
 
         public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public IMvxAsyncCommand ShowPostDetailCommand { get; set; }
+        public IMvxAsyncCommand ShowMessagePopupCommand { get; set; }
 
         #endregion
     }

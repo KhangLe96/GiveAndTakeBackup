@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
 
-namespace GiveAndTake.Core.ViewModels
+namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class PopupLocationFilterViewModel : PopupViewModel 
 	{

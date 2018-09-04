@@ -76,12 +76,13 @@
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
     <Compile Include="Views\CreatePostView.cs" />
+    <Compile Include="Views\Popup\PopupMessageView.cs" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />
     <Compile Include="Views\LoginView.cs" />
-    <Compile Include="Views\PopupCategoriesView.cs" />
-    <Compile Include="Views\PopupLocationFilter.cs" />
-    <Compile Include="Views\PopupShortFilterView.cs" />
+    <Compile Include="Views\Popup\PopupCategoriesView.cs" />
+    <Compile Include="Views\Popup\PopupLocationFilter.cs" />
+    <Compile Include="Views\Popup\PopupShortFilterView.cs" />
     <Compile Include="Views\TabNavigation\NotificationView.cs" />
     <Compile Include="Views\PostDetailView.cs" />
     <Compile Include="Views\TabNavigation\ProfileView.cs" />
@@ -460,6 +461,17 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\new_post.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupMessageView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\popup_button_cancel_bg.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\popup_bg.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

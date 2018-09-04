@@ -6,6 +6,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using System;
 using System.Windows.Input;
+using GiveAndTake.Core.ViewModels.Popup;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells

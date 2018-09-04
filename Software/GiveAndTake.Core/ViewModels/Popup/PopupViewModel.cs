@@ -1,12 +1,12 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace GiveAndTake.Core.ViewModels
+namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public abstract class PopupViewModel : BaseViewModelResult<bool>
 	{

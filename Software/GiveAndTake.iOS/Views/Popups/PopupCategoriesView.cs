@@ -1,5 +1,6 @@
 ﻿using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
+using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;

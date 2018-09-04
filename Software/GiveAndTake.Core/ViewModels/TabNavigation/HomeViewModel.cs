@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.ViewModels.Popup;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -104,11 +105,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task ShowLocationFilterView()
 		{
-			var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
-			if (result)
-			{
-				UpdatePostViewModels();
-			}
+			//var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
+			//if (result)
+			//{
+			//	UpdatePostViewModels();
+			//}
+			var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>("Bài đăng đã có yêu cầu, \nbạn có chắc chắn xóa?");
 		}
 
 		private string GetFilterParams()

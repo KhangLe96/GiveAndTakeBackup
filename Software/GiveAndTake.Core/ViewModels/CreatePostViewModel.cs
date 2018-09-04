@@ -7,6 +7,7 @@ using System.Windows.Input;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Plugin.PictureChooser;
