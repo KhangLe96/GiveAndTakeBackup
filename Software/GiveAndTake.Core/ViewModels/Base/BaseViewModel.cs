@@ -16,7 +16,11 @@ namespace GiveAndTake.Core.ViewModels.Base
 		public IManagementService ManagementService => _managementService ?? (_managementService = Mvx.Resolve<IManagementService>());
 	}
 
-	//TODO: Not possible to name MvxViewModel, name is MvxViewModelResult for now
+	public abstract class BaseViewModel<TParameter> : BaseViewModel, IMvxViewModel<TParameter>
+	{
+		public abstract void Prepare(TParameter parameter);
+	}
+
 	public abstract class BaseViewModelResult<TResult> : BaseViewModel, IMvxViewModelResult<TResult>
 	{
 		public TaskCompletionSource<object> CloseCompletionSource { get; set; }
@@ -28,5 +32,10 @@ namespace GiveAndTake.Core.ViewModels.Base
 
 			base.ViewDestroy(viewFinishing);
 		}
+	}
+	
+	public abstract class BaseViewModel<TParameter, TResult> : BaseViewModelResult<TResult>, IMvxViewModel<TParameter, TResult>
+	{
+		public abstract void Prepare(TParameter parameter);
 	}
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:local="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:gravity="center"
+	android:background="@drawable/popup_bg"
+	android:padding="@dimen/margin_short">
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		local:MvxBind="Text Message"
+		android:textSize="@dimen/MediumTextSize"
+		android:textColor="@color/black"
+		android:layout_margin="@dimen/margin_short"
+		android:textAlignment="center"/>
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:weightSum="2"
+		android:layout_marginBottom="@dimen/margin_short">
+		<Button
+			android:layout_width="0dp"
+			android:layout_height="@dimen/popup_button_height"
+			android:layout_weight="1"
+			android:text="Hủy"
+			android:textAllCaps="false"
+			android:background="@drawable/popup_button_cancel_bg"
+			local:MvxBind="Click CancelCommand"
+			android:textColor="@color/colorPrimary"
+			android:layout_margin="@dimen/margin_short"
+			android:textStyle="normal"
+			android:textSize="@dimen/SmallTextSize"/>
+		<Button
+			android:layout_width="0dp"
+			android:layout_height="@dimen/popup_button_height"
+			android:layout_weight="1"
+			android:text="Xác Nhận"
+			android:textAllCaps="false"
+			android:background="@drawable/popup_button_bg"
+			local:MvxBind="Click SubmitCommand"
+			android:textColor="@color/white"
+			android:layout_margin="@dimen/margin_short"
+			android:textStyle="normal"
+			android:textSize="@dimen/SmallTextSize"/>
+	</LinearLayout>
+</LinearLayout>
