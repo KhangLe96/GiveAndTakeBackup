@@ -4,6 +4,7 @@ using Facebook.LoginKit;
 using Foundation;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
+using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
@@ -19,14 +20,14 @@ namespace GiveAndTake.iOS.Views
 		private UIImageView _logoImage;
 		private UIButton _customedLoginFacebookButton;
 		private UIButton _customedLoginGoogleButton;
+		private UIImageView _contentView;
+		private PopupItemLabel _loginTitle;
 		public MvxCommand<BaseUser> LoginCommand { get; set; }
 
 		protected override void InitView()
 		{
 			InitBackground();
-			InitLogoImage();
-			InitLoginFbButton();
-			InitLoginGoogleButton();
+			InitContent();
 		}
 
 		protected override void CreateBinding()
@@ -44,86 +45,54 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitBackground()
 		{
-			View.BackgroundColor = UIColor.FromRGB(15, 188, 249);
-		}
+			_contentView = UIHelper.CreateImageView(ResolutionHelper.Width, ResolutionHelper.Height, UIColor.White, ImageHelper.LoginBackground);
+			_contentView.UserInteractionEnabled = true;
 
-		private void InitLogoImage()
-		{
-			_logoImage = new UIImageView { TranslatesAutoresizingMaskIntoConstraints = false, Image = UIImage.FromFile(ImageHelper.LoginLogo) };
-
-			_logoImage.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
-					NSLayoutAttribute.NoAttribute, 1, 150),
-				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
-					NSLayoutAttribute.NoAttribute, 1, 200)
-			});
-
-			View.Add(_logoImage);
+			View.Add(_contentView);
 
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, 130),
-				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.CenterY, 1, 0),
+				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.CenterX, 1, 0)
 			});
 		}
 
-		private void InitLoginFbButton()
+		private void InitContent()
 		{
-			_customedLoginFacebookButton = new UIButton { TranslatesAutoresizingMaskIntoConstraints = false };
+			_logoImage = UIHelper.CreateImageView(DimensionHelper.LoginLogoWidth, DimensionHelper.LoginLogoHeight, UIColor.White, ImageHelper.LoginLogo);
+			_loginTitle = UIHelper.CreateLabel(ColorHelper.BlueColor, DimensionHelper.LoginTitleTextSize);
+			_customedLoginFacebookButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.FacebookButton);
+			_customedLoginGoogleButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.GoogleButton);
 
-			_customedLoginFacebookButton.AddConstraints(new[]
+			_loginTitle.Text = "Đăng nhập với tài khoản";
+
+			_contentView.AddSubviews(_logoImage, _loginTitle, _customedLoginFacebookButton);
+
+			_contentView.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
-					NSLayoutAttribute.NoAttribute, 1, 40),
-				NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
-					NSLayoutAttribute.NoAttribute, 1, 100)
+				NSLayoutConstraint.Create(_loginTitle, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.CenterY, 1, - DimensionHelper.MarginNormal),
+				NSLayoutConstraint.Create(_loginTitle, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.CenterX, 1, 0),
+
+				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _loginTitle,
+					NSLayoutAttribute.Top, 1, - DimensionHelper.MarginNormal),
+				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.CenterX, 1, 0),
+
+				NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.CenterY, 1, DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.CenterX, 1, 0),
 			});
 
-			_customedLoginFacebookButton.SetBackgroundImage(new UIImage(ImageHelper.FacebookButton), UIControlState.Normal);
+			_customedLoginFacebookButton.AddGestureRecognizer(new UITapGestureRecognizer(HandleLoginFacebook));
 
-			View.Add(_customedLoginFacebookButton);
-
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _logoImage,
-					NSLayoutAttribute.Bottom, 1, 20),
-				NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.CenterX, 1, -15)
-			});
-
-			_customedLoginFacebookButton.TouchUpInside += HandleLoginFacebook;
 		}
 
-		private void InitLoginGoogleButton()
-		{
-			_customedLoginGoogleButton = new UIButton() { TranslatesAutoresizingMaskIntoConstraints = false };
-
-			_customedLoginGoogleButton.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
-					NSLayoutAttribute.NoAttribute, 1, 0),
-				NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null,
-					NSLayoutAttribute.NoAttribute, 1, 0)
-
-			});
-
-			_customedLoginGoogleButton.SetBackgroundImage(new UIImage(ImageHelper.GoogleButton), UIControlState.Normal);
-
-			View.Add(_customedLoginGoogleButton);
-
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _logoImage,
-					NSLayoutAttribute.Bottom, 1, 20),
-				NSLayoutConstraint.Create(_customedLoginGoogleButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.CenterX, 1, 15)
-			});
-		}
-
-		private void HandleLoginFacebook(object sender, EventArgs e)
+		private void HandleLoginFacebook()
 		{
 			// integrate with default login facebook button
 			var manager = new LoginManager();

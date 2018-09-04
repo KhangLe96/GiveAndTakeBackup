@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Foundation;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -30,6 +31,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string HomeOn { get; private set; }
 		public static string NotificationOff { get; private set; }
 		public static string NotificationOn { get; private set; }
+		public static string LoginBackground { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -43,7 +45,7 @@ namespace GiveAndTake.iOS.Helpers
 			GoogleButton = Path.Combine(BasePath, "google_button");
 			HeaderBar = Path.Combine(BasePath, "header_bar");
 			HeartOff = Path.Combine(BasePath, "heart_off");
-			LoginLogo = Path.Combine(BasePath, "LoginLogo");
+			LoginLogo = Path.Combine(BasePath, "login_logo");
 			Multiphoto = Path.Combine(BasePath, "multiphoto");
 			RequestOff = Path.Combine(BasePath, "request_off");
 			SortButton = Path.Combine(BasePath, "sort_button");
@@ -57,6 +59,7 @@ namespace GiveAndTake.iOS.Helpers
 			HomeOn = Path.Combine(BasePath, "home_on");
 			NotificationOff = Path.Combine(BasePath, "notification_off");
 			NotificationOn = Path.Combine(BasePath, "notification_on");
+			LoginBackground = Path.Combine(BasePath, "login_background");
 		}
 	}
 }

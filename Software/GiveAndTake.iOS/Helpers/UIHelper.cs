@@ -44,6 +44,13 @@ namespace GiveAndTake.iOS.Helpers
 			return imageView;
 		}
 
+		public static UIImageView CreateImageView(nfloat width, nfloat height, UIColor backgroundColor, string imagePath)
+		{
+			var imageView = CreateImageView(width, height, backgroundColor);
+			imageView.Image = new UIImage(imagePath);
+			return imageView;
+		}
+
 		public static UIView CreateView(nfloat height, nfloat width)
 		{
 			var view = new UIView { TranslatesAutoresizingMaskIntoConstraints = false };

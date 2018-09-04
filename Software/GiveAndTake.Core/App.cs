@@ -1,5 +1,6 @@
 ﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
+using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross;
 using MvvmCross.ViewModels;
@@ -16,7 +17,7 @@ namespace GiveAndTake.Core
 
 			RegisterServices();
 
-			RegisterAppStart<MasterViewModel>();
+			RegisterAppStart<LoginViewModel>();
 		}
 
 		protected void RegisterHelpers()

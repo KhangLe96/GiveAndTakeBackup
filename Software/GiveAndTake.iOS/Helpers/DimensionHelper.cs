@@ -36,6 +36,11 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupButtonWidth { get; set; }
 		public static nfloat PopupButtonHeight { get; set; }
 		public static nfloat PopupCellHeight { get; private set; }
+		public static nfloat LoginLogoWidth { get; set; }
+		public static nfloat LoginLogoHeight { get; set; }
+		public static nfloat LoginButtonWidth { get; set; }
+		public static nfloat LoginButtonHeight { get; set; }
+		public static nfloat LoginTitleTextSize { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -69,6 +74,11 @@ namespace GiveAndTake.iOS.Helpers
 			PopupButtonWidth = 150 * Rate;
 			PopupButtonHeight = 30 * Rate;
 			PopupCellHeight = 40 * Rate;
+			LoginLogoWidth = 61 * Rate;
+			LoginLogoHeight = 38 * Rate;
+			LoginButtonWidth = 106 * Rate;
+			LoginButtonHeight = 33 * Rate;
+			LoginTitleTextSize = 18 * Rate;
 		}
 	}
 }
