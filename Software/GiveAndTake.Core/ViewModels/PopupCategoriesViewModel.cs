@@ -22,7 +22,7 @@ namespace GiveAndTake.Core.ViewModels
 			PopupItems = DataModel
 				.Categories
 				.Select(c => c.CategoryName)
-				.Append(AppConstants.DefaultItem)
+				//.Append(AppConstants.DefaultItem)
 				.ToList();
 
 			return base.Initialize();

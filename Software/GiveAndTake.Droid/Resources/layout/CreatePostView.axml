@@ -13,7 +13,8 @@
 			android:textAllCaps="false"
 			android:textSize="15dp"
 			android:layout_width="wrap_content"
-			android:text="Tỉnh/Thành phố"
+			android:hint="Tỉnh/Thành phố"
+			android:textColorHint="@color/default_popup_text_color"
 			android:gravity="center_vertical"
 			android:id="@+id/ProvinceCity"
 			android:layout_weight="1"
@@ -23,12 +24,13 @@
 			android:layout_marginTop="15dp"
 			android:layout_marginLeft="10dp"
 			android:background="@drawable/post_editText_bg"
-			android:textColor="#cccccc"/>
+			local:MvxBind="Text ProvinceCity; Click ShowProvinceCityCommand"/>
 		<Button
 			android:textSize="15dp"
 			android:textAllCaps="false"
 			android:layout_width="wrap_content"
-			android:text="Loại..."
+			android:hint="Loại..."
+			android:textColorHint="@color/default_popup_text_color"
 			android:id="@+id/Category"
 			android:gravity="center_vertical"
 			android:padding="10dp"
@@ -39,13 +41,12 @@
 			android:layout_alignParentRight="true"
 			android:layout_marginRight="10dp"
 			android:background="@drawable/post_editText_bg"
-			android:textColor="#cccccc" 
-			local:MvxBind="Click ShowCategoriesCommand"/>
+			local:MvxBind="Text Category; Click ShowCategoriesCommand"/>
 	</LinearLayout>
 	<EditText
 		android:textSize="15dp"
 		android:textAllCaps="false"
-		android:textColor="#cccccc"
+		android:textColorHint="@color/default_popup_text_color"
 		android:background="@drawable/post_editText_bg"
 		android:id="@+id/Title"
 		android:hint="Tiêu đề"
@@ -61,7 +62,7 @@
 	<EditText
 		android:textSize="15dp"
 		android:textAllCaps="false"
-		android:textColor="#cccccc"
+		android:textColorHint="@color/default_popup_text_color"
 		android:id="@+id/PostDescription"
 		android:hint="Mô tả ..."
 		android:padding="10dp"
@@ -81,7 +82,7 @@
 		android:layout_alignParentRight="true"
 		android:layout_marginRight="10dp"
 		android:layout_marginTop="15dp"
-		android:background="#FFFFFF"
+		android:background="@color/tab_navigation_background"
 		android:src="@drawable/gallery_button"
 		android:layout_below="@+id/PostDescription"
 		android:scaleType="fitXY"/>
@@ -91,11 +92,23 @@
 		android:layout_toLeftOf="@+id/ChoosePicture"
 		android:layout_marginTop="15dp"
 		android:layout_marginRight="25dp"
-		android:background="#FFFFFF"
+		android:background="@color/tab_navigation_background"
 		android:src="@drawable/takePicture_button"
 		local:MvxBind="Click TakePictureCommand"
 		android:layout_below="@+id/PostDescription"
 		android:scaleType="fitXY"/>
+	<TextView
+		android:id="@+id/tvSelectedImage"
+		android:hint="@string/selected_image"
+		android:textColorHint="@color/default_popup_text_color"
+		android:layout_width="wrap_content"
+		android:layout_marginLeft="10dp"
+		android:layout_marginTop="15dp"
+		android:layout_height="match_parent"
+		android:layout_alignParentLeft="true"
+		android:textColor="@color/colorSecondary"
+		android:layout_below="@+id/PostDescription"
+		local:MvxBind="Text SelectedImage"/>
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -111,7 +124,8 @@
 			android:layout_marginLeft="10dp"
 			android:layout_marginTop="10dp"
 			android:background="@drawable/cancel_button_bg"
-			android:textColor="@drawable/cancel_button_text"/>
+			android:textColor="@drawable/cancel_button_text"
+			local:MvxBind="Click CloseCommand"/>
 		<Button
 			android:textAllCaps="false"
 			android:layout_width="wrap_content"
@@ -123,6 +137,6 @@
 			android:layout_height="30dp"
 			android:layout_marginTop="10dp"
 			android:background="@drawable/submit_button_bg"
-			android:textColor="#fff" />
+			android:textColor="@color/tab_navigation_background" />
 	</LinearLayout>
 </RelativeLayout>

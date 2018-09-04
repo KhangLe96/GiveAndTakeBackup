@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using GiveAndTake.Core.ViewModels;
@@ -15,23 +17,37 @@ namespace GiveAndTake.Droid.Views
 {
 	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
 	[Register(nameof(CreatePostView))]
-    public class CreatePostView : BaseFragment
+	public class CreatePostView : BaseFragment
 	{
 		protected override int LayoutId => Resource.Layout.CreatePostView;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 		public IMvxCommand SubmitCommand { get; set; }
-
 		private View _view;
-		readonly List<byte[]> _image = new List<byte[]>();
 
 		private ImageButton _choosePictureButton;
 
 		protected override void InitView(View view)
-        {
-	        _view = view;
+		{
+			_view = view;
 			InitChoosePicture();
 			InitSubmit();
-        }
+
+			var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
+			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
+		}
+
+		private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
+		{
+			var textView = sender as TextView;
+			if (!string.IsNullOrEmpty(textView?.Text))
+			{
+				textView.PaintFlags = PaintFlags.UnderlineText;
+			}
+			else
+			{
+				textView.PaintFlags = PaintFlags.LinearText;
+			}
+		}
 
 		protected override void CreateBinding()
 		{
@@ -82,6 +98,7 @@ namespace GiveAndTake.Droid.Views
 
 		public override void OnActivityResult(int requestCode, int resultCode, Intent data)
 		{
+			List<byte[]> image = new List<byte[]>();
 			base.OnActivityResult(requestCode, resultCode, data);
 			if (requestCode == 9001)
 			{
@@ -93,10 +110,10 @@ namespace GiveAndTake.Droid.Views
 					{
 						var selectedImage = data.ClipData.GetItemAt(i).Uri;
 						var imageInByte = ConvertUriToByte(selectedImage);
-						_image.Add(imageInByte);
+						image.Add(imageInByte);
 					}
 
-					ImageCommand.Execute(_image);
+					ImageCommand.Execute(image);
 				}
 				else
 				{
@@ -104,8 +121,8 @@ namespace GiveAndTake.Droid.Views
 					{
 						var selectedImage = Android.Net.Uri.Parse(data.DataString);
 						var imageInByte = ConvertUriToByte(selectedImage);
-						_image.Add(imageInByte);
-						ImageCommand.Execute(_image);
+						image.Add(imageInByte);
+						ImageCommand.Execute(image);
 					}
 				}
 			}

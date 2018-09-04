@@ -17,12 +17,11 @@ namespace GiveAndTake.Core.ViewModels
 
 		public override Task Initialize()
 		{
-			SelectedItem = DataModel.SelectedProvinceCity?.ProvinceCityName ?? AppConstants.DefaultItem;
+			SelectedItem = DataModel.SelectedProvinceCity?.ProvinceCityName ?? AppConstants.DefaultLocationFilter;
 
 			PopupItems = DataModel
 				.ProvinceCities
 				.Select(p => p.ProvinceCityName)
-				.Append(AppConstants.DefaultItem)
 				.ToList();
 
 			return base.Initialize();
