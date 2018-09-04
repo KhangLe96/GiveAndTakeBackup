@@ -1,14 +1,14 @@
-﻿using GiveAndTake.Core.ViewModels.Base;
+﻿using GiveAndTake.Core.Models;
+using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public abstract class PopupViewModel : BaseViewModel
+	public abstract class PopupViewModel : BaseViewModelResult<bool>
 	{
 		protected readonly IDataModel DataModel;
 
@@ -42,7 +42,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		protected virtual Task OnCloseCommand()
 		{
-			return NavigationService.Close(this);
+			return NavigationService.Close(this, true);
 		}
 
 		private List<PopupItemViewModel> InitPopupList()

@@ -86,8 +86,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task ShowCategories()
 		{
-			await NavigationService.Navigate<PopupCategoriesViewModel>();
-			if (_dataModel.SelectedCategory != null)
+			var result = await NavigationService.Navigate<PopupCategoriesViewModel, bool>();
+			if (result)
 			{
 				UpdatePostViewModels();
 			}
@@ -95,8 +95,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task ShowShortFilterView()
 		{
-			await NavigationService.Navigate<PopupShortFilterViewModel>();
-			if (_dataModel.SelectedSortFilter != null)
+			var result = await NavigationService.Navigate<PopupShortFilterViewModel, bool>();
+			if (result)
 			{
 				UpdatePostViewModels();
 			}
@@ -104,8 +104,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task ShowLocationFilterView()
 		{
-			await NavigationService.Navigate<PopupLocationFilterViewModel>();
-			if (_dataModel.SelectedProvinceCity != null)
+			var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
+			if (result)
 			{
 				UpdatePostViewModels();
 			}
