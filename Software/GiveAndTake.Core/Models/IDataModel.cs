@@ -12,6 +12,6 @@ namespace GiveAndTake.Core.Models
 		Category SelectedCategory { get; set; }
 		ProvinceCity SelectedProvinceCity { get; set; }
 		SortFilter SelectedSortFilter { get; set; }
+		BaseUser CurrentUser { get; set; }
 	}
 }
-	
