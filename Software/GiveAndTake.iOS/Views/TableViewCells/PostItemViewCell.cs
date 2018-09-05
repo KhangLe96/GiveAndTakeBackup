@@ -140,7 +140,13 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitCategoryButton()
 		{
-			_btnCategory = UIHelper.CreateButton(DimensionHelper.ButtonCategoryHeight, 0, ColorHelper.BlueColor, DimensionHelper.ButtonCategoryHeight / 2);
+			_btnCategory = UIHelper.CreateButton(DimensionHelper.ButtonCategoryHeight, 
+				0, 
+				ColorHelper.BlueColor,
+				UIColor.White, 
+				DimensionHelper.ButtonTextSize, 
+				null, 
+				DimensionHelper.ButtonCategoryHeight / 2);
 
 			ContentView.AddSubview(_btnCategory);
 
