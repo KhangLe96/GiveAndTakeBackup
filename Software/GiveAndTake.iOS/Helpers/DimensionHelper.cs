@@ -41,6 +41,10 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat LoginButtonWidth { get; set; }
 		public static nfloat LoginButtonHeight { get; set; }
 		public static nfloat LoginTitleTextSize { get; set; }
+		public static nfloat PopupContentWidth { get; set; }
+		public static nfloat PopupMessageButtonWidth { get; set; }
+		public static nfloat PopupCancelButtonBorder { get; set; }
+		public static nfloat PopupContentRadius { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -79,6 +83,10 @@ namespace GiveAndTake.iOS.Helpers
 			LoginButtonWidth = 106 * Rate;
 			LoginButtonHeight = 33 * Rate;
 			LoginTitleTextSize = 18 * Rate;
+			PopupContentWidth = ResolutionHelper.Width - MarginNormal * 4;
+			PopupMessageButtonWidth = PopupContentWidth / 2 - MarginShort * 4;
+			PopupCancelButtonBorder = 1 * Rate;
+			PopupContentRadius = 15 * Rate;
 		}
 	}
 }

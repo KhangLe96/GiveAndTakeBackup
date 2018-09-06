@@ -81,6 +81,7 @@
     <Compile Include="Views\Base\MasterView.cs" />
     <BundleResource Include="Resources\Images\my_avatar.png" />
     <Compile Include="Views\Popups\PopupCategoriesView.cs" />
+    <Compile Include="Views\Popups\PopupMessageView.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />

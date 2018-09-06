@@ -186,7 +186,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async Task ShowMessageView()
 	    {
-		    var result = await NavigationService.Navigate<PopupMessageViewModel, bool>();
+		    var result = await NavigationService.Navigate<PopupMessageViewModel,string, bool>("Bài đăng đã có yêu cầu, \nbạn có chắc chắn xóa?");
 	    }
 
 	    #endregion

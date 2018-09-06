@@ -90,6 +90,10 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			set.Bind(_lbCommentCount)
 				.To(vm => vm.CommentCount);
 
+			set.Bind(_imgExtension.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowMessagePopupCommand);
+
 			set.Apply();
 		}
 

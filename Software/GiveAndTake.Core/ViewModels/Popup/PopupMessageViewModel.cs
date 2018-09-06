@@ -23,15 +23,9 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			CancelCommand = new MvxAsyncCommand(OnCancel);
 		}
 
-		public Task OnSubmit()
-		{
-			return NavigationService.Close(this, true);
-		}
+		public Task OnSubmit() => NavigationService.Close(this, true);
 
-		public Task OnCancel()
-		{
-			return NavigationService.Close(this, false);
-		}
+		public Task OnCancel() => NavigationService.Close(this, false);
 
 		public override void Prepare(string message)
 		{

@@ -105,12 +105,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task ShowLocationFilterView()
 		{
-			//var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
-			//if (result)
-			//{
-			//	UpdatePostViewModels();
-			//}
-			var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>("Bài đăng đã có yêu cầu, \nbạn có chắc chắn xóa?");
+			var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
+			if (result)
+			{
+				UpdatePostViewModels();
+			}
 		}
 
 		private string GetFilterParams()
