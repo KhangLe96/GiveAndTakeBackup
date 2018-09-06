@@ -96,7 +96,7 @@ namespace GiveAndTake.iOS.Views
 		{
 			// integrate with default login facebook button
 			var manager = new LoginManager();
-			manager.LogInWithReadPermissions(new[] { "public_profile" }, this, HandleLoginWithFacebook);
+			manager.LogInWithReadPermissions(new[] { "public_profile", "email" }, this, HandleLoginWithFacebook);
 		}
 
 		private void HandleLoginWithFacebook(LoginManagerLoginResult result, NSError error)

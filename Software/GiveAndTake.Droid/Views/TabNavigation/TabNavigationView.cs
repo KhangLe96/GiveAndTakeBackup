@@ -63,12 +63,12 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				ShowInitialViewModelsCommand.Execute();
 			}
 
-			//_ccimProfile = new CustomCircleImageView(Context)
-			//{
-			//	ImageUrl = AvatarUrl,
-			//	LayoutParameters = new ActionBar.LayoutParams(80, 80),
-			//	BorderColor = Resources.GetColor(Resource.Color.colorPrimary, Resources.NewTheme())
-			//};
+			_ccimProfile = new CustomCircleImageView(Context)
+			{
+				ImageUrl = AvatarUrl,
+				LayoutParameters = new ActionBar.LayoutParams(80, 80),
+				BorderColor = Resources.GetColor(Resource.Color.colorPrimary, Resources.NewTheme())
+			};
 
 			for (var index = 0; index < _tabLayout.TabCount; index++)
 			{

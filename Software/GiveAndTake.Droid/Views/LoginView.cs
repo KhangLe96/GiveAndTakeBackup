@@ -63,8 +63,8 @@ namespace GiveAndTake.Droid.Views
 
 	    protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            base.OnActivityResult(requestCode, resultCode, data);
-            _callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
+	        _callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
+			base.OnActivityResult(requestCode, resultCode, data);
         }
 
         private void InitFacebookButton()
@@ -82,11 +82,21 @@ namespace GiveAndTake.Droid.Views
 
             FindViewById<ImageButton>(Resource.Id.btnFb).Click += delegate
             {
-                LoginManager.Instance.LogInWithReadPermissions(this, new[] { "public_profile" });
+                LoginManager.Instance.LogInWithReadPermissions(this, new[] { "public_profile" , "email" });
             };
         }
 
-	    private void OnLoginSuccess(LoginResult loginResult) => new MyProfileTracker { HandleLogin = HandleSuccessfulLogin }.StartTracking();
+	    private void OnLoginSuccess(LoginResult loginResult)
+	    {
+		    if (Profile.CurrentProfile == null)
+		    {
+				new MyProfileTracker { HandleLogin = HandleSuccessfulLogin }.StartTracking();
+			}
+		    else
+		    {
+			    HandleSuccessfulLogin();
+		    }
+	    }
 
 	    private void HandleSuccessfulLogin() => LoginCommand.Execute(new BaseUser
 	    {
