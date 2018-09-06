@@ -6,6 +6,7 @@ using Android.Views;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Controls;
+using GiveAndTake.Droid.Helpers;
 using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
@@ -66,8 +67,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			_ccimProfile = new CustomCircleImageView(Context)
 			{
 				ImageUrl = AvatarUrl,
-				LayoutParameters = new ActionBar.LayoutParams(80, 80),
-				BorderColor = Resources.GetColor(Resource.Color.colorPrimary, Resources.NewTheme())
+				LayoutParameters = new ActionBar.LayoutParams((int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size), (int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size)),
+				BorderColor = ColorHelper.FromColorId(Resource.Color.colorPrimary)
 			};
 
 			for (var index = 0; index < _tabLayout.TabCount; index++)
