@@ -85,7 +85,7 @@ namespace GiveAndTake.iOS.Helpers
 			var imageView = new MvxCachedImageView
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
-				Image = new UIImage(imagePath)
+				Image = new UIImage(imagePath),
 			};
 			imageView.Layer.CornerRadius = cornerRadius;
 			imageView.ClipsToBounds = true;

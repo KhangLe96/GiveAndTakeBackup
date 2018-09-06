@@ -4,5 +4,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
 	public class ProfileViewModel : BaseViewModel
 	{
+		
 	}
 }

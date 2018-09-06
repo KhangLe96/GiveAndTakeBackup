@@ -14,6 +14,7 @@ using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Object = Java.Lang.Object;
 using Result = Android.App.Result;
+using Android.OS;
 
 namespace GiveAndTake.Droid.Views
 {
@@ -24,16 +25,14 @@ namespace GiveAndTake.Droid.Views
     {
         private ICallbackManager _callbackManager;
 
+        private AccessTokenTracker accessTokenTracker;
+        public static AccessToken accessToken;
+
         private readonly List<string> _permissions = new List<string> { "public_profile" };
 
         public IMvxCommand<BaseUser> LoginCommand { get; set; }
-        
-        protected override int LayoutId => Resource.Layout.LoginView;
 
-        protected override void InitView()
-        {
-            InitFacebookButton();
-        }
+        protected override int LayoutId => Resource.Layout.LoginView;
 
         protected override void CreateBinding()
         {
@@ -46,6 +45,29 @@ namespace GiveAndTake.Droid.Views
                 .To(vm => vm.LoginCommand);
 
             bindingSet.Apply();
+        }
+
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+
+            _callbackManager = CallbackManagerFactory.Create();
+
+            accessToken = AccessToken.CurrentAccessToken;
+            bool isLoggedIn = accessToken != null && !accessToken.IsExpired;
+            if (isLoggedIn)
+            {
+                OnLoginSuccess(null);
+            }
+            else
+            {
+                InitFacebookButton();
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -62,8 +84,6 @@ namespace GiveAndTake.Droid.Views
                 HandleCancel = OnCancelLogin,
                 HandleError = OnLoginError
             };
-
-            _callbackManager = CallbackManagerFactory.Create();
 
             LoginManager.Instance.RegisterCallback(_callbackManager, loginCallback);
 

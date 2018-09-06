@@ -36,6 +36,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupButtonWidth { get; set; }
 		public static nfloat PopupButtonHeight { get; set; }
 		public static nfloat PopupCellHeight { get; private set; }
+		public static nfloat RoundedImageBorderWidth { get; private set; }
 		public static nfloat LoginLogoWidth { get; set; }
 		public static nfloat LoginLogoHeight { get; set; }
 		public static nfloat LoginButtonWidth { get; set; }
@@ -54,30 +55,31 @@ namespace GiveAndTake.iOS.Helpers
 			HeaderBarLogoWidth = 200 * Rate;
 			HeaderBarLogoHeight = 30 * Rate;
 			HeaderBarHeight = 50 * Rate;
-		    PostDescriptionTextSize = 13 * Rate;
-		    MarginShort = 6 * Rate;
-		    MarginText = 4 * Rate;
-		    MarginNormal = 12 * Rate;
-		    AvatarMargin = 16 * Rate;
-		    ImagePostSize = 120 * Rate;
-		    ImageMultiSize = 20 * Rate;
-		    ImageAvatarSize = 29 * Rate;
-		    FilterSize = 40 * Rate;
-		    ButtonCategoryHeight = 20 * Rate;
-		    ButtonRequestHeight = 9 * Rate;
-		    ButtonRequestWidth = 15 * Rate;
-		    ButtonSmallWidth = 12 * Rate;
-		    ButtonSmallHeight = 12 * Rate;
-		    ButtonExtensionHeight = 3 * Rate;
-		    ButtonExtensionWidth = 10 * Rate;
+			PostDescriptionTextSize = 13 * Rate;
+			MarginShort = 6 * Rate;
+			MarginText = 4 * Rate;
+			MarginNormal = 12 * Rate;
+			AvatarMargin = 16 * Rate;
+			ImagePostSize = 120 * Rate;
+			ImageMultiSize = 20 * Rate;
+			ImageAvatarSize = 29 * Rate;
+			FilterSize = 40 * Rate;
+			ButtonCategoryHeight = 20 * Rate;
+			ButtonRequestHeight = 9 * Rate;
+			ButtonRequestWidth = 15 * Rate;
+			ButtonSmallWidth = 12 * Rate;
+			ButtonSmallHeight = 12 * Rate;
+			ButtonExtensionHeight = 3 * Rate;
+			ButtonExtensionWidth = 10 * Rate;
 			PostPhotoCornerRadius = 7 * Rate;
-		    SeperatorHeight = 0.5f * Rate;
-		    PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
+			SeperatorHeight = 0.5f * Rate;
+			PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
 			PopupLineWidth = 50 * Rate;
 			PopupLineHeight = 4 * Rate;
 			PopupButtonWidth = 150 * Rate;
 			PopupButtonHeight = 30 * Rate;
 			PopupCellHeight = 40 * Rate;
+			RoundedImageBorderWidth = 2 * Rate;
 			LoginLogoWidth = 61 * Rate;
 			LoginLogoHeight = 38 * Rate;
 			LoginButtonWidth = 106 * Rate;

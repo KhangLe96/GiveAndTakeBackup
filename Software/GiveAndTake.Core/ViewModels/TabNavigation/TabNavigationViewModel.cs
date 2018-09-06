@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
@@ -8,10 +10,18 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
 	public class TabNavigationViewModel : BaseViewModel
 	{
+		private readonly IDataModel _dataModel;
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
 			_showInitialViewModelsCommand ??
 			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));
+		public string AvatarUrl =>
+			_dataModel.CurrentUser.AvatarUrl;
+
+		public TabNavigationViewModel(IDataModel dataModel)
+		{
+			_dataModel = dataModel;
+		}
 
 		private async Task ShowInitialViewModels()
 		{
@@ -23,19 +33,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				NavigationService.Navigate<ProfileViewModel>(),
 			};
 			await Task.WhenAll(tasks);
-		}
-		private int _itemIndex;
-
-		public int ItemIndex
-		{
-			get => _itemIndex;
-			set
-			{
-				if (_itemIndex == value) return;
-				_itemIndex = value;
-				Log.Trace("Tab item changed to {0}", _itemIndex.ToString());
-				RaisePropertyChanged(() => ItemIndex);
-			}
 		}
 	}
 }
