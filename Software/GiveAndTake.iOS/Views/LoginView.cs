@@ -113,16 +113,21 @@ namespace GiveAndTake.iOS.Views
 				return;
 			}
 
-			var profile = Profile.CurrentProfile;
-			var userProfile = new User
+			Profile.LoadCurrentProfile((facebookProfile, profileError) =>
 			{
-				FirstName = profile.FirstName,
-				LastName = profile.LastName,
-				UserName = profile.Name,
-				AvatarUrl = GetProfilePicture(profile.UserID),
-				SocialAccountId = profile.UserID
-			};
-			LoginCommand?.Execute(userProfile);
+				if (facebookProfile != null)
+				{
+					var userProfile = new User
+					{
+						FirstName = facebookProfile.FirstName,
+						LastName = facebookProfile.LastName,
+						UserName = facebookProfile.Name,
+						AvatarUrl = GetProfilePicture(facebookProfile.UserID),
+						SocialAccountId = facebookProfile.UserID
+					};
+					LoginCommand?.Execute(userProfile);
+				}
+			});
 		}
 
 		private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
