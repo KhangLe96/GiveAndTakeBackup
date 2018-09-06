@@ -9,6 +9,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
+using Android.OS;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Object = Java.Lang.Object;
@@ -32,17 +33,7 @@ namespace GiveAndTake.Droid.Views
 
 	    protected override void InitView()
 	    {
-		    _callbackManager = CallbackManagerFactory.Create();
-		    accessToken = AccessToken.CurrentAccessToken;
-		    bool isLoggedIn = accessToken != null && !accessToken.IsExpired;
-		    if (isLoggedIn)
-		    {
-			    OnLoginSuccess(null);
-		    }
-		    else
-		    {
-			    InitFacebookButton();
-		    }
+		    InitFacebookButton();
 		}
 
 	    protected override void CreateBinding()
@@ -58,7 +49,19 @@ namespace GiveAndTake.Droid.Views
             bindingSet.Apply();
         }
 
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+	    protected override void OnViewModelSet()
+	    {
+		    base.OnViewModelSet();
+
+		    accessToken = AccessToken.CurrentAccessToken;
+		    bool isLoggedIn = accessToken != null && !accessToken.IsExpired;
+		    if (isLoggedIn)
+		    {
+			    HandleSuccessfulLogin();
+		    }
+		}
+
+	    protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
             _callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
@@ -66,7 +69,9 @@ namespace GiveAndTake.Droid.Views
 
         private void InitFacebookButton()
         {
-            var loginCallback = new FacebookCallback<LoginResult>
+	        _callbackManager = CallbackManagerFactory.Create();
+
+			var loginCallback = new FacebookCallback<LoginResult>
             {
                 HandleSuccess = OnLoginSuccess,
                 HandleCancel = OnCancelLogin,
@@ -81,11 +86,22 @@ namespace GiveAndTake.Droid.Views
             };
         }
 
-        private void OnLoginSuccess(LoginResult loginResult) => new MyProfileTracker { HandleLogin = user => LoginCommand.Execute(user) }.StartTracking();
+	    private void OnLoginSuccess(LoginResult loginResult) => new MyProfileTracker { HandleLogin = HandleSuccessfulLogin }.StartTracking();
+
+	    private void HandleSuccessfulLogin() => LoginCommand.Execute(new BaseUser
+	    {
+		    FirstName = Profile.CurrentProfile.FirstName,
+		    LastName = Profile.CurrentProfile.LastName,
+		    UserName = Profile.CurrentProfile.Id,
+		    AvatarUrl = GetProfilePicture(Profile.CurrentProfile.Id),
+		    SocialAccountId = Profile.CurrentProfile.Id
+	    });
 
 	    private void OnCancelLogin() { }
 
         private void OnLoginError(FacebookException loginException) { }
+
+	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
 	}
 
 
@@ -104,20 +120,11 @@ namespace GiveAndTake.Droid.Views
 
 	public class MyProfileTracker : ProfileTracker
 	{
-		public Action<BaseUser> HandleLogin { get; set; }
+		public Action HandleLogin { get; set; }
 		protected override void OnCurrentProfileChanged(Profile oldProfile, Profile currentProfile)
 		{
-			var userProfile = new BaseUser
-			{
-				FirstName = currentProfile.FirstName,
-				LastName = currentProfile.LastName,
-				UserName = currentProfile.Id,
-				AvatarUrl = GetProfilePicture(currentProfile.Id),
-				SocialAccountId = currentProfile.Id
-			};
-			HandleLogin?.Invoke(userProfile);
 			StopTracking();
+			HandleLogin?.Invoke();
 		}
-		private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
 	}
 }
