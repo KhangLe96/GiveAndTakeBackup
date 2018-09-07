@@ -16,6 +16,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static UIColor PrimaryColor => ToUIColor("3fb8ea");
 		public static UIColor SecondaryColor => ToUIColor("0d70b2");
 		public static UIColor PlaceHolderTextColor => ToUIColor("cccccc");
+		public static UIColor Primary => ToUIColor("3fb8ea");
 
 
 		public static UIColor ToUIColor(string hexString)

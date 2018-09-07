@@ -1,9 +1,9 @@
-﻿using GiveAndTake.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Models;
 
-namespace GiveAndTake.Core.ViewModels
+namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class PopupCategoriesViewModel : PopupViewModel
 	{

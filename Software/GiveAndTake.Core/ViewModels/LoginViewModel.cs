@@ -27,7 +27,7 @@ namespace GiveAndTake.Core.ViewModels
 		private ICommand _loginCommand;
 		public ICommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxCommand<BaseUser>(OnLoginSuccess));
 
-		public LoginViewModel(IDataModel dataModel)
+        public LoginViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
 		}
@@ -38,6 +38,7 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				var managementService = Mvx.Resolve<IManagementService>();
 				managementService.LoginFacebook(baseUser);
+				_dataModel.CurrentUser = baseUser;
 				NavigationService.Close(this);
 				NavigationService.Navigate<MasterViewModel>();
 			}

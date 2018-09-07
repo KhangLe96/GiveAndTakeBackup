@@ -17,7 +17,8 @@ namespace GiveAndTake.iOS.Helpers
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				LineBreakMode = UILineBreakMode.WordWrap,
 				TextColor = textColor,
-				Font = GetFont(fontType, fontSize)
+				Font = GetFont(fontType, fontSize),
+				Lines = 0
 			};
 
 			return label;
@@ -42,6 +43,13 @@ namespace GiveAndTake.iOS.Helpers
 				BackgroundColor = backgroundColor
 			};
 			AddWidthHeight(height, width, imageView);
+			return imageView;
+		}
+
+		public static UIImageView CreateImageView(nfloat width, nfloat height, UIColor backgroundColor, string imagePath)
+		{
+			var imageView = CreateImageView(width, height, backgroundColor);
+			imageView.Image = new UIImage(imagePath);
 			return imageView;
 		}
 
@@ -118,12 +126,22 @@ namespace GiveAndTake.iOS.Helpers
 			return editText;
 		}
 
+		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor, nfloat cornerRadius)
+		{
+			var view = CreateView(height, width, backgroundColor);
+
+			view.Layer.CornerRadius = cornerRadius;
+			view.ClipsToBounds = true;
+
+			return view;
+		}
+
 		public static MvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string imagePath, nfloat cornerRadius = default(nfloat))
 		{
 			var imageView = new MvxCachedImageView
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
-				Image = new UIImage(imagePath)
+				Image = new UIImage(imagePath),
 			};
 			imageView.Layer.CornerRadius = cornerRadius;
 			imageView.ClipsToBounds = true;
@@ -221,19 +239,31 @@ namespace GiveAndTake.iOS.Helpers
 			return tableView;
 		}
 
-		public static UIButton CreateButton(nfloat height, nfloat width, UIColor color, nfloat cornerRadius)
+		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, string title, nfloat cornerRadius)
 		{
 			var button = new UIButton
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false
 			};
-			button.SetTitleColor(UIColor.White, UIControlState.Normal);
-			button.Font = GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
-			button.BackgroundColor = color;
+			button.SetTitleColor(textColor, UIControlState.Normal);
+			button.Font = GetFont(FontType.Regular, textSize);
+			button.SetTitle(title, UIControlState.Normal);
+
+			button.BackgroundColor = backgroundColor;
 			button.Layer.CornerRadius = cornerRadius;
 			button.Layer.MasksToBounds = true;
 
 			AddWidthHeight(height, width, button);
+
+			return button;
+		}
+
+		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, string title, nfloat cornerRadius, UIColor borderColor, nfloat borderWidth)
+		{
+			var button = CreateButton(height, width, backgroundColor, textColor, textSize, title, cornerRadius);
+
+			button.Layer.BorderWidth = borderWidth;
+			button.Layer.BorderColor = borderColor.CGColor;
 
 			return button;
 		}

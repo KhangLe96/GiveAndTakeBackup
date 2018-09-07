@@ -90,6 +90,10 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			set.Bind(_lbCommentCount)
 				.To(vm => vm.CommentCount);
 
+			set.Bind(_imgExtension.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowMessagePopupCommand);
+
 			set.Apply();
 		}
 
@@ -140,7 +144,13 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitCategoryButton()
 		{
-			_btnCategory = UIHelper.CreateButton(DimensionHelper.ButtonCategoryHeight, 0, ColorHelper.BlueColor, DimensionHelper.ButtonCategoryHeight / 2);
+			_btnCategory = UIHelper.CreateButton(DimensionHelper.ButtonCategoryHeight, 
+				0, 
+				ColorHelper.BlueColor,
+				UIColor.White, 
+				DimensionHelper.ButtonTextSize, 
+				null, 
+				DimensionHelper.ButtonCategoryHeight / 2);
 
 			ContentView.AddSubview(_btnCategory);
 

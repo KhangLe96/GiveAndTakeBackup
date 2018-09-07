@@ -1,5 +1,6 @@
 ﻿using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
+using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
@@ -32,8 +33,13 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(container, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
 			});
 
-			btnClose = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight, DimensionHelper.PopupButtonWidth, ColorHelper.BlueColor, DimensionHelper.PopupButtonHeight / 2);
-			btnClose.SetTitle("Xong", UIControlState.Normal);
+			btnClose = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight, 
+				DimensionHelper.PopupButtonWidth,
+				ColorHelper.BlueColor, 
+				UIColor.White, 
+				DimensionHelper.ButtonTextSize, "Xong",
+				DimensionHelper.PopupButtonHeight / 2);
+
 			container.Add(btnClose);
 			container.AddConstraints(new[]
 			{

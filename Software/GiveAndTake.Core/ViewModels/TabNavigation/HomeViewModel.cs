@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.ViewModels.Popup;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {

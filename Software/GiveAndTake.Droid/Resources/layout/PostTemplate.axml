@@ -174,7 +174,8 @@
           android:layout_height="@dimen/button_extension_height"
           android:background="@null"
           android:scaleType="fitCenter"
-          android:src="@drawable/extention" />
+          android:src="@drawable/extention" 
+			local:MvxBind="Click ShowMessagePopupCommand"/>
     </LinearLayout>
   </LinearLayout>
   <TextView

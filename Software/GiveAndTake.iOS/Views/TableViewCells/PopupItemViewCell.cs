@@ -6,6 +6,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using System;
 using System.Windows.Input;
+using GiveAndTake.Core.ViewModels.Popup;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -29,9 +30,9 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			AddSubview(itemLabel);
 			AddConstraints(new []
 			{
-				NSLayoutConstraint.Create(itemLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, ContentView,
+				NSLayoutConstraint.Create(itemLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.CenterY, 1,0),
-				NSLayoutConstraint.Create(itemLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, ContentView,
+				NSLayoutConstraint.Create(itemLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.CenterX, 1, 0)
 			});
 
@@ -39,11 +40,11 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			AddSubview(seperator);
 			AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, ContentView,
+				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Left, NSLayoutRelation.Equal, ContentView,
+				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Left, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
+				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Right, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
 

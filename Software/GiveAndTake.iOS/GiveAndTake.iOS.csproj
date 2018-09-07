@@ -84,6 +84,7 @@
     <BundleResource Include="Resources\Images\my_avatar.png" />
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\Popups\PopupCategoriesView.cs" />
+    <Compile Include="Views\Popups\PopupMessageView.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />
@@ -130,6 +131,8 @@
     <BundleResource Include="Resources\Images\notification_on%402x.png" />
     <BundleResource Include="Resources\Images\gallery_button.png" />
     <BundleResource Include="Resources\Images\takePicture_button.png" />
+    <BundleResource Include="Resources\Images\login_background.png" />
+    <BundleResource Include="Resources\Images\login_logo.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
