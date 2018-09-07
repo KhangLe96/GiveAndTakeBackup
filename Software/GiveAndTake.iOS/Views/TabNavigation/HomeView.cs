@@ -44,7 +44,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_btnFilter, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight + DimensionHelper.HeaderBarHeight),
+					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight + DimensionHelper.HeaderBarHeight + DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_btnFilter, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginNormal)
 			});

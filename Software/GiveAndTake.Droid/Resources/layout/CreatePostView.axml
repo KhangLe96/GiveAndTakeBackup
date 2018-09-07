@@ -111,7 +111,7 @@
 		local:MvxBind="Text SelectedImage"/>
 	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:layout_below="@+id/ChoosePicture">
 		<Button
 			android:textAllCaps="false"
@@ -139,4 +139,4 @@
 			android:background="@drawable/submit_button_bg"
 			android:textColor="@color/tab_navigation_background" />
 	</LinearLayout>
-</RelativeLayout>
+</RelativeLayout> 

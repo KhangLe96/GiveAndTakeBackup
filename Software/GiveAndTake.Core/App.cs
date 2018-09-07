@@ -1,5 +1,6 @@
 ﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
+using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross;
 using MvvmCross.ViewModels;

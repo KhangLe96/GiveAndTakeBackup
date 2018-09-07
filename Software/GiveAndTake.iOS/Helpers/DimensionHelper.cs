@@ -36,6 +36,17 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupButtonWidth { get; set; }
 		public static nfloat PopupButtonHeight { get; set; }
 		public static nfloat PopupCellHeight { get; private set; }
+		public static nfloat SeparateLineHeaderHeight { get; set; }
+		public static nfloat DropDownButtonHeight { get; set; }
+		public static nfloat DropDownButtonWidth { get; set; }
+		public static nfloat PostDescriptionEditTextHeight { get; set; }
+		public static nfloat DefaultMargin { get; set; }
+		public static nfloat CreatePostEditTextWidth { get; set; }
+		public static nfloat PictureButtonWidth { get; set; }
+		public static nfloat PictureButtonHeight { get; set; }
+		public static nfloat MarginBig { get; set; }
+		public static nfloat CreatePostButtonWidth { get; set; }
+		public static nfloat CreatePostButtonHeight { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -43,13 +54,14 @@ namespace GiveAndTake.iOS.Helpers
 			ButtonTextSize = 12 * Rate;
 			MediumTextSize = 15 * Rate;
 			HeaderBarLogoWidth = 200 * Rate;
-			HeaderBarLogoHeight = 30 * Rate;
-			HeaderBarHeight = 50 * Rate;
+			HeaderBarLogoHeight = 20 * Rate;
+			HeaderBarHeight = 60 * Rate;
 		    PostDescriptionTextSize = 13 * Rate;
 		    MarginShort = 6 * Rate;
 		    MarginText = 4 * Rate;
 		    MarginNormal = 12 * Rate;
-		    AvatarMargin = 16 * Rate;
+			MarginBig = 25 * Rate;
+			AvatarMargin = 16 * Rate;
 		    ImagePostSize = 120 * Rate;
 		    ImageMultiSize = 20 * Rate;
 		    ImageAvatarSize = 29 * Rate;
@@ -62,6 +74,7 @@ namespace GiveAndTake.iOS.Helpers
 		    ButtonExtensionHeight = 3 * Rate;
 		    ButtonExtensionWidth = 10 * Rate;
 			PostPhotoCornerRadius = 7 * Rate;
+			SeparateLineHeaderHeight = 1 * Rate;
 		    SeperatorHeight = 0.5f * Rate;
 		    PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
 			PopupLineWidth = 50 * Rate;
@@ -69,6 +82,15 @@ namespace GiveAndTake.iOS.Helpers
 			PopupButtonWidth = 150 * Rate;
 			PopupButtonHeight = 30 * Rate;
 			PopupCellHeight = 40 * Rate;
+			DropDownButtonHeight = 40 * Rate;
+			DropDownButtonWidth = 160 * Rate;
+			PostDescriptionEditTextHeight = 350 * Rate;
+			DefaultMargin = 10 * Rate;
+			CreatePostEditTextWidth = ResolutionHelper.Width - (DefaultMargin * 2);
+			PictureButtonWidth = 25 * Rate;
+			PictureButtonHeight = 20 * Rate;
+			CreatePostButtonWidth = 160 * Rate;
+			CreatePostButtonHeight = 30 * Rate;
 		}
 	}
 }

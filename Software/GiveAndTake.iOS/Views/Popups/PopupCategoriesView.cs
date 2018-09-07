@@ -107,10 +107,6 @@ namespace GiveAndTake.iOS.Views.Popups
 			bindingSet.Bind(popupItemTableViewSource)
 				.To(vm => vm.PopupItemViewModels);
 
-			bindingSet.Bind(popupItemTableViewSource)
-				.For(v => v.SelectionChangedCommand)
-				.To(vm => vm.ItemClickCommand);
-
 			bindingSet.Bind(background.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ClosePopupCommand);

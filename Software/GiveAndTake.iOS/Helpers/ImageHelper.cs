@@ -30,6 +30,8 @@ namespace GiveAndTake.iOS.Helpers
 		public static string HomeOn { get; private set; }
 		public static string NotificationOff { get; private set; }
 		public static string NotificationOn { get; private set; }
+		public static string TakePictureButton { get; private set; }
+		public static string ChoosePictureButton { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -57,6 +59,8 @@ namespace GiveAndTake.iOS.Helpers
 			HomeOn = Path.Combine(BasePath, "home_on");
 			NotificationOff = Path.Combine(BasePath, "notification_off");
 			NotificationOn = Path.Combine(BasePath, "notification_on");
+			TakePictureButton = Path.Combine(BasePath, "takePicture_button");
+			ChoosePictureButton = Path.Combine(BasePath, "gallery_button");
 		}
 	}
 }

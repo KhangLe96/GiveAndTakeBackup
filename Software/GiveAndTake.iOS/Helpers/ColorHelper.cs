@@ -11,6 +11,11 @@ namespace GiveAndTake.iOS.Helpers
 		public static UIColor ErrorColor => ToUIColor("F01010");
 		public static UIColor BlueColor => ToUIColor("0fbcf9");
 		public static UIColor Default => ToUIColor("e4e4e4");
+		public static UIColor SeparatorColor => ToUIColor("cccccc");
+		public static UIColor DefaultEditTextFieldColor => ToUIColor("f3f3f3");
+		public static UIColor PrimaryColor => ToUIColor("3fb8ea");
+		public static UIColor SecondaryColor => ToUIColor("0d70b2");
+		public static UIColor PlaceHolderTextColor => ToUIColor("cccccc");
 
 
 		public static UIColor ToUIColor(string hexString)

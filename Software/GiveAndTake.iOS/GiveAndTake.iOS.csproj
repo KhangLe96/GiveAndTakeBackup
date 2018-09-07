@@ -65,6 +65,8 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\AlphaUiButton.cs" />
+    <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
     <Compile Include="CustomControls\HeaderBar.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
     <BundleResource Include="Resources\Images\my_avatar.png" />
+    <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\Popups\PopupCategoriesView.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
@@ -125,6 +128,8 @@
     <BundleResource Include="Resources\Images\notification_off%402x.png" />
     <BundleResource Include="Resources\Images\notification_on.png" />
     <BundleResource Include="Resources\Images\notification_on%402x.png" />
+    <BundleResource Include="Resources\Images\gallery_button.png" />
+    <BundleResource Include="Resources\Images\takePicture_button.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
