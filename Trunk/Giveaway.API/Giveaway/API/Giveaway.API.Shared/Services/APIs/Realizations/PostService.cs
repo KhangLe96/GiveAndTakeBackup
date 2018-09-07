@@ -310,6 +310,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 posts = posts.Where(x => x.CategoryId.Equals(Guid.Parse(request.CategoryId)));
             }
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                posts = posts.Where(x => x.Title.Contains(request.Keyword) || x.Description.Contains(request.Keyword) || x.Category.CategoryName.Contains(request.Keyword)
+                                         || x.User.UserName.Contains(request.Keyword));
+            }
 
             return posts;
         }
