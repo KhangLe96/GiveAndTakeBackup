@@ -39,7 +39,7 @@ namespace Giveaway.API.Controllers
         }
 
         /// <summary>
-        /// Get list post with params object that includes: page, limit, keyword, provinceCityId, categoryId, title
+        /// Get list post with params object that includes: page, limit, provinceCityId, categoryId, title, keyword(title, Description, CategoryName, UserName, ProvinceCityName)
         /// </summary>
         /// <param name="params"></param>
         /// <returns></returns>
