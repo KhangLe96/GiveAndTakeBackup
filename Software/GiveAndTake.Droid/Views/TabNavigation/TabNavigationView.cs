@@ -67,7 +67,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			_ccimProfile = new CustomCircleImageView(Context)
 			{
 				ImageUrl = AvatarUrl,
-				LayoutParameters = new ActionBar.LayoutParams((int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size), (int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size)),
+				LayoutParameters =
+					new ActionBar.LayoutParams(
+						(int)DimensionHelper.FromDimensionId(Resource.Dimension.tab_navigation_icon_size),
+						(int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size)),
 				BorderColor = ColorHelper.FromColorId(Resource.Color.colorPrimary)
 			};
 
@@ -90,7 +93,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			_ccimProfile.BorderWidth = 0;
 			if (e.Tab.Position == 3)
 			{
-				_ccimProfile.BorderWidth = 5;
+				_ccimProfile.BorderWidth =
+					(int) DimensionHelper.FromDimensionId(Resource.Dimension.tab_navigation_icon_border_width);
 			}
 			_tabLayout.GetTabAt(3).SetCustomView(_ccimProfile);
 		}
