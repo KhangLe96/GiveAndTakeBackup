@@ -7226,8 +7226,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c00b5
 			public const int Title = 2131493045;
 			
-			// aapt resource value: 0x7f0c00d6
-			public const int action0 = 2131493078;
+			// aapt resource value: 0x7f0c00d7
+			public const int action0 = 2131493079;
 			
 			// aapt resource value: 0x7f0c0096
 			public const int action_bar = 2131493014;
@@ -7250,17 +7250,17 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0074
 			public const int action_bar_title = 2131492980;
 			
-			// aapt resource value: 0x7f0c00d3
-			public const int action_container = 2131493075;
+			// aapt resource value: 0x7f0c00d4
+			public const int action_container = 2131493076;
 			
 			// aapt resource value: 0x7f0c0097
 			public const int action_context_bar = 2131493015;
 			
-			// aapt resource value: 0x7f0c00da
-			public const int action_divider = 2131493082;
+			// aapt resource value: 0x7f0c00db
+			public const int action_divider = 2131493083;
 			
-			// aapt resource value: 0x7f0c00d4
-			public const int action_image = 2131493076;
+			// aapt resource value: 0x7f0c00d5
+			public const int action_image = 2131493077;
 			
 			// aapt resource value: 0x7f0c0003
 			public const int action_menu_divider = 2131492867;
@@ -7277,11 +7277,11 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0076
 			public const int action_mode_close_button = 2131492982;
 			
-			// aapt resource value: 0x7f0c00d5
-			public const int action_text = 2131493077;
+			// aapt resource value: 0x7f0c00d6
+			public const int action_text = 2131493078;
 			
-			// aapt resource value: 0x7f0c00e3
-			public const int actions = 2131493091;
+			// aapt resource value: 0x7f0c00e4
+			public const int actions = 2131493092;
 			
 			// aapt resource value: 0x7f0c0077
 			public const int activity_chooser_view_content = 2131492983;
@@ -7325,14 +7325,14 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c00ca
 			public const int btnCategory = 2131493066;
 			
-			// aapt resource value: 0x7f0c00cd
-			public const int btnFb = 2131493069;
+			// aapt resource value: 0x7f0c00ce
+			public const int btnFb = 2131493070;
 			
 			// aapt resource value: 0x7f0c00c8
 			public const int btnFilter = 2131493064;
 			
-			// aapt resource value: 0x7f0c00ce
-			public const int btnGg = 2131493070;
+			// aapt resource value: 0x7f0c00cf
+			public const int btnGg = 2131493071;
 			
 			// aapt resource value: 0x7f0c00c9
 			public const int btnSort = 2131493065;
@@ -7343,8 +7343,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c007d
 			public const int buttonPanel = 2131492989;
 			
-			// aapt resource value: 0x7f0c00d7
-			public const int cancel_action = 2131493079;
+			// aapt resource value: 0x7f0c00d8
+			public const int cancel_action = 2131493080;
 			
 			// aapt resource value: 0x7f0c00a9
 			public const int cancel_button = 2131493033;
@@ -7364,8 +7364,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c008d
 			public const int checkbox = 2131493005;
 			
-			// aapt resource value: 0x7f0c00df
-			public const int chronometer = 2131493087;
+			// aapt resource value: 0x7f0c00e0
+			public const int chronometer = 2131493088;
 			
 			// aapt resource value: 0x7f0c005c
 			public const int clip_horizontal = 2131492956;
@@ -7415,8 +7415,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0080
 			public const int contentPanel = 2131492992;
 			
-			// aapt resource value: 0x7f0c00d1
-			public const int content_frame = 2131493073;
+			// aapt resource value: 0x7f0c00d2
+			public const int content_frame = 2131493074;
 			
 			// aapt resource value: 0x7f0c00bd
 			public const int coordinator = 2131493053;
@@ -7466,8 +7466,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0043
 			public const int end = 2131492931;
 			
-			// aapt resource value: 0x7f0c00e5
-			public const int end_padder = 2131493093;
+			// aapt resource value: 0x7f0c00e6
+			public const int end_padder = 2131493094;
 			
 			// aapt resource value: 0x7f0c0050
 			public const int enterAlways = 2131492944;
@@ -7514,8 +7514,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c007c
 			public const int icon = 2131492988;
 			
-			// aapt resource value: 0x7f0c00e4
-			public const int icon_group = 2131493092;
+			// aapt resource value: 0x7f0c00e5
+			public const int icon_group = 2131493093;
 			
 			// aapt resource value: 0x7f0c004d
 			public const int ifRoom = 2131492941;
@@ -7523,29 +7523,29 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0079
 			public const int image = 2131492985;
 			
-			// aapt resource value: 0x7f0c00f0
-			public const int imageButton = 2131493104;
+			// aapt resource value: 0x7f0c00f1
+			public const int imageButton = 2131493105;
 			
-			// aapt resource value: 0x7f0c00f2
-			public const int imageButton2 = 2131493106;
+			// aapt resource value: 0x7f0c00f3
+			public const int imageButton2 = 2131493107;
 			
-			// aapt resource value: 0x7f0c00f4
-			public const int imageButton4 = 2131493108;
+			// aapt resource value: 0x7f0c00f5
+			public const int imageButton4 = 2131493109;
 			
-			// aapt resource value: 0x7f0c00f6
-			public const int imageButton5 = 2131493110;
+			// aapt resource value: 0x7f0c00f7
+			public const int imageButton5 = 2131493111;
+			
+			// aapt resource value: 0x7f0c00ea
+			public const int imgAvatar = 2131493098;
 			
 			// aapt resource value: 0x7f0c00e9
-			public const int imgAvatar = 2131493097;
+			public const int imgMultiImages = 2131493097;
 			
 			// aapt resource value: 0x7f0c00e8
-			public const int imgMultiImages = 2131493096;
+			public const int imgPost = 2131493096;
 			
-			// aapt resource value: 0x7f0c00e7
-			public const int imgPost = 2131493095;
-			
-			// aapt resource value: 0x7f0c00e0
-			public const int info = 2131493088;
+			// aapt resource value: 0x7f0c00e1
+			public const int info = 2131493089;
 			
 			// aapt resource value: 0x7f0c002c
 			public const int inline = 2131492908;
@@ -7574,11 +7574,11 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0018
 			public const int line3 = 2131492888;
 			
-			// aapt resource value: 0x7f0c00cf
-			public const int linearLayout = 2131493071;
+			// aapt resource value: 0x7f0c00d0
+			public const int linearLayout = 2131493072;
 			
-			// aapt resource value: 0x7f0c00ef
-			public const int linearlayout = 2131493103;
+			// aapt resource value: 0x7f0c00f0
+			public const int linearlayout = 2131493104;
 			
 			// aapt resource value: 0x7f0c0031
 			public const int listMode = 2131492913;
@@ -7586,17 +7586,17 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c007b
 			public const int list_item = 2131492987;
 			
-			// aapt resource value: 0x7f0c00fb
-			public const int masked = 2131493115;
+			// aapt resource value: 0x7f0c00fc
+			public const int masked = 2131493116;
 			
-			// aapt resource value: 0x7f0c00d9
-			public const int media_actions = 2131493081;
+			// aapt resource value: 0x7f0c00da
+			public const int media_actions = 2131493082;
 			
-			// aapt resource value: 0x7f0c00f9
-			public const int message = 2131493113;
+			// aapt resource value: 0x7f0c00fa
+			public const int message = 2131493114;
 			
-			// aapt resource value: 0x7f0c00d2
-			public const int messenger_send_button = 2131493074;
+			// aapt resource value: 0x7f0c00d3
+			public const int messenger_send_button = 2131493075;
 			
 			// aapt resource value: 0x7f0c0044
 			public const int middle = 2131492932;
@@ -7622,14 +7622,14 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0023
 			public const int normal = 2131492899;
 			
-			// aapt resource value: 0x7f0c00e2
-			public const int notification_background = 2131493090;
+			// aapt resource value: 0x7f0c00e3
+			public const int notification_background = 2131493091;
+			
+			// aapt resource value: 0x7f0c00dd
+			public const int notification_main_column = 2131493085;
 			
 			// aapt resource value: 0x7f0c00dc
-			public const int notification_main_column = 2131493084;
-			
-			// aapt resource value: 0x7f0c00db
-			public const int notification_main_column_container = 2131493083;
+			public const int notification_main_column_container = 2131493084;
 			
 			// aapt resource value: 0x7f0c0025
 			public const int open_graph = 2131492901;
@@ -7670,20 +7670,23 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c008f
 			public const int radio = 2131493007;
 			
+			// aapt resource value: 0x7f0c00cc
+			public const int refreshlayout = 2131493068;
+			
 			// aapt resource value: 0x7f0c0030
 			public const int right = 2131492912;
 			
-			// aapt resource value: 0x7f0c00e1
-			public const int right_icon = 2131493089;
+			// aapt resource value: 0x7f0c00e2
+			public const int right_icon = 2131493090;
 			
-			// aapt resource value: 0x7f0c00dd
-			public const int right_side = 2131493085;
+			// aapt resource value: 0x7f0c00de
+			public const int right_side = 2131493086;
 			
-			// aapt resource value: 0x7f0c00e6
-			public const int rvItems = 2131493094;
+			// aapt resource value: 0x7f0c00e7
+			public const int rvItems = 2131493095;
 			
-			// aapt resource value: 0x7f0c00cc
-			public const int rvPosts = 2131493068;
+			// aapt resource value: 0x7f0c00cd
+			public const int rvPosts = 2131493069;
 			
 			// aapt resource value: 0x7f0c000c
 			public const int save_image_matrix = 2131492876;
@@ -7748,8 +7751,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c00a4
 			public const int select_dialog_listview = 2131493028;
 			
-			// aapt resource value: 0x7f0c00d0
-			public const int seperator = 2131493072;
+			// aapt resource value: 0x7f0c00d1
+			public const int seperator = 2131493073;
 			
 			// aapt resource value: 0x7f0c008e
 			public const int shortcut = 2131493006;
@@ -7805,8 +7808,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0059
 			public const int start = 2131492953;
 			
-			// aapt resource value: 0x7f0c00d8
-			public const int status_bar_latest_event_content = 2131493080;
+			// aapt resource value: 0x7f0c00d9
+			public const int status_bar_latest_event_content = 2131493081;
 			
 			// aapt resource value: 0x7f0c0090
 			public const int submenuarrow = 2131493008;
@@ -7814,8 +7817,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c00a1
 			public const int submit_area = 2131493025;
 			
-			// aapt resource value: 0x7f0c00f7
-			public const int tabLayout = 2131493111;
+			// aapt resource value: 0x7f0c00f8
+			public const int tabLayout = 2131493112;
 			
 			// aapt resource value: 0x7f0c0032
 			public const int tabMode = 2131492914;
@@ -7844,8 +7847,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0015
 			public const int textinput_error = 2131492885;
 			
-			// aapt resource value: 0x7f0c00de
-			public const int time = 2131493086;
+			// aapt resource value: 0x7f0c00df
+			public const int time = 2131493087;
 			
 			// aapt resource value: 0x7f0c001c
 			public const int title = 2131492892;
@@ -7880,32 +7883,32 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0013
 			public const int transition_transform = 2131492883;
 			
-			// aapt resource value: 0x7f0c00f3
-			public const int tvAppreciationCount = 2131493107;
+			// aapt resource value: 0x7f0c00f4
+			public const int tvAppreciationCount = 2131493108;
 			
-			// aapt resource value: 0x7f0c00f5
-			public const int tvCommentCount = 2131493109;
+			// aapt resource value: 0x7f0c00f6
+			public const int tvCommentCount = 2131493110;
+			
+			// aapt resource value: 0x7f0c00ef
+			public const int tvDescription = 2131493103;
 			
 			// aapt resource value: 0x7f0c00ee
-			public const int tvDescription = 2131493102;
+			public const int tvLocation = 2131493102;
 			
-			// aapt resource value: 0x7f0c00ed
-			public const int tvLocation = 2131493101;
+			// aapt resource value: 0x7f0c00ec
+			public const int tvPostDate = 2131493100;
 			
-			// aapt resource value: 0x7f0c00eb
-			public const int tvPostDate = 2131493099;
-			
-			// aapt resource value: 0x7f0c00f1
-			public const int tvRequestCount = 2131493105;
+			// aapt resource value: 0x7f0c00f2
+			public const int tvRequestCount = 2131493106;
 			
 			// aapt resource value: 0x7f0c00b8
 			public const int tvSelectedImage = 2131493048;
 			
-			// aapt resource value: 0x7f0c00ec
-			public const int tvSeperator = 2131493100;
+			// aapt resource value: 0x7f0c00ed
+			public const int tvSeperator = 2131493101;
 			
-			// aapt resource value: 0x7f0c00ea
-			public const int tvUserFullName = 2131493098;
+			// aapt resource value: 0x7f0c00eb
+			public const int tvUserFullName = 2131493099;
 			
 			// aapt resource value: 0x7f0c0040
 			public const int uniform = 2131492928;
@@ -7919,14 +7922,14 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0039
 			public const int useLogo = 2131492921;
 			
-			// aapt resource value: 0x7f0c00f8
-			public const int viewPager = 2131493112;
+			// aapt resource value: 0x7f0c00f9
+			public const int viewPager = 2131493113;
 			
 			// aapt resource value: 0x7f0c0016
 			public const int view_offset_helper = 2131492886;
 			
-			// aapt resource value: 0x7f0c00fa
-			public const int visible = 2131493114;
+			// aapt resource value: 0x7f0c00fb
+			public const int visible = 2131493115;
 			
 			// aapt resource value: 0x7f0c004f
 			public const int withText = 2131492943;
