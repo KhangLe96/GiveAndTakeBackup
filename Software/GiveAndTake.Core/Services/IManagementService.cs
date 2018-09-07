@@ -7,7 +7,7 @@ namespace GiveAndTake.Core.Services
     {
         List<Category> GetCategories();
 	    List<ProvinceCity> GetProvinceCities();
-		List<Post> GetPostList(string filterParams);
+	    ApiPostsResponse GetPostList(string filterParams);
         void GetPostDetail(string postId);
         void GetPostOfUser(string userId);
         void ChangeStatusOfPost(string postId, string newStatus);
