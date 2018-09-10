@@ -14,7 +14,7 @@ using MvvmCross.Plugin.PictureChooser;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class CreatePostViewModel : BaseViewModel
+	public class CreatePostViewModel : BaseViewModelResult<bool>
 	{
 		private readonly List<PostImage> _postImages = new List<PostImage>();
 		private readonly List<byte[]> _imageBytes = new List<byte[]>();
@@ -172,7 +172,7 @@ namespace GiveAndTake.Core.ViewModels
 				Address = "9a7c2ca2-389b-4f43-9302-2ff61cab7cd8",
 			};
 			managementService.CreatePost(post);
-			NavigationService.Close(this);
+			NavigationService.Close(this, true);
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)

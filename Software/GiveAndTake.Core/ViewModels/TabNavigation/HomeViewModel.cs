@@ -77,10 +77,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private void InitCommand()
 		{
-			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
-			ShowShortPostCommand = new MvxAsyncCommand(ShowShortFilterView);
-			ShowFilterCommand = new MvxAsyncCommand(ShowLocationFilterView);
-			CreatePostCommand = new MvxAsyncCommand(() => NavigationService.Navigate<CreatePostViewModel>());
+			ShowCategoriesCommand = new MvxAsyncCommand(ShowViewResult<PopupCategoriesViewModel>);
+			ShowShortPostCommand = new MvxAsyncCommand(ShowViewResult<PopupShortFilterViewModel>);
+			ShowFilterCommand = new MvxAsyncCommand(ShowViewResult<PopupLocationFilterViewModel>);
+			CreatePostCommand = new MvxAsyncCommand(ShowViewResult<CreatePostViewModel>);
 			SearchCommand = new MvxCommand(UpdatePostViewModels);
 			LoadMoreCommand = new MvxCommand(OnLoadMore);
 		}
@@ -108,27 +108,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			IsRefreshing = false;
 		}
 
-		private async Task ShowCategories()
+		private async Task ShowViewResult<T>() where T : BaseViewModelResult<bool>
 		{
-			var result = await NavigationService.Navigate<PopupCategoriesViewModel, bool>();
-			if (result)
-			{
-				UpdatePostViewModels();
-			}
-		}
-
-		private async Task ShowShortFilterView()
-		{
-			var result = await NavigationService.Navigate<PopupShortFilterViewModel, bool>();
-			if (result)
-			{
-				UpdatePostViewModels();
-			}
-		}
-
-		private async Task ShowLocationFilterView()
-		{
-			var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
+			var result = await NavigationService.Navigate<T, bool>();
 			if (result)
 			{
 				UpdatePostViewModels();

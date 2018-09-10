@@ -32,6 +32,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string NotificationOff { get; private set; }
 		public static string NotificationOn { get; private set; }
 		public static string LoginBackground { get; private set; }
+		public static string NewPost { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -60,6 +61,7 @@ namespace GiveAndTake.iOS.Helpers
 			NotificationOff = Path.Combine(BasePath, "notification_off");
 			NotificationOn = Path.Combine(BasePath, "notification_on");
 			LoginBackground = Path.Combine(BasePath, "login_background");
+			NewPost = Path.Combine(BasePath, "new_post");
 		}
 	}
 }

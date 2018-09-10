@@ -23,6 +23,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UITableView _postsTableView;
 		private PostItemTableViewSource _postTableViewSource;
 		private MvxUIRefreshControl _refreshControl;
+		private UIButton _newPostButton;
 
 		public IMvxCommand LoadMoreCommand { get; set; }
 
@@ -33,6 +34,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			InitCategoryButton();
 			InitSearchView();
 			InitPostsTableView();
+			InitNewPostButton();
 		}
 
 		public override void ViewWillAppear(bool animated)
@@ -119,6 +121,21 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 		}
 
+		private void InitNewPostButton()
+		{
+			_newPostButton = UIHelper.CreateImageButton(DimensionHelper.NewPostSize, DimensionHelper.NewPostSize, ImageHelper.NewPost);
+
+			View.Add(_newPostButton);
+
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_newPostButton, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginNormal - NavigationController.NavigationBar.Frame.Size.Height),
+				NSLayoutConstraint.Create(_newPostButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginNormal)
+			});
+		}
+
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
@@ -150,6 +167,10 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			set.Bind(_btnSort.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowShortPostCommand);
+
+			set.Bind(_newPostButton.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.CreatePostCommand);
 
 			set.Apply();
 		}

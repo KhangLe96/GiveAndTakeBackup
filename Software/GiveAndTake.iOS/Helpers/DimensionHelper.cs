@@ -46,6 +46,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupMessageButtonWidth { get; set; }
 		public static nfloat PopupCancelButtonBorder { get; set; }
 		public static nfloat PopupContentRadius { get; set; }
+		public static nfloat NewPostSize { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -89,6 +90,7 @@ namespace GiveAndTake.iOS.Helpers
 			PopupMessageButtonWidth = PopupContentWidth / 2 - MarginShort * 4;
 			PopupCancelButtonBorder = 1 * Rate;
 			PopupContentRadius = 15 * Rate;
+			NewPostSize = 50 * Rate;
 		}
 	}
 }

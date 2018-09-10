@@ -136,6 +136,7 @@
     <BundleResource Include="Resources\Images\notification_on%402x.png" />
     <BundleResource Include="Resources\Images\login_background.png" />
     <BundleResource Include="Resources\Images\login_logo.png" />
+    <BundleResource Include="Resources\Images\new_post.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
