@@ -16,7 +16,7 @@ namespace Giveaway.API.Controllers
     /// <inheritdoc />
     [Produces("application/json")]
     [Route("api/v1/user")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserService _userService;
 

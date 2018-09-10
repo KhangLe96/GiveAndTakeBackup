@@ -13,7 +13,7 @@ namespace Giveaway.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/v1/request")]
-    public class RequestController : Controller
+    public class RequestController : BaseController
     {
         private readonly IRequestService _requestService;
 
