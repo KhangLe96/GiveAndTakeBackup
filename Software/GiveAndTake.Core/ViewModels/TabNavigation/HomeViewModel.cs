@@ -149,9 +149,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				parameters.Add($"order={_dataModel.SelectedSortFilter.FilterTag}");
 			}
 
-			if (_dataModel.SelectedCategory != null)
+			if (_dataModel.SelectedCategory?.CategoryName != AppConstants.DefaultItem )
 			{
-				parameters.Add($"categoryId={_dataModel.SelectedCategory.Id}");
+				parameters.Add($"categoryId={_dataModel.SelectedCategory?.Id}");
 			}
 
 			if (_dataModel.SelectedProvinceCity != null)

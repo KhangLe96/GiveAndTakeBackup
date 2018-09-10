@@ -115,7 +115,7 @@ namespace GiveAndTake.iOS.Views.Popups
 
 			bindingSet.Bind(_background.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.SubmitCommand);
+				.To(vm => vm.CloseCommand);
 
 			bindingSet.Apply();
 		}

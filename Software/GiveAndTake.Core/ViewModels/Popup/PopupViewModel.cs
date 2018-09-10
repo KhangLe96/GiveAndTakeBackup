@@ -38,7 +38,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		{
 			PopupItemViewModels = InitPopupList();
 			SubmitCommand = new MvxAsyncCommand(OnCloseCommand);
-			SubmitCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
 			return base.Initialize();
 		}
 
