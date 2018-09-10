@@ -17,7 +17,7 @@ namespace Giveaway.API.Controllers
     /// Handles authentication
     /// </summary>
     [Route("api/v1/passport")]
-    public class AuthController : Controller
+    public class AuthController : BaseController
     {
         #region Private Fields
 

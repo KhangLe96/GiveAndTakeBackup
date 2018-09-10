@@ -15,7 +15,7 @@ namespace Giveaway.API.Controllers
     /// <inheritdoc />
     [Produces("application/json")]
     [Route("api/v1/Post")]
-    public class PostController : Controller
+    public class PostController : BaseController
     {
         private readonly IPostService<PostCmsResponse> _postCmsService;
         private readonly IPostService<PostAppResponse> _postService;
