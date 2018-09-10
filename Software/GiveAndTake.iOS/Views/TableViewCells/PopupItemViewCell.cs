@@ -1,12 +1,11 @@
 ﻿using Foundation;
-using GiveAndTake.Core.ViewModels;
+using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using System;
 using System.Windows.Input;
-using GiveAndTake.Core.ViewModels.Popup;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -15,8 +14,8 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 	public class PopupItemViewCell : MvxTableViewCell
 	{
 		public ICommand ClickCommand { get;set; }
-		private PopupItemLabel itemLabel;
-		private UIView seperator;
+		private PopupItemLabel _itemLabel;
+		private UIView _seperatorLine;
 
 		public PopupItemViewCell(IntPtr handle) : base(handle)
 		{
@@ -26,25 +25,27 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitViews()
 		{
-			itemLabel = UIHelper.CreateLabel(ColorHelper.Default, DimensionHelper.ButtonTextSize);
-			AddSubview(itemLabel);
+			BackgroundColor = UIColor.White;
+
+			_itemLabel = UIHelper.CreateLabel(ColorHelper.Default, DimensionHelper.ButtonTextSize);
+			AddSubview(_itemLabel);
 			AddConstraints(new []
 			{
-				NSLayoutConstraint.Create(itemLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this,
+				NSLayoutConstraint.Create(_itemLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.CenterY, 1,0),
-				NSLayoutConstraint.Create(itemLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, this,
+				NSLayoutConstraint.Create(_itemLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			seperator = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
-			AddSubview(seperator);
+			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
+			AddSubview(_seperatorLine);
 			AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, this,
+				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Left, NSLayoutRelation.Equal, this,
+				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Left, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Right, NSLayoutRelation.Equal, this,
+				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Right, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
 
@@ -58,9 +59,16 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		{
 			var bindingSet = this.CreateBindingSet<PopupItemViewCell, PopupItemViewModel>();
 
-			bindingSet.Bind(itemLabel).To(vm => vm.ItemName);
+			bindingSet.Bind(_itemLabel)
+				.To(vm => vm.ItemName);
 
-			bindingSet.Bind(itemLabel).For(v => v.IsSelected).To(vm => vm.IsSelected).WithConversion("InvertBoolValue");
+			bindingSet.Bind(_itemLabel)
+				.For(v => v.IsSelected)
+				.To(vm => vm.IsSelected);
+
+			bindingSet.Bind(_seperatorLine)
+				.For("Visibility")
+				.To(vm => vm.IsLastViewInList);
 
 			bindingSet.Bind(this)
 				.For(v => v.ClickCommand)

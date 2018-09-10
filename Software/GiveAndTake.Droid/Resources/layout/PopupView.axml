@@ -18,7 +18,7 @@
         android:textSize="@dimen/MediumTextSize"
 		android:textStyle="bold"
         local:MvxBind="Text Title" />
-    <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+    <giveandtake.droid.controls.CustomRecyclerView
         android:id="@+id/rvItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
