@@ -53,6 +53,7 @@ namespace Giveaway.API.Controllers
         /// <summary>
         /// Get list post of an User with userId and params object that includes: page, limit, keyword, provinceCityId, categoryId, title
         /// </summary>
+        /// <param name="userId"></param>
         /// <param name="params">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
         [Authorize]
