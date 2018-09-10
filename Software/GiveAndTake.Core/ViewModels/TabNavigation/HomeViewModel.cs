@@ -94,7 +94,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private void OnLoadMore()
 		{
 			_dataModel.ApiPostsResponse = _managementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
-			PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(post => new PostItemViewModel(post)));
+			if (_dataModel.ApiPostsResponse.Posts.Any())
+			{
+				PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(post => new PostItemViewModel(post)));
+			}
 		}
 
 		private async void OnRefresh()

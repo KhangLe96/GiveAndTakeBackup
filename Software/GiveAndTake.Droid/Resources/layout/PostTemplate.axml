@@ -167,7 +167,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="right|bottom">
+        android:gravity="right|bottom"
+		android:clickable="true"
+		local:MvxBind="Click ShowMessagePopupCommand">
       <ImageButton
           android:id="@+id/imageButton5"
           android:layout_width="@dimen/button_small_width"
@@ -175,7 +177,7 @@
           android:background="@null"
           android:scaleType="fitCenter"
           android:src="@drawable/extention" 
-			local:MvxBind="Click ShowMessagePopupCommand"/>
+			/>
     </LinearLayout>
   </LinearLayout>
   <TextView

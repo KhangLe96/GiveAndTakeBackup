@@ -123,6 +123,8 @@ namespace GiveAndTake.iOS.Helpers
 			AddWidthHeight(height, width, button);
 
 			button.SetBackgroundImage(new UIImage(imagePath), UIControlState.Normal);
+			button.SetBackgroundImage(new UIImage(imagePath), UIControlState.Highlighted);
+
 			return button;
 		}
 
