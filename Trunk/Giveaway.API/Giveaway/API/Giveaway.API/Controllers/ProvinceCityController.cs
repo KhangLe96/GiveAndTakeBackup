@@ -8,7 +8,7 @@ namespace Giveaway.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/v1/provincecity")]
-    public class ProvinceCityController : Controller
+    public class ProvinceCityController : BaseController
     {
         private readonly IProvinceCityService _provinceCityService;
 

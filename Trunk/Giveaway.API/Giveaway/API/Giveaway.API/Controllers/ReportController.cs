@@ -8,7 +8,7 @@ namespace Giveaway.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/v1/report")]
-    public class ReportController : Controller
+    public class ReportController : BaseController
     {
         private readonly IReportService _reportService;
 
