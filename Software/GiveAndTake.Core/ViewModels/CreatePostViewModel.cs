@@ -186,7 +186,7 @@ namespace GiveAndTake.Core.ViewModels
 				Description = PostDescription,
 				PostImages = PostImages,
 				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultItem) ? AppConstants.DefaultCategoryId : _dataModel.SelectedCategory.Id,
-				Address = "9a7c2ca2-389b-4f43-9302-2ff61cab7cd8",
+				Address = "d785b6e2-95c5-4d71-a2c4-1b10d064fe84",
 			};
 			managementService.CreatePost(post);
 			NavigationService.Close(this, true);
