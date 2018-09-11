@@ -57,6 +57,12 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			_tabLayout = view.FindViewById<TabLayout>(Resource.Id.tabLayout);
 		}
 
+		public override void OnDestroy()
+		{
+			base.OnDestroy();
+			Activity.Finish();
+		}
+
 		public override void OnViewCreated(View view, Bundle bundle)
 		{
 			if (bundle == null)

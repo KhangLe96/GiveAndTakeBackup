@@ -312,8 +312,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
             if (!string.IsNullOrEmpty(request.Keyword))
             {
-                posts = posts.Where(x => x.Title.Contains(request.Keyword) || x.Description.Contains(request.Keyword) || x.Category.CategoryName.Contains(request.Keyword)
-                                         || x.User.UserName.Contains(request.Keyword) || x.ProvinceCity.ProvinceCityName.Contains(request.Keyword));
+                posts = posts.Where(x => x.Title.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) || 
+                                         x.Description.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) || 
+                                         x.Category.CategoryName.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) ||
+                                         x.User.UserName.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) || 
+                                         x.ProvinceCity.ProvinceCityName.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase));
             }
 
             return posts;

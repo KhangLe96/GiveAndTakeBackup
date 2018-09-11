@@ -8,7 +8,7 @@ namespace Giveaway.API.Controllers
 {
     [Produces("application/json")]
     [Route("api/v1/warning")]
-    public class WarningMessageController : Controller
+    public class WarningMessageController : BaseController
     {
         private readonly IWarningMessageService _warningMessageService;
 

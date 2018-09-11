@@ -11,125 +11,145 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
+using WatchConnectivity;
 
 namespace GiveAndTake.iOS.Views
 {
-	[MvxRootPresentation]
-	public class LoginView : BaseView
-	{
-		private UIImageView _logoImage;
-		private UIButton _customedLoginFacebookButton;
-		private UIButton _customedLoginGoogleButton;
-		private UIImageView _contentView;
-		private PopupItemLabel _loginTitle;
-		public MvxCommand<BaseUser> LoginCommand { get; set; }
+    [MvxRootPresentation]
+    public class LoginView : BaseView
+    {
+        private UIImageView _logoImage;
+        private UIButton _customedLoginFacebookButton;
+        private UIButton _customedLoginGoogleButton;
+        private UIImageView _contentView;
+        private PopupItemLabel _loginTitle;
+        public MvxCommand<BaseUser> LoginCommand { get; set; }
 
-		protected override void InitView()
-		{
-			InitBackground();
-			InitContent();
-		}
+        protected override void InitView()
+        {
+            InitBackground();
+            InitContent();
+        }
+        
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
 
-		protected override void CreateBinding()
-		{
-			base.CreateBinding();
+            Profile.Notifications.ObserveDidChange((sender, e) => {
 
-			var set = this.CreateBindingSet<LoginView, LoginViewModel>();
+                if (e.NewProfile == null)
+                    return;
+                
+                var facebookProfile = e.NewProfile;
+                LoginCommand?.Execute(GetUserProfile(facebookProfile));
+            });
+        }
 
-			set.Bind(this)
-				.For(v => v.LoginCommand)
-				.To(vm => vm.LoginCommand);
+        protected override void CreateBinding()
+        {
+            base.CreateBinding();
 
-			set.Apply();
-		}
+            var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
-		private void InitBackground()
-		{
-			_contentView = UIHelper.CreateImageView(ResolutionHelper.Width, ResolutionHelper.Height, UIColor.White, ImageHelper.LoginBackground);
-			_contentView.UserInteractionEnabled = true;
+            set.Bind(this)
+                .For(v => v.LoginCommand)
+                .To(vm => vm.LoginCommand);
 
-			View.Add(_contentView);
+            set.Apply();
+        }
 
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.CenterY, 1, 0),
-				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.CenterX, 1, 0)
-			});
-		}
+        private void InitBackground()
+        {
+            _contentView = UIHelper.CreateImageView(ResolutionHelper.Width, ResolutionHelper.Height, UIColor.White, ImageHelper.LoginBackground);
+            _contentView.UserInteractionEnabled = true;
 
-		private void InitContent()
-		{
-			_logoImage = UIHelper.CreateImageView(DimensionHelper.LoginLogoWidth, DimensionHelper.LoginLogoHeight, UIColor.White, ImageHelper.LoginLogo);
-			_loginTitle = UIHelper.CreateLabel(ColorHelper.BlueColor, DimensionHelper.LoginTitleTextSize);
-			_customedLoginFacebookButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.FacebookButton);
-			_customedLoginGoogleButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.GoogleButton);
+            View.Add(_contentView);
 
-			_loginTitle.Text = "Đăng nhập với tài khoản";
+            View.AddConstraints(new[]
+            {
+                NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View,
+                    NSLayoutAttribute.CenterY, 1, 0),
+                NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
+                    NSLayoutAttribute.CenterX, 1, 0)
+            });
+        }
 
-			_contentView.AddSubviews(_logoImage, _loginTitle, _customedLoginFacebookButton);
+        private void InitContent()
+        {
+            _logoImage = UIHelper.CreateImageView(DimensionHelper.LoginLogoWidth, DimensionHelper.LoginLogoHeight, UIColor.White, ImageHelper.LoginLogo);
+            _loginTitle = UIHelper.CreateLabel(ColorHelper.BlueColor, DimensionHelper.LoginTitleTextSize);
+            _customedLoginFacebookButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.FacebookButton);
+            _customedLoginGoogleButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.GoogleButton);
 
-			_contentView.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_loginTitle, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.CenterY, 1, - DimensionHelper.MarginNormal),
-				NSLayoutConstraint.Create(_loginTitle, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.CenterX, 1, 0),
+            _loginTitle.Text = "Đăng nhập với tài khoản";
 
-				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _loginTitle,
-					NSLayoutAttribute.Top, 1, - DimensionHelper.MarginNormal),
-				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.CenterX, 1, 0),
+            _contentView.AddSubviews(_logoImage, _loginTitle, _customedLoginFacebookButton);
 
-				NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.CenterY, 1, DimensionHelper.MarginShort),
-				NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.CenterX, 1, 0),
-			});
+            _contentView.AddConstraints(new[]
+            {
+                NSLayoutConstraint.Create(_loginTitle, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _contentView,
+                    NSLayoutAttribute.CenterY, 1, - DimensionHelper.MarginNormal),
+                NSLayoutConstraint.Create(_loginTitle, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
+                    NSLayoutAttribute.CenterX, 1, 0),
 
-			_customedLoginFacebookButton.AddGestureRecognizer(new UITapGestureRecognizer(HandleLoginFacebook));
+                NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _loginTitle,
+                    NSLayoutAttribute.Top, 1, - DimensionHelper.MarginNormal),
+                NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
+                    NSLayoutAttribute.CenterX, 1, 0),
 
-		}
+                NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView,
+                    NSLayoutAttribute.CenterY, 1, DimensionHelper.MarginShort),
+                NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
+                    NSLayoutAttribute.CenterX, 1, 0),
+            });
 
-		private void HandleLoginFacebook()
-		{
-			// integrate with default login facebook button
-			var manager = new LoginManager();
-			manager.LogInWithReadPermissions(new[] { "public_profile", "email" }, this, HandleLoginWithFacebook);
-		}
+            _customedLoginFacebookButton.AddGestureRecognizer(new UITapGestureRecognizer(LoginToFacebook));
 
-		private void HandleLoginWithFacebook(LoginManagerLoginResult result, NSError error)
-		{
-			if (error != null)
-			{
-				// handle error
-				return;
-			}
+        }
 
-			if (result.IsCancelled)
-			{
-				// handle cancel
-				return;
-			}
+        private void LoginToFacebook()
+        {
+            // integrate with default login facebook button
+            var manager = new LoginManager();
+            manager.LogInWithReadPermissions(new[] { "public_profile", "email" }, this, HandleLoginResult);
+        }
 
-			Profile.LoadCurrentProfile((facebookProfile, profileError) =>
-			{
-				if (facebookProfile != null)
-				{
-					var userProfile = new User
-					{
-						FirstName = facebookProfile.FirstName,
-						LastName = facebookProfile.LastName,
-						UserName = facebookProfile.Name,
-						AvatarUrl = GetProfilePicture(facebookProfile.UserID),
-						SocialAccountId = facebookProfile.UserID
-					};
-					LoginCommand?.Execute(userProfile);
-				}
-			});
-		}
+        private void HandleLoginResult(LoginManagerLoginResult result, NSError error)
+        {
+            if (error != null)
+            {
+                // handle error
+                return;
+            }
 
-		private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
-	}
+            if (result.IsCancelled)
+            {
+                // handle cancel
+                return;
+            }
+
+            Profile.LoadCurrentProfile((facebookProfile, profileError) =>
+            {
+                if (facebookProfile != null)
+                {
+                    LoginCommand?.Execute(GetUserProfile(facebookProfile));
+                }
+            });
+        }
+
+        private User GetUserProfile(Profile facebookProfile)
+        {
+            var userProfile = new User
+            {
+                FirstName = facebookProfile.FirstName,
+                LastName = facebookProfile.LastName,
+                UserName = facebookProfile.Name,
+                AvatarUrl = GetProfilePicture(facebookProfile.UserID),
+                SocialAccountId = facebookProfile.UserID
+            };
+            return userProfile;
+        }
+
+        private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
+    }
 }
