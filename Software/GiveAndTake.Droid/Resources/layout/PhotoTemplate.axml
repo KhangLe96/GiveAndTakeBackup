@@ -7,17 +7,16 @@
 	android:padding="5dp">
 	<giveandtake.droid.controls.CustomSquareRoundedImageView
 		android:id="@+id/item_img"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:scaleType="fitXY"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
 		local:MvxBind="ImageBase64Data ImageBase64Data"/>
 	<ImageView
-		android:id="@+id/delete_btn"
-		android:layout_width="25dp"
-		android:layout_height="25dp"
-		android:layout_alignParentRight="true"
 		android:background="@drawable/btn_delete_photo"
+		android:id="@+id/delete_btn"
+		android:layout_alignParentRight="true"
+		android:layout_height="25dp"
+		android:layout_width="25dp"
 		local:MvxBind="Click DeleteAPhotoCommand"/>
 </RelativeLayout>
