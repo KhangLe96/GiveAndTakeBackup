@@ -55,7 +55,7 @@ export default class index extends PureComponent {
           });
         }}
       >
-        <Button type={buttonType} icon={buttonIcon}>{buttonContent}</Button>
+        <Button className="rightButton" type={buttonType} icon={buttonIcon}>{buttonContent}</Button>
       </Popconfirm>
     );
   }
@@ -91,48 +91,54 @@ export default class index extends PureComponent {
   render() {
     const { form: { getFieldDecorator }, selectedCategory: { categoryName, doesHaveAnyPost, status } } = this.props;
     return (
-      <div className="containerBody">
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem
-            label="Tên danh mục"
-          >
-            {getFieldDecorator('categoryName', {
-              rules: [{
-                required: true, message: 'Vui lòng nhập tên danh mục!',
-              }],
-              initialValue: categoryName,
-            })(
-              <Input />
-            )}
-          </FormItem>
-          <FormItem
-            label="Tình trạng"
-          >
-            {getFieldDecorator('status', {
-              rules: [{
-                required: true,
-              }],
-              initialValue: ENG_VN_DICTIONARY[status],
-            })(
-              <Input disabled />
-            )}
-          </FormItem>
-          <FormItem
-            label="Hình ảnh"
-          >
-            {getFieldDecorator('image')(<UploadImage />)}
-          </FormItem>
-          <Button type="primary" htmlType="submit" className="login-form-button">Cập nhập</Button>
-          <Divider type="vertical" />
+      <div>
+        <div className="containerHeader">
+          <h1>Chi tiết danh mục</h1>
           {this.changeCMSStatus()}
-          <Divider type="vertical" />
+          <Divider type="vertical" className="rightButton" />
           <Popconfirm
             title="Bạn chắc chắn muốn xóa?"
             onConfirm={this.handleDelete}
           >
-            <Button icon="delete" type="danger" disabled={doesHaveAnyPost}>Xóa</Button>
+            <Button className="rightButton" icon="delete" type="danger" disabled={doesHaveAnyPost}>Xóa</Button>
           </Popconfirm>
-        </Form>
+        </div>
+        <div className="containerBody">
+          <Form onSubmit={this.handleSubmit}>
+            <FormItem
+              label="Tên danh mục"
+            >
+              {getFieldDecorator('categoryName', {
+                rules: [{
+                  required: true, message: 'Vui lòng nhập tên danh mục!',
+                }],
+                initialValue: categoryName,
+              })(
+                <Input />
+              )}
+            </FormItem>
+            <FormItem
+              label="Tình trạng"
+            >
+              {getFieldDecorator('status', {
+                rules: [{
+                  required: true,
+                }],
+                initialValue: ENG_VN_DICTIONARY[status],
+              })(
+                <Input disabled />
+              )}
+            </FormItem>
+            {/* <FormItem
+              label="Hình ảnh"
+            >
+              {getFieldDecorator('image')(<UploadImage />)}
+            </FormItem> */}
+            <FormItem>
+              <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '10%' }}>Cập nhập</Button>
+            </FormItem>
+          </Form>
+        </div>
       </div>
     );
   }

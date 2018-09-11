@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
 
 export default {
-  namespace: 'dashboard', /* should be the same with file name */
+  namespace: 'dashboard',
 
   state: {
     data: {

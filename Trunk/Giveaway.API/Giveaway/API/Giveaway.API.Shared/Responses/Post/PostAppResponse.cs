@@ -12,6 +12,12 @@ namespace Giveaway.API.Shared.Responses.Post
     [DataContract]
     public class PostAppResponse : PostBaseResponse
     {
-        
+        [DataMember(Name = "commentCount", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "commentCount")]
+        public int CommentCount { get; set; }
+
+        [DataMember(Name = "requestCount", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "requestCount")]
+        public int RequestCount { get; set; }
     }
 }

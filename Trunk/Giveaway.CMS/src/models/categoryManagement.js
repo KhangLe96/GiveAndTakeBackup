@@ -1,5 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { message } from 'antd/lib/index';
+import ErrorHelper from '../helpers/ErrorHelper';
 import { createCategory, getCategories, getACategory, updateCategory, changeCategoryCMSStatus, deleteCategory } from '../services/category';
 import { getPostsByCategory, fetch } from '../services/post';
 import { TABLE_PAGESIZE } from '../common/constants';
@@ -7,7 +8,7 @@ import { TABLE_PAGESIZE } from '../common/constants';
 const DEFAULT_CURRENT_PAGE = 1;
 
 export default {
-  namespace: 'categoryManagement', /* should be the same with file name */
+  namespace: 'categoryManagement',
 
   state: {
     categories: [],
@@ -27,8 +28,10 @@ export default {
   effects: {
     * create({ payload }, { call, put }) {
       const response = yield call(createCategory, payload);
-      if (response) {
-        // / REVIEW: Should show message to notify user that your request has updated successfully
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
+        message.success('Tạo danh mục thành công!');
         yield put(routerRedux.push('/category-management'));
         yield put({
           type: 'getCategories',
@@ -38,7 +41,9 @@ export default {
     },
     * getCategories({ payload }, { call, put }) {
       const response = yield call(getCategories, payload);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         const { results } = yield call(fetch, {});
         let categoryIdsHavingPosts = results.map(value => value.category.id);
         // remove dupclicated value in categoryIdsHavingPosts
@@ -60,7 +65,9 @@ export default {
     },
     * getACategory({ payload }, { call, put }) {
       let response = yield call(getACategory, payload.id);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         let newSelectedCategory = { ...response };
         response = yield call(getPostsByCategory, payload.id);
         const postsByCategory = response.results;
@@ -78,15 +85,17 @@ export default {
     },
     * update({ payload }, { call, put }) {
       const response = yield call(updateCategory, payload.category, payload.id);
-      if (response) {
-        // / REVIEW: Should show message to notify user that your request has updated successfully
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         // / Should navigate to list page after update category
+        message.success('Cập nhật trạng thái thành công!');
         yield put({
           type: 'getACategory',
           payload: { id: payload.id },
         });
-        //REVIEW: should show message to inform user that he has updated successfully.
-        //Should navigate to list page
+        // REVIEW: should show message to inform user that he has updated successfully.
+        // Should navigate to list page
         yield put({
           type: 'getCategories',
           payload: {},
@@ -96,9 +105,12 @@ export default {
     * changeCMSStatus({ payload }, { call, put }) {
       const { CMSStatus, id, page } = payload;
       const response = yield call(changeCategoryCMSStatus, CMSStatus, id);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
         // After edit CMS status of a category, refetch catogories and this category from API
         // to get updated information
+        message.success('Cập nhật trạng thái thành công!');
         yield put({
           type: 'getCategories',
           payload: {
@@ -114,7 +126,10 @@ export default {
     },
     * delete({ payload }, { call, put }) {
       const response = yield call(deleteCategory, payload.id);
-      if (response) {
+      if (ErrorHelper.hasException(response)) {
+        message.error(ErrorHelper.extractExceptionMessage(response));
+      } else {
+        message.success('Xóa thành công!');
         yield put({
           type: 'getCategories',
           payload: {

@@ -85,10 +85,6 @@ export default class index extends React.Component {
   }
   // end functions handles report button
 
-  success = () => {
-    message.success('Cảnh báo thành công!', 3);
-  };
-
   columns =
     [
       {
@@ -133,7 +129,7 @@ export default class index extends React.Component {
 
           return (
             <span>
-              <Button type="primary" onClick={this.showModal} icon={buttonIcon} className={styles.buttonStyle}>Cảnh báo</Button>
+              <Button type="primary" onClick={this.showModal} icon="warning" className={styles.buttonStyle}>Cảnh báo</Button>
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}

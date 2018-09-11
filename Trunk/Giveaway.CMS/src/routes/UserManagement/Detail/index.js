@@ -90,7 +90,7 @@ export default class index extends React.Component {
                 <Col align="middle"><h2> {username} </h2></Col>
               </Row>
             </Col>
-            <Col span={16}>
+            <Col span={16} className={styles.inforBox}>
               <Row>
                 <Col span={12}><h2> Tên người dùng </h2></Col>
                 <Col span={12}><h2> Điện thoại </h2></Col>

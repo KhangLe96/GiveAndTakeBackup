@@ -5,6 +5,7 @@ using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using System;
+using System.Windows.Input;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -12,6 +13,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 	[Register(nameof(PopupItemViewCell))]
 	public class PopupItemViewCell : MvxTableViewCell
 	{
+		public ICommand ClickCommand { get;set; }
 		private PopupItemLabel itemLabel;
 		private UIView seperator;
 
@@ -24,8 +26,8 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitViews()
 		{
 			itemLabel = UIHelper.CreateLabel(ColorHelper.Default, DimensionHelper.ButtonTextSize);
-			ContentView.AddSubview(itemLabel);
-			ContentView.AddConstraints(new []
+			AddSubview(itemLabel);
+			AddConstraints(new []
 			{
 				NSLayoutConstraint.Create(itemLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.CenterY, 1,0),
@@ -34,8 +36,8 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			});
 
 			seperator = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
-			ContentView.AddSubview(seperator);
-			ContentView.AddConstraints(new[]
+			AddSubview(seperator);
+			AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Bottom, 1, 0),
@@ -44,6 +46,11 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
+
+			AddGestureRecognizer(new UITapGestureRecognizer(() =>
+			{
+				ClickCommand?.Execute(null);
+			}));
 		}
 
 		private void CreateBinding()
@@ -52,9 +59,11 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 			bindingSet.Bind(itemLabel).To(vm => vm.ItemName);
 
-			bindingSet.Bind(itemLabel).For(v => v.IsSelected).To(vm => vm.IsSelected);
+			bindingSet.Bind(itemLabel).For(v => v.IsSelected).To(vm => vm.IsSelected).WithConversion("InvertBoolValue");
 
-			//bindingSet.Bind(seperator).For(v => v.BindVisibility()).To(vm => !vm.IsLastViewInList);
+			bindingSet.Bind(this)
+				.For(v => v.ClickCommand)
+				.To(vm => vm.ClickCommand);
 			
 			bindingSet.Apply();
 		}

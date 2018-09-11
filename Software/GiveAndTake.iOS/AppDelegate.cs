@@ -1,5 +1,6 @@
 ﻿using Foundation;
 using GiveAndTake.Core;
+using GiveAndTake.iOS.Helpers;
 using MvvmCross.Platforms.Ios.Core;
 
 namespace GiveAndTake.iOS

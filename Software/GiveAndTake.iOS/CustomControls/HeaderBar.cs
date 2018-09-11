@@ -7,11 +7,11 @@ using UIKit;
 
 namespace GiveAndTake.iOS.CustomControls
 {
-	public class HeaderBarView : UIView
+	public class HeaderBar : UIView
 	{
 		private UIImageView _logoImage;
 
-		public HeaderBarView()
+		public HeaderBar()
 		{
 			InitView();
 		}
