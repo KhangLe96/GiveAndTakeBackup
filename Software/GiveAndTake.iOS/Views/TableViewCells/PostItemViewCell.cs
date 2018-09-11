@@ -1,6 +1,6 @@
-﻿using FFImageLoading.Cross;
-using Foundation;
+﻿using Foundation;
 using GiveAndTake.Core.ViewModels;
+using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
@@ -13,13 +13,13 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 	[Register(nameof(PostItemViewCell))]
 	public class PostItemViewCell : MvxTableViewCell
 	{
-		private MvxCachedImageView _imgMultiImages;
-		private MvxCachedImageView _imgRequest;
-		private MvxCachedImageView _imgAppeciation;
-		private MvxCachedImageView _imgExtension;
-		private MvxCachedImageView _imgComment;
-		private MvxCachedImageView _imagePost;
-		private MvxCachedImageView _imgAvatar;
+		private UIImageView _imgMultiImages;
+		private UIImageView _imgRequest;
+		private UIImageView _imgAppeciation;
+		private UIImageView _imgExtension;
+		private UIImageView _imgComment;
+		private CustomMvxCachedImageView _imagePost;
+		private CustomMvxCachedImageView _imgAvatar;
 		private UIButton _btnCategory;
 		private UILabel _lbUserName;
 		private UILabel _lbPostDate;
@@ -44,19 +44,24 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			var set = this.CreateBindingSet<PostItemViewCell, PostItemViewModel>();
 
 			set.Bind(_imagePost)
-				.For(v => v.ImagePath)
+				.For(v => v.ImageUrl)
 				.To(vm => vm.PostImage);
 
 			set.Bind(_imagePost.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowPostDetailCommand);
 
+			set.Bind(_imgMultiImages)
+				.For("Visibility")
+				.To(vm => vm.HasManyPostPhotos)
+				.WithConversion("InvertBool");
+
 			set.Bind(_btnCategory)
 				.For("Title")
 				.To(vm => vm.CategoryName);
 
 			set.Bind(_imgAvatar)
-				.For(v => v.ImagePath)
+				.For(v => v.ImageUrl)
 				.To(vm => vm.AvatarUrl);
 
 			set.Bind(_imgAvatar.Tap())
@@ -138,7 +143,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitMultiImageView()
 		{
-			_imgMultiImages = UIHelper.CreateCustomImageView(DimensionHelper.ImageMultiSize, DimensionHelper.ImageMultiSize, ImageHelper.Multiphoto);
+			_imgMultiImages = UIHelper.CreateImageView(DimensionHelper.ImageMultiSize, DimensionHelper.ImageMultiSize, ImageHelper.Multiphoto);
 
 			ContentView.AddSubview(_imgMultiImages);
 
@@ -294,7 +299,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitRequestIcon()
 		{
 			_imgRequest =
-				UIHelper.CreateCustomImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, ImageHelper.RequestOff);
+				UIHelper.CreateImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, ImageHelper.RequestOff);
 
 			_reactionArea.AddSubview(_imgRequest);
 
@@ -324,7 +329,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitAppeciationIcon()
 		{
-			_imgAppeciation = UIHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, ImageHelper.HeartOff);
+			_imgAppeciation = UIHelper.CreateImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, ImageHelper.HeartOff);
 
 			_reactionArea.AddSubview(_imgAppeciation);
 
@@ -354,7 +359,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitCommentIcon()
 		{
-			_imgComment = UIHelper.CreateCustomImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, ImageHelper.CommentIcon);
+			_imgComment = UIHelper.CreateImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, ImageHelper.CommentIcon);
 
 			_reactionArea.AddSubview(_imgComment);
 
@@ -398,7 +403,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 					NSLayoutAttribute.Right, 1, 0)
 			});
 
-			_imgExtension = UIHelper.CreateCustomImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, ImageHelper.Extension);
+			_imgExtension = UIHelper.CreateImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, ImageHelper.Extension);
 
 			_optionView.AddSubview(_imgExtension);
 

@@ -1,6 +1,4 @@
-﻿using System;
-using Android.App;
-using Android.Runtime;
+﻿using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
 using GiveAndTake.Core.ViewModels.TabNavigation;
@@ -10,6 +8,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using System;
 using SearchView = Android.Widget.SearchView;
 
 namespace GiveAndTake.Droid.Views.TabNavigation

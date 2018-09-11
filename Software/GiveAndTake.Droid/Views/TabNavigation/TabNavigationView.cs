@@ -3,6 +3,8 @@ using Android.App;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Views;
+using FFImageLoading.Transformations;
+using FFImageLoading.Work;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Controls;
@@ -71,7 +73,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 					new ActionBar.LayoutParams(
 						(int)DimensionHelper.FromDimensionId(Resource.Dimension.tab_navigation_icon_size),
 						(int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size)),
-				BorderColor = ColorHelper.FromColorId(Resource.Color.colorPrimary)
 			};
 
 			for (var index = 0; index < _tabLayout.TabCount; index++)
@@ -90,11 +91,21 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		private void OnTabSelected(object sender, TabLayout.TabSelectedEventArgs e)
 		{
-			_ccimProfile.BorderWidth = 0;
 			if (e.Tab.Position == 3)
 			{
-				_ccimProfile.BorderWidth =
-					(int) DimensionHelper.FromDimensionId(Resource.Dimension.tab_navigation_icon_border_width);
+				_ccimProfile.Transformations = new List<ITransformation>
+				{
+					new CircleTransformation(
+						DimensionHelper.FromDimensionId(Resource.Dimension.tab_navigation_icon_border_width),
+						Resources.GetString(Resource.Color.colorPrimary))
+				};
+			}
+			else
+			{
+				_ccimProfile.Transformations = new List<ITransformation>
+				{
+					new CircleTransformation()
+				};
 			}
 			_tabLayout.GetTabAt(3).SetCustomView(_ccimProfile);
 		}

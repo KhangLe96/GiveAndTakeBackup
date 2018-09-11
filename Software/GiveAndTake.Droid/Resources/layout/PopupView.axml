@@ -34,5 +34,5 @@
 		android:background="@drawable/popup_button_bg"
 		android:layout_marginBottom="@dimen/margin_normal"
 		android:textAllCaps="false"
-		local:MvxBind="Click ClosePopupCommand"/>
+		local:MvxBind="Click SubmitCommand"/>
 </LinearLayout>

@@ -73,7 +73,9 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\CustomMvxImageView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
+    <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
     <Compile Include="CustomControls\HeaderBar.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
@@ -238,9 +240,7 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\GiveAndTake.Core\GiveAndTake.Core.csproj">
       <Project>{d618a4b3-243a-4cd6-bde2-d31fd4341494}</Project>

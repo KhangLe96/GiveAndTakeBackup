@@ -1,8 +1,7 @@
 ﻿using GiveAndTake.Core;
-using System;
-using FFImageLoading.Cross;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
+using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
@@ -80,12 +79,27 @@ namespace GiveAndTake.iOS.Helpers
 			return view;
 		}
 
-		public static MvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string imagePath, nfloat cornerRadius = default(nfloat))
+		public static UIImageView CreateImageView(nfloat height, nfloat width, string imagePath, nfloat cornerRadius = default(nfloat))
 		{
-			var imageView = new MvxCachedImageView
+			var imageView = new UIImageView
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
-				Image = new UIImage(imagePath),
+				Image = new UIImage(imagePath)
+			};
+			imageView.Layer.CornerRadius = cornerRadius;
+			imageView.ClipsToBounds = true;
+
+			AddWidthHeight(height, width, imageView);
+
+			return imageView;
+		}
+
+		public static CustomMvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string imagePath, nfloat cornerRadius = default(nfloat))
+		{
+			var imageView = new CustomMvxCachedImageView
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				DefaultImage = new UIImage(imagePath)
 			};
 			imageView.Layer.CornerRadius = cornerRadius;
 			imageView.ClipsToBounds = true;

@@ -1,7 +1,7 @@
 ﻿using CoreGraphics;
 using FFImageLoading;
-using FFImageLoading.Cross;
 using GiveAndTake.Core.ViewModels.TabNavigation;
+using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
@@ -13,7 +13,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 	public class TabNavigationView : MvxTabBarViewController<TabNavigationViewModel>
 	{
 		private HeaderBar _headerBar;
-		private MvxCachedImageView _imgAvatar;
+		private CustomMvxCachedImageView _imgAvatar;
 
 		public TabNavigationView()
 		{
@@ -24,7 +24,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 			var set = this.CreateBindingSet<TabNavigationView, TabNavigationViewModel>();
 			set.Bind(_imgAvatar)
-				.For(v => v.ImagePath)
+				.For(v => v.ImageUrl)
 				.To(vm => vm.AvatarUrl);
 			set.Apply();
 

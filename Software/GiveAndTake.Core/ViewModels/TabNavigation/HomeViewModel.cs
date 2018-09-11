@@ -1,16 +1,15 @@
 ﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
+using MvvmCross.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GiveAndTake.Core.ViewModels.Popup;
-using MvvmCross.ViewModels;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -96,7 +95,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.ApiPostsResponse = _managementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
 			if (_dataModel.ApiPostsResponse.Posts.Any())
 			{
-				PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(post => new PostItemViewModel(post)));
+				PostViewModels.Last().IsLastViewInList = false;
+				PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(post => new PostItemViewModel(post, IsLast(post))));
 			}
 		}
 
