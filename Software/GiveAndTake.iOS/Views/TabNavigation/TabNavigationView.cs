@@ -57,8 +57,11 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		{
 			TabBar.BackgroundColor = UIColor.White;
 			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize,
-				DimensionHelper.ImageAvatarSize, ImageHelper.AvtOn, DimensionHelper.ImageAvatarSize / 2);
-			await ImageService.Instance.LoadUrl(ViewModel.AvatarUrl).IntoAsync(_imgAvatar);
+				DimensionHelper.ImageAvatarSize, ImageHelper.AvtOff, DimensionHelper.ImageAvatarSize / 2);
+			if (!string.IsNullOrEmpty(ViewModel.AvatarUrl))
+			{
+				await ImageService.Instance.LoadUrl(ViewModel.AvatarUrl).IntoAsync(_imgAvatar);
+			}
 			if (_imgAvatar.Bounds.Size == CGSize.Empty)
 			{
 				_imgAvatar.Bounds = new CGRect(0, 0, DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize);

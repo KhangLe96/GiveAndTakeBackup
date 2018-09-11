@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
@@ -16,19 +17,34 @@ namespace GiveAndTake.Core.ViewModels
 {
 	public class CreatePostViewModel : BaseViewModelResult<bool>
 	{
-		private readonly List<PostImage> _postImages = new List<PostImage>();
 		private readonly List<byte[]> _imageBytes = new List<byte[]>();
 		private readonly IDataModel _dataModel;
 
 		public string ProjectName => AppConstants.AppTitle;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 
+		private List<PostImage> _postImages = new List<PostImage>();
+		public List<PostImage> PostImages
+		{
+			get => _postImages ?? new List<PostImage>();
+			set
+			{
+				_postImages = value;
+				InitSelectedImage();
+			}
+		}
+
 		private ICommand _submitCommand;
 		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
+
+		private IMvxAsyncCommand _showPhotoCollectionCommand;
+		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
+															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
 
 		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 		public IMvxAsyncCommand ShowProvinceCityCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
+		public IMvxAsyncCommand ChoosePictureCommand { get; set; }
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
 
@@ -53,7 +69,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public byte[] Bytes
 		{
-			get => _bytes; 
+			get => _bytes;
 			set { _bytes = value; RaisePropertyChanged(() => Bytes); }
 		}
 
@@ -100,6 +116,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
+
 		private async Task ShowProvinceCities()
 		{
 			var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
@@ -108,6 +125,9 @@ namespace GiveAndTake.Core.ViewModels
 				ProvinceCity = _dataModel.SelectedProvinceCity.ProvinceCityName;
 			}
 		}
+
+		private async Task ShowPhotoCollection() =>
+			PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
 
 		private MvxCommand _takePictureCommand;
 
@@ -143,7 +163,7 @@ namespace GiveAndTake.Core.ViewModels
 				{
 					ImageData = ConvertToBase64String(img),
 				};
-				_postImages.Add(image);
+				PostImages.Add(image);
 			}
 
 			InitSelectedImage();
@@ -169,10 +189,11 @@ namespace GiveAndTake.Core.ViewModels
 				Description = PostDescription,
 				PostImages = _postImages,
 				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultItem) ? AppConstants.DefaultCategoryId : _dataModel.SelectedCategory.Id,
-				Address = "9a7c2ca2-389b-4f43-9302-2ff61cab7cd8",
+				//PostCategory = "005ee304-800f-4247-97d7-d6a73301ca01", //For test
+				Address = "d785b6e2-95c5-4d71-a2c4-1b10d064fe84",	//Da Nang
 			};
 			managementService.CreatePost(post);
-			NavigationService.Close(this, true);
+			NavigationService.Close(this,true);
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)
@@ -183,7 +204,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void InitSelectedImage()
 		{
-			SelectedImage = $"Đã chọn {_postImages.Count} hình";
+			SelectedImage = $"Đã chọn {PostImages.Count} hình";
 		}
 	}
 }

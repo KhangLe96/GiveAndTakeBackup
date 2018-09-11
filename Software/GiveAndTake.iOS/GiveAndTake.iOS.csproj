@@ -74,6 +74,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controls\CustomMvxImageView.cs" />
+    <Compile Include="Controls\AlphaUiButton.cs" />
+    <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
     <Compile Include="CustomControls\HeaderBar.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\Keys.cs" />
+    <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\ResolutionHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Main.cs" />
@@ -90,6 +93,7 @@
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
     <BundleResource Include="Resources\Images\my_avatar.png" />
+    <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\Popups\PopupCategoriesView.cs" />
     <Compile Include="Views\Popups\PopupMessageView.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
@@ -136,6 +140,8 @@
     <BundleResource Include="Resources\Images\notification_off%402x.png" />
     <BundleResource Include="Resources\Images\notification_on.png" />
     <BundleResource Include="Resources\Images\notification_on%402x.png" />
+    <BundleResource Include="Resources\Images\gallery_button.png" />
+    <BundleResource Include="Resources\Images\takePicture_button.png" />
     <BundleResource Include="Resources\Images\login_background.png" />
     <BundleResource Include="Resources\Images\login_logo.png" />
     <BundleResource Include="Resources\Images\new_post.png" />
@@ -158,6 +164,9 @@
     <BundleResource Include="Resources\Fonts\HelveticaNeue-Thin.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ELCImagePicker">
+      <HintPath>Libraries\ELCImagePicker.dll</HintPath>
+    </Reference>
     <Reference Include="Facebook, Version=4.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.Facebook.iOS.4.33.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>

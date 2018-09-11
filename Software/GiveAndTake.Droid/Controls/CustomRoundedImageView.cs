@@ -4,12 +4,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Content;
 using Android.Util;
+using FFImageLoading;
 using FFImageLoading.Cross;
-using System;
-using System.Collections.Generic;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Droid.Helpers;
+using System;
+using System.Collections.Generic;
 
 namespace GiveAndTake.Droid.Controls
 {
@@ -41,8 +42,28 @@ namespace GiveAndTake.Droid.Controls
             }
         }
 
-	    public CustomRoundedImageView(Context context) : base(context)
+	    public string ImageBase64Data
 	    {
+		    set
+		    {
+			    if (string.IsNullOrEmpty(value)) return;
+			    var decodedString = Base64.Decode(value, Base64Flags.Default);
+
+			    Transformations = new List<ITransformation>
+			    {
+				    new CornersTransformation(DimensionHelper.FromDimensionId(Resource.Dimension.post_image_corner), CornerTransformType.AllRounded)
+			    };
+
+				ImageService
+					.Instance
+					.LoadBase64String(decodedString.ToString())
+					.Into(this);
+			}
+	    }
+
+		public CustomRoundedImageView(Context context) : base(context)
+	    {
+		    
 		}
 
 	    public CustomRoundedImageView(Context context, IAttributeSet attrs) : base(context, attrs)
