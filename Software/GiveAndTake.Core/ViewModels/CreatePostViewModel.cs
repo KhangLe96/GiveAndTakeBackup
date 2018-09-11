@@ -16,15 +16,29 @@ namespace GiveAndTake.Core.ViewModels
 {
 	public class CreatePostViewModel : BaseViewModelResult<bool>
 	{
-		private readonly List<PostImage> _postImages = new List<PostImage>();
 		private readonly List<byte[]> _imageBytes = new List<byte[]>();
 		private readonly IDataModel _dataModel;
 
 		public string ProjectName => AppConstants.AppTitle;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 
+		private List<PostImage> _postImages = new List<PostImage>();
+		public List<PostImage> PostImages
+		{
+			get => _postImages ?? new List<PostImage>();
+			set
+			{
+				_postImages = value;
+				InitSelectedImage();
+			}
+		}
+
 		private ICommand _submitCommand;
 		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
+
+		private IMvxAsyncCommand _showPhotoCollectionCommand;
+		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
+															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
 
 		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 		public IMvxAsyncCommand ShowProvinceCityCommand { get; set; }
@@ -53,7 +67,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public byte[] Bytes
 		{
-			get => _bytes; 
+			get => _bytes;
 			set { _bytes = value; RaisePropertyChanged(() => Bytes); }
 		}
 
@@ -109,6 +123,9 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
+		private async Task ShowPhotoCollection() =>
+			PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
+
 		private MvxCommand _takePictureCommand;
 
 		public ICommand TakePictureCommand
@@ -143,7 +160,7 @@ namespace GiveAndTake.Core.ViewModels
 				{
 					ImageData = ConvertToBase64String(img),
 				};
-				_postImages.Add(image);
+				PostImages.Add(image);
 			}
 
 			InitSelectedImage();
@@ -167,7 +184,7 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				Title = PostTitle,
 				Description = PostDescription,
-				PostImages = _postImages,
+				PostImages = PostImages,
 				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultItem) ? AppConstants.DefaultCategoryId : _dataModel.SelectedCategory.Id,
 				Address = "9a7c2ca2-389b-4f43-9302-2ff61cab7cd8",
 			};
@@ -183,7 +200,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void InitSelectedImage()
 		{
-			SelectedImage = $"Đã chọn {_postImages.Count} hình";
+			SelectedImage = $"Đã chọn {PostImages.Count} hình";
 		}
 	}
 }
