@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace GiveAndTake.Core.Models
 {
     [DataContract]
-    public class PostList
+    public class ApiPostsResponse
     {
         [DataMember(Name = "results")]
         public List<Post> Posts { get; set; }

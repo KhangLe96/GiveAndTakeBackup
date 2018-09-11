@@ -30,6 +30,8 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private UILabel _lbAppreciationCount;
 		private UILabel _lbCommentCount;
 		private UIView _reactionArea;
+		private UIView _seperatorLine;
+		private UIView _optionView;
 
 		public PostItemViewCell(IntPtr handle) : base(handle)
 		{
@@ -90,15 +92,22 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			set.Bind(_lbCommentCount)
 				.To(vm => vm.CommentCount);
 
-			set.Bind(_imgExtension.Tap())
+			set.Bind(_optionView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowMessagePopupCommand);
+
+			set.Bind(_seperatorLine)
+				.For("Visibility")
+				.To(vm => vm.IsLastViewInList);
 
 			set.Apply();
 		}
 
 		private void InitViews()
 		{
+			BackgroundColor = UIColor.White;
+			AddGestureRecognizer(new UITapGestureRecognizer());
+
 			InitPostPhoto();
 			InitMultiImageView();
 			InitCategoryButton();
@@ -375,32 +384,46 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitExtensionIcon()
 		{
-			_imgExtension = UIHelper.CreateCustomImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, ImageHelper.Extension);
+			_optionView = UIHelper.CreateView(0, DimensionHelper.ButtonExtensionWidth * 2);
 
-			_reactionArea.AddSubview(_imgExtension);
+			_reactionArea.AddSubview(_optionView);
 
 			_reactionArea.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_imgExtension, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
+				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Height, 1, 0),
+				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Right, 1, 0)
+			});
+
+			_imgExtension = UIHelper.CreateCustomImageView(DimensionHelper.ButtonExtensionHeight, DimensionHelper.ButtonExtensionWidth, ImageHelper.Extension);
+
+			_optionView.AddSubview(_imgExtension);
+
+			_optionView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_imgExtension, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _optionView,
 					NSLayoutAttribute.Bottom, 1, - DimensionHelper.MarginText),
-				NSLayoutConstraint.Create(_imgExtension, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _reactionArea,
+				NSLayoutConstraint.Create(_imgExtension, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _optionView,
 					NSLayoutAttribute.Right, 1, 0)
 			});
 		}
 
 		private void InitSeperatorLine()
 		{
-			var seperator = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
+			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
 
-			ContentView.AddSubview(seperator);
+			ContentView.AddSubview(_seperatorLine);
 
 			ContentView.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, ContentView,
+				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imagePost,
+				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imagePost,
 					NSLayoutAttribute.Left, 1, 0),
-				NSLayoutConstraint.Create(seperator, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
+				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
 		}

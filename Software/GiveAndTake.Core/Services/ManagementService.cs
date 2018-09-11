@@ -49,7 +49,7 @@ namespace GiveAndTake.Core.Services
 			}).Result.ProvinceCities;
 		}
 
-	    public List<Post> GetPostList(string filterParams)
+	    public ApiPostsResponse GetPostList(string filterParams)
         {
             return Task.Run(async () =>
             {
@@ -59,14 +59,14 @@ namespace GiveAndTake.Core.Services
 				var response = await _apiHelper.Get(url);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    return JsonHelper.Deserialize<PostList>(response.RawContent);
+                    return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
                 }
 
 	            //Handle popup error cannot get data
 	            Debug.WriteLine("Error cannot get data");
 	            return null;
 
-            }).Result.Posts;
+            }).Result;
         }
 
         public void GetPostDetail(string postId)
@@ -95,7 +95,7 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Get(AppConstants.GetPostOfUser + parameters, AppConstants.Token);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var postOfUser = JsonHelper.Deserialize<PostList>(response.RawContent);
+                    var postOfUser = JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
                 }
                 else
                 {

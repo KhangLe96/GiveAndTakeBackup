@@ -15,7 +15,7 @@ namespace Giveaway.API.Controllers
     /// <inheritdoc />
     [Produces("application/json")]
     [Route("api/v1/Post")]
-    public class PostController : Controller
+    public class PostController : BaseController
     {
         private readonly IPostService<PostCmsResponse> _postCmsService;
         private readonly IPostService<PostAppResponse> _postService;
@@ -53,6 +53,7 @@ namespace Giveaway.API.Controllers
         /// <summary>
         /// Get list post of an User with userId and params object that includes: page, limit, keyword, provinceCityId, categoryId, title
         /// </summary>
+        /// <param name="userId"></param>
         /// <param name="params">page, limit, keyword, provinceCityId, categoryId, title</param>
         /// <returns>List post</returns>
         [Authorize]

@@ -19,15 +19,17 @@ namespace GiveAndTake.iOS
 		public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
 		{
 			base.FinishedLaunching(application, launchOptions);
+
 			Profile.EnableUpdatesOnAccessTokenChange(true);
 			Settings.AppID = Keys.FacebookAppId;
 			Settings.DisplayName = Keys.FacebookDisplayName;
-			return ApplicationDelegate.SharedInstance.FinishedLaunching(application, launchOptions);
-		}
+
+		    return ApplicationDelegate.SharedInstance.FinishedLaunching(application, launchOptions);
+        }
 
 		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
 		{
-			return ApplicationDelegate.SharedInstance.OpenUrl(application, url, sourceApplication, annotation);
-		}
+		    return ApplicationDelegate.SharedInstance.OpenUrl(application, url, sourceApplication, annotation);
+        }
 	}
 }

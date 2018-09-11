@@ -62,6 +62,14 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.Command)
 				.To(vm => vm.TakePictureCommand);
 
+			bindingSet.Bind(_btnChooseProvinceCity.TitleLabel)
+				.For(v => v.Text)
+				.To(vm => vm.ProvinceCity);
+
+			bindingSet.Bind(_btnChooseCategory.TitleLabel)
+				.For(v => v.Text)
+				.To(vm => vm.Category);
+
 			bindingSet.Bind(_btnSubmit.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.SubmitCommand);
@@ -90,9 +98,9 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.ImageCommand)
 				.To(vm => vm.ImageCommand);
 
-			//bindingSet.Bind(_selectedImageTextView)
-			//	.For(v => v.AttributedText)
-			//	.To(vm => vm.SelectedImage);
+			bindingSet.Bind(_selectedImageTextView)
+				.For(v => v.Text)
+				.To(vm => vm.SelectedImage);
 
 			bindingSet.Apply();
 		}

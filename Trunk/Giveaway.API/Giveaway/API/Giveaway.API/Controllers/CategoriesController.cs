@@ -17,7 +17,7 @@ namespace Giveaway.API.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/v1/categories")]
-    public class CategoriesController : Controller
+    public class CategoriesController : BaseController
     {
         private readonly ICategoryService _categoryService;
 

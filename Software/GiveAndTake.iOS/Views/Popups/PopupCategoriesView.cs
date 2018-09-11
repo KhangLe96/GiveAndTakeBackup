@@ -14,12 +14,12 @@ namespace GiveAndTake.iOS.Views.Popups
 	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverCurrentContext, ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
 	public class PopupView : BaseView
 	{
-		private UIView popupLine;
-		private UIButton btnClose;
-		private UITableView popupTableView;
-		private PopupItemTableViewSource popupItemTableViewSource;
-		private UILabel titleLabel;
-		private UIView background;
+		private UIView _popupLine;
+		private UIButton _btnClose;
+		private UITableView _popupTableView;
+		private PopupItemTableViewSource _popupItemTableViewSource;
+		private UILabel _titleLabel;
+		private UIView _background;
 
 		protected override void InitView()
 		{
@@ -33,69 +33,69 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(container, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
 			});
 
-			btnClose = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight, 
+			_btnClose = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight, 
 				DimensionHelper.PopupButtonWidth,
 				ColorHelper.BlueColor, 
 				UIColor.White, 
 				DimensionHelper.ButtonTextSize, "Xong",
 				DimensionHelper.PopupButtonHeight / 2);
 
-			container.Add(btnClose);
+			container.Add(_btnClose);
 			container.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(btnClose, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, container, NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginNormal),
-				NSLayoutConstraint.Create(btnClose, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
+				NSLayoutConstraint.Create(_btnClose, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, container, NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginNormal),
+				NSLayoutConstraint.Create(_btnClose, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			popupTableView = UIHelper.CreateTableView(0, 0);
-			popupItemTableViewSource = new PopupItemTableViewSource(popupTableView);
-			popupTableView.Source = popupItemTableViewSource;
-			container.Add(popupTableView);
+			_popupTableView = UIHelper.CreateTableView(0, 0);
+			_popupItemTableViewSource = new PopupItemTableViewSource(_popupTableView);
+			_popupTableView.Source = _popupItemTableViewSource;
+			container.Add(_popupTableView);
 			container.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(popupTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, btnClose, NSLayoutAttribute.Top, 1, 0),
-				NSLayoutConstraint.Create(popupTableView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, container, NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
-				NSLayoutConstraint.Create(popupTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, container, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
+				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _btnClose, NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, container, NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, container, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
 
-			titleLabel = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize, FontType.Bold);
-			container.Add(titleLabel);
+			_titleLabel = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize, FontType.Bold);
+			container.Add(_titleLabel);
 			container.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(titleLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, popupTableView, NSLayoutAttribute.Top, 1, 0),
-				NSLayoutConstraint.Create(titleLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
+				NSLayoutConstraint.Create(_titleLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _popupTableView, NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_titleLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			popupLine = UIHelper.CreatePopupLine(DimensionHelper.PopupLineHeight, DimensionHelper.PopupLineWidth, ColorHelper.BlueColor, DimensionHelper.PopupLineHeight / 2);
-			container.Add(popupLine);
+			_popupLine = UIHelper.CreatePopupLine(DimensionHelper.PopupLineHeight, DimensionHelper.PopupLineWidth, ColorHelper.BlueColor, DimensionHelper.PopupLineHeight / 2);
+			container.Add(_popupLine);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(popupLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, titleLabel, NSLayoutAttribute.Top, 1, -DimensionHelper.MarginNormal),
-				NSLayoutConstraint.Create(popupLine, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
+				NSLayoutConstraint.Create(_popupLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _titleLabel, NSLayoutAttribute.Top, 1, -DimensionHelper.MarginNormal),
+				NSLayoutConstraint.Create(_popupLine, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(container, NSLayoutAttribute.Top, NSLayoutRelation.Equal, popupLine, NSLayoutAttribute.Top, 1, - DimensionHelper.MarginNormal)
+				NSLayoutConstraint.Create(container, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _popupLine, NSLayoutAttribute.Top, 1, - DimensionHelper.MarginNormal)
 			});
 
-			background = UIHelper.CreateView(0, 0, UIColor.Black.ColorWithAlpha(0.7f));
-			View.Add(background);
+			_background = UIHelper.CreateView(0, 0, UIColor.Black.ColorWithAlpha(0.7f));
+			View.Add(_background);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(background, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View, NSLayoutAttribute.Top, 1, 0),
-				NSLayoutConstraint.Create(background, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, container, NSLayoutAttribute.Top, 1, 0),
-				NSLayoutConstraint.Create(background, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, 0),
-				NSLayoutConstraint.Create(background, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
+				NSLayoutConstraint.Create(_background, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View, NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_background, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, container, NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_background, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, 0),
+				NSLayoutConstraint.Create(_background, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
 			});
 		}
 
 		public override void UpdateViewConstraints()
 		{
 			base.UpdateViewConstraints();
-			popupTableView.AddConstraints(new []
+			_popupTableView.AddConstraints(new []
 			{
-				NSLayoutConstraint.Create(popupTableView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0, popupTableView.ContentSize.Height)
+				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0, _popupTableView.ContentSize.Height)
 			});
 		}
 
@@ -103,19 +103,19 @@ namespace GiveAndTake.iOS.Views.Popups
 		{
 			var bindingSet = this.CreateBindingSet<PopupView, PopupViewModel>();
 			
-			bindingSet.Bind(titleLabel)
+			bindingSet.Bind(_titleLabel)
 				.To(vm => vm.Title);
 
-			bindingSet.Bind(btnClose.Tap())
+			bindingSet.Bind(_btnClose.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.ClosePopupCommand);
+				.To(vm => vm.SubmitCommand);
 
-			bindingSet.Bind(popupItemTableViewSource)
+			bindingSet.Bind(_popupItemTableViewSource)
 				.To(vm => vm.PopupItemViewModels);
 
-			bindingSet.Bind(background.Tap())
+			bindingSet.Bind(_background.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.ClosePopupCommand);
+				.To(vm => vm.CloseCommand);
 
 			bindingSet.Apply();
 		}

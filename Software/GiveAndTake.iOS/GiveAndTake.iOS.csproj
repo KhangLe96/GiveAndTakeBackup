@@ -23,6 +23,11 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignProvision />
+    <CodesignExtraArgs />
+    <CodesignResourceRules />
+    <CodesignEntitlements />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -44,11 +49,14 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <MtouchArch>ARM64</MtouchArch>
-    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignEntitlements>
+    </CodesignEntitlements>
+    <CodesignKey>iPhone Developer: Quoc Tran (NL6P2D94VX)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignProvision />
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+    <CodesignExtraArgs />
+    <CodesignResourceRules />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -134,6 +142,7 @@
     <BundleResource Include="Resources\Images\takePicture_button.png" />
     <BundleResource Include="Resources\Images\login_background.png" />
     <BundleResource Include="Resources\Images\login_logo.png" />
+    <BundleResource Include="Resources\Images\new_post.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
@@ -238,7 +247,9 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Converters\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GiveAndTake.Core\GiveAndTake.Core.csproj">
       <Project>{d618a4b3-243a-4cd6-bde2-d31fd4341494}</Project>
