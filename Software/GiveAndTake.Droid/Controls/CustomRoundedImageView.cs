@@ -65,7 +65,7 @@ namespace GiveAndTake.Droid.Controls
 			{
 				if (string.IsNullOrEmpty(value)) return;
 				var decodedString = Base64.Decode(value, Base64Flags.Default);
-				var requestOption = new RequestOptions().InvokeDiskCacheStrategy(DiskCacheStrategy.None);
+				var requestOption = new RequestOptions().InvokeDiskCacheStrategy(DiskCacheStrategy.None).CenterCrop();
 				requestOption.Transform(new RoundedCorners(10));
 				Glide.With(Application.Context).Load(decodedString).Apply(requestOption).Into(this);
 			}
