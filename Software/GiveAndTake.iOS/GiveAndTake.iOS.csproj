@@ -73,6 +73,7 @@
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\Keys.cs" />
+    <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\ResolutionHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Main.cs" />
@@ -152,6 +153,9 @@
     <BundleResource Include="Resources\Fonts\HelveticaNeue-Thin.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ELCImagePicker">
+      <HintPath>Libraries\ELCImagePicker.dll</HintPath>
+    </Reference>
     <Reference Include="Facebook, Version=4.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.Facebook.iOS.4.33.0\lib\Xamarin.iOS10\Facebook.dll</HintPath>
     </Reference>

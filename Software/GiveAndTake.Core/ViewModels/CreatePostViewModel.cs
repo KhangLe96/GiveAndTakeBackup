@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
@@ -29,6 +30,7 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 		public IMvxAsyncCommand ShowProvinceCityCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
+		public IMvxAsyncCommand ChoosePictureCommand { get; set; }
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
 
@@ -100,6 +102,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
+
 		private async Task ShowProvinceCities()
 		{
 			var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
@@ -168,8 +171,9 @@ namespace GiveAndTake.Core.ViewModels
 				Title = PostTitle,
 				Description = PostDescription,
 				PostImages = _postImages,
-				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultItem) ? AppConstants.DefaultCategoryId : _dataModel.SelectedCategory.Id,
-				Address = "9a7c2ca2-389b-4f43-9302-2ff61cab7cd8",
+				//PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultItem) ? AppConstants.DefaultCategoryId : _dataModel.SelectedCategory.Id,
+				PostCategory = "005ee304-800f-4247-97d7-d6a73301ca01", //For test
+				Address = "9a7c2ca2-389b-4f43-9302-2ff61cab7cd8",	//Da Nang
 			};
 			managementService.CreatePost(post);
 			NavigationService.Close(this);

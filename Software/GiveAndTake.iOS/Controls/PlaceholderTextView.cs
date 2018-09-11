@@ -1,5 +1,5 @@
-﻿using System;
-using CoreGraphics;
+﻿using CoreGraphics;
+using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Controls
@@ -14,7 +14,7 @@ namespace GiveAndTake.iOS.Controls
 
 		public string Placeholder
 		{
-			get => _placeholder;
+			get { return _placeholder; }
 			set
 			{
 				_placeholder = value;
@@ -32,7 +32,7 @@ namespace GiveAndTake.iOS.Controls
 
 		public bool IsNoteTextFocused
 		{
-			get => _isNoteTextFocused;
+			get { return _isNoteTextFocused; }
 			set
 			{
 				_isNoteTextFocused = value;
@@ -47,7 +47,7 @@ namespace GiveAndTake.iOS.Controls
 
 		public override string Text
 		{
-			get => string.Equals(base.Text, _placeholder) ? null : base.Text;
+			get { return string.Equals(base.Text, _placeholder) ? null : base.Text; }
 			set
 			{
 				base.Text = string.IsNullOrEmpty(value) ? _placeholder : value;
@@ -78,7 +78,7 @@ namespace GiveAndTake.iOS.Controls
 			{
 				if (string.IsNullOrEmpty(Text))
 					base.Text = string.Empty;
-			
+
 				TextColor = ActualTextColor;
 				return true;
 			};

@@ -1,9 +1,15 @@
-﻿using CoreAnimation;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CoreAnimation;
 using Foundation;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.ViewModels;
+using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
+using MvvmCross;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
@@ -15,18 +21,18 @@ namespace GiveAndTake.iOS.Views
 	[MvxRootPresentation]
 	public class CreatePostView : BaseView
 	{
-		public IMvxCommand SubmitCommand { get; set; }
-
 		private HeaderBar _headerBar;
 		private UIButton _btnChooseProvinceCity;
 		private UIButton _btnChooseCategory;
 		private UITextField _postTitleTextField;
-		private UITextView _postDescriptionTextView;
+		private PlaceholderTextView _postDescriptionTextView;
 		private UIButton _btnTakePicture;
 		private UIButton _btnChoosePicture;
 		private UIButton _btnCancel;
 		private UIButton _btnSubmit;
 		private UILabel _selectedImageTextView;
+
+		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 
 		protected override void InitView()
 		{
@@ -76,6 +82,18 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.Command)
 				.To(vm => vm.ShowCategoriesCommand);
 
+			bindingSet.Bind(_btnCancel.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.CloseCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.ImageCommand)
+				.To(vm => vm.ImageCommand);
+
+			//bindingSet.Bind(_selectedImageTextView)
+			//	.For(v => v.AttributedText)
+			//	.To(vm => vm.SelectedImage);
+
 			bindingSet.Apply();
 		}
 
@@ -96,13 +114,12 @@ namespace GiveAndTake.iOS.Views
 		private void InitChooseProvinceCityButton()
 		{
 			_btnChooseProvinceCity = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth, 
-				ColorHelper.DefaultEditTextFieldColor, DimensionHelper.FilterSize / 2);
-			_btnChooseProvinceCity.SetTitle("Tỉnh/Thành phố", UIControlState.Normal);
-			_btnChooseProvinceCity.SetTitleColor(ColorHelper.PlaceHolderTextColor, UIControlState.Normal);
+				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize, "Tỉnh/Thành phố", DimensionHelper.FilterSize / 2);
+
 			_btnChooseProvinceCity.Layer.BorderColor = ColorHelper.PlaceHolderTextColor.CGColor;
 			_btnChooseProvinceCity.Layer.BorderWidth = 1;
 			_btnChooseProvinceCity.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-			_btnChooseProvinceCity.ContentEdgeInsets = new UIEdgeInsets(20, 20, 20, 20);
+			_btnChooseProvinceCity.ContentEdgeInsets = new UIEdgeInsets(10, 15, 10, 10);
 
 			View.Add(_btnChooseProvinceCity);
 			View.AddConstraints(new[]
@@ -117,13 +134,12 @@ namespace GiveAndTake.iOS.Views
 		private void InitChooseCategoryButton()
 		{
 			_btnChooseCategory = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
-				ColorHelper.DefaultEditTextFieldColor, DimensionHelper.FilterSize / 2);
-			_btnChooseCategory.SetTitle("Loại ...", UIControlState.Normal);
-			_btnChooseCategory.SetTitleColor(ColorHelper.PlaceHolderTextColor, UIControlState.Normal);
+				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize, "Loại ...", DimensionHelper.FilterSize / 2);
+
 			_btnChooseCategory.Layer.BorderColor = ColorHelper.PlaceHolderTextColor.CGColor;
 			_btnChooseCategory.Layer.BorderWidth = 1;
 			_btnChooseCategory.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-			_btnChooseCategory.ContentEdgeInsets = new UIEdgeInsets(20, 20, 20, 20);
+			_btnChooseCategory.ContentEdgeInsets = new UIEdgeInsets(10, 15, 10, 10);
 
 			View.Add(_btnChooseCategory);
 			View.AddConstraints(new[]
@@ -140,6 +156,7 @@ namespace GiveAndTake.iOS.Views
 			_postTitleTextField = UIHelper.CreateEditTextField(DimensionHelper.DropDownButtonHeight, DimensionHelper.CreatePostEditTextWidth, 
 				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.FilterSize / 2);
 			_postTitleTextField.Placeholder = "Tiêu đề";
+			_postTitleTextField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
 			_postTitleTextField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15,0,0);
 
 			View.Add(_postTitleTextField);
@@ -155,7 +172,8 @@ namespace GiveAndTake.iOS.Views
 		private void InitPostDescriptionEditText()
 		{
 			_postDescriptionTextView = UIHelper.CreateEditTextView(DimensionHelper.PostDescriptionEditTextHeight, DimensionHelper.CreatePostEditTextWidth,
-				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.FilterSize / 2, "Mô tả", ColorHelper.PlaceHolderTextColor);
+				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.FilterSize / 2, "Mô tả", ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize);
+			
 
 			View.Add(_postDescriptionTextView);
 			View.AddConstraints(new[]
@@ -170,6 +188,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitChoosePictureButton()
 		{
 			_btnChoosePicture = UIHelper.CreateImageButton(DimensionHelper.PictureButtonHeight, DimensionHelper.PictureButtonWidth, ImageHelper.ChoosePictureButton);
+			_btnChoosePicture.TouchUpInside += HandleSelectImage;
 
 			View.Add(_btnChoosePicture);
 			View.AddConstraints(new[]
@@ -216,7 +235,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitCancelButton()
 		{
 			_btnCancel = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight, 
-				ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, DimensionHelper.ButtonTextSize, 
+				ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, DimensionHelper.MediumTextSize, 
 				UIColor.White, UIColor.White, ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, 
 				true, true);
 
@@ -235,7 +254,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitSubmitButton()
 		{
 			_btnSubmit = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight, 
-				UIColor.White, UIColor.White, DimensionHelper.ButtonTextSize,
+				UIColor.White, UIColor.White, DimensionHelper.MediumTextSize,
 				ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, ColorHelper.PrimaryColor, ColorHelper.SecondaryColor);
 
 			_btnSubmit.SetTitle("Đăng", UIControlState.Normal);
@@ -248,6 +267,13 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_btnSubmit, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin)
 			});
+		}
+
+		async void HandleSelectImage (object sender, EventArgs e)
+		{
+			await MediaHelper.OpenGallery();
+			var image = MediaHelper.images;
+			ImageCommand.Execute(image);
 		}
 	}
 }

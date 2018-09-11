@@ -34,7 +34,7 @@ namespace GiveAndTake.iOS.CustomControls
 				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.CenterY, 1, 0),
 				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Height, NSLayoutRelation.Equal, this,
-					NSLayoutAttribute.Height, 1, -30), 
+					NSLayoutAttribute.Height, 1, -15), 
 			});
 
 			AddSubview(_separateLine);

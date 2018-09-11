@@ -71,33 +71,21 @@ namespace GiveAndTake.iOS.Helpers
 			return view;
 		}
 
-		public static UITextView CreateTextView(string text, nfloat fontSize, UIColor color, FontType fontType = FontType.Regular)
-		{
-			var textView = new UITextView
-			{
-				TranslatesAutoresizingMaskIntoConstraints = false,
-			};
-			textView.Text = text;
-			textView.TextColor = color;
-
-			return textView;
-		}
-
 		public static PlaceholderTextView CreateEditTextView(nfloat height, nfloat width, UIColor backgroundColor, UIColor borderColor, 
-			nfloat cornerRadius, string placeHolder, UIColor placeHolderColor)
+			nfloat cornerRadius, string placeHolder, UIColor placeHolderColor, nfloat textSize, FontType fontType = FontType.Regular)
 		{
 			var editText = new PlaceholderTextView
 			{
+				PlaceholderTextColor = placeHolderColor,
+				Placeholder = placeHolder,
+				Font = GetFont(fontType, textSize),
 				TranslatesAutoresizingMaskIntoConstraints = false,
 			};
+			editText.BackgroundColor = backgroundColor;
 			editText.Layer.BorderColor = borderColor.CGColor;
 			editText.Layer.BorderWidth = 1;
-			editText.Font = GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
-			editText.BackgroundColor = backgroundColor;
 			editText.Layer.CornerRadius = cornerRadius;
 			editText.Layer.MasksToBounds = true;
-			editText.PlaceholderTextColor = placeHolderColor;
-			editText.Placeholder = placeHolder;
 			editText.TextContainerInset = new UIEdgeInsets(10, 10, 10, 10);
 			editText.TextAlignment = UITextAlignment.Left;
 			AddWidthHeight(height, width, editText);

@@ -54,7 +54,7 @@ namespace GiveAndTake.iOS.Controls
 			{
 				base.Enabled = value;
 
-				Layer.Opacity = value ? 1 : AppConstants.DisabledAlphalValue;
+				//Layer.Opacity = value ? 1 : AppConstants.DisabledAlphalValue;
 			}
 		}
 	}

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
-using MvvmCross.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -12,11 +10,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 	{
 		private readonly IDataModel _dataModel;
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
+
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
 			_showInitialViewModelsCommand ??
 			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));
-		public string AvatarUrl =>
-			_dataModel.CurrentUser.AvatarUrl;
+
+		public string AvatarUrl => _dataModel.CurrentUser?.AvatarUrl;
 
 		public TabNavigationViewModel(IDataModel dataModel)
 		{
