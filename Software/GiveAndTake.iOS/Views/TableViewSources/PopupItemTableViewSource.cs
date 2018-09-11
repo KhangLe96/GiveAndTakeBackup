@@ -19,7 +19,7 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 		protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
 		{
 			var cell = (PopupItemViewCell)tableView.DequeueReusableCell(CellId, indexPath);
-			//Do something if you want here :)
+			cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 			return cell;
 		}
 

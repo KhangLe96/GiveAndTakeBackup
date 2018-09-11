@@ -23,14 +23,15 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public IMvxCommand SearchCommand { get; set; }
 	    public IMvxCommand LoadMoreCommand { get; set; }
 	    protected override int LayoutId => Resource.Layout.HomeView;
-	    private SearchView searchView;
+	    private SearchView _searchView;
 
 	    protected override void InitView(View view)
 	    {
 		    base.InitView(view);
 
-		    searchView = view.FindViewById<SearchView>(Resource.Id.searchView);
-		    searchView.QueryTextSubmit += OnQueryTextSubmit;
+		    _searchView = view.FindViewById<SearchView>(Resource.Id.searchView);
+		    _searchView.QueryTextSubmit += OnQueryTextSubmit;
+		    _searchView.Close += OnClose;
 
 		    var rvPosts = view.FindViewById<MvxRecyclerView>(Resource.Id.rvPosts);
 			var layoutManager = new LinearLayoutManager(view.Context);
@@ -40,6 +41,13 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    });
 			rvPosts.SetLayoutManager(layoutManager);
 	    }
+
+	    private void OnClose(object sender, SearchView.CloseEventArgs e)
+	    {
+			SearchCommand.Execute();
+		    KeyboardHelper.HideKeyboard(sender as View);
+			_searchView.ClearFocus();
+		}
 
 	    private void OnQueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
 	    {
@@ -66,7 +74,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public override void OnPause()
 	    {
 		    base.OnPause();
-			KeyboardHelper.HideKeyboard(searchView);
+			KeyboardHelper.HideKeyboard(_searchView);
 	    }
     }
 

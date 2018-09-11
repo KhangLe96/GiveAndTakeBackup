@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.ViewModels.TabNavigation;
+﻿using System;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
@@ -26,6 +27,14 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UIButton _newPostButton;
 
 		public IMvxCommand LoadMoreCommand { get; set; }
+		public IMvxCommand SearchCommand { get; set; }
+
+		public override void ViewDidLoad()
+		{
+			base.ViewDidLoad();
+			var g = new UITapGestureRecognizer(() => View.EndEditing(true)) {CancelsTouchesInView = false};
+			View.AddGestureRecognizer(g);
+		}
 
 		protected override void InitView()
 		{
@@ -97,6 +106,15 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 				NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort)
 			});
+
+			_searchBar.SearchButtonClicked += OnSearchSubmit;
+			_searchBar.CancelButtonClicked += OnSearchSubmit;
+		}
+
+		private void OnSearchSubmit(object sender, EventArgs e)
+		{
+			SearchCommand.Execute();
+			_searchBar.ResignFirstResponder();
 		}
 
 		private void InitPostsTableView()
@@ -144,9 +162,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			set.Bind(_postTableViewSource)
 				.To(vm => vm.PostViewModels);
 
+			set.Bind(_searchBar)
+				.For(v => v.Text)
+				.To(vm => vm.CurrentQueryString);
+
 			set.Bind(this)
 				.For(v => v.LoadMoreCommand)
 				.To(vm => vm.LoadMoreCommand);
+
+			set.Bind(this)
+				.For(v => v.SearchCommand)
+				.To(vm => vm.SearchCommand);
 
 			set.Bind(_refreshControl)
 				.For(v => v.IsRefreshing)

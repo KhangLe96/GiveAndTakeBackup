@@ -110,9 +110,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitViews()
 		{
-			BackgroundColor = UIColor.White;
-			AddGestureRecognizer(new UITapGestureRecognizer());
-
 			InitPostPhoto();
 			InitMultiImageView();
 			InitCategoryButton();
