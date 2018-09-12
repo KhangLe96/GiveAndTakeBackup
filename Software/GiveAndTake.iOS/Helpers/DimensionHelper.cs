@@ -28,7 +28,8 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat ButtonExtensionHeight { get; private set; }
 		public static nfloat ButtonExtensionWidth { get; private set; }
 		public static nfloat PostCellHeight { get; private set; }
-		public static nfloat ButtonTextSize { get; set; }
+        public static float SeperatorLineHeight { get; private set; }
+        public static nfloat ButtonTextSize { get; set; }
 		public static nfloat SeperatorHeight { get; set; }
 		public static nfloat PostPhotoCornerRadius { get; set; }
 		public static nfloat PopupLineWidth { get; set; }
@@ -58,8 +59,9 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupCancelButtonBorder { get; set; }
 		public static nfloat PopupContentRadius { get; set; }
 		public static nfloat NewPostSize { get; set; }
+        public static nfloat MenuSeparatorLineHeight { get; private set; }
 
-		public static void InitStaticVariable()
+        public static void InitStaticVariable()
 		{
 			SmallTextSize = 11 * Rate;
 			ButtonTextSize = 12 * Rate;
@@ -106,8 +108,7 @@ namespace GiveAndTake.iOS.Helpers
 			SeparateLineHeaderHeight = 1 * Rate;
 		    SeperatorHeight = 0.5f * Rate;
 		    PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
-			SeperatorHeight = 0.5f * Rate;
-			PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
+			SeperatorLineHeight = 0.1f * Rate;
 			PopupLineWidth = 50 * Rate;
 			PopupLineHeight = 4 * Rate;
 			PopupButtonWidth = 150 * Rate;
@@ -133,6 +134,7 @@ namespace GiveAndTake.iOS.Helpers
 			PopupCancelButtonBorder = 1 * Rate;
 			PopupContentRadius = 15 * Rate;
 			NewPostSize = 50 * Rate;
+		    MenuSeparatorLineHeight = 6 * Rate;
 		}
 	}
 }
