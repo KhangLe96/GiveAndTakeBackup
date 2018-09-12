@@ -119,7 +119,6 @@
     <BundleResource Include="Resources\Images\multiphoto.png" />
     <BundleResource Include="Resources\Images\request_off.png" />
     <BundleResource Include="Resources\Images\sort_button.png" />
-    <BundleResource Include="Resources\Images\splashscreen.png" />
     <BundleResource Include="Resources\Images\Top_logo.png" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
     <Compile Include="Views\TabNavigation\NotificationView.cs" />
@@ -147,6 +146,7 @@
     <BundleResource Include="Resources\Images\login_background.png" />
     <BundleResource Include="Resources\Images\login_logo.png" />
     <BundleResource Include="Resources\Images\new_post.png" />
+    <BundleResource Include="Resources\Images\splash_screen.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
