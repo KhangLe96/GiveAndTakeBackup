@@ -51,7 +51,7 @@
     <MtouchArch>ARM64</MtouchArch>
     <CodesignEntitlements>
     </CodesignEntitlements>
-    <CodesignKey>iPhone Developer: Quoc Tran (NL6P2D94VX)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignProvision />
     <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
