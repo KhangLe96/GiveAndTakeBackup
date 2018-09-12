@@ -17,7 +17,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public override Task Initialize()
 		{
-			SelectedItem = DataModel.SelectedProvinceCity?.ProvinceCityName ?? AppConstants.DefaultLocationFilter;
+			SelectedItem = DataModel.SelectedProvinceCity.ProvinceCityName;
 
 			PopupItems = DataModel
 				.ProvinceCities
@@ -29,7 +29,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		protected override Task OnCloseCommand()
 		{
-			DataModel.SelectedProvinceCity = DataModel.ProvinceCities.FirstOrDefault(city => city.ProvinceCityName == SelectedItem);
+			DataModel.SelectedProvinceCity = DataModel.ProvinceCities.First(city => city.ProvinceCityName == SelectedItem);
 			return base.OnCloseCommand();
 		}
 	}

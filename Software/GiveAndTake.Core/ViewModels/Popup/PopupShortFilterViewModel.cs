@@ -17,7 +17,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public override Task Initialize()
 		{
-			SelectedItem = DataModel.SelectedSortFilter?.FilterName ?? AppConstants.DefaultShortFilter;
+			SelectedItem = DataModel.SelectedSortFilter.FilterName;
 
 			PopupItems = DataModel.SortFilters.Select(filter => filter.FilterName).ToList();
 
