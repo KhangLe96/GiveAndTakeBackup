@@ -7505,6 +7505,9 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0064
 			public const int gone = 2131492964;
 			
+			// aapt resource value: 0x7f0c00d0
+			public const int header = 2131493072;
+			
 			// aapt resource value: 0x7f0c0005
 			public const int home = 2131492869;
 			
@@ -7576,9 +7579,6 @@ namespace GiveAndTake.Droid
 			
 			// aapt resource value: 0x7f0c0018
 			public const int line3 = 2131492888;
-			
-			// aapt resource value: 0x7f0c00d0
-			public const int linearLayout = 2131493072;
 			
 			// aapt resource value: 0x7f0c00f3
 			public const int linearlayout = 2131493107;
