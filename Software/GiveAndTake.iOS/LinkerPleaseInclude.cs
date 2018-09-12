@@ -3,7 +3,7 @@ using UIKit;
 
 namespace GiveAndTake.iOS
 {
-	[Preserve(typeof(UISearchBar), AllMembers = true)]
+	[Preserve(AllMembers = true)]
 	public class LinkerPleaseInclude
 	{
 		public void Include(UISearchBar sb)
