@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import { CollectionCreateForm } from './formReport';
-import { DateFormatDisplay, TABLE_PAGESIZE, ENG_VN_DICTIONARY, COLOR, STATUSES } from '../../../common/constants';
+import { DateFormatDisplay, TABLE_PAGESIZE, STATUSES } from '../../../common/constants';
 import styles from './index.less';
 @connect(({ modals, reportManagement, userManagement }) => ({
   ...modals, reportManagement, userManagement,
@@ -42,9 +42,10 @@ export default class index extends React.Component {
   handleConfirmChangeStatus = (record) => {
     const { dispatch, reportManagement: { currentPage } } = this.props;
     const newStatus = record.status === STATUSES.Blocked ? STATUSES.Activated : STATUSES.Blocked;
+    const payload = { newStatus, id: record.id, page: currentPage };
     dispatch({
       type: 'userManagement/changeStatus',
-      payload: { newStatus, id: record.id, page: currentPage },
+      payload,
       callback: () => this.onPageNumberChange(currentPage, TABLE_PAGESIZE),
     });
   }
