@@ -105,20 +105,17 @@
     <Compile Include="Views\PostDetailView.cs" />
     <Compile Include="Views\TableViewCells\PostItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PostItemTableViewSource.cs" />
-    <BundleResource Include="Resources\Images\category_button.png" />
     <BundleResource Include="Resources\Images\comment.png" />
     <BundleResource Include="Resources\Images\default_avatar.png" />
     <BundleResource Include="Resources\Images\default_post.png" />
     <BundleResource Include="Resources\Images\extension.png" />
     <BundleResource Include="Resources\Images\facebook_button.png" />
-    <BundleResource Include="Resources\Images\filter_button.png" />
     <BundleResource Include="Resources\Images\google_button.png" />
     <BundleResource Include="Resources\Images\header_bar.png" />
     <BundleResource Include="Resources\Images\heart_off.png" />
     <BundleResource Include="Resources\Images\LoginLogo.png" />
     <BundleResource Include="Resources\Images\multiphoto.png" />
     <BundleResource Include="Resources\Images\request_off.png" />
-    <BundleResource Include="Resources\Images\sort_button.png" />
     <BundleResource Include="Resources\Images\Top_logo.png" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
     <Compile Include="Views\TabNavigation\NotificationView.cs" />
@@ -147,6 +144,12 @@
     <BundleResource Include="Resources\Images\login_logo.png" />
     <BundleResource Include="Resources\Images\new_post.png" />
     <BundleResource Include="Resources\Images\splash_screen.png" />
+    <BundleResource Include="Resources\Images\sort_button_selected.png" />
+    <BundleResource Include="Resources\Images\category_button_selected.png" />
+    <BundleResource Include="Resources\Images\location_button_default.png" />
+    <BundleResource Include="Resources\Images\location_button_selected.png" />
+    <BundleResource Include="Resources\Images\category_button_default.png" />
+    <BundleResource Include="Resources\Images\sort_button_default.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

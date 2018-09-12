@@ -17,12 +17,11 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public override Task Initialize()
 		{
-			SelectedItem = DataModel.SelectedCategory?.CategoryName ?? AppConstants.DefaultItem;
+			SelectedItem = DataModel.SelectedCategory.CategoryName;
 
 			PopupItems = DataModel
 				.Categories
 				.Select(c => c.CategoryName)
-				//.Append(AppConstants.DefaultItem)
 				.ToList();
 
 			return base.Initialize();
@@ -30,7 +29,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		protected override Task OnCloseCommand()
 		{
-			DataModel.SelectedCategory = DataModel.Categories.FirstOrDefault(c => c.CategoryName == SelectedItem);
+			DataModel.SelectedCategory = DataModel.Categories.First(c => c.CategoryName == SelectedItem);
 			return base.OnCloseCommand();
 		}
 	}
