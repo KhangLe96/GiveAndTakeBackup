@@ -21,7 +21,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UIButton _btnSort;
 		private UIButton _btnCategory;
 		private UISearchBar _searchBar;
-		private UITableView _postsTableView;
+	    private UIView _separatorLine;
+        private UITableView _postsTableView;
 		private PostItemTableViewSource _postTableViewSource;
 		private MvxUIRefreshControl _refreshControl;
 		private UIButton _newPostButton;
@@ -42,7 +43,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			InitSortButton();
 			InitCategoryButton();
 			InitSearchView();
-			InitPostsTableView();
+		    InitSeparatorLine();
+            InitPostsTableView();
 			InitNewPostButton();
 		}
 
@@ -111,7 +113,20 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			_searchBar.CancelButtonClicked += OnSearchSubmit;
 		}
 
-		private void OnSearchSubmit(object sender, EventArgs e)
+	    private void InitSeparatorLine()
+	    {
+	        _separatorLine = UIHelper.CreateView(DimensionHelper.MenuSeparatorLineHeight, DimensionHelper.HeaderBarLogoWidth, ColorHelper.GreyLineColor);
+	        View.Add(_separatorLine);
+	        View.AddConstraints(new[]
+	        {
+	            NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Width, NSLayoutRelation.Equal, View,
+	                NSLayoutAttribute.Width, 1, 0),
+	            NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _searchBar,
+	                NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort)
+	        });
+	    }
+
+        private void OnSearchSubmit(object sender, EventArgs e)
 		{
 			SearchCommand.Execute();
 			_searchBar.ResignFirstResponder();
@@ -132,7 +147,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.Add(_postsTableView);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _searchBar, NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _separatorLine, NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)

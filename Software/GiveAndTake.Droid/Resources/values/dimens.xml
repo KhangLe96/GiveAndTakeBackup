@@ -10,8 +10,8 @@
 	<dimen name="image_post_size">130dp</dimen>
 	<dimen name="image_multi_size">25dp</dimen>
 	<dimen name="image_avatar_size">35dp</dimen>
-	<dimen name="tab_navigation_icon_size">30dp</dimen>
 	<dimen name="tab_navigation_icon_border_width">18dp</dimen>
+	<dimen name="tab_navigation_icon_size">28dp</dimen>
 	<dimen name="filter_height">40dp</dimen>
 	<dimen name="button_category_height">24dp</dimen>
 	<dimen name="button_request_height">9dp</dimen>
@@ -26,4 +26,5 @@
 	<dimen name="login_title_text_size">18sp</dimen>
 	<dimen name="margin_popup_item">4dp</dimen>
 	<dimen name="post_image_corner">2dp</dimen>
+  <dimen name="margin_17dp">17dp</dimen>
 </resources>

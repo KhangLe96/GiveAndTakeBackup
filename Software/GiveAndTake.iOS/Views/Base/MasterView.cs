@@ -13,7 +13,6 @@ namespace GiveAndTake.iOS.Views.Base
 		protected override void InitView() { }
 
 		protected override void CreateBinding()
-
 		{
 			base.CreateBinding();
 			var set = this.CreateBindingSet<MasterView, MasterViewModel>();

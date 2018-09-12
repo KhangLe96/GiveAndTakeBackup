@@ -60,7 +60,7 @@
       android:textSize="@dimen/SmallTextSize"
       android:layout_alignStart="@id/tvUserFullName"
       android:layout_below="@id/tvUserFullName" 
-	local:MvxBind="Text CreatedTime"/>
+	  local:MvxBind="Text CreatedTime"/>
   <TextView
       android:id="@+id/tvSeperator"
       android:layout_width="wrap_content"
@@ -182,9 +182,9 @@
   </LinearLayout>
   <TextView
       android:layout_width="match_parent"
-      android:layout_height="1dp"
+      android:layout_height="0.1dp"
       android:layout_margin="@dimen/margin_short"
-      android:background="#0fbcf9"
+      android:background="@color/post_line_color"
       android:layout_below="@id/imgPost" 
 	  local:MvxBind="Visibility Visibility(!IsLastViewInList)"/>
 </RelativeLayout>

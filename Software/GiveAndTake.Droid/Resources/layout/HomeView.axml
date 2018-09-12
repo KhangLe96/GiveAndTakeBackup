@@ -45,12 +45,19 @@
         android:layout_toStartOf="@id/btnCategory"
         android:layout_alignParentStart="true"
 		local:MvxBind="Query CurrentQueryString"/>
+	<TextView
+		android:id="@+id/greyLine"
+		android:layout_width="match_parent"
+		android:layout_height="6dp"
+		android:layout_marginTop="@dimen/margin_short"
+		android:background="@color/grey_line_color"
+		android:layout_below="@id/btnFilter"/>
 
 	<MvxSwipeRefreshLayout
 		android:id="@+id/refreshlayout"
 		android:layout_height="match_parent"
 		android:layout_width="wrap_content"
-		android:layout_below="@id/btnFilter"
+		android:layout_below="@+id/greyLine"
 		android:layout_margin="@dimen/margin_short"
 		local:MvxBind="Refreshing IsRefreshing; RefreshCommand RefreshCommand">
 
@@ -63,7 +70,6 @@
 			local:MvxItemTemplate="@layout/posttemplate" />
 
 	</MvxSwipeRefreshLayout>
-
    
 	<android.support.design.widget.FloatingActionButton
 		android:layout_width="wrap_content"
@@ -71,7 +77,7 @@
 		android:layout_alignParentBottom="true"
 		android:src="@drawable/new_post"
 		android:layout_alignParentRight="true"
-		 android:layout_margin="@dimen/margin_short"
+		android:layout_margin="@dimen/margin_17dp"
 		local:MvxBind="Click CreatePostCommand"
 		local:backgroundTint="@color/colorPrimary"/>
 </RelativeLayout>

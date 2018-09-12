@@ -2,8 +2,7 @@ import fetch from 'dva/fetch';
 import conf from 'json!../common/conf.json';
 import { stringify } from 'qs';
 import { message } from 'antd';
-import { routerRedux } from 'dva/router';
-import store from '../index';
+import { API_KEY } from '../common/constants';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -66,6 +65,9 @@ export default function request(url, options) {
   const newOptions = { ...defaultOptions, ...opts };
   if (newOptions.method === 'GET') {
     url += `/?${stringify(newOptions.body)}`;
+    newOptions.headers = {
+      ApiKey: API_KEY,
+    }
     newOptions.body = undefined;
   }
   if (newOptions.method === 'POST'
@@ -75,6 +77,7 @@ export default function request(url, options) {
     newOptions.headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json; charset=utf-8',
+      ApiKey: API_KEY,
       ...newOptions.headers,
     };
     newOptions.body = JSON.stringify(newOptions.body);

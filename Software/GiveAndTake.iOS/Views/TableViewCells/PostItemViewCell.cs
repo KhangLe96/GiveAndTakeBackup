@@ -415,7 +415,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitSeperatorLine()
 		{
-			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
+			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorLineHeight, 0, ColorHelper.BlueLineColor);
 
 			ContentView.AddSubview(_seperatorLine);
 
