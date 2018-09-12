@@ -56,7 +56,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 		private void InitFilterButton()
 		{
-			_btnFilter = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/filter_button");
+			_btnFilter = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, ImageHelper.LocationButtonDefault, ImageHelper.LocationButtonSelected);
 
 			View.Add(_btnFilter);
 			View.AddConstraints(new[]
@@ -70,7 +70,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 		private void InitSortButton()
 		{
-			_btnSort = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/sort_button");
+			_btnSort = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, ImageHelper.SortButtonDefault, ImageHelper.SortButtonSelected);
 
 			View.Add(_btnSort);
 			View.AddConstraints(new[]
@@ -84,7 +84,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 		private void InitCategoryButton()
 		{
-			_btnCategory = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, "Images/category_button");
+			_btnCategory = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, ImageHelper.CategoryButtonDefault, ImageHelper.CategoryButtonSelected);
 			View.Add(_btnCategory);
 			View.AddConstraints(new[]
 			{
@@ -196,7 +196,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			set.Bind(_refreshControl)
 				.For(v => v.RefreshCommand)
 				.To(vm => vm.RefreshCommand);
-
 			set.Bind(_btnCategory.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowCategoriesCommand);
@@ -213,6 +212,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.For(v => v.Command)
 				.To(vm => vm.CreatePostCommand);
 
+			set.Bind(_btnCategory)
+				.For(v => v.Selected)
+				.To(vm => vm.IsCategoryFilterActivated);
+
+			set.Bind(_btnFilter)
+				.For(v => v.Selected)
+				.To(vm => vm.IsLocationFilterActivated);
+
+			set.Bind(_btnSort)
+				.For(v => v.Selected)
+				.To(vm => vm.IsSortFilterActivated);
 			set.Apply();
 		}
 	}

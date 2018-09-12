@@ -231,6 +231,15 @@ namespace GiveAndTake.iOS.Helpers
 			return button;
 		}
 
+		public static UIButton CreateImageButton(nfloat height, nfloat width, string defaultImagePath, string selectedImagePath)
+		{
+			var button = CreateImageButton(height, width, defaultImagePath);
+
+			button.SetBackgroundImage(new UIImage(selectedImagePath), UIControlState.Selected);
+
+			return button;
+		}
+
 		public static UITableView CreateTableView(nfloat width, nfloat height)
 		{
 			var tableView = new UITableView

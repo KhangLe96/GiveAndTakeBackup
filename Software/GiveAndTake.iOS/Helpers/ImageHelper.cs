@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Foundation;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -7,7 +6,6 @@ namespace GiveAndTake.iOS.Helpers
 	{
 		public static string BasePath = "Images";
 
-		public static string CategoryButton { get; private set; }
 		public static string CommentIcon { get; private set; }
 		public static string DefaultAvatar { get; private set; }
 		public static string DefaultPost { get; private set; }
@@ -19,7 +17,6 @@ namespace GiveAndTake.iOS.Helpers
 		public static string HeartOff { get; private set; }
 		public static string LoginLogo { get; private set; }
 		public static string Multiphoto { get; private set; }
-		public static string SortButton { get; private set; }
 		public static string RequestOff { get; private set; }
 		public static string Splashscreen { get; private set; }
 		public static string TopLogo { get; private set; }
@@ -35,10 +32,15 @@ namespace GiveAndTake.iOS.Helpers
 		public static string ChoosePictureButton { get; private set; }
 		public static string LoginBackground { get; private set; }
 		public static string NewPost { get; private set; }
+		public static string LocationButtonDefault { get; private set; }
+		public static string LocationButtonSelected { get; private set; }
+		public static string CategoryButtonDefault { get; private set; }
+		public static string CategoryButtonSelected { get; private set; }
+		public static string SortButtonDefault { get; private set; }
+		public static string SortButtonSelected { get; private set; }
 
 		public static void InitStaticVariable()
 		{
-			CategoryButton = Path.Combine(BasePath, "category_button");
 			CommentIcon = Path.Combine(BasePath, "comment");
 			DefaultAvatar = Path.Combine(BasePath, "default_avatar");
 			DefaultPost = Path.Combine(BasePath, "default_post");
@@ -51,7 +53,6 @@ namespace GiveAndTake.iOS.Helpers
 			LoginLogo = Path.Combine(BasePath, "login_logo");
 			Multiphoto = Path.Combine(BasePath, "multiphoto");
 			RequestOff = Path.Combine(BasePath, "request_off");
-			SortButton = Path.Combine(BasePath, "sort_button");
 			Splashscreen = Path.Combine(BasePath, "splashscreen");
 			TopLogo = Path.Combine(BasePath, "Top_logo");
 			AvtOff = Path.Combine(BasePath, "avt_off");
@@ -66,6 +67,12 @@ namespace GiveAndTake.iOS.Helpers
 			ChoosePictureButton = Path.Combine(BasePath, "gallery_button");
 			LoginBackground = Path.Combine(BasePath, "login_background");
 			NewPost = Path.Combine(BasePath, "new_post");
+			LocationButtonDefault = Path.Combine(BasePath, "location_button_default");
+			LocationButtonSelected = Path.Combine(BasePath, "location_button_selected");
+			CategoryButtonDefault = Path.Combine(BasePath, "category_button_default");
+			CategoryButtonSelected = Path.Combine(BasePath, "category_button_selected");
+			SortButtonDefault = Path.Combine(BasePath, "sort_button_default");
+			SortButtonSelected = Path.Combine(BasePath, "sort_button_selected");
 		}
 	}
 }
