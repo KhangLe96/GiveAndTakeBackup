@@ -66,6 +66,7 @@ export default function request(url, options) {
   if (newOptions.method === 'GET') {
     url += `/?${stringify(newOptions.body)}`;
     newOptions.headers = {
+      ...newOptions.headers,
       ApiKey: API_KEY,
     }
     newOptions.body = undefined;
