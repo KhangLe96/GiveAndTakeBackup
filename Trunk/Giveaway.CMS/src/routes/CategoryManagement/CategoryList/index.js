@@ -4,7 +4,7 @@ import { Table, Divider, Card, Button, Spin, Popconfirm } from 'antd';
 import { Link, routerRedux } from 'dva/router';
 import moment from 'moment';
 import styles from './index.less';
-import { COLOR, DateFormatDisplay, ENG_VN_DICTIONARY, STATUSES, TABLE_PAGESIZE } from '../../../common/constants';
+import { DateFormatDisplay, ENG_VN_DICTIONARY, STATUSES, TABLE_PAGESIZE } from '../../../common/constants';
 
 @connect(({ modals, categoryManagement }) => ({
   ...modals, categoryManagement,
@@ -54,6 +54,10 @@ export default class index extends React.Component {
         dataIndex: 'status',
         key: 'CMSStatus',
         render: val => ENG_VN_DICTIONARY[val],
+      },
+      {
+        title: 'Mã màu nền',
+        dataIndex: 'backgroundColor',
       },
       {
         title: 'Hành động',

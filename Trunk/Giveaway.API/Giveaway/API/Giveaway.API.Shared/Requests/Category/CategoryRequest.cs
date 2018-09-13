@@ -13,5 +13,9 @@ namespace Giveaway.API.Shared.Requests.Category
         [DataMember(Name = "categoryImageUrl", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "categoryImageUrl")]
         public string CategoryImageUrl { get; set; }
+
+        [DataMember(Name = "backgroundColor", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "backgroundColor")]
+        public string BackgroundColor { get; set; }
     }
 }
