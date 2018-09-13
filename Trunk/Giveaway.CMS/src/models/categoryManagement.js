@@ -21,6 +21,7 @@ export default {
       id: null,
       status: null,
       updatedTime: null,
+      backgroundColor: null,
     },
     totals: 0,
   },
