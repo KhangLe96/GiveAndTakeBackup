@@ -63,6 +63,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat BackButtonWidth { get; private set; }
 		public static nfloat BackButtonHeight { get; private set; }
 		public static nfloat BackButtonMarginLeft { get; private set; }
+		public static nfloat DeletePhotoButtonWidth { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -141,6 +142,7 @@ namespace GiveAndTake.iOS.Helpers
 			BackButtonHeight = 25 * Rate;
 			BackButtonWidth = 12 * Rate;
 			BackButtonMarginLeft = 10 * Rate;
+			DeletePhotoButtonWidth = 25 * Rate;
 		}
 	}
 }

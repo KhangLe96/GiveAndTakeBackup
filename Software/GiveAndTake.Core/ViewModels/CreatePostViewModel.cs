@@ -106,14 +106,10 @@ namespace GiveAndTake.Core.ViewModels
 			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
 			ShowProvinceCityCommand = new MvxAsyncCommand(ShowProvinceCities);
 			CloseCommand = new MvxAsyncCommand(async () =>
-			{
-				var tasks = new List<Task>
 				{
-					NavigationService.Close(this),
-					NavigationService.Navigate<TabNavigationViewModel>(),
-				};
-				await Task.WhenAll(tasks);
-			});
+					await NavigationService.Close(this, true);
+					//await NavigationService.Navigate<TabNavigationViewModel>();
+				});
 		}
 
 		private async Task ShowCategories()
@@ -199,10 +195,10 @@ namespace GiveAndTake.Core.ViewModels
 				PostImages = _postImages,
 				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultItem) ? AppConstants.DefaultCategoryId : _dataModel.SelectedCategory.Id,
 				//PostCategory = "005ee304-800f-4247-97d7-d6a73301ca01", //For test
-				Address = "d785b6e2-95c5-4d71-a2c4-1b10d064fe84",	//Da Nang
+				Address = "d785b6e2-95c5-4d71-a2c4-1b10d064fe84",   //Da Nang
 			};
 			managementService.CreatePost(post);
-			NavigationService.Close(this,true);
+			NavigationService.Close(this, true);
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)

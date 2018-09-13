@@ -95,7 +95,10 @@
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
     <BundleResource Include="Resources\Images\my_avatar.png" />
+    <Compile Include="Views\CollectionViewCells\PhotoItemViewCell.cs" />
+    <Compile Include="Views\CollectionViewSources\PhotoItemViewSource.cs" />
     <Compile Include="Views\CreatePostView.cs" />
+    <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popups\PopupCategoriesView.cs" />
     <Compile Include="Views\Popups\PopupMessageView.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
@@ -151,6 +154,8 @@
     <BundleResource Include="Resources\Images\category_button_default.png" />
     <BundleResource Include="Resources\Images\sort_button_default.png" />
     <BundleResource Include="Resources\Images\back_button.png" />
+    <BundleResource Include="Resources\Images\btn_delete_photo%402x.png" />
+    <BundleResource Include="Resources\Images\btn_delete_photo.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

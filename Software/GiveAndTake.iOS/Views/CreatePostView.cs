@@ -18,7 +18,7 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Views
 {
-	[MvxRootPresentation]
+	[MvxModalPresentation]
 	public class CreatePostView : BaseView
 	{
 		private HeaderBar _headerBar;
@@ -108,6 +108,10 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_selectedImageTextView)
 				.For(v => v.Text)
 				.To(vm => vm.SelectedImage);
+
+			bindingSet.Bind(_selectedImageTextView.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowPhotoCollectionCommand);
 
 			bindingSet.Apply();
 		}

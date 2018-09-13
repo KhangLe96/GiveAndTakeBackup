@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels
@@ -21,6 +23,15 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxCommand<int> DeleteAPhotoCommand =>
 			_deleteAPhotoCommand ??
 			(_deleteAPhotoCommand = new MvxCommand<int>(DeleteAPhoto));
+
+		private IMvxAsyncCommand _iOSBackPressedCommand;
+		public IMvxAsyncCommand IOSBackPressedCommand => _iOSBackPressedCommand ??
+		(_iOSBackPressedCommand = new MvxAsyncCommand(IOSBackPressed));
+
+		private async Task IOSBackPressed()
+		{
+			await NavigationService.Close(this);
+		}
 
 		public override void Prepare(List<PostImage> postImages)
 		{
