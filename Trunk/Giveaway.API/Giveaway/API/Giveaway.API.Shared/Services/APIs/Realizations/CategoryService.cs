@@ -10,7 +10,6 @@ using Giveaway.Util.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CategoryRequest = Giveaway.Data.EF.DTOs.Requests.CategoryRequest;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -123,7 +122,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
             Id = Guid.NewGuid(),
             CategoryName = request.CategoryName,
-            ImageUrl = request.CategoryImageUrl
+            ImageUrl = request.CategoryImageUrl,
+            BackgroundColor = request.BackgroundColor
         };
 
         private Category GetCategory(Guid id)
@@ -141,6 +141,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             category.CategoryName = request.CategoryName;
             category.ImageUrl = request.CategoryImageUrl;
             category.UpdatedTime = DateTimeOffset.UtcNow;
+            category.BackgroundColor = request.BackgroundColor;
         }
 
         private static CategoryResponse GenerateCategoryResponse(Category category) => new CategoryResponse
@@ -150,7 +151,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             CategoryImageUrl = category.ImageUrl,
             CreatedTime = category.CreatedTime,
             UpdatedTime = category.UpdatedTime,
-            EntityStatus = category.EntityStatus.ToString()
+            EntityStatus = category.EntityStatus.ToString(),
+            BackgroundColor = category.BackgroundColor
         };
 
         #endregion

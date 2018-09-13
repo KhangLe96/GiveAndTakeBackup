@@ -22,6 +22,7 @@ export default class index extends PureComponent {
         const payload = {
           categoryName: value.categoryName,
           categoryImageUrl: (value.categoryImageUrl) ? value.categoryImageUrl : DEFAULT_NO_IMAGE_PATH,
+          backgroundColor: value.backgroundColor,
         };
         this.props.dispatch({
           type: 'categoryManagement/create',
@@ -43,6 +44,17 @@ export default class index extends PureComponent {
             {getFieldDecorator('categoryName', {
               rules: [{
                 required: true, message: 'Vui lòng nhập tên danh mục!',
+              }],
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem
+            label="Mã màu nền"
+          >
+            {getFieldDecorator('backgroundColor', {
+              rules: [{
+                required: true, message: 'Vui lòng nhập Mã màu nền!',
               }],
             })(
               <Input />

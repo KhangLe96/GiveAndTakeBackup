@@ -68,6 +68,7 @@ export default class index extends PureComponent {
           category: {
             categoryName: value.categoryName,
             categoryImageUrl: (value.categoryImageUrl) ? value.categoryImageUrl : DEFAULT_NO_IMAGE_PATH,
+            backgroundColor: value.backgroundColor,
           },
           id: params.id,
         };
@@ -89,7 +90,7 @@ export default class index extends PureComponent {
   }
 
   render() {
-    const { form: { getFieldDecorator }, selectedCategory: { categoryName, doesHaveAnyPost, status } } = this.props;
+    const { form: { getFieldDecorator }, selectedCategory: { categoryName, doesHaveAnyPost, status, backgroundColor } } = this.props;
     return (
       <div>
         <div className="containerHeader">
@@ -127,6 +128,18 @@ export default class index extends PureComponent {
                 initialValue: ENG_VN_DICTIONARY[status],
               })(
                 <Input disabled />
+              )}
+            </FormItem>
+            <FormItem
+              label="Mã màu nền"
+            >
+              {getFieldDecorator('backgroundColor', {
+                rules: [{
+                  required: true,
+                }],
+                initialValue: backgroundColor,
+              })(
+                <Input />
               )}
             </FormItem>
             {/* <FormItem
