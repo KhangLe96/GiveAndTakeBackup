@@ -111,9 +111,18 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 			_searchBar.SearchButtonClicked += OnSearchSubmit;
 			_searchBar.CancelButtonClicked += OnSearchSubmit;
+			_searchBar.TextChanged += OnTextChanged;
 		}
 
-	    private void InitSeparatorLine()
+		private void OnTextChanged(object sender, UISearchBarTextChangedEventArgs e)
+		{
+			if (string.IsNullOrEmpty(e.SearchText))
+			{
+				OnSearchSubmit(this, null);
+			}
+		}
+
+		private void InitSeparatorLine()
 	    {
 	        _separatorLine = UIHelper.CreateView(DimensionHelper.MenuSeparatorLineHeight, DimensionHelper.HeaderBarLogoWidth, ColorHelper.GreyLineColor);
 	        View.Add(_separatorLine);
