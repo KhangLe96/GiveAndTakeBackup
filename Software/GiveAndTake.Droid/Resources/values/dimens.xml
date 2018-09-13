@@ -26,5 +26,6 @@
 	<dimen name="login_title_text_size">18sp</dimen>
 	<dimen name="margin_popup_item">4dp</dimen>
 	<dimen name="post_image_corner">2dp</dimen>
-  <dimen name="margin_17dp">17dp</dimen>
+	<dimen name="margin_17dp">17dp</dimen>
+	<dimen name="margin_separator">5dp</dimen>
 </resources>

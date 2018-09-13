@@ -7,7 +7,7 @@
 		public const string DefaultLocationFilter = "Đà Nẵng";
 		public const string Login = "ĐĂNG NHẬP";
 		public const string ApiUrl = "http://192.168.51.137:8089/api/v1/";
-		public const int ApiTimeout = 30; // seconds
+		public const int ApiTimeout = 10; // seconds
 		public const string GetCategories = "categories";
 		public const string GetPostList = "post/app/list";
 		public const string GetPostDetail = "post/app/detail";

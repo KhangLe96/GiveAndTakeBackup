@@ -67,7 +67,7 @@
       android:layout_height="wrap_content"
       android:text="-"
       android:textSize="@dimen/SmallTextSize"
-      android:layout_marginLeft="@dimen/margin_short"
+      android:layout_marginLeft="@dimen/margin_separator"
       android:layout_toRightOf="@id/tvPostDate"
       android:layout_below="@id/tvUserFullName" />
   <TextView
@@ -75,7 +75,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:textSize="@dimen/SmallTextSize"
-      android:layout_marginLeft="@dimen/margin_short"
+      android:layout_marginLeft="@dimen/margin_separator"
       local:MvxBind="Text Address"
       android:layout_toRightOf="@id/tvSeperator"
       android:layout_below="@id/tvUserFullName" />

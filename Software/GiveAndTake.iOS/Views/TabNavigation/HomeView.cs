@@ -196,6 +196,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			set.Bind(_refreshControl)
 				.For(v => v.RefreshCommand)
 				.To(vm => vm.RefreshCommand);
+
 			set.Bind(_btnCategory.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowCategoriesCommand);
