@@ -150,6 +150,7 @@
     <BundleResource Include="Resources\Images\location_button_selected.png" />
     <BundleResource Include="Resources\Images\category_button_default.png" />
     <BundleResource Include="Resources\Images\sort_button_default.png" />
+    <BundleResource Include="Resources\Images\back_button.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

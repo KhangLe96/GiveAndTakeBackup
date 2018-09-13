@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 	public class TabNavigationViewModel : BaseViewModel
 	{
 		private readonly IDataModel _dataModel;
-		private IMvxAsyncCommand _showInitialViewModelsCommand;
 
+		private IMvxAsyncCommand _showInitialViewModelsCommand;
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
 			_showInitialViewModelsCommand ??
 			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));

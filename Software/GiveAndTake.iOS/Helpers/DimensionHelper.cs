@@ -28,8 +28,8 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat ButtonExtensionHeight { get; private set; }
 		public static nfloat ButtonExtensionWidth { get; private set; }
 		public static nfloat PostCellHeight { get; private set; }
-        public static float SeperatorLineHeight { get; private set; }
-        public static nfloat ButtonTextSize { get; set; }
+		public static float SeperatorLineHeight { get; private set; }
+		public static nfloat ButtonTextSize { get; set; }
 		public static nfloat SeperatorHeight { get; set; }
 		public static nfloat PostPhotoCornerRadius { get; set; }
 		public static nfloat PopupLineWidth { get; set; }
@@ -59,9 +59,12 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupCancelButtonBorder { get; set; }
 		public static nfloat PopupContentRadius { get; set; }
 		public static nfloat NewPostSize { get; set; }
-        public static nfloat MenuSeparatorLineHeight { get; private set; }
+		public static nfloat MenuSeparatorLineHeight { get; private set; }
+		public static nfloat BackButtonWidth { get; private set; }
+		public static nfloat BackButtonHeight { get; private set; }
+		public static nfloat BackButtonMarginLeft { get; private set; }
 
-        public static void InitStaticVariable()
+		public static void InitStaticVariable()
 		{
 			SmallTextSize = 11 * Rate;
 			ButtonTextSize = 12 * Rate;
@@ -69,23 +72,23 @@ namespace GiveAndTake.iOS.Helpers
 			HeaderBarLogoWidth = 200 * Rate;
 			HeaderBarLogoHeight = 20 * Rate;
 			HeaderBarHeight = 60 * Rate;
-		    PostDescriptionTextSize = 13 * Rate;
-		    MarginShort = 6 * Rate;
-		    MarginText = 4 * Rate;
-		    MarginNormal = 12 * Rate;
+			PostDescriptionTextSize = 13 * Rate;
+			MarginShort = 6 * Rate;
+			MarginText = 4 * Rate;
+			MarginNormal = 12 * Rate;
 			MarginBig = 25 * Rate;
 			AvatarMargin = 16 * Rate;
-		    ImagePostSize = 120 * Rate;
-		    ImageMultiSize = 20 * Rate;
-		    ImageAvatarSize = 29 * Rate;
-		    FilterSize = 40 * Rate;
-		    ButtonCategoryHeight = 20 * Rate;
-		    ButtonRequestHeight = 9 * Rate;
-		    ButtonRequestWidth = 15 * Rate;
-		    ButtonSmallWidth = 12 * Rate;
-		    ButtonSmallHeight = 12 * Rate;
-		    ButtonExtensionHeight = 3 * Rate;
-		    ButtonExtensionWidth = 10 * Rate;
+			ImagePostSize = 120 * Rate;
+			ImageMultiSize = 20 * Rate;
+			ImageAvatarSize = 29 * Rate;
+			FilterSize = 40 * Rate;
+			ButtonCategoryHeight = 20 * Rate;
+			ButtonRequestHeight = 9 * Rate;
+			ButtonRequestWidth = 15 * Rate;
+			ButtonSmallWidth = 12 * Rate;
+			ButtonSmallHeight = 12 * Rate;
+			ButtonExtensionHeight = 3 * Rate;
+			ButtonExtensionWidth = 10 * Rate;
 			HeaderBarLogoHeight = 30 * Rate;
 			HeaderBarHeight = 50 * Rate;
 			PostDescriptionTextSize = 13 * Rate;
@@ -106,8 +109,8 @@ namespace GiveAndTake.iOS.Helpers
 			ButtonExtensionWidth = 10 * Rate;
 			PostPhotoCornerRadius = 7 * Rate;
 			SeparateLineHeaderHeight = 1 * Rate;
-		    SeperatorHeight = 0.5f * Rate;
-		    PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
+			SeperatorHeight = 0.5f * Rate;
+			PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
 			SeperatorLineHeight = 0.1f * Rate;
 			PopupLineWidth = 50 * Rate;
 			PopupLineHeight = 4 * Rate;
@@ -134,7 +137,10 @@ namespace GiveAndTake.iOS.Helpers
 			PopupCancelButtonBorder = 1 * Rate;
 			PopupContentRadius = 15 * Rate;
 			NewPostSize = 50 * Rate;
-		    MenuSeparatorLineHeight = 6 * Rate;
+			MenuSeparatorLineHeight = 6 * Rate;
+			BackButtonHeight = 25 * Rate;
+			BackButtonWidth = 12 * Rate;
+			BackButtonMarginLeft = 10 * Rate;
 		}
 	}
 }

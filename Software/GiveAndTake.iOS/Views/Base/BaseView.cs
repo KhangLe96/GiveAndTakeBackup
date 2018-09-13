@@ -24,6 +24,11 @@ namespace GiveAndTake.iOS.Views.Base
 			CreateBinding();
 		}
 
+		protected virtual void ConfigNavigationBar()
+		{
+			//NavigationItem
+		}
+
 		protected abstract void InitView();
 
 		protected virtual void CreateBinding()

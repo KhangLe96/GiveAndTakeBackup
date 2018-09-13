@@ -9,6 +9,7 @@ using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Plugin.PictureChooser;
@@ -104,7 +105,15 @@ namespace GiveAndTake.Core.ViewModels
 			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
 			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
 			ShowProvinceCityCommand = new MvxAsyncCommand(ShowProvinceCities);
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this));
+			CloseCommand = new MvxAsyncCommand(async () =>
+			{
+				var tasks = new List<Task>
+				{
+					NavigationService.Close(this),
+					NavigationService.Navigate<TabNavigationViewModel>(),
+				};
+				await Task.WhenAll(tasks);
+			});
 		}
 
 		private async Task ShowCategories()

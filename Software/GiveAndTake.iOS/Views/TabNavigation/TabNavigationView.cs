@@ -26,6 +26,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			set.Bind(_imgAvatar)
 				.For(v => v.ImageUrl)
 				.To(vm => vm.AvatarUrl);
+
 			set.Apply();
 
 			InitHeaderBar();
@@ -81,7 +82,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			}
 
 			NavigationController?.SetNavigationBarHidden(true, animated);
+
+			//UIImageView titleImageView = new UIImageView
+			//{
+			//	Image = new UIImage(ImageHelper.TopLogo),
+			//	Frame = new CGRect(0, 0, 34, 34),
+			//	ContentMode = UIViewContentMode.ScaleAspectFit
+			//};
+			//NavigationItem.TitleView = titleImageView;
+			//NavigationItem.SetHidesBackButton(true, animated);
 		}
+
 		private static UIImage ConvertViewToImage(UIView view)
 		{
 			UIGraphics.BeginImageContext(view.Bounds.Size);

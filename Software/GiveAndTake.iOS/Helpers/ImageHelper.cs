@@ -38,6 +38,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string CategoryButtonSelected { get; private set; }
 		public static string SortButtonDefault { get; private set; }
 		public static string SortButtonSelected { get; private set; }
+		public static string BackButton { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -73,6 +74,7 @@ namespace GiveAndTake.iOS.Helpers
 			CategoryButtonSelected = Path.Combine(BasePath, "category_button_selected");
 			SortButtonDefault = Path.Combine(BasePath, "sort_button_default");
 			SortButtonSelected = Path.Combine(BasePath, "sort_button_selected");
+			BackButton = Path.Combine(BasePath, "back_button");
 		}
 	}
 }
