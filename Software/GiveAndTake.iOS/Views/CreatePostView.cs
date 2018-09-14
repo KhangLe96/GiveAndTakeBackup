@@ -18,7 +18,7 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Views
 {
-	[MvxRootPresentation]
+	[MvxModalPresentation]
 	public class CreatePostView : BaseView
 	{
 		private HeaderBar _headerBar;
@@ -33,12 +33,21 @@ namespace GiveAndTake.iOS.Views
 		private UILabel _selectedImageTextView;
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
+		public IMvxAsyncCommand CloseCommand { get; set; }
 
 		protected override void InitView()
 		{
 			ResolutionHelper.InitStaticVariable();
 			DimensionHelper.InitStaticVariable();
 			ImageHelper.InitStaticVariable();
+
+			var bindingSet = this.CreateBindingSet<CreatePostView, CreatePostViewModel>();
+
+			bindingSet.Bind(this)
+				.For(v => v.CloseCommand)
+				.To(vm => vm.CloseCommand);
+
+			bindingSet.Apply();
 
 			InitHeaderBar();
 			InitChooseProvinceCityButton();
@@ -50,8 +59,6 @@ namespace GiveAndTake.iOS.Views
 			InitSelectedImageTextView();
 			InitCancelButton();
 			InitSubmitButton();
-
-			CreateBinding();
 		}
 
 		protected override void CreateBinding()
@@ -102,13 +109,18 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.Text)
 				.To(vm => vm.SelectedImage);
 
+			bindingSet.Bind(_selectedImageTextView.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowPhotoCollectionCommand);
+
 			bindingSet.Apply();
 		}
 
 		private void InitHeaderBar()
 		{
-			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight, UIColor.White);
-
+			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
+				UIColor.White, true);
+			_headerBar.BackPressedCommand = CloseCommand;
 			View.Add(_headerBar);
 			View.AddConstraints(new[]
 			{
@@ -121,7 +133,7 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitChooseProvinceCityButton()
 		{
-			_btnChooseProvinceCity = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth, 
+			_btnChooseProvinceCity = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
 				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize, "Tỉnh/Thành phố", DimensionHelper.FilterSize / 2);
 
 			_btnChooseProvinceCity.Layer.BorderColor = ColorHelper.PlaceHolderTextColor.CGColor;
@@ -161,11 +173,11 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitPostTitleEditText()
 		{
-			_postTitleTextField = UIHelper.CreateEditTextField(DimensionHelper.DropDownButtonHeight, DimensionHelper.CreatePostEditTextWidth, 
+			_postTitleTextField = UIHelper.CreateEditTextField(DimensionHelper.DropDownButtonHeight, DimensionHelper.CreatePostEditTextWidth,
 				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.FilterSize / 2);
 			_postTitleTextField.Placeholder = "Tiêu đề";
 			_postTitleTextField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
-			_postTitleTextField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15,0,0);
+			_postTitleTextField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15, 0, 0);
 
 			View.Add(_postTitleTextField);
 			View.AddConstraints(new[]
@@ -181,7 +193,7 @@ namespace GiveAndTake.iOS.Views
 		{
 			_postDescriptionTextView = UIHelper.CreateEditTextView(DimensionHelper.PostDescriptionEditTextHeight, DimensionHelper.CreatePostEditTextWidth,
 				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.FilterSize / 2, "Mô tả", ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize);
-			
+
 
 			View.Add(_postDescriptionTextView);
 			View.AddConstraints(new[]
@@ -242,9 +254,9 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitCancelButton()
 		{
-			_btnCancel = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight, 
-				ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, DimensionHelper.MediumTextSize, 
-				UIColor.White, UIColor.White, ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, 
+			_btnCancel = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight,
+				ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, DimensionHelper.MediumTextSize,
+				UIColor.White, UIColor.White, ColorHelper.PrimaryColor, ColorHelper.SecondaryColor,
 				true, true);
 
 			_btnCancel.SetTitle("Hủy", UIControlState.Normal);
@@ -261,7 +273,7 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitSubmitButton()
 		{
-			_btnSubmit = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight, 
+			_btnSubmit = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight,
 				UIColor.White, UIColor.White, DimensionHelper.MediumTextSize,
 				ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, ColorHelper.PrimaryColor, ColorHelper.SecondaryColor);
 
@@ -277,7 +289,7 @@ namespace GiveAndTake.iOS.Views
 			});
 		}
 
-		async void HandleSelectImage (object sender, EventArgs e)
+		async void HandleSelectImage(object sender, EventArgs e)
 		{
 			await MediaHelper.OpenGallery();
 			var image = MediaHelper.images;

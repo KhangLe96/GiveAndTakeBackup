@@ -32,12 +32,14 @@ namespace GiveAndTake.iOS.Helpers
 		public static string ChoosePictureButton { get; private set; }
 		public static string LoginBackground { get; private set; }
 		public static string NewPost { get; private set; }
+		public static string DeletePhotoButton { get; private set; }
 		public static string LocationButtonDefault { get; private set; }
 		public static string LocationButtonSelected { get; private set; }
 		public static string CategoryButtonDefault { get; private set; }
 		public static string CategoryButtonSelected { get; private set; }
 		public static string SortButtonDefault { get; private set; }
 		public static string SortButtonSelected { get; private set; }
+		public static string BackButton { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -67,12 +69,14 @@ namespace GiveAndTake.iOS.Helpers
 			ChoosePictureButton = Path.Combine(BasePath, "gallery_button");
 			LoginBackground = Path.Combine(BasePath, "login_background");
 			NewPost = Path.Combine(BasePath, "new_post");
+			DeletePhotoButton = Path.Combine(BasePath, "btn_delete_photo");
 			LocationButtonDefault = Path.Combine(BasePath, "location_button_default");
 			LocationButtonSelected = Path.Combine(BasePath, "location_button_selected");
 			CategoryButtonDefault = Path.Combine(BasePath, "category_button_default");
 			CategoryButtonSelected = Path.Combine(BasePath, "category_button_selected");
 			SortButtonDefault = Path.Combine(BasePath, "sort_button_default");
 			SortButtonSelected = Path.Combine(BasePath, "sort_button_selected");
+			BackButton = Path.Combine(BasePath, "back_button");
 		}
 	}
 }

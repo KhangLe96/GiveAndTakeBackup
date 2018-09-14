@@ -1,10 +1,7 @@
 ﻿using GiveAndTake.Core;
 using System;
-using CoreFoundation;
-using FFImageLoading.Cross;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
-using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
@@ -25,9 +22,9 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
-		public static HeaderBar CreateHeaderBar(nfloat width, nfloat height, UIColor backgroundColor)
+		public static HeaderBar CreateHeaderBar(nfloat width, nfloat height, UIColor backgroundColor, bool isShowBackButton=false)
 		{
-			var headerBar = new HeaderBar
+			var headerBar = new HeaderBar(isShowBackButton)
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				BackgroundColor = backgroundColor,
@@ -72,7 +69,7 @@ namespace GiveAndTake.iOS.Helpers
 			return view;
 		}
 
-		public static PlaceholderTextView CreateEditTextView(nfloat height, nfloat width, UIColor backgroundColor, UIColor borderColor, 
+		public static PlaceholderTextView CreateEditTextView(nfloat height, nfloat width, UIColor backgroundColor, UIColor borderColor,
 			nfloat cornerRadius, string placeHolder, UIColor placeHolderColor, nfloat textSize, FontType fontType = FontType.Regular)
 		{
 			var editText = new PlaceholderTextView
@@ -94,8 +91,8 @@ namespace GiveAndTake.iOS.Helpers
 			return editText;
 		}
 
-		public static UITextField CreateEditTextField(nfloat height, nfloat width, 
-			UIColor backgroundColor, UIColor borderColor, 
+		public static UITextField CreateEditTextField(nfloat height, nfloat width,
+			UIColor backgroundColor, UIColor borderColor,
 			nfloat cornerRadius)
 		{
 			var editText = new UITextField
