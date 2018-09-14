@@ -3,7 +3,6 @@ using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
-using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Plugin.PictureChooser;
@@ -102,6 +101,9 @@ namespace GiveAndTake.Core.ViewModels
 		public string PostTitlePlaceHolder { get; set; } = "Tiêu đề";
 		public string ProvinceCityPlaceHolder { get; set; } = "Tỉnh/Thành phố";
 		public string CategoryPlaceHolder { get; set; } = "Loại ...";
+		public string BtnSubmitTitle { get; set; } = "Đăng";
+		public string BtnCancelTitle { get; set; } = "Hủy";
+		public string SelectedImageTextViewText { get; set; } = "Đã chọn 0 hình";
 
 		public CreatePostViewModel(IMvxPictureChooserTask pictureChooserTask, IDataModel dataModel)
 		{
@@ -210,7 +212,7 @@ namespace GiveAndTake.Core.ViewModels
 				//PostCategory = "005ee304-800f-4247-97d7-d6a73301ca01", //For test
 				Address = "d785b6e2-95c5-4d71-a2c4-1b10d064fe84",   //Da Nang
 			};
-			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
+			managementService.CreatePost(post, AppConstants.Token);
 			NavigationService.Close(this,true);
 		}
 

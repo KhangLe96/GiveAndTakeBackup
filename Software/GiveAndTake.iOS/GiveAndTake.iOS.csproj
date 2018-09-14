@@ -81,6 +81,7 @@
     <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
+    <Compile Include="Converters\StringToAttributedTextConverter.cs" />
     <Compile Include="CustomControls\HeaderBar.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
