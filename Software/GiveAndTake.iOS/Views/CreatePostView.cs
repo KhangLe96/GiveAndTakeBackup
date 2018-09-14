@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CoreAnimation;
+﻿using CoreAnimation;
 using Foundation;
-using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
-using MvvmCross;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using System;
+using System.Collections.Generic;
+using GiveAndTake.Core;
+using MvvmCross.Platforms.Ios.Binding;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
@@ -22,8 +21,8 @@ namespace GiveAndTake.iOS.Views
 	public class CreatePostView : BaseView
 	{
 		private HeaderBar _headerBar;
-		private UIButton _btnChooseProvinceCity;
-		private UIButton _btnChooseCategory;
+		private UITextField _chooseProvinceCityField;
+		private UITextField _chooseCategoryField;
 		private UITextField _postTitleTextField;
 		private PlaceholderTextView _postDescriptionTextView;
 		private UIButton _btnTakePicture;
@@ -50,52 +49,57 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Apply();
 
 			InitHeaderBar();
-			InitChooseProvinceCityButton();
-			InitChooseCategoryButton();
-			InitPostTitleEditText();
-			InitPostDescriptionEditText();
+			InitChooseProvinceCitField();
+			InitChooseCategoryField();
+			InitPostTitleTextField();
+			InitPostDescriptionTextView();
 			InitChoosePictureButton();
 			InitTakePictureButton();
 			InitSelectedImageTextView();
 			InitCancelButton();
 			InitSubmitButton();
+			DismissKeyboard();
+			CreateBinding();
 		}
 
 		protected override void CreateBinding()
 		{
 			var bindingSet = this.CreateBindingSet<CreatePostView, CreatePostViewModel>();
 
-			bindingSet.Bind(_btnTakePicture.Tap())
-				.For(v => v.Command)
+			bindingSet.Bind(_btnTakePicture)
 				.To(vm => vm.TakePictureCommand);
-
-			bindingSet.Bind(_btnChooseProvinceCity.TitleLabel)
-				.For(v => v.Text)
-				.To(vm => vm.ProvinceCity);
-
-			bindingSet.Bind(_btnChooseCategory.TitleLabel)
-				.For(v => v.Text)
-				.To(vm => vm.Category);
 
 			bindingSet.Bind(_btnSubmit.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.SubmitCommand);
 
 			bindingSet.Bind(_postTitleTextField)
-				.For(v => v.Text)
+				.For("Text")
 				.To(vm => vm.PostTitle);
 
-			bindingSet.Bind(_postDescriptionTextView)
-				.For(v => v.Text)
-				.To(vm => vm.PostDescription);
-
-			bindingSet.Bind(_btnChooseProvinceCity.Tap())
+			bindingSet.Bind(_chooseProvinceCityField.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowProvinceCityCommand);
 
-			bindingSet.Bind(_btnChooseCategory.Tap())
+			bindingSet.Bind(_chooseProvinceCityField)
+				.For(v => v.Placeholder)
+				.To(vm => vm.ProvinceCityPlaceHolder);
+
+			bindingSet.Bind(_chooseProvinceCityField)
+				.For(v => v.Text)
+				.To(vm => vm.ProvinceCity);
+
+			bindingSet.Bind(_chooseCategoryField.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowCategoriesCommand);
+
+			bindingSet.Bind(_chooseCategoryField)
+				.For(v => v.Placeholder)
+				.To(vm => vm.CategoryPlaceHolder);
+
+			bindingSet.Bind(_chooseCategoryField)
+				.For(v => v.Text)
+				.To(vm => vm.Category);
 
 			bindingSet.Bind(_btnCancel.Tap())
 				.For(v => v.Command)
@@ -105,13 +109,27 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.ImageCommand)
 				.To(vm => vm.ImageCommand);
 
+			bindingSet.Bind(_postTitleTextField)
+				.For(v => v.Placeholder)
+				.To(vm => vm.PostTitlePlaceHolder);
+
+			bindingSet.Bind(_postDescriptionTextView)
+				.For(v => v.Placeholder)
+				.To(vm => vm.PostDescriptionPlaceHolder);
+
 			bindingSet.Bind(_selectedImageTextView)
-				.For(v => v.Text)
 				.To(vm => vm.SelectedImage);
 
 			bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowPhotoCollectionCommand);
+
+			if (_postDescriptionTextView.Text == null)
+			{
+				bindingSet.Bind(_postDescriptionTextView)
+					.For(v => v.Text)
+					.To(vm => vm.PostDescription);
+			}
 
 			bindingSet.Apply();
 		}
@@ -122,6 +140,7 @@ namespace GiveAndTake.iOS.Views
 				UIColor.White, true);
 			_headerBar.BackPressedCommand = CloseCommand;
 			View.Add(_headerBar);
+
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
@@ -131,68 +150,77 @@ namespace GiveAndTake.iOS.Views
 			});
 		}
 
-		private void InitChooseProvinceCityButton()
+		private void InitChooseProvinceCitField()
 		{
-			_btnChooseProvinceCity = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
-				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize, "Tỉnh/Thành phố", DimensionHelper.FilterSize / 2);
+			
+			_chooseProvinceCityField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight,
+				DimensionHelper.DropDownFieldWidth,
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.DropDownFieldHeight / 2);
 
-			_btnChooseProvinceCity.Layer.BorderColor = ColorHelper.PlaceHolderTextColor.CGColor;
-			_btnChooseProvinceCity.Layer.BorderWidth = 1;
-			_btnChooseProvinceCity.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-			_btnChooseProvinceCity.ContentEdgeInsets = new UIEdgeInsets(10, 15, 10, 10);
+			_chooseProvinceCityField.UserInteractionEnabled = false;
+			_chooseProvinceCityField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
+			_chooseProvinceCityField.Layer.BorderWidth = 1;
+			_chooseProvinceCityField.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+			_chooseProvinceCityField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15, 0, 0);
 
-			View.Add(_btnChooseProvinceCity);
+			View.Add(_chooseProvinceCityField);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnChooseProvinceCity, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_chooseProvinceCityField, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
-				NSLayoutConstraint.Create(_btnChooseProvinceCity, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(_chooseProvinceCityField, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
 			});
 		}
 
-		private void InitChooseCategoryButton()
+		private void InitChooseCategoryField()
 		{
-			_btnChooseCategory = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
-				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize, "Loại ...", DimensionHelper.FilterSize / 2);
+			_chooseCategoryField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight,
+				DimensionHelper.DropDownFieldWidth,
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.DropDownFieldHeight / 2);
 
-			_btnChooseCategory.Layer.BorderColor = ColorHelper.PlaceHolderTextColor.CGColor;
-			_btnChooseCategory.Layer.BorderWidth = 1;
-			_btnChooseCategory.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-			_btnChooseCategory.ContentEdgeInsets = new UIEdgeInsets(10, 15, 10, 10);
+			_chooseCategoryField.UserInteractionEnabled = false;
+			_chooseCategoryField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
+			_chooseCategoryField.Layer.BorderWidth = 1;
+			_chooseCategoryField.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+			_chooseCategoryField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15, 0, 0);
 
-			View.Add(_btnChooseCategory);
+			View.Add(_chooseCategoryField);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnChooseCategory, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_chooseCategoryField, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
-				NSLayoutConstraint.Create(_btnChooseCategory, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(_chooseCategoryField, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin)
 			});
 		}
 
-		private void InitPostTitleEditText()
+		private void InitPostTitleTextField()
 		{
-			_postTitleTextField = UIHelper.CreateEditTextField(DimensionHelper.DropDownButtonHeight, DimensionHelper.CreatePostEditTextWidth,
-				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.FilterSize / 2);
-			_postTitleTextField.Placeholder = "Tiêu đề";
+			_postTitleTextField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight, DimensionHelper.CreatePostEditTextWidth,
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.FilterSize / 2);
+			
 			_postTitleTextField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
 			_postTitleTextField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15, 0, 0);
+			_postTitleTextField.ShouldReturn = (textField) => {
+				textField.ResignFirstResponder();
+				return true;
+			};
 
 			View.Add(_postTitleTextField);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_postTitleTextField, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnChooseProvinceCity,
+				NSLayoutConstraint.Create(_postTitleTextField, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _chooseProvinceCityField,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
 				NSLayoutConstraint.Create(_postTitleTextField, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
 			});
 		}
 
-		private void InitPostDescriptionEditText()
+		private void InitPostDescriptionTextView()
 		{
-			_postDescriptionTextView = UIHelper.CreateEditTextView(DimensionHelper.PostDescriptionEditTextHeight, DimensionHelper.CreatePostEditTextWidth,
-				ColorHelper.DefaultEditTextFieldColor, ColorHelper.PlaceHolderTextColor, DimensionHelper.FilterSize / 2, "Mô tả", ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize);
+			_postDescriptionTextView = UIHelper.CreateTextView(DimensionHelper.PostDescriptionEditTextHeight, DimensionHelper.CreatePostEditTextWidth,
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.FilterSize / 2, ColorHelper.Gray, DimensionHelper.MediumTextSize);
 
 
 			View.Add(_postDescriptionTextView);
@@ -236,7 +264,7 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitSelectedImageTextView()
 		{
-			_selectedImageTextView = UIHelper.CreateLabel(ColorHelper.PlaceHolderTextColor, DimensionHelper.MediumTextSize);
+			_selectedImageTextView = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.MediumTextSize);
 			var selectedImageTextViewText = "Đã chọn 0 hình";
 
 			var normalAttributedTitle = new NSAttributedString(selectedImageTextViewText, underlineStyle: NSUnderlineStyle.Single);
@@ -255,8 +283,8 @@ namespace GiveAndTake.iOS.Views
 		private void InitCancelButton()
 		{
 			_btnCancel = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight,
-				ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, DimensionHelper.MediumTextSize,
-				UIColor.White, UIColor.White, ColorHelper.PrimaryColor, ColorHelper.SecondaryColor,
+				ColorHelper.LightBlue, ColorHelper.DarkBlue, DimensionHelper.MediumTextSize,
+				UIColor.White, UIColor.White, ColorHelper.LightBlue, ColorHelper.DarkBlue,
 				true, true);
 
 			_btnCancel.SetTitle("Hủy", UIControlState.Normal);
@@ -275,7 +303,7 @@ namespace GiveAndTake.iOS.Views
 		{
 			_btnSubmit = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight,
 				UIColor.White, UIColor.White, DimensionHelper.MediumTextSize,
-				ColorHelper.PrimaryColor, ColorHelper.SecondaryColor, ColorHelper.PrimaryColor, ColorHelper.SecondaryColor);
+				ColorHelper.LightBlue, ColorHelper.DarkBlue, ColorHelper.LightBlue, ColorHelper.DarkBlue);
 
 			_btnSubmit.SetTitle("Đăng", UIControlState.Normal);
 
@@ -292,8 +320,19 @@ namespace GiveAndTake.iOS.Views
 		async void HandleSelectImage(object sender, EventArgs e)
 		{
 			await MediaHelper.OpenGallery();
-			var image = MediaHelper.images;
-			ImageCommand.Execute(image);
+			var image = MediaHelper.Images;
+			if (image != null)
+			{
+				ImageCommand.Execute(image);
+			}
+		}
+
+		private void DismissKeyboard()
+		{
+			var g = new UITapGestureRecognizer(() => View.EndEditing(true));
+			g.CancelsTouchesInView = false; //for iOS5
+
+			View.AddGestureRecognizer(g);
 		}
 	}
 }

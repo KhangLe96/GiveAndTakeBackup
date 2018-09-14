@@ -29,7 +29,7 @@ namespace GiveAndTake.iOS.CustomControls
 			_logoImage.Image = UIImage.FromFile(ImageHelper.TopLogo);
 
 			_separateLine = UIHelper.CreateView(DimensionHelper.HeaderBarLogoWidth,
-				DimensionHelper.SeperatorHeight, ColorHelper.SeparatorColor);
+				DimensionHelper.SeperatorHeight, ColorHelper.Gray);
 
 			AddSubview(_logoImage);
 			AddConstraints(new[]

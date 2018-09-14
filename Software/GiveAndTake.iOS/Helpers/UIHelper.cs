@@ -1,5 +1,6 @@
 ﻿using GiveAndTake.Core;
 using System;
+using FFImageLoading.Cross;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using UIKit;
@@ -69,13 +70,12 @@ namespace GiveAndTake.iOS.Helpers
 			return view;
 		}
 
-		public static PlaceholderTextView CreateEditTextView(nfloat height, nfloat width, UIColor backgroundColor, UIColor borderColor,
-			nfloat cornerRadius, string placeHolder, UIColor placeHolderColor, nfloat textSize, FontType fontType = FontType.Regular)
+		public static PlaceholderTextView CreateTextView(nfloat height, nfloat width, UIColor backgroundColor, UIColor borderColor, 
+			nfloat cornerRadius, UIColor placeHolderColor, nfloat textSize, FontType fontType = FontType.Regular)
 		{
 			var editText = new PlaceholderTextView
 			{
 				PlaceholderTextColor = placeHolderColor,
-				Placeholder = placeHolder,
 				Font = GetFont(fontType, textSize),
 				TranslatesAutoresizingMaskIntoConstraints = false,
 			};
@@ -91,25 +91,25 @@ namespace GiveAndTake.iOS.Helpers
 			return editText;
 		}
 
-		public static UITextField CreateEditTextField(nfloat height, nfloat width,
-			UIColor backgroundColor, UIColor borderColor,
+		public static UITextField CreateTextField(nfloat height, nfloat width, 
+			UIColor backgroundColor, UIColor borderColor, 
 			nfloat cornerRadius)
 		{
-			var editText = new UITextField
+			var textField = new UITextField
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
 			};
-			editText.Layer.BorderColor = borderColor.CGColor;
-			editText.Layer.BorderWidth = 1;
-			editText.Font = GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
-			editText.BackgroundColor = backgroundColor;
-			editText.Layer.CornerRadius = cornerRadius;
-			editText.Layer.MasksToBounds = true;
-			editText.TextAlignment = UITextAlignment.Left;
+			textField.Layer.BorderColor = borderColor.CGColor;
+			textField.Layer.BorderWidth = 1;
+			textField.Font = GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
+			textField.BackgroundColor = backgroundColor;
+			textField.Layer.CornerRadius = cornerRadius;
+			textField.Layer.MasksToBounds = true;
+			textField.TextAlignment = UITextAlignment.Left;
 
-			AddWidthHeight(height, width, editText);
+			AddWidthHeight(height, width, textField);
 
-			return editText;
+			return textField;
 		}
 
 		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor, nfloat cornerRadius)
@@ -162,7 +162,7 @@ namespace GiveAndTake.iOS.Helpers
 
 			searchBar.Layer.CornerRadius = DimensionHelper.FilterSize / 2;
 			searchBar.Layer.MasksToBounds = true;
-			searchBar.Layer.BorderColor = ColorHelper.BlueColor.CGColor;
+			searchBar.Layer.BorderColor = ColorHelper.Blue.CGColor;
 			searchBar.Layer.BorderWidth = DimensionHelper.SeperatorHeight;
 
 			AddWidthHeight(height, width, searchBar);
@@ -221,7 +221,6 @@ namespace GiveAndTake.iOS.Helpers
 			};
 
 			AddWidthHeight(height, width, button);
-
 			button.SetBackgroundImage(new UIImage(imagePath), UIControlState.Normal);
 			button.SetBackgroundImage(new UIImage(imagePath), UIControlState.Highlighted);
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using GiveAndTake.Core.Helpers;
+﻿using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
@@ -13,12 +7,16 @@ using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Plugin.PictureChooser;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels
 {
 	public class CreatePostViewModel : BaseViewModelResult<bool>
 	{
-		private readonly List<byte[]> _imageBytes = new List<byte[]>();
 		private readonly IDataModel _dataModel;
 
 		public string ProjectName => AppConstants.AppTitle;
@@ -38,6 +36,11 @@ namespace GiveAndTake.Core.ViewModels
 		private ICommand _submitCommand;
 		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
 
+		//private IMvxAsyncCommand _closeCommand;
+
+		//public IMvxAsyncCommand CloseCommand =>
+		//	_closeCommand ?? (_closeCommand = new MvxAsyncCommand(() => NavigationService.Close(this)));
+
 		private IMvxAsyncCommand _showPhotoCollectionCommand;
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
 															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
@@ -49,6 +52,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
 
+		private readonly DebouncerHelper _debouncer;
+
 		private string _postDescription;
 		private string _postTitle;
 		private string _category;
@@ -59,7 +64,7 @@ namespace GiveAndTake.Core.ViewModels
 		public string PostDescription
 		{
 			get => _postDescription;
-			set => SetProperty(ref _postDescription, value);
+			set => SetProperty(ref _postDescription, value );
 		}
 
 		public string PostTitle
@@ -93,8 +98,14 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _selectedImage, value);
 		}
 
+		public string PostDescriptionPlaceHolder { get; set; } = "Mô tả";
+		public string PostTitlePlaceHolder { get; set; } = "Tiêu đề";
+		public string ProvinceCityPlaceHolder { get; set; } = "Tỉnh/Thành phố";
+		public string CategoryPlaceHolder { get; set; } = "Loại ...";
+
 		public CreatePostViewModel(IMvxPictureChooserTask pictureChooserTask, IDataModel dataModel)
 		{
+			_debouncer = new DebouncerHelper();
 			_dataModel = dataModel;
 			_pictureChooserTask = pictureChooserTask;
 			InitCommand();
@@ -147,7 +158,13 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void DoTakePicture()
 		{
-			_pictureChooserTask.TakePicture(400, 95, OnPicture, () => { });
+			_debouncer.Debouce(() =>
+			{
+				InvokeOnMainThread(() =>
+				{
+					_pictureChooserTask.TakePicture(3840, 95, OnPicture, () => { });
+				});
+			});
 		}
 
 		private void OnPicture(Stream pictureStream)

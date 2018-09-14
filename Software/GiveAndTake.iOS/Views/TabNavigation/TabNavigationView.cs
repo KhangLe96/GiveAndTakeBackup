@@ -70,8 +70,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			}
 			TabBar.Items[3].Image = ConvertViewToImage(_imgAvatar);
 
-			_imgAvatar.Layer.BorderColor = ColorHelper.Primary.CGColor;
-			_imgAvatar.Layer.BorderWidth = DimensionHelper.RoundedImageBorderWidth;
+			_imgAvatar.Layer.BorderColor = ColorHelper.LightBlue.CGColor;
+			_imgAvatar.Layer.BorderWidth = DimensionHelper.BorderWidth;
 			TabBar.Items[3].SelectedImage = ConvertViewToImage(_imgAvatar);
 
 			foreach (var tabBarItem in TabBar.Items)

@@ -4,7 +4,6 @@ using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
-using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
 
@@ -60,11 +59,11 @@ namespace GiveAndTake.iOS.Views.Popups
 			_cancelButton = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight,
 				DimensionHelper.PopupMessageButtonWidth, 
 				UIColor.White, 
-				ColorHelper.BlueColor,
+				ColorHelper.Blue,
 				DimensionHelper.SmallTextSize,
 				"Hủy",
 				DimensionHelper.PopupButtonHeight / 2,
-				ColorHelper.BlueColor,
+				ColorHelper.Blue,
 				DimensionHelper.PopupCancelButtonBorder);
 
 			_cancelButton.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
@@ -78,7 +77,7 @@ namespace GiveAndTake.iOS.Views.Popups
 
 			_submitButton = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight,
 				DimensionHelper.PopupMessageButtonWidth,
-				ColorHelper.BlueColor,
+				ColorHelper.Blue,
 				UIColor.White,
 				DimensionHelper.SmallTextSize,
 				"Xác nhận",
