@@ -45,7 +45,7 @@ namespace GiveAndTake.Droid.Views
 			}
 			else
 			{
-				textView.PaintFlags = PaintFlags.LinearText;
+				if (textView != null) textView.PaintFlags = PaintFlags.LinearText;
 			}
 		}
 

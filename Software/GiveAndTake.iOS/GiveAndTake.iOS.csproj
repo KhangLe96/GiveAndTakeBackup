@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="Controls\CustomMvxImageView.cs" />
     <Compile Include="Controls\AlphaUiButton.cs" />
+    <Compile Include="Controls\CustomTextField.cs" />
+    <Compile Include="Controls\CustomTextView.cs" />
     <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
@@ -251,6 +253,12 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon87.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="CustomTextField.xcassets\AppIcons.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="CustomTextField.xcassets\LaunchImages.launchimage\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>

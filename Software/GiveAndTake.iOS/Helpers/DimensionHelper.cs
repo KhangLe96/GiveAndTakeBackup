@@ -38,8 +38,8 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupButtonHeight { get; set; }
 		public static nfloat PopupCellHeight { get; private set; }
 		public static nfloat SeparateLineHeaderHeight { get; set; }
-		public static nfloat DropDownButtonHeight { get; set; }
-		public static nfloat DropDownButtonWidth { get; set; }
+		public static nfloat DropDownFieldHeight { get; set; }
+		public static nfloat DropDownFieldWidth { get; set; }
 		public static nfloat PostDescriptionEditTextHeight { get; set; }
 		public static nfloat DefaultMargin { get; set; }
 		public static nfloat CreatePostEditTextWidth { get; set; }
@@ -48,7 +48,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat MarginBig { get; set; }
 		public static nfloat CreatePostButtonWidth { get; set; }
 		public static nfloat CreatePostButtonHeight { get; set; }
-		public static nfloat RoundedImageBorderWidth { get; private set; }
+		public static nfloat BorderWidth { get; private set; }
 		public static nfloat LoginLogoWidth { get; set; }
 		public static nfloat LoginLogoHeight { get; set; }
 		public static nfloat LoginButtonWidth { get; set; }
@@ -60,6 +60,8 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupContentRadius { get; set; }
 		public static nfloat NewPostSize { get; set; }
         public static nfloat MenuSeparatorLineHeight { get; private set; }
+		public static nfloat RoundCorner { get; set; }
+		public static nfloat TextPadding { get; set; }
 
         public static void InitStaticVariable()
 		{
@@ -114,8 +116,8 @@ namespace GiveAndTake.iOS.Helpers
 			PopupButtonWidth = 150 * Rate;
 			PopupButtonHeight = 30 * Rate;
 			PopupCellHeight = 40 * Rate;
-			DropDownButtonHeight = 40 * Rate;
-			DropDownButtonWidth = 160 * Rate;
+			DropDownFieldHeight = 40 * Rate;
+			DropDownFieldWidth = 160 * Rate;
 			PostDescriptionEditTextHeight = 350 * Rate;
 			DefaultMargin = 10 * Rate;
 			CreatePostEditTextWidth = ResolutionHelper.Width - (DefaultMargin * 2);
@@ -123,7 +125,7 @@ namespace GiveAndTake.iOS.Helpers
 			PictureButtonHeight = 20 * Rate;
 			CreatePostButtonWidth = 160 * Rate;
 			CreatePostButtonHeight = 30 * Rate;
-			RoundedImageBorderWidth = 2 * Rate;
+			BorderWidth = 2 * Rate;
 			LoginLogoWidth = 61 * Rate;
 			LoginLogoHeight = 38 * Rate;
 			LoginButtonWidth = 106 * Rate;
@@ -134,6 +136,8 @@ namespace GiveAndTake.iOS.Helpers
 			PopupCancelButtonBorder = 1 * Rate;
 			PopupContentRadius = 15 * Rate;
 			NewPostSize = 50 * Rate;
+			RoundCorner = 20 * Rate;
+			TextPadding = 15 * Rate;
 		    MenuSeparatorLineHeight = 6 * Rate;
 		}
 	}

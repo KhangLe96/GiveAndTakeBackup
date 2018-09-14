@@ -1,6 +1,4 @@
-﻿using GiveAndTake.Core;
-using GiveAndTake.iOS.Helpers;
-using Foundation;
+﻿using Foundation;
 using UIKit;
 
 namespace GiveAndTake.iOS.Controls

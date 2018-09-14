@@ -37,7 +37,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 					NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
+			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.Blue);
 			AddSubview(_seperatorLine);
 			AddConstraints(new[]
 			{
