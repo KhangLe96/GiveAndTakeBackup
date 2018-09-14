@@ -37,7 +37,7 @@ namespace GiveAndTake.Core.ViewModels
 			try
 			{
 				var managementService = Mvx.Resolve<IManagementService>();
-				managementService.LoginFacebook(baseUser);
+				_dataModel.LoginResponse = managementService.LoginFacebook(baseUser);
 				_dataModel.CurrentUser = baseUser;
 				NavigationService.Close(this);
 				NavigationService.Navigate<MasterViewModel>();
