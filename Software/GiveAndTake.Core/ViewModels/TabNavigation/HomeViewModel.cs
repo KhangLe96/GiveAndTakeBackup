@@ -114,7 +114,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private void UpdatePostViewModels()
 		{
 			_dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
-			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(post => new PostItemViewModel(post, IsLast(post))));
+			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 		}
 
 		private void OnLoadMore()
@@ -123,8 +123,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			if (_dataModel.ApiPostsResponse.Posts.Any())
 			{
 				PostViewModels.Last().IsLastViewInList = false;
-				PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(post => new PostItemViewModel(post, IsLast(post))));
+				PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 			}
+		}
+
+		private PostItemViewModel GeneratePostViewModels(Post post)
+		{
+			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
+			post.IsLast = IsLast(post);
+			return new PostItemViewModel(post);
 		}
 
 		private async void OnRefresh()
