@@ -13,7 +13,7 @@ namespace GiveAndTake.Core.Services
         void ChangeStatusOfPost(string postId, string newStatus);
 		void EditPost(EditPost post);
 		void LoginFacebook(BaseUser baseUser);
-		void CreatePost(CreatePost post);
+		void CreatePost(CreatePost post, string token);
 		void UpdateCurrentUserProfile(User user);
 	    void GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();

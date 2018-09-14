@@ -150,13 +150,13 @@ namespace GiveAndTake.Core.Services
             });
         }
 
-		public void CreatePost(CreatePost post)
+		public void CreatePost(CreatePost post, string token)
 		{
 			Task.Run(async () =>
 			{
 				var postInformationInString = JsonHelper.Serialize(post);
 				var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
-				var response = await _apiHelper.Post(AppConstants.CreatePost, content, AppConstants.Token);
+				var response = await _apiHelper.Post(AppConstants.CreatePost, content, token);
 			});
 		}
 
