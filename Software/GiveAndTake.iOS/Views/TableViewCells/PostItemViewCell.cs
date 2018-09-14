@@ -99,7 +99,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 			set.Bind(_optionView.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.ShowMessagePopupCommand);
+				.To(vm => vm.ShowMenuPopupCommand);
 
 			set.Bind(_seperatorLine)
 				.For("Visibility")

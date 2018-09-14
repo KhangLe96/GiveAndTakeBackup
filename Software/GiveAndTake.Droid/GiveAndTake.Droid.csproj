@@ -71,6 +71,7 @@
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\Popup\PopupPostOptionView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
@@ -82,6 +83,8 @@
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popup\PopupMessageView.cs" />
+    <Compile Include="Views\Popup\PopupReportView.cs" />
+    <Compile Include="Views\Popup\PopupWarningView.cs" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />
     <Compile Include="Views\LoginView.cs" />
@@ -511,6 +514,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\splash_screen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupReportView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupPostOptionView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupWarningView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
