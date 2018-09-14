@@ -21,6 +21,7 @@ namespace GiveAndTake.iOS.Views.Base
 			base.ViewDidLoad();
 
 			InitView();
+			DismissKeyboard();
 			CreateBinding();
 		}
 
@@ -33,6 +34,14 @@ namespace GiveAndTake.iOS.Views.Base
 
 		protected virtual void CreateBinding()
 		{
+		}
+
+		private void DismissKeyboard()
+		{
+			var g = new UITapGestureRecognizer(() => View.EndEditing(true));
+			g.CancelsTouchesInView = false; //for iOS5
+
+			View.AddGestureRecognizer(g);
 		}
 	}
 }

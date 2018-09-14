@@ -1,5 +1,4 @@
 ﻿using CoreAnimation;
-using Foundation;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
@@ -11,13 +10,14 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
-using GiveAndTake.Core;
-using MvvmCross.Platforms.Ios.Binding;
+using Foundation;
+using MvvmCross.Converters;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
 {
-	[MvxModalPresentation]
+	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen,
+		ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
 	public class CreatePostView : BaseView
 	{
 		private HeaderBar _headerBar;
@@ -30,6 +30,7 @@ namespace GiveAndTake.iOS.Views
 		private UIButton _btnCancel;
 		private UIButton _btnSubmit;
 		private UILabel _selectedImageTextView;
+		private string selectedImageTextViewText = "Đã chọn 0 hình";
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
@@ -49,7 +50,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Apply();
 
 			InitHeaderBar();
-			InitChooseProvinceCitField();
+			InitChooseProvinceCityField();
 			InitChooseCategoryField();
 			InitPostTitleTextField();
 			InitPostDescriptionTextView();
@@ -58,7 +59,7 @@ namespace GiveAndTake.iOS.Views
 			InitSelectedImageTextView();
 			InitCancelButton();
 			InitSubmitButton();
-			DismissKeyboard();
+
 			CreateBinding();
 		}
 
@@ -117,8 +118,11 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.Placeholder)
 				.To(vm => vm.PostDescriptionPlaceHolder);
 
+
 			bindingSet.Bind(_selectedImageTextView)
-				.To(vm => vm.SelectedImage);
+				.For(v => v.AttributedText)
+				.To(vm => vm.SelectedImage)
+				.WithConversion("StringToAttributed", _selectedImageTextView);
 
 			bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)
@@ -130,6 +134,14 @@ namespace GiveAndTake.iOS.Views
 					.For(v => v.Text)
 					.To(vm => vm.PostDescription);
 			}
+
+			bindingSet.Bind(_btnCancel)
+				.For("Title")
+				.To(vm => vm.BtnCancelTitle);
+
+			bindingSet.Bind(_btnSubmit)
+				.For("Title")
+				.To(vm => vm.BtnSubmitTitle);
 
 			bindingSet.Apply();
 		}
@@ -150,7 +162,7 @@ namespace GiveAndTake.iOS.Views
 			});
 		}
 
-		private void InitChooseProvinceCitField()
+		private void InitChooseProvinceCityField()
 		{
 			
 			_chooseProvinceCityField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight,
@@ -265,8 +277,8 @@ namespace GiveAndTake.iOS.Views
 		private void InitSelectedImageTextView()
 		{
 			_selectedImageTextView = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.MediumTextSize);
-			var selectedImageTextViewText = "Đã chọn 0 hình";
 
+			//var selectedImageTextViewText = "Đã chọn 0 hình";
 			var normalAttributedTitle = new NSAttributedString(selectedImageTextViewText, underlineStyle: NSUnderlineStyle.Single);
 			_selectedImageTextView.AttributedText = normalAttributedTitle;
 
@@ -287,8 +299,6 @@ namespace GiveAndTake.iOS.Views
 				UIColor.White, UIColor.White, ColorHelper.LightBlue, ColorHelper.DarkBlue,
 				true, true);
 
-			_btnCancel.SetTitle("Hủy", UIControlState.Normal);
-
 			View.Add(_btnCancel);
 			View.AddConstraints(new[]
 			{
@@ -304,8 +314,6 @@ namespace GiveAndTake.iOS.Views
 			_btnSubmit = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight,
 				UIColor.White, UIColor.White, DimensionHelper.MediumTextSize,
 				ColorHelper.LightBlue, ColorHelper.DarkBlue, ColorHelper.LightBlue, ColorHelper.DarkBlue);
-
-			_btnSubmit.SetTitle("Đăng", UIControlState.Normal);
 
 			View.Add(_btnSubmit);
 			View.AddConstraints(new[]
@@ -325,14 +333,6 @@ namespace GiveAndTake.iOS.Views
 			{
 				ImageCommand.Execute(image);
 			}
-		}
-
-		private void DismissKeyboard()
-		{
-			var g = new UITapGestureRecognizer(() => View.EndEditing(true));
-			g.CancelsTouchesInView = false; //for iOS5
-
-			View.AddGestureRecognizer(g);
 		}
 	}
 }
