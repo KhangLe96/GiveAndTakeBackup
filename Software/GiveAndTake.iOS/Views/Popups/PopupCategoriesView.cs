@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core;
+﻿using System.Windows.Input;
+using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Helpers;
@@ -11,7 +12,7 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Views.Popups
 {
-	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverCurrentContext, ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
+	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverCurrentContext, ModalTransitionStyle = UIModalTransitionStyle.CoverVertical)]
 	public class PopupView : BaseView
 	{
 		private UIView _popupLine;
@@ -20,6 +21,7 @@ namespace GiveAndTake.iOS.Views.Popups
 		private PopupItemTableViewSource _popupItemTableViewSource;
 		private UILabel _titleLabel;
 		private UIView _background;
+		public ICommand CloseCommand { get; set; }
 
 		protected override void InitView()
 		{
@@ -74,12 +76,18 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_popupLine, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
+			var swipeGesture = new UISwipeGestureRecognizer(() => CloseCommand?.Execute(null))
+			{
+				Direction = UISwipeGestureRecognizerDirection.Down
+			};
+			container.AddGestureRecognizer(swipeGesture);
+
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(container, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _popupLine, NSLayoutAttribute.Top, 1, - DimensionHelper.MarginNormal)
 			});
 
-			_background = UIHelper.CreateView(0, 0, UIColor.Black.ColorWithAlpha(0.7f));
+			_background = UIHelper.CreateView(0, 0, UIColor.Clear);
 			View.Add(_background);
 			View.AddConstraints(new[]
 			{
@@ -88,6 +96,30 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_background, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, 0),
 				NSLayoutConstraint.Create(_background, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
 			});
+		}
+
+		public override void ViewDidLoad()
+		{
+			base.ViewDidLoad();
+			//_background.BackgroundColor = UIColor.Black.ColorWithAlpha(0.7f);
+		}
+
+		public override void ViewDidAppear(bool animated)
+		{
+			base.ViewDidAppear(animated);
+			_background.BackgroundColor = UIColor.Black.ColorWithAlpha(0.7f);
+		}
+
+		public override void ViewWillUnload()
+		{
+			base.ViewWillUnload();
+			_background.BackgroundColor = UIColor.Clear;
+		}
+
+		public override void ViewWillDisappear(bool animated)
+		{
+			base.ViewWillDisappear(animated);
+			_background.BackgroundColor = UIColor.Clear;
 		}
 
 		public override void UpdateViewConstraints()
@@ -115,6 +147,10 @@ namespace GiveAndTake.iOS.Views.Popups
 
 			bindingSet.Bind(_background.Tap())
 				.For(v => v.Command)
+				.To(vm => vm.CloseCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.CloseCommand)
 				.To(vm => vm.CloseCommand);
 
 			bindingSet.Apply();
