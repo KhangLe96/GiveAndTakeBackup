@@ -10,6 +10,7 @@ using Giveaway.Util.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -43,7 +44,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         public CategoryResponse Delete(Guid id)
         {
             var category = _categoryService.UpdateStatus(id, EntityStatus.Deleted.ToString());
-            return GenerateCategoryResponse(category);
+            return Mapper.Map<CategoryResponse>(category);
         }
 
         public CategoryResponse Create(CategoryRequest request)
@@ -54,13 +55,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 throw new BadRequestException(CommonConstant.Error.BadRequest);
             }
-            return GenerateCategoryResponse(createdCategory);
+            return Mapper.Map<CategoryResponse>(category);
         }
 
         public CategoryResponse FindCategory(Guid id)
         {
             var category = GetCategory(id);
-            return GenerateCategoryResponse(category);
+            return Mapper.Map<CategoryResponse>(category);
         }
 
         public CategoryResponse Update(Guid id, CategoryRequest request)
@@ -68,18 +69,18 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var category = GetCategory(id);
             UpdateCategoryFields(request, category);
             Update(category);
-            return GenerateCategoryResponse(category);
+            return Mapper.Map<CategoryResponse>(category);
         }
 
         public CategoryResponse ChangeCategoryStatus(Guid userId, StatusRequest request)
         {
-            var updatedCategoryr = _categoryService.UpdateStatus(userId, request.UserStatus);
-            return GenerateCategoryResponse(updatedCategoryr);
+            var updatedCategory = _categoryService.UpdateStatus(userId, request.UserStatus);
+            return Mapper.Map<CategoryResponse>(updatedCategory);
         }
 
         #endregion
 
-        #region Private methods
+        #region Utils
 
         private List<CategoryResponse> GetPagedCategories(PagingQueryCategoryRequest request)
         {
@@ -91,7 +92,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return categories
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)
-                .Select(category => GenerateCategoryResponse(category))
+                .Select(category => Mapper.Map<CategoryResponse>(category))
                 .ToList();
         }
 
@@ -144,16 +145,16 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             category.BackgroundColor = request.BackgroundColor;
         }
 
-        private static CategoryResponse GenerateCategoryResponse(Category category) => new CategoryResponse
-        {
-            Id = category.Id,
-            CategoryName = category.CategoryName,
-            CategoryImageUrl = category.ImageUrl,
-            CreatedTime = category.CreatedTime,
-            UpdatedTime = category.UpdatedTime,
-            EntityStatus = category.EntityStatus.ToString(),
-            BackgroundColor = category.BackgroundColor
-        };
+        //private static CategoryResponse GenerateCategoryResponse(Category category) => new CategoryResponse
+        //{
+        //    Id = category.Id,
+        //    CategoryName = category.CategoryName,
+        //    CategoryImageUrl = category.ImageUrl,
+        //    CreatedTime = category.CreatedTime,
+        //    UpdatedTime = category.UpdatedTime,
+        //    EntityStatus = category.EntityStatus.ToString(),
+        //    BackgroundColor = category.BackgroundColor
+        //};
 
         #endregion
     }
