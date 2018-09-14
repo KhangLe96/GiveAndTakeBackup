@@ -210,8 +210,8 @@ namespace GiveAndTake.Core.ViewModels
 				//PostCategory = "005ee304-800f-4247-97d7-d6a73301ca01", //For test
 				Address = "d785b6e2-95c5-4d71-a2c4-1b10d064fe84",   //Da Nang
 			};
-			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
-			NavigationService.Close(this,true);
+			var result = managementService.CreatePost(post, _dataModel.LoginResponse.Token);
+			NavigationService.Close(this, result);
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)

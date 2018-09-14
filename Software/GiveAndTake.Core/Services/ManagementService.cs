@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using System.Diagnostics;
@@ -29,8 +30,9 @@ namespace GiveAndTake.Core.Services
 
 	            //Handle popup error cannot get data
 	            Debug.WriteLine("Error cannot get data");
-	            return null;
-            }).Result.Categories;
+				throw new Exception(response?.ErrorMessage);
+
+			}).Result.Categories;
         }
 
 	    public List<ProvinceCity> GetProvinceCities()
@@ -45,7 +47,8 @@ namespace GiveAndTake.Core.Services
 
 				//Handle popup error cannot get data
 				Debug.WriteLine("Error cannot get data");
-				return null;
+				throw new Exception(response?.ErrorMessage);
+
 			}).Result.ProvinceCities;
 		}
 
@@ -64,9 +67,9 @@ namespace GiveAndTake.Core.Services
 
 	            //Handle popup error cannot get data
 	            Debug.WriteLine("Error cannot get data");
-	            return null;
+				throw new Exception(response?.ErrorMessage);
 
-            }).Result;
+			}).Result;
         }
 
         public void GetPostDetail(string postId)
@@ -131,33 +134,36 @@ namespace GiveAndTake.Core.Services
 			});
 		}
 
-		public void LoginFacebook(BaseUser baseUser)
+		public LoginResponse LoginFacebook(BaseUser baseUser)
         {
-            Task.Run(async () =>
+            return Task.Run(async () =>
             {
                 var userInformationInString = JsonHelper.Serialize(baseUser);
                 var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
                 var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var loginFacebookResponse = JsonHelper.Deserialize<LoginResponse>(response.RawContent);
+                    return JsonHelper.Deserialize<LoginResponse>(response.RawContent);
                 }
-                else
-                {
-                    //Handle popup error cannot get data
-                    Debug.WriteLine("Error cannot get data");
-                }
-            });
+
+	            //Handle popup error cannot get data
+	            Debug.WriteLine("Error cannot get data");
+	            throw new Exception(response?.ErrorMessage);
+
+            }).Result;
         }
 
-		public void CreatePost(CreatePost post, string token)
+		public bool CreatePost(CreatePost post, string token)
 		{
-			Task.Run(async () =>
+			return Task.Run(async () =>
 			{
 				var postInformationInString = JsonHelper.Serialize(post);
 				var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
 				var response = await _apiHelper.Post(AppConstants.CreatePost, content, token);
-			});
+
+				return response != null && response.NetworkStatus == NetworkStatus.Success;
+
+			}).Result;
 		}
 
 		public void UpdateCurrentUserProfile(User user)
