@@ -155,7 +155,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		{
 			_btnCategory = UIHelper.CreateButton(DimensionHelper.ButtonCategoryHeight, 
 				0, 
-				ColorHelper.BlueColor,
+				ColorHelper.Blue,
 				UIColor.White, 
 				DimensionHelper.ButtonTextSize, 
 				null, 
@@ -413,7 +413,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitSeperatorLine()
 		{
-			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.BlueColor);
+			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.Blue);
 
 			ContentView.AddSubview(_seperatorLine);
 

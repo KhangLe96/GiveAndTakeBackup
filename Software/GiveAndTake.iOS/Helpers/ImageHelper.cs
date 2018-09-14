@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Foundation;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -35,6 +34,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string ChoosePictureButton { get; private set; }
 		public static string LoginBackground { get; private set; }
 		public static string NewPost { get; private set; }
+		public static string BackButton { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -66,6 +66,7 @@ namespace GiveAndTake.iOS.Helpers
 			ChoosePictureButton = Path.Combine(BasePath, "gallery_button");
 			LoginBackground = Path.Combine(BasePath, "login_background");
 			NewPost = Path.Combine(BasePath, "new_post");
+			BackButton = Path.Combine(BasePath, "iOS_BackButton");
 		}
 	}
 }

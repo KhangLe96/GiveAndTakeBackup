@@ -1,5 +1,4 @@
-﻿using System;
-using Facebook.CoreKit;
+﻿using Facebook.CoreKit;
 using Facebook.LoginKit;
 using Foundation;
 using GiveAndTake.Core.Models;
@@ -11,7 +10,6 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
-using WatchConnectivity;
 
 namespace GiveAndTake.iOS.Views
 {
@@ -77,7 +75,7 @@ namespace GiveAndTake.iOS.Views
         private void InitContent()
         {
             _logoImage = UIHelper.CreateImageView(DimensionHelper.LoginLogoWidth, DimensionHelper.LoginLogoHeight, UIColor.White, ImageHelper.LoginLogo);
-            _loginTitle = UIHelper.CreateLabel(ColorHelper.BlueColor, DimensionHelper.LoginTitleTextSize);
+            _loginTitle = UIHelper.CreateLabel(ColorHelper.Blue, DimensionHelper.LoginTitleTextSize);
             _customedLoginFacebookButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.FacebookButton);
             _customedLoginGoogleButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.GoogleButton);
 

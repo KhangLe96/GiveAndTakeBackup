@@ -2,7 +2,6 @@
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.TableViewCells;
 using MvvmCross.Binding.Extensions;
-using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using System;
 using UIKit;
