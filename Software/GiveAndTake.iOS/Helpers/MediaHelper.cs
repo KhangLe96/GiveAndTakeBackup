@@ -4,15 +4,13 @@ using System.IO;
 using System.Threading.Tasks;
 using ELCImagePicker;
 using Foundation;
-using GiveAndTake.Core;
-using GiveAndTake.Core.Helpers;
 using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
 {
 	public static class MediaHelper
 	{
-		public static List<byte[]> images;
+		public static List<byte[]> Images;
 		public static async Task OpenGallery()
 		{
 			var picker = ELCImagePickerViewController.Create(15);
@@ -37,14 +35,14 @@ namespace GiveAndTake.iOS.Helpers
 					}
 					else
 					{
-						images = new List<byte[]>();
+						Images = new List<byte[]>();
 
-						var items = t.Result as List<AssetResult>;
+						var items = t.Result;
 						foreach (var item in items)
 						{
 							var path = Save(item.Image, item.Name);
-							byte[] bytes = System.IO.File.ReadAllBytes(path);
-							images.Add(bytes);
+							byte[] bytes = File.ReadAllBytes(path);
+							Images.Add(bytes);
 							//CleanPath(path);
 						}
 					}
@@ -56,9 +54,9 @@ namespace GiveAndTake.iOS.Helpers
 		{
 			var documentsDirectory = Environment.GetFolderPath
 				(Environment.SpecialFolder.Personal);
-			string jpgFilename = System.IO.Path.Combine(documentsDirectory, name); // hardcoded filename, overwritten each time
+			string jpgFilename = Path.Combine(documentsDirectory, name); // hardcoded filename, overwritten each time
 			NSData imgData = image.AsJPEG();
-			NSError err = null;
+			NSError err;
 			if (imgData.Save(jpgFilename, false, out err))
 			{
 				return jpgFilename;
