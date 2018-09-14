@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
+using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Models.DTO;
 using Giveaway.API.Shared.Requests.Image;
 using Giveaway.API.Shared.Requests.Post;
@@ -39,7 +40,11 @@ namespace Giveaway.API
             #region Category
 
             cfg.CreateMap<Data.Models.Database.Category, Shared.Models.DTO.Category>();
-            cfg.CreateMap<Data.Models.Database.Category, CategoryResponse>();
+            cfg.CreateMap<Data.Models.Database.Category, CategoryResponse>()
+                .ForMember(
+                    destination => destination.BackgroundColor,
+                    map => map.MapFrom(source => ConvertHexToDecHelper.Convert(source.BackgroundColor))
+                );
             cfg.CreateMap<CategoryResponse, Data.Models.Database.Category>();
 
             #endregion
