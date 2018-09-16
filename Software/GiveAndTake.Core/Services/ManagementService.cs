@@ -59,7 +59,8 @@ namespace GiveAndTake.Core.Services
 				var response = await _apiHelper.Get(url);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+                    var res = JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+                    return res;
                 }
 
 	            //Handle popup error cannot get data
