@@ -47,7 +47,7 @@ namespace Giveaway.API.Shared.Responses.Post
 
         [DataMember(Name = "category")]
         [JsonProperty(PropertyName = "category")]
-        public CategoryResponse Category { get; set; }
+        public CategoryAppResponse Category { get; set; }
 
         [DataMember(Name = "statusApp", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "statusApp")]

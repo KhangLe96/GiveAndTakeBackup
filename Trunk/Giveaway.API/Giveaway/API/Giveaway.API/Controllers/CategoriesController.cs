@@ -19,22 +19,34 @@ namespace Giveaway.API.Controllers
     [Route("api/v1/categories")]
     public class CategoriesController : BaseController
     {
-        private readonly ICategoryService _categoryService;
+        private readonly ICategoryService<CategoryCmsResponse> _categoryCmsService;
+        private readonly ICategoryService<CategoryAppResponse> _categoryAppService;
 
         /// <inheritdoc />
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService<CategoryCmsResponse> categoryCmsService, ICategoryService<CategoryAppResponse> categoryAppService)
         {
-            _categoryService = categoryService;
+            _categoryCmsService = categoryCmsService;
+            _categoryAppService = categoryAppService;
         }
 
         /// <summary>
         /// Get all categories with filter  
         /// </summary>
         /// <returns>filtrated categories with pagination</returns>
-        [HttpGet]
-        public PagingQueryResponse<CategoryResponse> All([FromHeader]IDictionary<string, string> @params)
+        [HttpGet("cms/list")]
+        public PagingQueryResponse<CategoryCmsResponse> GetListCategoryCms([FromHeader]IDictionary<string, string> @params)
         {
-            return _categoryService.All(@params);
+            return _categoryCmsService.All(@params);
+        }
+
+        /// <summary>
+        /// Get all categories for app with filter  
+        /// </summary>
+        /// <returns>filtrated categories with pagination</returns>
+        [HttpGet("app/list")]
+        public PagingQueryResponse<CategoryAppResponse> GetListApp([FromHeader]IDictionary<string, string> @params)
+        {
+            return _categoryAppService.All(@params);
         }
 
         /// <summary>
@@ -42,41 +54,52 @@ namespace Giveaway.API.Controllers
         /// only update EntityStatus = Deleted, the category still remain in database
         /// </summary>
         /// <returns>the deleted category object</returns>
-        [HttpDelete("{categoryId}")]
-        public CategoryResponse DeleteCategory(Guid categoryId)
+        [HttpDelete("cms/{categoryId}")]
+        public CategoryCmsResponse DeleteCategory(Guid categoryId)
         {
-            return _categoryService.Delete(categoryId);
+            return _categoryCmsService.Delete(categoryId);
         }
 
         /// <summary>
         /// create a new category
         /// </summary>
         /// <returns>the created category object</returns>
-        [HttpPost]
-        public CategoryResponse Create([FromBody] CategoryRequest request)
+        [HttpPost("cms")]
+        public CategoryCmsResponse Create([FromBody] CategoryRequest request)
         {
-            return _categoryService.Create(request);
+            return _categoryCmsService.Create(request);
         }
 
         /// <summary>
-        /// find a category by id
+        /// find a category for cms by id
         /// throw exception when category not found
         /// </summary>
         /// <returns>the detected category with id inputed </returns>
-        [HttpGet("{categoryId}")]
-        public CategoryResponse Find(Guid categoryId)
+        [HttpGet("cms/{categoryId}")]
+        public CategoryCmsResponse FindCmsCategory(Guid categoryId)
         {
-            return _categoryService.FindCategory(categoryId);
+            return _categoryCmsService.FindCategory(categoryId);
+        }
+
+        /// <summary>
+        /// find a category for app by id
+        /// throw exception when category not found
+        /// </summary>
+        /// <returns>the detected category with id inputed </returns>
+        [HttpGet("app/{categoryId}")]
+        public CategoryAppResponse FindAppCategory(Guid categoryId)
+        {
+            return _categoryAppService.FindCategory(categoryId);
         }
 
         /// <summary>
         /// update a category's information 
         /// </summary>
         /// <returns>the updated category</returns>
-        [HttpPut("{categoryId}")]
-        public CategoryResponse Update(Guid categoryId, [FromBody] CategoryRequest request)
+        [HttpPut("cms/{categoryId}")]
+        public CategoryCmsResponse Update(Guid categoryId, [FromBody] CategoryRequest request)
         {
-            return _categoryService.Update(categoryId, request);
+            return _categoryCmsService.Update(categoryId, request);
         }
 
         /// <summary> 
@@ -85,11 +108,11 @@ namespace Giveaway.API.Controllers
         /// </summary> 
         /// <returns>the updated user profile</returns> 
         [Authorize(Roles = Const.Roles.AdminOrAbove)]
-        [HttpPut("status/{userId}")]
+        [HttpPut("cms/status/{userId}")]
         [Produces("application/json")]
-        public CategoryResponse ChangeCategoryStatus(Guid userId, [FromBody]StatusRequest request)
+        public CategoryCmsResponse ChangeCategoryStatus(Guid userId, [FromBody]StatusRequest request)
         {
-            return _categoryService.ChangeCategoryStatus(userId, request);
+            return _categoryCmsService.ChangeCategoryStatus(userId, request);
         }
     }
 }

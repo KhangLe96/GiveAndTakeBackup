@@ -13,7 +13,7 @@ namespace Giveaway.API.Shared.Helpers
             string G = color.Substring(2, 2);
             string B = color.Substring(4, 2);
 
-            int decValue = int.Parse(B + G + R, System.Globalization.NumberStyles.HexNumber);
+            int decValue = int.Parse(B + G + R, System.Globalization.NumberStyles.HexNumber)*(-1);
             return decValue;
         }
     }

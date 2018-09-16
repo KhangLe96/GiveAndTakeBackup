@@ -403,41 +403,49 @@ namespace Giveaway.API.DB
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Khác",
+                    BackgroundColor = "#6562ac"
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Xe cộ",
+                    BackgroundColor = "#c1282d"
                 },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Đồ điện tử",
-                },
+                    BackgroundColor = "#f37676"
+        },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Mẹ và bé",
-                },
+                    BackgroundColor = "#1072ba"
+        },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Đồ dùng cá nhân",
-                },
+                    BackgroundColor = "#3ec0c0"
+        },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Nội ngoại thất, đồ gia dụng",
-                },
+                    BackgroundColor = "#3fb8ea"
+        },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Thú cưng",
-                },
+                    BackgroundColor = "#f16c96"
+        },
                 new Category
                 {
                     Id = Guid.NewGuid(),
                     CategoryName = "Văn phòng phẩm",
+                    BackgroundColor = "#f16c96"
                 }
             };
             return categories;

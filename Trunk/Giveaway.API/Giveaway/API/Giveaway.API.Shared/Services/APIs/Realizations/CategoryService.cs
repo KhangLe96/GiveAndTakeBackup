@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService<T> : ICategoryService<T> where T : CategoryBaseResponse
     {
         #region Properties
 
@@ -33,7 +33,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         #region Public methods
 
-        public PagingQueryResponse<CategoryResponse> All(IDictionary<string, string> @params)
+        public PagingQueryResponse<T> All(IDictionary<string, string> @params)
         {
             var request = @params.ToObject<PagingQueryCategoryRequest>();
             var categories = GetPagedCategories(request);
@@ -41,13 +41,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return GeneratePagingQueryResponse(categories, pageInfo);
         }
 
-        public CategoryResponse Delete(Guid id)
+        public CategoryCmsResponse Delete(Guid id)
         {
             var category = _categoryService.UpdateStatus(id, EntityStatus.Deleted.ToString());
-            return Mapper.Map<CategoryResponse>(category);
+            return Mapper.Map<CategoryCmsResponse>(category);
         }
 
-        public CategoryResponse Create(CategoryRequest request)
+        public CategoryCmsResponse Create(CategoryRequest request)
         {
             var category = GenerateCategory(request);
             var createdCategory = _categoryService.Create(category, out var isSaved);
@@ -55,34 +55,34 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 throw new BadRequestException(CommonConstant.Error.BadRequest);
             }
-            return Mapper.Map<CategoryResponse>(category);
+            return Mapper.Map<CategoryCmsResponse>(category);
         }
 
-        public CategoryResponse FindCategory(Guid id)
+        public T FindCategory(Guid id)
         {
             var category = GetCategory(id);
-            return Mapper.Map<CategoryResponse>(category);
+            return Mapper.Map<T>(category);
         }
 
-        public CategoryResponse Update(Guid id, CategoryRequest request)
+        public CategoryCmsResponse Update(Guid id, CategoryRequest request)
         {
             var category = GetCategory(id);
             UpdateCategoryFields(request, category);
             Update(category);
-            return Mapper.Map<CategoryResponse>(category);
+            return Mapper.Map<CategoryCmsResponse>(category);
         }
 
-        public CategoryResponse ChangeCategoryStatus(Guid userId, StatusRequest request)
+        public CategoryCmsResponse ChangeCategoryStatus(Guid userId, StatusRequest request)
         {
             var updatedCategory = _categoryService.UpdateStatus(userId, request.UserStatus);
-            return Mapper.Map<CategoryResponse>(updatedCategory);
+            return Mapper.Map<CategoryCmsResponse>(updatedCategory);
         }
 
         #endregion
 
         #region Utils
 
-        private List<CategoryResponse> GetPagedCategories(PagingQueryCategoryRequest request)
+        private List<T> GetPagedCategories(PagingQueryCategoryRequest request)
         {
             var categories = _categoryService.Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (request.CategoryName != null)
@@ -92,7 +92,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return categories
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)
-                .Select(category => Mapper.Map<CategoryResponse>(category))
+                .Select(category => Mapper.Map<T>(category))
                 .ToList();
         }
 
@@ -103,8 +103,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             Limit = request.Limit
         };
 
-        private static PagingQueryResponse<CategoryResponse> GeneratePagingQueryResponse(List<CategoryResponse> categories, PageInformation pageInfo)
-            => new PagingQueryResponse<CategoryResponse>
+        private static PagingQueryResponse<T> GeneratePagingQueryResponse(List<T> categories, PageInformation pageInfo)
+            => new PagingQueryResponse<T>
             {
                 Data = categories,
                 PageInformation = pageInfo
@@ -144,17 +144,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             category.UpdatedTime = DateTimeOffset.UtcNow;
             category.BackgroundColor = request.BackgroundColor;
         }
-
-        //private static CategoryResponse GenerateCategoryResponse(Category category) => new CategoryResponse
-        //{
-        //    Id = category.Id,
-        //    CategoryName = category.CategoryName,
-        //    CategoryImageUrl = category.ImageUrl,
-        //    CreatedTime = category.CreatedTime,
-        //    UpdatedTime = category.UpdatedTime,
-        //    EntityStatus = category.EntityStatus.ToString(),
-        //    BackgroundColor = category.BackgroundColor
-        //};
 
         #endregion
     }
