@@ -9,7 +9,7 @@ export function createCategory(category) {
       ...category,
     },
   };
-  return request(`${ROOT_API_PATH}`, options);
+  return request(`${ROOT_API_PATH}/cms`, options);
 }
 
 export function getCategories(params) {
@@ -19,14 +19,14 @@ export function getCategories(params) {
       ...params,
     },
   };
-  return request(`${ROOT_API_PATH}`, options);
+  return request(`${ROOT_API_PATH}/cms/list`, options);
 }
 
 export function getACategory(id) {
   const options = {
     method: 'GET',
   };
-  return request(`${ROOT_API_PATH}/${id}`, options);
+  return request(`${ROOT_API_PATH}/cms/${id}`, options);
 }
 
 export function updateCategory(category, id) {
@@ -36,7 +36,7 @@ export function updateCategory(category, id) {
       ...category,
     },
   };
-  return request(`${ROOT_API_PATH}/${id}`, options);
+  return request(`${ROOT_API_PATH}/cms/${id}`, options);
 }
 
 export function changeCategoryCMSStatus(CMSStatus, id) {
@@ -46,12 +46,12 @@ export function changeCategoryCMSStatus(CMSStatus, id) {
       status: CMSStatus,
     },
   };
-  return request(`${ROOT_API_PATH}/status/${id}`, options);
+  return request(`${ROOT_API_PATH}/cms/status/${id}`, options);
 }
 
 export function deleteCategory(id) {
   const options = {
     method: 'DELETE',
   };
-  return request(`${ROOT_API_PATH}/${id}`, options);
+  return request(`${ROOT_API_PATH}/cms/${id}`, options);
 }
