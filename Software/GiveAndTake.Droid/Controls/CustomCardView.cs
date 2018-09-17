@@ -10,19 +10,17 @@ namespace GiveAndTake.Droid.Controls
     {
         public CustomCardView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
-            int a = MvxColors.Black.ARGB;
         }
 
-        private int _cardBackgroundColorCustom;
+        private string _cardBackgroundColorCustom;
 
-        public int CardBackgroundColorCustom
+        public string CardBackgroundColorCustom
         {
             get { return _cardBackgroundColorCustom; }
             set
             {
                 _cardBackgroundColorCustom = value;
-                //SetCardBackgroundColor(MvxColors.Yellow.ARGB);
-                SetCardBackgroundColor(_cardBackgroundColorCustom);
+                SetCardBackgroundColor(Color.ParseColor(_cardBackgroundColorCustom));
             }
         }
     }

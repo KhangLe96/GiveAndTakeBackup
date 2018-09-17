@@ -151,9 +151,9 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _isLastViewInList, value);
 	    }
 
-        private int _backgroundColor;
+        private string _backgroundColor;
 
-        public int BackgroundColor
+        public string BackgroundColor
         {
             get => _backgroundColor;
             set
