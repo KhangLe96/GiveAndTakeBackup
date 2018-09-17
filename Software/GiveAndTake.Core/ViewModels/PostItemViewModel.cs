@@ -187,7 +187,7 @@ namespace GiveAndTake.Core.ViewModels
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;
 		    CommentCount = _post.CommentCount;
-		    IsLastViewInList = isLast;
+		    IsLastViewInList = _post.IsLast;
 	        BackgroundColor = _post.Category.BackgroundColor;
 	    }
 
