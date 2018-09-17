@@ -29,5 +29,9 @@ namespace Giveaway.API.Shared.Responses.Category
         [DataMember(Name = "updatedTime", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "updatedTime")]
         public DateTimeOffset UpdatedTime { get; set; }
+
+        [DataMember(Name = "backgroundColor", EmitDefaultValue = false)]
+        [JsonProperty(PropertyName = "backgroundColor")]
+        public string BackgroundColor { get; set; }
     }
 }
