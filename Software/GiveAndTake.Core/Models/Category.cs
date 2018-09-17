@@ -14,7 +14,7 @@ namespace GiveAndTake.Core.Models
         public string CategoryName { get; set; }
 
         [DataMember(Name = "backgroundColor")]
-        public int BackgroundColor { get; set; }
+        public string BackgroundColor { get; set; }
 
         //[DataMember(Name = "categoryImageUrl")]
         //public string CategoryImageUrl { get; set; }

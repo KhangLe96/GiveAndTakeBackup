@@ -54,5 +54,5 @@ namespace GiveAndTake.iOS.Helpers
 
 			return UIColor.FromRGBA(red, green, blue, alpha);
 		}
-	}
+    }
 }
