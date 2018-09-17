@@ -13,14 +13,14 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "categoryName")]
         public string CategoryName { get; set; }
 
+        [DataMember(Name = "backgroundColor")]
+        public string BackgroundColor { get; set; }
+
         //[DataMember(Name = "categoryImageUrl")]
         //public string CategoryImageUrl { get; set; }
-        
+
         //[DataMember(Name = "status")]
         //public string Status { get; set; }
-
-        //[DataMember(Name="color")]
-        //public string Color { get; set; }
 
         //[DataMember(Name = "createdTime")]
         //public DateTime CreatedTime { get; set; }

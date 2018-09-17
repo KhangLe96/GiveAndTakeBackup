@@ -18,17 +18,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private readonly IDataModel _dataModel;
 		private readonly IManagementService _managementService = Mvx.Resolve<IManagementService>();
 
-		private string _currentQueryString;
-
-		public string CurrentQueryString
-		{
-			get => _currentQueryString;
-			set
-			{
-				_currentQueryString = value;
-				RaisePropertyChanged(() => PostViewModels);
-			}
-		}
+		public string CurrentQueryString { get; set; }
 
 		private MvxObservableCollection<PostItemViewModel> _postViewModels;
 
@@ -113,8 +103,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private void UpdatePostViewModels()
 		{
-			_dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
-			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+		    var  a = _managementService.GetPostList(GetFilterParams());
+            _dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
+			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(post => new PostItemViewModel(post, IsLast(post))));
 		}
 
 		private void OnLoadMore()
@@ -156,9 +147,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			var parameters = new List<string>();
 
-			if (!string.IsNullOrEmpty(_currentQueryString))
+			if (!string.IsNullOrEmpty(CurrentQueryString))
 			{
-				parameters.Add($"keyword={_currentQueryString}");
+				parameters.Add($"title={CurrentQueryString}");
 			}
 
 			if (_dataModel.SelectedSortFilter != null)
