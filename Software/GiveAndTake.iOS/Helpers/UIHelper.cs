@@ -73,22 +73,22 @@ namespace GiveAndTake.iOS.Helpers
 		public static PlaceholderTextView CreateTextView(nfloat height, nfloat width, UIColor backgroundColor, UIColor borderColor, 
 			nfloat cornerRadius, UIColor placeHolderColor, nfloat textSize, FontType fontType = FontType.Regular)
 		{
-			var editText = new PlaceholderTextView
+			var textView = new PlaceholderTextView
 			{
 				PlaceholderTextColor = placeHolderColor,
 				Font = GetFont(fontType, textSize),
 				TranslatesAutoresizingMaskIntoConstraints = false,
 			};
-			editText.BackgroundColor = backgroundColor;
-			editText.Layer.BorderColor = borderColor.CGColor;
-			editText.Layer.BorderWidth = 1;
-			editText.Layer.CornerRadius = cornerRadius;
-			editText.Layer.MasksToBounds = true;
-			editText.TextContainerInset = new UIEdgeInsets(10, 10, 10, 10);
-			editText.TextAlignment = UITextAlignment.Left;
-			AddWidthHeight(height, width, editText);
+			textView.BackgroundColor = backgroundColor;
+			textView.Layer.BorderColor = borderColor.CGColor;
+			textView.Layer.BorderWidth = 1;
+			textView.Layer.CornerRadius = cornerRadius;
+			textView.Layer.MasksToBounds = true;
+			textView.TextContainerInset = new UIEdgeInsets(10, 10, 10, 10);
+			textView.TextAlignment = UITextAlignment.Left;
+			AddWidthHeight(height, width, textView);
 
-			return editText;
+			return textView;
 		}
 
 		public static UITextField CreateTextField(nfloat height, nfloat width, 

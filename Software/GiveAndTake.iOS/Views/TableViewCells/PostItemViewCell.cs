@@ -6,6 +6,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using System;
+using GiveAndTake.iOS.Converters;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -104,6 +105,11 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			set.Bind(_seperatorLine)
 				.For("Visibility")
 				.To(vm => vm.IsLastViewInList);
+
+		    set.Bind(_btnCategory)
+		        .For(v => v.BackgroundColor)
+		        .To(vm => vm.BackgroundColor)
+		        .WithConversion("StringToUIColor", _btnCategory);
 
 			set.Apply();
 		}

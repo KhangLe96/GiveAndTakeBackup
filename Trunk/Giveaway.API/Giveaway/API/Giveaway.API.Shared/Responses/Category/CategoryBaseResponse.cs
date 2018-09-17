@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Runtime.Serialization;
-using Newtonsoft.Json;
 
 namespace Giveaway.API.Shared.Responses.Category
 {
-    public class CategoryResponse
+    public class CategoryBaseResponse
     {
         [DataMember(Name = "id")]
         [JsonProperty(PropertyName = "id")]
@@ -32,6 +32,6 @@ namespace Giveaway.API.Shared.Responses.Category
 
         [DataMember(Name = "backgroundColor", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "backgroundColor")]
-        public int BackgroundColor { get; set; }
+        public string BackgroundColor { get; set; }
     }
 }

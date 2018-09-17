@@ -40,12 +40,10 @@ namespace Giveaway.API
             #region Category
 
             cfg.CreateMap<Data.Models.Database.Category, Shared.Models.DTO.Category>();
-            cfg.CreateMap<Data.Models.Database.Category, CategoryResponse>()
-                .ForMember(
-                    destination => destination.BackgroundColor,
-                    map => map.MapFrom(source => ConvertHexToDecHelper.Convert(source.BackgroundColor))
-                );
-            cfg.CreateMap<CategoryResponse, Data.Models.Database.Category>();
+            cfg.CreateMap<Data.Models.Database.Category, CategoryAppResponse>();
+            cfg.CreateMap<CategoryAppResponse, Data.Models.Database.Category>();
+            cfg.CreateMap<Data.Models.Database.Category, CategoryCmsResponse>();
+            cfg.CreateMap<CategoryCmsResponse, Data.Models.Database.Category>();
 
             #endregion
 

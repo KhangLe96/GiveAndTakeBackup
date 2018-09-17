@@ -10,8 +10,7 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
-using Foundation;
-using MvvmCross.Converters;
+using CoreGraphics;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
@@ -30,7 +29,6 @@ namespace GiveAndTake.iOS.Views
 		private UIButton _btnCancel;
 		private UIButton _btnSubmit;
 		private UILabel _selectedImageTextView;
-		private string selectedImageTextViewText = "Đã chọn 0 hình";
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
@@ -122,7 +120,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_selectedImageTextView)
 				.For(v => v.AttributedText)
 				.To(vm => vm.SelectedImage)
-				.WithConversion("StringToAttributed", _selectedImageTextView);
+				.WithConversion("SelectedImage", _selectedImageTextView);
 
 			bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)
@@ -167,13 +165,14 @@ namespace GiveAndTake.iOS.Views
 			
 			_chooseProvinceCityField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight,
 				DimensionHelper.DropDownFieldWidth,
-				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.DropDownFieldHeight / 2);
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner);
 
 			_chooseProvinceCityField.UserInteractionEnabled = false;
 			_chooseProvinceCityField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
 			_chooseProvinceCityField.Layer.BorderWidth = 1;
-			_chooseProvinceCityField.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-			_chooseProvinceCityField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15, 0, 0);
+			UIView paddingView = new UIView(new CGRect(0, 0, 15, _chooseProvinceCityField.Frame.Height));
+			_chooseProvinceCityField.LeftView = paddingView;
+			_chooseProvinceCityField.LeftViewMode = UITextFieldViewMode.Always;
 
 			View.Add(_chooseProvinceCityField);
 			View.AddConstraints(new[]
@@ -189,13 +188,14 @@ namespace GiveAndTake.iOS.Views
 		{
 			_chooseCategoryField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight,
 				DimensionHelper.DropDownFieldWidth,
-				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.DropDownFieldHeight / 2);
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner);
 
 			_chooseCategoryField.UserInteractionEnabled = false;
 			_chooseCategoryField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
 			_chooseCategoryField.Layer.BorderWidth = 1;
-			_chooseCategoryField.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-			_chooseCategoryField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15, 0, 0);
+			UIView paddingView = new UIView(new CGRect(0, 0, 15, _chooseCategoryField.Frame.Height));
+			_chooseCategoryField.LeftView = paddingView;
+			_chooseCategoryField.LeftViewMode = UITextFieldViewMode.Always;
 
 			View.Add(_chooseCategoryField);
 			View.AddConstraints(new[]
@@ -210,7 +210,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitPostTitleTextField()
 		{
 			_postTitleTextField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight, DimensionHelper.CreatePostEditTextWidth,
-				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.FilterSize / 2);
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner);
 			
 			_postTitleTextField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
 			_postTitleTextField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15, 0, 0);
@@ -231,8 +231,8 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitPostDescriptionTextView()
 		{
-			_postDescriptionTextView = UIHelper.CreateTextView(DimensionHelper.PostDescriptionEditTextHeight, DimensionHelper.CreatePostEditTextWidth,
-				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.FilterSize / 2, ColorHelper.Gray, DimensionHelper.MediumTextSize);
+			_postDescriptionTextView = UIHelper.CreateTextView(DimensionHelper.PostDescriptionTextViewHeight, DimensionHelper.CreatePostEditTextWidth,
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner, ColorHelper.Gray, DimensionHelper.MediumTextSize);
 
 
 			View.Add(_postDescriptionTextView);
@@ -254,7 +254,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_btnChoosePicture, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _postDescriptionTextView,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_btnChoosePicture, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin)
 			});
@@ -268,7 +268,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_btnTakePicture, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _postDescriptionTextView,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_btnTakePicture, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnChoosePicture,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.MarginBig)
 			});
@@ -276,17 +276,13 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitSelectedImageTextView()
 		{
-			_selectedImageTextView = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.MediumTextSize);
-
-			//var selectedImageTextViewText = "Đã chọn 0 hình";
-			var normalAttributedTitle = new NSAttributedString(selectedImageTextViewText, underlineStyle: NSUnderlineStyle.Single);
-			_selectedImageTextView.AttributedText = normalAttributedTitle;
+			_selectedImageTextView = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.BigTextSize);
 
 			View.Add(_selectedImageTextView);
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_selectedImageTextView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _postDescriptionTextView,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_selectedImageTextView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
 			});
@@ -302,8 +298,8 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_btnCancel);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnCancel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnTakePicture,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
+				NSLayoutConstraint.Create(_btnCancel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginBig),
 				NSLayoutConstraint.Create(_btnCancel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
 			});
@@ -318,8 +314,8 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_btnSubmit);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnSubmit, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnTakePicture,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
+				NSLayoutConstraint.Create(_btnSubmit, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginBig),
 				NSLayoutConstraint.Create(_btnSubmit, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin)
 			});
