@@ -5,6 +5,7 @@ using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Commands;
+using MvvmCross.UI;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -16,7 +17,7 @@ namespace GiveAndTake.Core.ViewModels
 
         private string _categoryName;
 
-        public string CategoryName
+        public string CategoryName 
         {
             get => $"   {_categoryName}   ";
             set => SetProperty(ref _categoryName, value);
@@ -150,11 +151,23 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _isLastViewInList, value);
 	    }
 
-		#endregion
+        private int _backgroundColor;
 
-		#region Constructor
+        public int BackgroundColor
+        {
+            get => _backgroundColor;
+            set
+            {
+                _backgroundColor = value;
+                RaisePropertyChanged(() => BackgroundColor);
+            }
+        }
 
-		public PostItemViewModel(Post post)
+        #endregion
+
+        #region Constructor
+
+        public PostItemViewModel(Post post, bool isLast = false)
 		{
 			_post = post;
 			Init();
@@ -174,7 +187,8 @@ namespace GiveAndTake.Core.ViewModels
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;
 		    CommentCount = _post.CommentCount;
-		    IsLastViewInList = _post.IsLast;
+		    IsLastViewInList = isLast;
+	        BackgroundColor = _post.Category.BackgroundColor;
 	    }
 
 	    private void InitCommand()
@@ -203,6 +217,21 @@ namespace GiveAndTake.Core.ViewModels
         public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public IMvxAsyncCommand ShowPostDetailCommand { get; set; }
         public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
+
+        #endregion
+
+        #region Utils
+
+        private int ConvertHexToDec(string hex)
+        {
+            string color = hex.TrimStart('#');
+            string R = color.Substring(2, 2);
+            string G = color.Substring(4, 2);
+            string B = color.Substring(6, 2);
+
+            int decValue = int.Parse(B + G + R, System.Globalization.NumberStyles.HexNumber);
+            return decValue;
+        }
 
         #endregion
     }
