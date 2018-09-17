@@ -129,12 +129,6 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_popupLine, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, ContentView, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			var swipeGesture = new UISwipeGestureRecognizer(() => CloseCommand?.Execute(null))
-			{
-				Direction = UISwipeGestureRecognizerDirection.Down
-			};
-			ContentView.AddGestureRecognizer(swipeGesture);
-
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(ContentView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _popupLine, NSLayoutAttribute.Top, 1, - DimensionHelper.MarginNormal)

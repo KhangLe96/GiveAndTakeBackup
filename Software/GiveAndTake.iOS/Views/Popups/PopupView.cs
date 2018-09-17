@@ -33,6 +33,12 @@ namespace GiveAndTake.iOS.Views.Popups
 			ContentView = UIHelper.CreateView(0, 0, UIColor.White);
 			ContentView.AddGestureRecognizer(new UITapGestureRecognizer { CancelsTouchesInView = true });
 			View.Add(ContentView);
+
+			var swipeGesture = new UISwipeGestureRecognizer(() => CloseCommand?.Execute(null))
+			{
+				Direction = UISwipeGestureRecognizerDirection.Down
+			};
+			View.AddGestureRecognizer(swipeGesture);
 		}
 
 		public override void ViewWillAppear(bool animated)
