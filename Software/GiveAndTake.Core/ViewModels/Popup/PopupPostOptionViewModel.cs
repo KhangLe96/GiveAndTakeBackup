@@ -1,9 +1,8 @@
-﻿using GiveAndTake.Core.ViewModels.Base;
-using MvvmCross.Commands;
+﻿using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
-	public class PopupPostOptionViewModel : BaseViewModel
+	public class PopupPostOptionViewModel : PopupViewModel
 	{
 		public IMvxCommand ChangeStatusCommand { get; set; }
 		public IMvxCommand ModifyPostCommand { get; set; }

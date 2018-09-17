@@ -386,17 +386,17 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitExtensionIcon()
 		{
-			_optionView = UIHelper.CreateView(0, DimensionHelper.ButtonExtensionWidth * 2);
+			_optionView = UIHelper.CreateView(0, DimensionHelper.ButtonExtensionWidth * 4);
 
-			_reactionArea.AddSubview(_optionView);
+			ContentView.AddSubview(_optionView);
 
-			_reactionArea.AddConstraints(new[]
+			ContentView.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, _reactionArea,
-					NSLayoutAttribute.Height, 1, 0),
-				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
+				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _reactionArea,
+				NSLayoutConstraint.Create(_optionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Right, 1, 0)
 			});
 
@@ -407,9 +407,9 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			_optionView.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_imgExtension, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _optionView,
-					NSLayoutAttribute.Bottom, 1, - DimensionHelper.MarginText),
+					NSLayoutAttribute.Bottom, 1, - DimensionHelper.MarginText - DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_imgExtension, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _optionView,
-					NSLayoutAttribute.Right, 1, 0)
+					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
 		}
 
