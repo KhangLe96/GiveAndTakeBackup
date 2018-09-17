@@ -10,8 +10,6 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
-using Foundation;
-using MvvmCross.Converters;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
@@ -30,7 +28,6 @@ namespace GiveAndTake.iOS.Views
 		private UIButton _btnCancel;
 		private UIButton _btnSubmit;
 		private UILabel _selectedImageTextView;
-		private string selectedImageTextViewText = "Đã chọn 0 hình";
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
@@ -122,7 +119,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_selectedImageTextView)
 				.For(v => v.AttributedText)
 				.To(vm => vm.SelectedImage)
-				.WithConversion("StringToAttributed", _selectedImageTextView);
+				.WithConversion("SelectedImage", _selectedImageTextView);
 
 			bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)
@@ -278,9 +275,8 @@ namespace GiveAndTake.iOS.Views
 		{
 			_selectedImageTextView = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.MediumTextSize);
 
-			//var selectedImageTextViewText = "Đã chọn 0 hình";
-			var normalAttributedTitle = new NSAttributedString(selectedImageTextViewText, underlineStyle: NSUnderlineStyle.Single);
-			_selectedImageTextView.AttributedText = normalAttributedTitle;
+			//var normalAttributedTitle = new NSAttributedString(selectedImageTextViewText, underlineStyle: NSUnderlineStyle.Single);
+			//_selectedImageTextView.AttributedText = normalAttributedTitle;
 
 			View.Add(_selectedImageTextView);
 			View.AddConstraints(new[]
