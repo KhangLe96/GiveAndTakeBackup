@@ -192,7 +192,7 @@ namespace GiveAndTake.Core.ViewModels
 		    }
 		    else
 		    {
-				await NavigationService.Navigate<PopupReportViewViewModel>();
+				await NavigationService.Navigate<PopupReportViewModel>();
 			}
 	    }
 
