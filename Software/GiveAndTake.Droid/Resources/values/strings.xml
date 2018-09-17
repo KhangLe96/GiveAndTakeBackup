@@ -4,4 +4,5 @@
 	<string name="facebook_app_id">643536022700414</string>
 	<string name="fb_login_protocol_scheme">fb643536022700414</string>
 	<string name="selected_image"><u>Đã chọn 0 hình</u></string>
+	<string name="change_status">Chuyển trạng thái sang \"Đã cho\"</string>
 </resources>

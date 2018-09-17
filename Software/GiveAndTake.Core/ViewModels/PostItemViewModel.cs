@@ -154,14 +154,14 @@ namespace GiveAndTake.Core.ViewModels
 
 		#region Constructor
 
-		public PostItemViewModel(Post post, bool isLast = false)
+		public PostItemViewModel(Post post)
 		{
 			_post = post;
-			Init(isLast);
+			Init();
 			InitCommand();
 		}
 
-	    private void Init(bool isLast)
+	    private void Init()
 	    {
 		    CategoryName = _post.Category.CategoryName;
 		    AvatarUrl = _post.User.AvatarUrl;
@@ -174,19 +174,26 @@ namespace GiveAndTake.Core.ViewModels
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;
 		    CommentCount = _post.CommentCount;
-		    IsLastViewInList = isLast;
+		    IsLastViewInList = _post.IsLast;
 	    }
 
 	    private void InitCommand()
         {
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<UserProfileViewModel>());
             ShowPostDetailCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PostDetailViewModel>());
-	        ShowMessagePopupCommand = new MvxAsyncCommand(ShowMessageView);
+	        ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
         }
 
-	    private async Task ShowMessageView()
+	    private async Task ShowMenuView()
 	    {
-		    var result = await NavigationService.Navigate<PopupMessageViewModel,string, bool>("Bài đăng đã có yêu cầu, \nbạn có chắc chắn xóa?");
+		    if (_post.IsMyPost)
+		    {
+			    await NavigationService.Navigate<PopupPostOptionViewModel>();
+		    }
+		    else
+		    {
+				await NavigationService.Navigate<PopupReportViewViewModel>();
+			}
 	    }
 
 	    #endregion
@@ -195,7 +202,7 @@ namespace GiveAndTake.Core.ViewModels
 
         public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public IMvxAsyncCommand ShowPostDetailCommand { get; set; }
-        public IMvxAsyncCommand ShowMessagePopupCommand { get; set; }
+        public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
 
         #endregion
     }

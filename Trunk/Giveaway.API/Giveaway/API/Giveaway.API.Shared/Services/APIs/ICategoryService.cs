@@ -8,13 +8,13 @@ using Giveaway.API.Shared.Responses.Category;
 
 namespace Giveaway.API.Shared.Services.APIs
 {
-    public interface ICategoryService
+    public interface ICategoryService<T> where T : CategoryBaseResponse
     {
-        PagingQueryResponse<CategoryResponse> All(IDictionary<string, string> @params);
-        CategoryResponse Delete(Guid id);
-        CategoryResponse Create(CategoryRequest request);
-        CategoryResponse FindCategory(Guid id);
-        CategoryResponse Update(Guid id, CategoryRequest request);
-        CategoryResponse ChangeCategoryStatus(Guid userId, StatusRequest request);
+        PagingQueryResponse<T> All(IDictionary<string, string> @params);
+        CategoryCmsResponse Delete(Guid id);
+        CategoryCmsResponse Create(CategoryRequest request);
+        T FindCategory(Guid id);
+        CategoryCmsResponse Update(Guid id, CategoryRequest request);
+        CategoryCmsResponse ChangeCategoryStatus(Guid userId, StatusRequest request);
     }
 }

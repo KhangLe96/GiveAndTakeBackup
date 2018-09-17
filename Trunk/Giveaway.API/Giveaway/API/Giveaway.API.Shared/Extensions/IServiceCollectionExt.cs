@@ -17,6 +17,7 @@ namespace Giveaway.API.Shared.Extensions
 		{
 			services.AddSingleton<IFacebookClient, FacebookClient>();
             services.AddSingleton(typeof(IPostService<>), typeof(PostService<>));
+		    services.AddSingleton(typeof(ICategoryService<>), typeof(CategoryService<>));
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 			var interfaceAssemblies = new [] { typeof(IServiceCollectionExt).GetTypeInfo().Assembly, typeof(Service.Services.IPostService).GetTypeInfo().Assembly};
