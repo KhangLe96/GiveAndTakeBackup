@@ -5,7 +5,7 @@ using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
-	public class PopupShortFilterViewModel : PopupViewModel
+	public class PopupShortFilterViewModel : PopupListViewModel
 	{
 		public override string Title => "Xếp theo";
 		protected override string SelectedItem { get; set; }

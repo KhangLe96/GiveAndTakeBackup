@@ -3,11 +3,11 @@ using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
-	public class PopupReportViewViewModel : BaseViewModel
+	public class PopupReportViewModel : PopupViewModel
 	{
 		public IMvxCommand ReportCommand { get; set; }
 
-		public PopupReportViewViewModel()
+		public PopupReportViewModel()
 		{
 			ReportCommand = new MvxCommand(OnReport);
 		}

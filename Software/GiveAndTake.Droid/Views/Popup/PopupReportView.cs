@@ -10,7 +10,7 @@ namespace GiveAndTake.Droid.Views.Popup
 {
 	[MvxDialogFragmentPresentation]
 	[Register(nameof(PopupReportView))]
-	public class PopupReportView : MvxBottomSheetDialogFragment<PopupReportViewViewModel>
+	public class PopupReportView : MvxBottomSheetDialogFragment<PopupReportViewModel>
 	{
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{

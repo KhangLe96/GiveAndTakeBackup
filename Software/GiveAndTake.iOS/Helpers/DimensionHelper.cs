@@ -40,7 +40,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat SeparateLineHeaderHeight { get; set; }
 		public static nfloat DropDownFieldHeight { get; set; }
 		public static nfloat DropDownFieldWidth { get; set; }
-		public static nfloat PostDescriptionEditTextHeight { get; set; }
+		public static nfloat PostDescriptionTextViewHeight { get; set; }
 		public static nfloat DefaultMargin { get; set; }
 		public static nfloat CreatePostEditTextWidth { get; set; }
 		public static nfloat PictureButtonWidth { get; set; }
@@ -66,35 +66,19 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat DeletePhotoButtonWidth { get; set; }
 		public static nfloat RoundCorner { get; set; }
 		public static nfloat TextPadding { get; set; }
+		public static nfloat BigTextSize { get; set; }
 
 		public static void InitStaticVariable()
 		{
 			SmallTextSize = 11 * Rate;
 			ButtonTextSize = 12 * Rate;
 			MediumTextSize = 15 * Rate;
+			BigTextSize = 17 * Rate;
 			HeaderBarLogoWidth = 200 * Rate;
 			HeaderBarLogoHeight = 20 * Rate;
 			HeaderBarHeight = 60 * Rate;
-			PostDescriptionTextSize = 13 * Rate;
-			MarginShort = 6 * Rate;
-			MarginText = 4 * Rate;
-			MarginNormal = 12 * Rate;
+			PostDescriptionTextSize = 13 * Rate;;
 			MarginBig = 25 * Rate;
-			AvatarMargin = 16 * Rate;
-			ImagePostSize = 120 * Rate;
-			ImageMultiSize = 20 * Rate;
-			ImageAvatarSize = 29 * Rate;
-			FilterSize = 40 * Rate;
-			ButtonCategoryHeight = 20 * Rate;
-			ButtonRequestHeight = 9 * Rate;
-			ButtonRequestWidth = 15 * Rate;
-			ButtonSmallWidth = 12 * Rate;
-			ButtonSmallHeight = 12 * Rate;
-			ButtonExtensionHeight = 3 * Rate;
-			ButtonExtensionWidth = 10 * Rate;
-			HeaderBarLogoHeight = 30 * Rate;
-			HeaderBarHeight = 50 * Rate;
-			PostDescriptionTextSize = 13 * Rate;
 			MarginShort = 6 * Rate;
 			MarginText = 4 * Rate;
 			MarginNormal = 12 * Rate;
@@ -122,7 +106,9 @@ namespace GiveAndTake.iOS.Helpers
 			PopupCellHeight = 40 * Rate;
 			DropDownFieldHeight = 40 * Rate;
 			DropDownFieldWidth = 160 * Rate;
-			PostDescriptionEditTextHeight = 350 * Rate;
+			PostDescriptionTextViewHeight = ResolutionHelper.Height - DimensionHelper.DefaultMargin * 6 - DimensionHelper.MarginBig -
+			                                DimensionHelper.HeaderBarHeight - DimensionHelper.CreatePostButtonHeight -
+			                                DimensionHelper.DropDownFieldHeight * 2 - DimensionHelper.PictureButtonHeight; 
 			DefaultMargin = 10 * Rate;
 			CreatePostEditTextWidth = ResolutionHelper.Width - (DefaultMargin * 2);
 			PictureButtonWidth = 25 * Rate;
@@ -142,7 +128,7 @@ namespace GiveAndTake.iOS.Helpers
 			NewPostSize = 50 * Rate;
 			MenuSeparatorLineHeight = 6 * Rate;
 			BackButtonHeight = 25 * Rate;
-			BackButtonWidth = 12 * Rate;
+			BackButtonWidth = 20 * Rate; //12
 			BackButtonMarginLeft = 10 * Rate;
 			DeletePhotoButtonWidth = 25 * Rate;
 			RoundCorner = 20 * Rate;

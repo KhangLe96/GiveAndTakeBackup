@@ -105,7 +105,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 		    var  a = _managementService.GetPostList(GetFilterParams());
             _dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
-			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(post => new PostItemViewModel(post, IsLast(post))));
+			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 		}
 
 		private void OnLoadMore()
