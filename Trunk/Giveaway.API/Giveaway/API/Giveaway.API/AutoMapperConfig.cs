@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
-using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Models.DTO;
 using Giveaway.API.Shared.Requests.Image;
 using Giveaway.API.Shared.Requests.Post;

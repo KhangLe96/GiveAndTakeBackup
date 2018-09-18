@@ -90,6 +90,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 categories = categories.Where(x => x.CategoryName.Contains(request.CategoryName));
             }
             return categories
+                .OrderBy(x => x.Priority)
                 .Skip(request.Limit * (request.Page - 1))
                 .Take(request.Limit)
                 .Select(category => Mapper.Map<T>(category))
@@ -124,7 +125,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             Id = Guid.NewGuid(),
             CategoryName = request.CategoryName,
             ImageUrl = request.CategoryImageUrl,
-            BackgroundColor = request.BackgroundColor
+            BackgroundColor = request.BackgroundColor,
+            Priority = 1
         };
 
         private Category GetCategory(Guid id)

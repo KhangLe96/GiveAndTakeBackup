@@ -109,7 +109,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		    set.Bind(_btnCategory)
 		        .For(v => v.BackgroundColor)
 		        .To(vm => vm.BackgroundColor)
-		        .WithConversion("StringToUIColor", _btnCategory);
+		        .WithConversion("StringToUIColor");
 
 			set.Apply();
 		}
