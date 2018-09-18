@@ -70,7 +70,6 @@
     <Compile Include="Controls\CustomSquareRoundedImageView.cs" />
     <Compile Include="Controls\CustomTextView.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
-    <Compile Include="Converters\NativeColorToColorDrawableValueConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />
