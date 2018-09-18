@@ -141,15 +141,12 @@ namespace GiveAndTake.iOS.Helpers
 		{
 			var imageView = new CustomMvxCachedImageView
 			{
-				TranslatesAutoresizingMaskIntoConstraints = false
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				DefaultImage = new UIImage(imagePath)
 			};
 			imageView.Layer.CornerRadius = cornerRadius;
 			imageView.ClipsToBounds = true;
-
-			imageView.LoadingPlaceholderImagePath = $"res:{imagePath}";
-			imageView.ErrorPlaceholderImagePath = $"res:{imagePath}";
-			imageView.TransformPlaceholders = true;
-
+			
 			AddWidthHeight(height, width, imageView);
 
 			return imageView;

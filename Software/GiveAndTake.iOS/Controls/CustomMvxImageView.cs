@@ -1,4 +1,5 @@
 ﻿using FFImageLoading.Cross;
+using GiveAndTake.Core;
 using UIKit;
 
 namespace GiveAndTake.iOS.Controls
@@ -12,7 +13,7 @@ namespace GiveAndTake.iOS.Controls
 			set
 			{
 				_imageUrl = value;
-				if (!string.IsNullOrEmpty(value))
+				if (value != AppConstants.DefaultUrl)
 				{
 					ImagePath = value;
 				}
