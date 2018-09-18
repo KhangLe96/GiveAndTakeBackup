@@ -45,7 +45,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			var set = this.CreateBindingSet<PostItemViewCell, PostItemViewModel>();
 
 			set.Bind(_imagePost)
-				.For(v => v.ImageUrl)
+				.For(v => v.ImagePath)
 				.To(vm => vm.PostImage);
 
 			set.Bind(_imagePost.Tap())
@@ -62,7 +62,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				.To(vm => vm.CategoryName);
 
 			set.Bind(_imgAvatar)
-				.For(v => v.ImageUrl)
+				.For(v => v.ImagePath)
 				.To(vm => vm.AvatarUrl);
 
 			set.Bind(_imgAvatar.Tap())

@@ -23,13 +23,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			DimensionHelper.InitStaticVariable();
 			ImageHelper.InitStaticVariable();
 
-			var set = this.CreateBindingSet<TabNavigationView, TabNavigationViewModel>();
-			set.Bind(_imgAvatar)
-				.For(v => v.ImageUrl)
-				.To(vm => vm.AvatarUrl);
-
-			set.Apply();
-
 			InitHeaderBar();
 		}
 
@@ -42,8 +35,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 		private void InitHeaderBar()
 		{
-			_headerBar =
-				UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight, UIColor.White);
+			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight, UIColor.White);
 
 			View.Add(_headerBar);
 			View.AddConstraints(new[]
@@ -60,10 +52,12 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			TabBar.BackgroundColor = UIColor.White;
 			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize,
 				DimensionHelper.ImageAvatarSize, ImageHelper.AvtOff, DimensionHelper.ImageAvatarSize / 2);
+
 			if (!string.IsNullOrEmpty(ViewModel.AvatarUrl))
 			{
 				await ImageService.Instance.LoadUrl(ViewModel.AvatarUrl).IntoAsync(_imgAvatar);
 			}
+
 			if (_imgAvatar.Bounds.Size == CGSize.Empty)
 			{
 				_imgAvatar.Bounds = new CGRect(0, 0, DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize);
@@ -83,15 +77,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			}
 
 			NavigationController?.SetNavigationBarHidden(true, animated);
-
-			//UIImageView titleImageView = new UIImageView
-			//{
-			//	Image = new UIImage(ImageHelper.TopLogo),
-			//	Frame = new CGRect(0, 0, 34, 34),
-			//	ContentMode = UIViewContentMode.ScaleAspectFit
-			//};
-			//NavigationItem.TitleView = titleImageView;
-			//NavigationItem.SetHidesBackButton(true, animated);
 		}
 
 		private static UIImage ConvertViewToImage(UIView view)
