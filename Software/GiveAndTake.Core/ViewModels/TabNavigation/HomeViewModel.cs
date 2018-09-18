@@ -145,7 +145,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private string GetFilterParams()
 		{
-			var parameters = new List<string>();
+			var parameters = new List<string>{"limit=20"};
 
 			if (!string.IsNullOrEmpty(CurrentQueryString))
 			{

@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using FFImageLoading.Transformations;
+using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -163,11 +166,17 @@ namespace GiveAndTake.Core.ViewModels
             }
         }
 
-        #endregion
+	    public List<ITransformation> PostTransformations => new List<ITransformation> { new CornersTransformation(5 , CornerTransformType.AllRounded) };
 
-        #region Constructor
+	    public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
-        public PostItemViewModel(Post post, bool isLast = false)
+	    public int DownsampleWidth => 200;
+
+		#endregion
+
+		#region Constructor
+
+		public PostItemViewModel(Post post, bool isLast = false)
 		{
 			_post = post;
 			Init();
@@ -177,12 +186,12 @@ namespace GiveAndTake.Core.ViewModels
 	    private void Init()
 	    {
 		    CategoryName = _post.Category.CategoryName;
-		    AvatarUrl = _post.User.AvatarUrl;
+		    AvatarUrl = _post.User.AvatarUrl ?? AppConstants.DefaultUrl;
 		    UserName = _post.User.FullName == " " ? AppConstants.DefaultUserName : _post.User.FullName;
 		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    Description = _post.Description;
-			PostImage = _post.Images.FirstOrDefault()?.ResizedImage;
+			PostImage = _post.Images.FirstOrDefault()?.ResizedImage ?? AppConstants.DefaultUrl;
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;

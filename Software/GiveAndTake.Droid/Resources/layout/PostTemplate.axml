@@ -4,15 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <giveandtake.droid.controls.CustomRoundedImageView
+	<ffimageloading.cross.MvxCachedImageView
         android:id="@+id/imgPost"
         android:layout_width="@dimen/image_post_size"
         android:layout_height="@dimen/image_post_size"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_margin="@dimen/margin_short"
-        android:scaleType="fitXY"
-        local:MvxBind="ImageUrl PostImage; Click ShowPostDetailCommand" />
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_post.png'; 
+							ErrorPlaceholderImagePath 'res:default_post.png'; 
+							Transformations PostTransformations; 
+							DownsampleWidth DownsampleWidth;
+							ImagePath PostImage; 							
+							Click ShowPostDetailCommand" />
 
     <ImageView
         android:id="@+id/imgMultiImages"
@@ -43,14 +47,18 @@
 
 	</giveandtake.droid.controls.CustomCardView >
 
-  <giveandtake.droid.controls.CustomCircleImageView
-        android:id="@+id/imgAvatar"
+	<ffimageloading.cross.MvxCachedImageView
+		android:id="@+id/imgAvatar"
         android:layout_width="@dimen/image_avatar_size"
         android:layout_height="@dimen/image_avatar_size"
         android:layout_alignStart="@id/btnCategory"
         android:layout_below="@id/btnCategory"
         android:layout_marginTop="@dimen/margin_short"
-        local:MvxBind="ImageUrl AvatarUrl; Click ShowGiverProfileCommand" />
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar.png'; 
+							ErrorPlaceholderImagePath 'res:default_avatar.png'; 
+							Transformations AvatarTransformations; 
+							ImagePath AvatarUrl; 
+							Click ShowGiverProfileCommand" />
 
     <TextView
         android:id="@+id/tvUserFullName"
