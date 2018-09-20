@@ -1,5 +1,7 @@
 ﻿using CoreGraphics;
 using System;
+using GiveAndTake.Core;
+using GiveAndTake.iOS.Helpers;
 using UIKit;
 
 namespace GiveAndTake.iOS.Controls

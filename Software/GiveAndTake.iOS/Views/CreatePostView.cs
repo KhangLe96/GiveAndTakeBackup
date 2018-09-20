@@ -1,5 +1,4 @@
-﻿using CoreAnimation;
-using GiveAndTake.Core.ViewModels;
+﻿using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
@@ -11,6 +10,7 @@ using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
 using CoreGraphics;
+using GiveAndTake.Core;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
@@ -20,8 +20,8 @@ namespace GiveAndTake.iOS.Views
 	public class CreatePostView : BaseView
 	{
 		private HeaderBar _headerBar;
-		private UITextField _chooseProvinceCityField;
-		private UITextField _chooseCategoryField;
+		private UIButton _chooseProvinceCityButton;
+		private UIButton _chooseCategoryButton;
 		private UITextField _postTitleTextField;
 		private PlaceholderTextView _postDescriptionTextView;
 		private UIButton _btnTakePicture;
@@ -48,8 +48,8 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Apply();
 
 			InitHeaderBar();
-			InitChooseProvinceCityField();
-			InitChooseCategoryField();
+			InitChooseProvinceCityButton();
+			InitChooseCategoryButton();
 			InitPostTitleTextField();
 			InitPostDescriptionTextView();
 			InitChoosePictureButton();
@@ -76,28 +76,20 @@ namespace GiveAndTake.iOS.Views
 				.For("Text")
 				.To(vm => vm.PostTitle);
 
-			bindingSet.Bind(_chooseProvinceCityField.Tap())
+			bindingSet.Bind(_chooseProvinceCityButton.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowProvinceCityCommand);
 
-			bindingSet.Bind(_chooseProvinceCityField)
-				.For(v => v.Placeholder)
-				.To(vm => vm.ProvinceCityPlaceHolder);
-
-			bindingSet.Bind(_chooseProvinceCityField)
-				.For(v => v.Text)
+			bindingSet.Bind(_chooseProvinceCityButton)
+				.For("Title")
 				.To(vm => vm.ProvinceCity);
 
-			bindingSet.Bind(_chooseCategoryField.Tap())
+			bindingSet.Bind(_chooseCategoryButton.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowCategoriesCommand);
 
-			bindingSet.Bind(_chooseCategoryField)
-				.For(v => v.Placeholder)
-				.To(vm => vm.CategoryPlaceHolder);
-
-			bindingSet.Bind(_chooseCategoryField)
-				.For(v => v.Text)
+			bindingSet.Bind(_chooseCategoryButton)
+				.For("Title")
 				.To(vm => vm.Category);
 
 			bindingSet.Bind(_btnCancel.Tap())
@@ -160,60 +152,55 @@ namespace GiveAndTake.iOS.Views
 			});
 		}
 
-		private void InitChooseProvinceCityField()
+		private void InitChooseProvinceCityButton()
 		{
-			
-			_chooseProvinceCityField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight,
-				DimensionHelper.DropDownFieldWidth,
-				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner);
+			_chooseProvinceCityButton = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
+				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, null, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
 
-			_chooseProvinceCityField.UserInteractionEnabled = false;
-			_chooseProvinceCityField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
-			_chooseProvinceCityField.Layer.BorderWidth = 1;
-			UIView paddingView = new UIView(new CGRect(0, 0, 15, _chooseProvinceCityField.Frame.Height));
-			_chooseProvinceCityField.LeftView = paddingView;
-			_chooseProvinceCityField.LeftViewMode = UITextFieldViewMode.Always;
+			_chooseProvinceCityButton.Layer.BorderColor = ColorHelper.Gray.CGColor;
+			_chooseProvinceCityButton.Layer.BorderWidth = 1;
+			_chooseProvinceCityButton.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+			_chooseProvinceCityButton.ContentEdgeInsets = new UIEdgeInsets(10, 15, 10, 10);
 
-			View.Add(_chooseProvinceCityField);
+
+			View.Add(_chooseProvinceCityButton);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_chooseProvinceCityField, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_chooseProvinceCityButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
-				NSLayoutConstraint.Create(_chooseProvinceCityField, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(_chooseProvinceCityButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
 			});
 		}
 
-		private void InitChooseCategoryField()
+		private void InitChooseCategoryButton()
 		{
-			_chooseCategoryField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight,
-				DimensionHelper.DropDownFieldWidth,
-				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner);
+			_chooseCategoryButton = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
+				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, null, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
 
-			_chooseCategoryField.UserInteractionEnabled = false;
-			_chooseCategoryField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
-			_chooseCategoryField.Layer.BorderWidth = 1;
-			UIView paddingView = new UIView(new CGRect(0, 0, 15, _chooseCategoryField.Frame.Height));
-			_chooseCategoryField.LeftView = paddingView;
-			_chooseCategoryField.LeftViewMode = UITextFieldViewMode.Always;
+			_chooseCategoryButton.Layer.BorderColor = ColorHelper.Gray.CGColor;
+			_chooseCategoryButton.Layer.BorderWidth = 1;
+			_chooseCategoryButton.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+			_chooseCategoryButton.ContentEdgeInsets = new UIEdgeInsets(10, 15, 10, 10);
 
-			View.Add(_chooseCategoryField);
+			View.Add(_chooseCategoryButton);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_chooseCategoryField, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_chooseCategoryButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
-				NSLayoutConstraint.Create(_chooseCategoryField, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(_chooseCategoryButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin)
 			});
 		}
 
 		private void InitPostTitleTextField()
 		{
-			_postTitleTextField = UIHelper.CreateTextField(DimensionHelper.DropDownFieldHeight, DimensionHelper.CreatePostEditTextWidth,
-				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner);
-			
-			_postTitleTextField.Font = UIFont.SystemFontOfSize(DimensionHelper.MediumTextSize);
-			_postTitleTextField.Layer.SublayerTransform = CATransform3D.MakeTranslation(15, 0, 0);
+			_postTitleTextField = UIHelper.CreateTextField(DimensionHelper.DropDownButtonHeight, DimensionHelper.CreatePostEditTextWidth,
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner, DimensionHelper.MediumTextSize, FontType.Light);
+
+			UIView paddingView = new UIView(new CGRect(0, 0, 15, _postTitleTextField.Frame.Height));
+			_postTitleTextField.LeftView = paddingView;
+			_postTitleTextField.LeftViewMode = UITextFieldViewMode.Always;
 			_postTitleTextField.ShouldReturn = (textField) => {
 				textField.ResignFirstResponder();
 				return true;
@@ -222,7 +209,7 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_postTitleTextField);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_postTitleTextField, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _chooseProvinceCityField,
+				NSLayoutConstraint.Create(_postTitleTextField, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _chooseProvinceCityButton,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
 				NSLayoutConstraint.Create(_postTitleTextField, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
@@ -232,7 +219,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitPostDescriptionTextView()
 		{
 			_postDescriptionTextView = UIHelper.CreateTextView(DimensionHelper.PostDescriptionTextViewHeight, DimensionHelper.CreatePostEditTextWidth,
-				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner, ColorHelper.Gray, DimensionHelper.MediumTextSize);
+				ColorHelper.LightGray, ColorHelper.Gray, DimensionHelper.RoundCorner, ColorHelper.Gray, DimensionHelper.MediumTextSize, FontType.Light);
 
 
 			View.Add(_postDescriptionTextView);
@@ -276,7 +263,7 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitSelectedImageTextView()
 		{
-			_selectedImageTextView = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.BigTextSize);
+			_selectedImageTextView = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.BigTextSize, FontType.Light);
 
 			View.Add(_selectedImageTextView);
 			View.AddConstraints(new[]
@@ -293,7 +280,7 @@ namespace GiveAndTake.iOS.Views
 			_btnCancel = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight,
 				ColorHelper.LightBlue, ColorHelper.DarkBlue, DimensionHelper.MediumTextSize,
 				UIColor.White, UIColor.White, ColorHelper.LightBlue, ColorHelper.DarkBlue,
-				true, true);
+				true, true, FontType.Light);
 
 			View.Add(_btnCancel);
 			View.AddConstraints(new[]
@@ -307,9 +294,10 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitSubmitButton()
 		{
-			_btnSubmit = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth, DimensionHelper.CreatePostButtonHeight,
+			_btnSubmit = UIHelper.CreateAlphaButton(DimensionHelper.CreatePostButtonWidth,
+				DimensionHelper.CreatePostButtonHeight,
 				UIColor.White, UIColor.White, DimensionHelper.MediumTextSize,
-				ColorHelper.LightBlue, ColorHelper.DarkBlue, ColorHelper.LightBlue, ColorHelper.DarkBlue);
+				ColorHelper.LightBlue, ColorHelper.DarkBlue, ColorHelper.LightBlue, ColorHelper.DarkBlue, true, false, FontType.Light);
 
 			View.Add(_btnSubmit);
 			View.AddConstraints(new[]
@@ -329,6 +317,8 @@ namespace GiveAndTake.iOS.Views
 			{
 				ImageCommand.Execute(image);
 			}
+
+			image?.Clear();
 		}
 	}
 }

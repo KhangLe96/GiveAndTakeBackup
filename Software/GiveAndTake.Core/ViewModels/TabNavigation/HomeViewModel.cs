@@ -86,7 +86,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.Categories = ManagementService.GetCategories();
 			_dataModel.ProvinceCities = ManagementService.GetProvinceCities();
 			_dataModel.SortFilters = ManagementService.GetShortFilters();
-			_dataModel.SelectedCategory = _dataModel.Categories.First(c => c.CategoryName == AppConstants.DefaultItem);
+			_dataModel.SelectedCategory = _dataModel.Categories.First(c => c.CategoryName == AppConstants.DefaultCategoryName);
 			_dataModel.SelectedProvinceCity = _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
 			_dataModel.SelectedSortFilter = _dataModel.SortFilters.First(filter => filter.FilterName == AppConstants.DefaultShortFilter);
 		}
@@ -137,7 +137,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			var result = await NavigationService.Navigate<T, bool>();
 			if (!result) return;
 			UpdatePostViewModels();
-			IsCategoryFilterActivated = _dataModel.SelectedCategory.CategoryName != AppConstants.DefaultItem;
+			IsCategoryFilterActivated = _dataModel.SelectedCategory.CategoryName != AppConstants.DefaultCategoryName;
 			IsLocationFilterActivated =  _dataModel.SelectedProvinceCity.ProvinceCityName != AppConstants.DefaultLocationFilter;
 			IsSortFilterActivated = _dataModel.SelectedSortFilter.FilterName != AppConstants.DefaultShortFilter;
 		}
@@ -171,7 +171,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				parameters.Add($"order={_dataModel.SelectedSortFilter.FilterTag}");
 			}
 
-			if (_dataModel.SelectedCategory?.CategoryName != AppConstants.DefaultItem )
+			if (_dataModel.SelectedCategory?.CategoryName != AppConstants.DefaultCategoryName )
 			{
 				parameters.Add($"categoryId={_dataModel.SelectedCategory?.Id}");
 			}

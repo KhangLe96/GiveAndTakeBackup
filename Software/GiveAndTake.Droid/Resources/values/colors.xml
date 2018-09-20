@@ -13,6 +13,7 @@
 	<color name="default_popup_text_color">#cccccc</color>
 	<color name="login_title_color">#3EB9E9</color>
 	<color name="default_editText_field_color">#F3F3F3</color>
-  <color name="grey_line_color">#f2f2f2</color>
-  <color name="post_line_color">#7dbef4</color>
+	<color name="grey_line_color">#f2f2f2</color>	
+	<color name="post_line_color">#7dbef4</color>
+	<color name="gray">#cccccc</color>
 </resources>

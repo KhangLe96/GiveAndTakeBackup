@@ -177,13 +177,10 @@
       <SubType>Designer</SubType>
     </None>
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
-    <BundleResource Include="Resources\Fonts\HelveticaNeue.ttf" />
-    <BundleResource Include="Resources\Fonts\HelveticaNeue-Bold.ttf" />
-    <BundleResource Include="Resources\Fonts\HelveticaNeue-Italic.ttf" />
-    <BundleResource Include="Resources\Fonts\HelveticaNeue-Light.ttf" />
-    <BundleResource Include="Resources\Fonts\HelveticaNeue-LightItalic.ttf" />
-    <BundleResource Include="Resources\Fonts\HelveticaNeue-Medium.ttf" />
-    <BundleResource Include="Resources\Fonts\HelveticaNeue-Thin.ttf" />
+    <BundleResource Include="Resources\Fonts\SanFranciscoDisplay-Bold.otf" />
+    <BundleResource Include="Resources\Fonts\SanFranciscoDisplay-Light.otf" />
+    <BundleResource Include="Resources\Fonts\SanFranciscoDisplay-Medium.otf" />
+    <BundleResource Include="Resources\Fonts\SanFranciscoDisplay-Regular.otf" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ELCImagePicker">
