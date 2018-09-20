@@ -4,8 +4,10 @@
 	<dimen name="SmallTextSize">11sp</dimen>
 	<dimen name="post_description_text_size">11sp</dimen>
 	<dimen name="MediumTextSize">16sp</dimen>
+	<dimen name="basic_margin">5dp</dimen>
 	<dimen name="margin_short">8dp</dimen>
 	<dimen name="margin_normal">16dp</dimen>
+	<dimen name="margin_big">25dp</dimen>
 	<dimen name="avatar_margin">16dp</dimen>
 	<dimen name="image_post_size">130dp</dimen>
 	<dimen name="image_multi_size">25dp</dimen>
@@ -28,4 +30,17 @@
 	<dimen name="post_image_corner">2dp</dimen>
 	<dimen name="margin_17dp">17dp</dimen>
 	<dimen name="margin_separator">5dp</dimen>
+	<dimen name="default_margin">10dp</dimen>
+	<dimen name="default_padding">10dp</dimen>
+	<dimen name="postDescription_editText_Height">370dp</dimen>
+	<dimen name="picture_button_height">20dp</dimen>
+	<dimen name="picture_button_width">25dp</dimen>
+	<dimen name="spinner_button_height">40dp</dimen>
+	<dimen name="spinner_button_width">160dp</dimen>
+	<dimen name="postTitle_editText_height">40dp</dimen>
+	<dimen name="createPost_button_height">30dp</dimen>
+	<dimen name="round_corner_radius">20dp</dimen>
+	<dimen name="border_width">2px</dimen>
+	<dimen name="border_width_light">1px</dimen>
+	<dimen name="spinner_button_textSize">15dp</dimen>
 </resources>

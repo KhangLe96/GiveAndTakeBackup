@@ -41,7 +41,7 @@ namespace GiveAndTake.iOS.Helpers
 						foreach (var item in items)
 						{
 							var path = Save(item.Image, item.Name);
-							byte[] bytes = File.ReadAllBytes(path);
+							var bytes = File.ReadAllBytes(path);
 							Images.Add(bytes);
 							//CleanPath(path);
 						}

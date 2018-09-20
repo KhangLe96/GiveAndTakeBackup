@@ -104,7 +104,6 @@ namespace GiveAndTake.Droid.Views
 			{
 				if (data?.ClipData != null)
 				{
-
 					var imageCount = data.ClipData.ItemCount;
 					for (int i = 0; i < imageCount; i++)
 					{

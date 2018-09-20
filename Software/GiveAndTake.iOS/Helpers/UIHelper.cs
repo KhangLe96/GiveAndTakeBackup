@@ -1,6 +1,5 @@
 ﻿using GiveAndTake.Core;
 using System;
-using FFImageLoading.Cross;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using UIKit;
@@ -76,9 +75,9 @@ namespace GiveAndTake.iOS.Helpers
 			var textView = new PlaceholderTextView
 			{
 				PlaceholderTextColor = placeHolderColor,
-				Font = GetFont(fontType, textSize),
 				TranslatesAutoresizingMaskIntoConstraints = false,
 			};
+			textView.Font = GetFont(fontType, textSize);
 			textView.BackgroundColor = backgroundColor;
 			textView.Layer.BorderColor = borderColor.CGColor;
 			textView.Layer.BorderWidth = 1;
@@ -93,7 +92,7 @@ namespace GiveAndTake.iOS.Helpers
 
 		public static UITextField CreateTextField(nfloat height, nfloat width, 
 			UIColor backgroundColor, UIColor borderColor, 
-			nfloat cornerRadius)
+			nfloat cornerRadius, nfloat textSize, FontType fontType = FontType.Regular)
 		{
 			var textField = new UITextField
 			{
@@ -101,7 +100,7 @@ namespace GiveAndTake.iOS.Helpers
 			};
 			textField.Layer.BorderColor = borderColor.CGColor;
 			textField.Layer.BorderWidth = 1;
-			textField.Font = GetFont(FontType.Regular, DimensionHelper.ButtonTextSize);
+			textField.Font = GetFont(fontType, textSize);
 			textField.BackgroundColor = backgroundColor;
 			textField.Layer.CornerRadius = cornerRadius;
 			textField.Layer.MasksToBounds = true;
@@ -250,14 +249,14 @@ namespace GiveAndTake.iOS.Helpers
 			return tableView;
 		}
 
-		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, string title, nfloat cornerRadius)
+		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, string title, nfloat cornerRadius, FontType fontType = FontType.Regular)
 		{
 			var button = new UIButton
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false
 			};
 			button.SetTitleColor(textColor, UIControlState.Normal);
-			button.Font = GetFont(FontType.Regular, textSize);
+			button.Font = GetFont(fontType, textSize);
 			button.SetTitle(title, UIControlState.Normal);
 
 			button.BackgroundColor = backgroundColor;
@@ -269,9 +268,12 @@ namespace GiveAndTake.iOS.Helpers
 			return button;
 		}
 
-		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, string title, nfloat cornerRadius, UIColor borderColor, nfloat borderWidth)
+		public static UIButton CreateButton(nfloat height, nfloat width, 
+			UIColor backgroundColor, UIColor textColor, 
+			nfloat textSize, string title, nfloat cornerRadius, 
+			UIColor borderColor, nfloat borderWidth, FontType fontType = FontType.Regular)
 		{
-			var button = CreateButton(height, width, backgroundColor, textColor, textSize, title, cornerRadius);
+			var button = CreateButton(height, width, backgroundColor, textColor, textSize, title, cornerRadius, fontType);
 
 			button.Layer.BorderWidth = borderWidth;
 			button.Layer.BorderColor = borderColor.CGColor;
@@ -283,20 +285,14 @@ namespace GiveAndTake.iOS.Helpers
 		{
 			switch (fontType)
 			{
-				case FontType.Thin:
-					return UIFont.FromName("HelveticaNeue-Thin", fontSize);
 				case FontType.Light:
-					return UIFont.FromName("HelveticaNeue-Light", fontSize);
-				case FontType.LightItalic:
-					return UIFont.FromName("HelveticaNeue-LightItalic", fontSize);
+					return UIFont.FromName("SanFranciscoDisplay-Light", fontSize);
 				case FontType.Medium:
-					return UIFont.FromName("HelveticaNeue-Medium", fontSize);
+					return UIFont.FromName("SanFranciscoDisplay-Medium", fontSize);
 				case FontType.Bold:
-					return UIFont.FromName("HelveticaNeue-Bold", fontSize);
-				case FontType.Italic:
-					return UIFont.FromName("HelveticaNeue-Italic", fontSize);
+					return UIFont.FromName("SanFranciscoDisplay-Bold", fontSize);
 				default:
-					return UIFont.FromName("HelveticaNeue", fontSize);
+					return UIFont.FromName("SanFranciscoDisplay-Regular", fontSize);
 			}
 		}
 
