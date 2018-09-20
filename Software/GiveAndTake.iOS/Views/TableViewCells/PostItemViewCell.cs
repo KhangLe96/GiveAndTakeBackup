@@ -67,7 +67,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 			set.Bind(_imgAvatar.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.ShowPostDetailCommand);
+				.To(vm => vm.ShowGiverProfileCommand);
 
 			set.Bind(_lbUserName)
 				.To(vm => vm.UserName);

@@ -34,7 +34,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 
-		public IMvxAsyncCommand CreatePostCommand { get; set; }
+		public IMvxCommand CreatePostCommand { get; set; }
 
 		public ICommand SearchCommand { get; private set; }
 
@@ -96,14 +96,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			ShowCategoriesCommand = new MvxAsyncCommand(ShowViewResult<PopupCategoriesViewModel>);
 			ShowShortPostCommand = new MvxAsyncCommand(ShowViewResult<PopupShortFilterViewModel>);
 			ShowFilterCommand = new MvxAsyncCommand(ShowViewResult<PopupLocationFilterViewModel>);
-			CreatePostCommand = new MvxAsyncCommand(ShowViewResult<CreatePostViewModel>);
+			CreatePostCommand = new MvxCommand(ShowNewPostView);
 			SearchCommand = new MvxCommand(UpdatePostViewModels);
 			LoadMoreCommand = new MvxCommand(OnLoadMore);
 		}
 
 		private void UpdatePostViewModels()
 		{
-		    var  a = _managementService.GetPostList(GetFilterParams());
             _dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
 			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 		}
@@ -141,6 +140,21 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			IsCategoryFilterActivated = _dataModel.SelectedCategory.CategoryName != AppConstants.DefaultItem;
 			IsLocationFilterActivated =  _dataModel.SelectedProvinceCity.ProvinceCityName != AppConstants.DefaultLocationFilter;
 			IsSortFilterActivated = _dataModel.SelectedSortFilter.FilterName != AppConstants.DefaultShortFilter;
+		}
+
+		private async void ShowNewPostView()
+		{
+			var categoryFilter = _dataModel.SelectedCategory;
+			var locationFilter = _dataModel.SelectedProvinceCity;
+
+			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
+
+			_dataModel.SelectedCategory = categoryFilter;
+			_dataModel.SelectedProvinceCity = locationFilter;
+			if (result)
+			{
+				UpdatePostViewModels();
+			}
 		}
 
 		private string GetFilterParams()

@@ -24,6 +24,9 @@
         android:layout_height="@dimen/image_multi_size"
         android:layout_alignBottom="@id/imgPost"
         android:layout_alignEnd="@id/imgPost"
+	    android:layout_marginBottom="@dimen/margin_short"
+	    android:layout_marginRight="@dimen/margin_short"
+	    android:src="@drawable/multiphoto"
         local:MvxBind="Visibility Visibility(HasManyPostPhotos)"/>
   
 	<giveandtake.droid.controls.CustomCardView 

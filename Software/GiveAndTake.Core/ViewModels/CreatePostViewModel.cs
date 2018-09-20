@@ -9,6 +9,7 @@ using MvvmCross.Plugin.PictureChooser;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -110,6 +111,7 @@ namespace GiveAndTake.Core.ViewModels
 			_debouncer = new DebouncerHelper();
 			_dataModel = dataModel;
 			_pictureChooserTask = pictureChooserTask;
+			_dataModel.SelectedCategory = _dataModel.Categories.First();
 			InitCommand();
 		}
 
