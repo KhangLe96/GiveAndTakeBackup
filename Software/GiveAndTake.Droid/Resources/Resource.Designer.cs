@@ -7263,19 +7263,16 @@ namespace GiveAndTake.Droid
 		{
 			
 			// aapt resource value: 0x7f040000
-			public const int font = 2130968576;
+			public const int sanfranciscodisplay_bold = 2130968576;
 			
 			// aapt resource value: 0x7f040001
-			public const int sanfranciscodisplay_bold = 2130968577;
+			public const int sanfranciscodisplay_light = 2130968577;
 			
 			// aapt resource value: 0x7f040002
-			public const int sanfranciscodisplay_light = 2130968578;
+			public const int sanfranciscodisplay_medium = 2130968578;
 			
 			// aapt resource value: 0x7f040003
-			public const int sanfranciscodisplay_medium = 2130968579;
-			
-			// aapt resource value: 0x7f040004
-			public const int sanfranciscodisplay_regular = 2130968580;
+			public const int sanfranciscodisplay_regular = 2130968579;
 			
 			static Font()
 			{

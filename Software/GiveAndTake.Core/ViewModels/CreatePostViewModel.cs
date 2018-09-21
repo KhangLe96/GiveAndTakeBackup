@@ -102,7 +102,7 @@ namespace GiveAndTake.Core.ViewModels
 			_debouncer = new DebouncerHelper();
 			_dataModel = dataModel;
 			_pictureChooserTask = pictureChooserTask;
-			_dataModel.SelectedCategory = _dataModel.Categories.First();
+			_dataModel.SelectedCategory = _dataModel.Categories.FirstOrDefault((category => category.CategoryName == AppConstants.DefaultCategoryCreatePostName));
 			InitCommand();
 		}
 
