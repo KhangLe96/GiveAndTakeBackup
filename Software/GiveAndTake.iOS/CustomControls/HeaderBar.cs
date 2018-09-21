@@ -1,6 +1,5 @@
 ﻿using GiveAndTake.iOS.Helpers;
 using MvvmCross.Commands;
-using ObjCRuntime;
 using UIKit;
 
 namespace GiveAndTake.iOS.CustomControls
@@ -10,6 +9,8 @@ namespace GiveAndTake.iOS.CustomControls
 		private UIImageView _logoImage;
 		private UIView _separateLine;
 		private UIButton _backButton;
+		private UIView _touchField;
+		
 
 		public IMvxAsyncCommand BackPressedCommand { get; set; }
 
@@ -39,7 +40,7 @@ namespace GiveAndTake.iOS.CustomControls
 				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.CenterY, 1, 0),
 				NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.Height, NSLayoutRelation.Equal, this,
-					NSLayoutAttribute.Height, 1, -15),
+					NSLayoutAttribute.Height, 1, -DimensionHelper.HeaderBarLogoHeight),
 			});
 
 			AddSubview(_separateLine);
@@ -56,20 +57,28 @@ namespace GiveAndTake.iOS.CustomControls
 
 		private void InitBackButton()
 		{
+			_touchField = UIHelper.CreateView(50, 60);
 			_backButton = UIHelper.CreateImageButton(DimensionHelper.BackButtonHeight, DimensionHelper.BackButtonWidth,
 				ImageHelper.BackButton);
-			_backButton.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+
+			_touchField.AddGestureRecognizer(new UITapGestureRecognizer(() =>
 			{
 				BackPressedCommand?.Execute();
 			}));
 
 			AddSubview(_backButton);
+			AddSubview(_touchField);
+
 			AddConstraints(new[]
 			{
+				NSLayoutConstraint.Create(_touchField, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this,
+					NSLayoutAttribute.CenterY,1 , 0),
+				NSLayoutConstraint.Create(_touchField, NSLayoutAttribute.Left, NSLayoutRelation.Equal, this,
+					NSLayoutAttribute.Left, 1, 0),
 				NSLayoutConstraint.Create(_backButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.CenterY,1 , 0),
 				NSLayoutConstraint.Create(_backButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, this,
-					NSLayoutAttribute.Left, 1, 10)
+					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
 			});
 		}
 	}

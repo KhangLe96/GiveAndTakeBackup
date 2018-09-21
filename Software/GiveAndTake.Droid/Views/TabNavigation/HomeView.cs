@@ -33,10 +33,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    _searchView.QueryTextSubmit += OnQueryTextSubmit;
 		    _searchView.Close += OnClose;
 		    _searchView.QueryTextChange += OnQueryTextChanged;
-		    _searchView.Iconified = false;
-		    _searchView.ClearFocus();
+			_searchView.Click += (sender, args) => _searchView.Iconified = false;
+			//_searchView.ClearFocus();
 
-		    var rvPosts = view.FindViewById<MvxRecyclerView>(Resource.Id.rvPosts);
+			var rvPosts = view.FindViewById<MvxRecyclerView>(Resource.Id.rvPosts);
 			var layoutManager = new LinearLayoutManager(view.Context);
 		    rvPosts.AddOnScrollListener(new ScrollListener(layoutManager)
 		    {

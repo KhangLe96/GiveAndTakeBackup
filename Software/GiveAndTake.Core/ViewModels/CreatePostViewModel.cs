@@ -9,6 +9,7 @@ using MvvmCross.Plugin.PictureChooser;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -35,11 +36,6 @@ namespace GiveAndTake.Core.ViewModels
 		private ICommand _submitCommand;
 		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
 
-		//private IMvxAsyncCommand _closeCommand;
-
-		//public IMvxAsyncCommand CloseCommand =>
-		//	_closeCommand ?? (_closeCommand = new MvxAsyncCommand(() => NavigationService.Close(this)));
-
 		private IMvxAsyncCommand _showPhotoCollectionCommand;
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
 															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
@@ -47,7 +43,6 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 		public IMvxAsyncCommand ShowProvinceCityCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
-		public IMvxAsyncCommand ChoosePictureCommand { get; set; }
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
 
@@ -55,8 +50,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		private string _postDescription;
 		private string _postTitle;
-		private string _category;
-		private string _provinceCity;
+		private string _category = AppConstants.DefaultCategoryCreatePostName;
+		private string _provinceCity = AppConstants.DefaultLocationFilter;
 		private byte[] _bytes;
 		private string _selectedImage;
 
@@ -97,19 +92,17 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _selectedImage, value);
 		}
 
-		public string PostDescriptionPlaceHolder { get; set; } = "Mô tả";
+		public string PostDescriptionPlaceHolder { get; set; } = "Mô tả ...";
 		public string PostTitlePlaceHolder { get; set; } = "Tiêu đề";
-		public string ProvinceCityPlaceHolder { get; set; } = "Tỉnh/Thành phố";
-		public string CategoryPlaceHolder { get; set; } = "Loại ...";
 		public string BtnSubmitTitle { get; set; } = "Đăng";
 		public string BtnCancelTitle { get; set; } = "Hủy";
-		public string SelectedImageTextViewText { get; set; } = "Đã chọn 0 hình";
 
 		public CreatePostViewModel(IMvxPictureChooserTask pictureChooserTask, IDataModel dataModel)
 		{
 			_debouncer = new DebouncerHelper();
 			_dataModel = dataModel;
 			_pictureChooserTask = pictureChooserTask;
+			_dataModel.SelectedCategory = _dataModel.Categories.FirstOrDefault((category => category.CategoryName == AppConstants.DefaultCategoryCreatePostName));
 			InitCommand();
 		}
 
@@ -208,9 +201,8 @@ namespace GiveAndTake.Core.ViewModels
 				Title = PostTitle,
 				Description = PostDescription,
 				PostImages = _postImages,
-				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultItem) ? AppConstants.DefaultCategoryId : _dataModel.SelectedCategory.Id,
-				//PostCategory = "005ee304-800f-4247-97d7-d6a73301ca01", //For test
-				Address = "d785b6e2-95c5-4d71-a2c4-1b10d064fe84",   //Da Nang
+				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
+				Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
 			};
 			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
 			NavigationService.Close(this,true);

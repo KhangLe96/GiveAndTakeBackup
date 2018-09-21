@@ -38,8 +38,8 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupButtonHeight { get; set; }
 		public static nfloat PopupCellHeight { get; private set; }
 		public static nfloat SeparateLineHeaderHeight { get; set; }
-		public static nfloat DropDownFieldHeight { get; set; }
-		public static nfloat DropDownFieldWidth { get; set; }
+		public static nfloat DropDownButtonHeight { get; set; }
+		public static nfloat DropDownButtonWidth { get; set; }
 		public static nfloat PostDescriptionTextViewHeight { get; set; }
 		public static nfloat DefaultMargin { get; set; }
 		public static nfloat CreatePostEditTextWidth { get; set; }
@@ -75,9 +75,9 @@ namespace GiveAndTake.iOS.Helpers
 			MediumTextSize = 15 * Rate;
 			BigTextSize = 17 * Rate;
 			HeaderBarLogoWidth = 200 * Rate;
-			HeaderBarLogoHeight = 20 * Rate;
+			HeaderBarLogoHeight = 25 * Rate;
 			HeaderBarHeight = 60 * Rate;
-			PostDescriptionTextSize = 13 * Rate;;
+			PostDescriptionTextSize = 13 * Rate;
 			MarginBig = 25 * Rate;
 			MarginShort = 6 * Rate;
 			MarginText = 4 * Rate;
@@ -104,11 +104,11 @@ namespace GiveAndTake.iOS.Helpers
 			PopupButtonWidth = 150 * Rate;
 			PopupButtonHeight = 30 * Rate;
 			PopupCellHeight = 40 * Rate;
-			DropDownFieldHeight = 40 * Rate;
-			DropDownFieldWidth = 160 * Rate;
-			PostDescriptionTextViewHeight = ResolutionHelper.Height - DimensionHelper.DefaultMargin * 6 - DimensionHelper.MarginBig -
-			                                DimensionHelper.HeaderBarHeight - DimensionHelper.CreatePostButtonHeight -
-			                                DimensionHelper.DropDownFieldHeight * 2 - DimensionHelper.PictureButtonHeight; 
+			DropDownButtonHeight = 40 * Rate;
+			DropDownButtonWidth = 160 * Rate;
+			PostDescriptionTextViewHeight = ResolutionHelper.Height - DefaultMargin * 6 - MarginBig -
+			                                HeaderBarHeight - CreatePostButtonHeight -
+			                                DropDownButtonHeight * 2 - PictureButtonHeight; 
 			DefaultMargin = 10 * Rate;
 			CreatePostEditTextWidth = ResolutionHelper.Width - (DefaultMargin * 2);
 			PictureButtonWidth = 25 * Rate;
@@ -128,7 +128,7 @@ namespace GiveAndTake.iOS.Helpers
 			NewPostSize = 50 * Rate;
 			MenuSeparatorLineHeight = 6 * Rate;
 			BackButtonHeight = 25 * Rate;
-			BackButtonWidth = 20 * Rate; //12
+			BackButtonWidth = 12 * Rate; 
 			BackButtonMarginLeft = 10 * Rate;
 			DeletePhotoButtonWidth = 25 * Rate;
 			RoundCorner = 20 * Rate;

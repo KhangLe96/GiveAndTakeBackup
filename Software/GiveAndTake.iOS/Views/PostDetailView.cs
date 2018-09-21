@@ -6,7 +6,7 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Views
 {
-	[MvxRootPresentation]
+	[MvxChildPresentation]
 	public class PostDetailView : BaseView
 	{
 		protected override void InitView()
