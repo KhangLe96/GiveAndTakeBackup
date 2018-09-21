@@ -60,7 +60,6 @@ export default class index extends React.Component {
     [
       {
         title: 'Tên',
-        // dataIndex: 'firstName',
         key: 'firstName',
         render: record => <Link to={`/user-management/detail/${record.id}`}>{record.username}</Link>,
       },
@@ -70,16 +69,24 @@ export default class index extends React.Component {
         key: 'address',
       },
       {
-        title: 'Trạng thái',
-        // dataIndex: 'status',
-        key: 'status',
-        render: record => (ENG_VN_DICTIONARY[record.status]),
-      }, {
         title: 'Vai trò',
-        // dataIndex: 'role',
         key: 'role',
         render: record => (this.handleDisplayRole(record)),
-      }, {
+      },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        render: (record) => {
+          const status = ENG_VN_DICTIONARY[record.status];
+          let statusColor = styles.greenText;
+          if (status === ENG_VN_DICTIONARY.Blocked) {
+            statusColor = styles.redText;
+          }
+
+          return (<span className={statusColor}>{ status }</span>);
+        },
+      },
+      {
         title: 'Hành động',
         key: 'Action',
         render: (record) => {
@@ -115,6 +122,7 @@ export default class index extends React.Component {
         </div>
         <div className="containerBody">
           <Table
+            bordered
             columns={this.columns}
             dataSource={users && users.map((user, key) => { return { ...user, key }; })}
             pagination={{

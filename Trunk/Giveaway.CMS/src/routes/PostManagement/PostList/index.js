@@ -5,6 +5,7 @@ import { Link } from 'dva/router';
 import moment from 'moment';
 import { DateFormatDisplay, TABLE_PAGESIZE, ENG_VN_DICTIONARY, COLOR, STATUSES } from '../../../common/constants';
 import styles from './index.less';
+import { classNames } from 'classnames';
 @connect(({ modals, postManagement }) => ({
   ...modals, postManagement,
 }))
@@ -81,7 +82,15 @@ export default class index extends React.Component {
         title: 'Trạng thái',
         dataIndex: 'statusCMS',
         key: 'statusCMS',
-        render: val => ENG_VN_DICTIONARY[val],
+        render: (val) => {
+          const status = ENG_VN_DICTIONARY[val];
+          let statusColor = styles.greenText;
+          if (status === ENG_VN_DICTIONARY.Blocked) {
+            statusColor = styles.redText;
+          }
+
+          return (<span className={statusColor}>{status}</span>);
+        },
       }, {
         title: 'Hành động',
         key: 'Action',
@@ -119,6 +128,7 @@ export default class index extends React.Component {
         </div>
         <div className="containerBody">
           <Table
+            bordered
             columns={this.columns}
             dataSource={posts && posts.map((post, key) => { return { ...post, key }; })}
             pagination={{
