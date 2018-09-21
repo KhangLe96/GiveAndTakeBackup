@@ -309,7 +309,7 @@ namespace GiveAndTake.iOS.Views
 			});
 		}
 
-		async void HandleSelectImage(object sender, EventArgs e)
+		private async void HandleSelectImage(object sender, EventArgs e)
 		{
 			await MediaHelper.OpenGallery();
 			var image = MediaHelper.Images;
