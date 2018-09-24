@@ -185,7 +185,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			if (!string.IsNullOrEmpty(CurrentQueryString))
 			{
-				parameters.Add($"title={CurrentQueryString}");
+				parameters.Add($"keyword={CurrentQueryString}");
 			}
 
 			if (_dataModel.SelectedSortFilter != null)
