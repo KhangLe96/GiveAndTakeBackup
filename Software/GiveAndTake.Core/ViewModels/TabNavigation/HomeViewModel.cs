@@ -65,6 +65,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			set => SetProperty(ref _isLocationFilterActivated, value);
 		}
 
+		private bool _isSearchResultNull;
+		public bool IsSearchResultNull
+		{
+			get => _isSearchResultNull;
+			set => SetProperty(ref _isSearchResultNull, value);
+		}
+
 		private string _currentQueryString;
 		public string CurrentQueryString
 		{
@@ -117,6 +124,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
             _dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
 			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+			IsSearchResultNull = PostViewModels.Any();
 		}
 
 		private void OnLoadMore()

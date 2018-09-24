@@ -8,6 +8,7 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using System;
+using GiveAndTake.iOS.Controls;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -26,6 +27,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private PostItemTableViewSource _postTableViewSource;
 		private MvxUIRefreshControl _refreshControl;
 		private UIButton _newPostButton;
+		private PopupItemLabel _searchResult;
 
 		public IMvxCommand LoadMoreCommand { get; set; }
 		public IMvxCommand SearchCommand { get; set; }
@@ -39,11 +41,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 		protected override void InitView()
 		{
-			InitFilterButton();
-			InitSortButton();
-			InitCategoryButton();
-			InitSearchView();
-		    InitSeparatorLine();
+			InitFilterBar();
             InitPostsTableView();
 			InitNewPostButton();
 		}
@@ -54,7 +52,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			NavigationController?.SetNavigationBarHidden(true, animated);
 		}
 
-		private void InitFilterButton()
+		private void InitFilterBar()
 		{
 			_btnFilter = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, ImageHelper.LocationButtonDefault, ImageHelper.LocationButtonSelected);
 
@@ -66,10 +64,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_btnFilter, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginNormal)
 			});
-		}
 
-		private void InitSortButton()
-		{
 			_btnSort = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, ImageHelper.SortButtonDefault, ImageHelper.SortButtonSelected);
 
 			View.Add(_btnSort);
@@ -80,10 +75,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_btnSort, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnFilter,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.MarginNormal)
 			});
-		}
 
-		private void InitCategoryButton()
-		{
 			_btnCategory = UIHelper.CreateImageButton(DimensionHelper.FilterSize, DimensionHelper.FilterSize, ImageHelper.CategoryButtonDefault, ImageHelper.CategoryButtonSelected);
 			View.Add(_btnCategory);
 			View.AddConstraints(new[]
@@ -93,10 +85,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnSort,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.MarginNormal)
 			});
-		}
 
-		private void InitSearchView()
-		{
 			_searchBar = UIHelper.CreateSearchBar(DimensionHelper.FilterSize, DimensionHelper.FilterSize);
 			View.Add(_searchBar);
 
@@ -107,24 +96,21 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnCategory,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-				NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort)
+					NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort)
 			});
 
 			_searchBar.SearchButtonClicked += OnSearchSubmit;
-		}
 
-		private void InitSeparatorLine()
-	    {
-	        _separatorLine = UIHelper.CreateView(DimensionHelper.MenuSeparatorLineHeight, DimensionHelper.HeaderBarLogoWidth, ColorHelper.GreyLineColor);
-	        View.Add(_separatorLine);
-	        View.AddConstraints(new[]
-	        {
-	            NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Width, NSLayoutRelation.Equal, View,
-	                NSLayoutAttribute.Width, 1, 0),
-	            NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _searchBar,
-	                NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort)
-	        });
-	    }
+			_separatorLine = UIHelper.CreateView(DimensionHelper.MenuSeparatorLineHeight, DimensionHelper.HeaderBarLogoWidth, ColorHelper.GreyLineColor);
+			View.Add(_separatorLine);
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Width, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Width, 1, 0),
+				NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _searchBar,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort)
+			});
+		}
 
 		private void InitPostsTableView()
 		{
@@ -145,6 +131,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
+			});
+
+			_searchResult = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.BigTextSize);
+			_searchResult.Text = "Không tìm thấy kết quả nào";
+			View.Add(_searchResult);
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_searchResult, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.CenterX, 1, 0),
+				NSLayoutConstraint.Create(_searchResult, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.CenterY, 1, 0)
 			});
 		}
 
@@ -218,6 +215,11 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			set.Bind(_btnSort)
 				.For(v => v.Selected)
 				.To(vm => vm.IsSortFilterActivated);
+
+			set.Bind(_searchResult)
+				.For("Visibility")
+				.To(vm => vm.IsSearchResultNull);
+
 			set.Apply();
 		}
 

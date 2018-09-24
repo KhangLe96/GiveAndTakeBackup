@@ -3,83 +3,100 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <giveandtake.droid.controls.CustomImageView
+
+	<giveandtake.droid.controls.CustomImageView
         android:id="@+id/btnFilter"
         android:layout_width="@dimen/filter_height"
         android:layout_height="@dimen/filter_height"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_short"
         android:layout_marginTop="@dimen/margin_short"
         android:background="@drawable/location_button"
         android:scaleType="fitCenter"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="true" 
-        local:MvxBind="Click ShowFilterCommand; IsActivated IsLocationFilterActivated"/>
-    <giveandtake.droid.controls.CustomImageView
+        local:MvxBind="Click ShowFilterCommand; IsActivated IsLocationFilterActivated" />
+
+	<giveandtake.droid.controls.CustomImageView
         android:id="@+id/btnSort"
         android:layout_width="@dimen/filter_height"
         android:layout_height="@dimen/filter_height"
         android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_short"
+        android:layout_toLeftOf="@id/btnFilter"
         android:background="@drawable/sort_button"
         android:scaleType="fitCenter"
-        android:layout_toLeftOf="@id/btnFilter"
-        android:layout_marginTop="@dimen/margin_short" 
-        local:MvxBind="Click ShowShortPostCommand; IsActivated IsSortFilterActivated"/>
-    <giveandtake.droid.controls.CustomImageView
+        local:MvxBind="Click ShowShortPostCommand; IsActivated IsSortFilterActivated" />
+
+	<giveandtake.droid.controls.CustomImageView
         android:id="@+id/btnCategory"
         android:layout_width="@dimen/filter_height"
         android:layout_height="@dimen/filter_height"
         android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_short"
+        android:layout_toLeftOf="@id/btnSort"
         android:background="@drawable/category_button"
         android:scaleType="fitCenter"
-        android:layout_toLeftOf="@id/btnSort"
-        android:layout_marginTop="@dimen/margin_short" 
-        local:MvxBind="Click ShowCategoriesCommand; IsActivated IsCategoryFilterActivated"/>
-    <SearchView
+        local:MvxBind="Click ShowCategoriesCommand; IsActivated IsCategoryFilterActivated" />
+
+	<SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/filter_height"
+        android:layout_alignParentStart="true"
         android:layout_marginLeft="@dimen/margin_short"
         android:layout_marginRight="@dimen/margin_normal"
-        android:background="@drawable/search_bg"
         android:layout_marginTop="@dimen/margin_short"
         android:layout_toStartOf="@id/btnCategory"
-        android:layout_alignParentStart="true"
-	    android:queryBackground="@android:color/transparent"
-		local:MvxBind="Query CurrentQueryString"
-	    local:queryBackground="@android:color/transparent"/>
+        android:background="@drawable/search_bg"
+        android:queryBackground="@android:color/transparent"
+        local:MvxBind="Query CurrentQueryString"
+        local:queryBackground="@android:color/transparent" />
+
 	<TextView
-		android:id="@+id/greyLine"
-		android:layout_width="match_parent"
-		android:layout_height="6dp"
-		android:layout_marginTop="@dimen/margin_short"
-		android:background="@color/grey_line_color"
-		android:layout_below="@id/btnFilter"/>
+        android:id="@+id/greyLine"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@id/btnFilter"
+        android:layout_marginTop="@dimen/margin_short"
+        android:background="@color/grey_line_color" />
+
+	<TextView
+        android:id="@+id/tvSearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/margin_short"
+        android:layout_marginRight="@dimen/margin_short"
+        android:gravity="center"
+        android:text="Không tìm thấy kết quả nào"
+        android:textSize="@dimen/MediumTextSize"
+        local:MvxBind="Visibility Visibility(!IsSearchResultNull)" />
 
 	<MvxSwipeRefreshLayout
-		android:id="@+id/refreshlayout"
-		android:layout_height="match_parent"
-		android:layout_width="wrap_content"
-		android:layout_below="@+id/greyLine"
-		android:layout_margin="@dimen/margin_short"
-		local:MvxBind="Refreshing IsRefreshing; RefreshCommand RefreshCommand">
+        android:id="@+id/refreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/greyLine"
+        android:layout_margin="@dimen/margin_short"
+        local:MvxBind="Refreshing IsRefreshing; RefreshCommand RefreshCommand">
 
-		 <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
-			android:id="@+id/rvPosts"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"			
-			android:scrollbars="vertical"			
-			local:MvxBind="ItemsSource PostViewModels"
-			local:MvxItemTemplate="@layout/posttemplate" />
+		<MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+            android:id="@+id/rvPosts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            local:MvxBind="ItemsSource PostViewModels"
+            local:MvxItemTemplate="@layout/posttemplate" />
 
 	</MvxSwipeRefreshLayout>
-   
+
 	<android.support.design.widget.FloatingActionButton
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:src="@drawable/new_post"
-		android:layout_alignParentRight="true"
-		android:layout_margin="@dimen/margin_17dp"
-		local:MvxBind="Click CreatePostCommand"
-		local:backgroundTint="@color/colorPrimary"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/margin_17dp"
+        android:src="@drawable/new_post"
+        local:MvxBind="Click CreatePostCommand"
+        local:backgroundTint="@color/colorPrimary" />
 </RelativeLayout>
