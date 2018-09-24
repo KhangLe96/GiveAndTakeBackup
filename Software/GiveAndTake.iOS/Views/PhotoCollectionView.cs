@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using CoreGraphics;
+﻿using CoreGraphics;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
@@ -25,18 +24,9 @@ namespace GiveAndTake.iOS.Views
 		{
 			View.BackgroundColor = UIColor.White;
 
-			var bindingSet = this.CreateBindingSet<PhotoCollectionView, PhotoCollectionViewModel>();
-
-			bindingSet.Bind(this)
-				.For(v => v.BackPressedCommand)
-				.To(vm => vm.IOSBackPressedCommand);
-
-			bindingSet.Apply();
-
-
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
 				UIColor.White, true);
-			_headerBar.BackPressedCommand = BackPressedCommand;
+
 			View.Add(_headerBar);
 			View.AddConstraints(new[]
 			{
@@ -70,10 +60,9 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Bottom, 1, 0),
 			});
+
 			NavigationController?.SetNavigationBarHidden(true, true);
 		}
-
-		public IMvxAsyncCommand BackPressedCommand { get; set; }
 
 		protected override void CreateBinding()
 		{
@@ -82,6 +71,10 @@ namespace GiveAndTake.iOS.Views
 
 			bindingSet.Bind(_photoItemViewSource)
 				.To(vm => vm.PhotoTemplateViewModels);
+
+			bindingSet.Bind(_headerBar)
+				.For(v => v.BackPressedCommand)
+				.To(vm => vm.IOSBackPressedCommand);
 
 			bindingSet.Apply();
 		}
@@ -93,7 +86,6 @@ namespace GiveAndTake.iOS.Views
 			frame.Height = ResolutionHelper.Height - ResolutionHelper.StatusHeight -
 						   DimensionHelper.HeaderBarHeight;
 			frame.Width = UIScreen.MainScreen.Bounds.Width;
-			//_photoCollectionView.Frame = frame;
 			_customImageFlowLayout.UpdateItemSize();
 		}
 	}
