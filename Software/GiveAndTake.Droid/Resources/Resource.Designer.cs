@@ -5967,8 +5967,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c00b0
 			public const int SmallTextSize = 2131493040;
 			
-			// aapt resource value: 0x7f0c00c3
-			public const int TabNavigationHeight = 2131493059;
+			// aapt resource value: 0x7f0c00c4
+			public const int TabNavigationHeight = 2131493060;
 			
 			// aapt resource value: 0x7f0c0025
 			public const int abc_action_bar_content_inset_material = 2131492901;
@@ -6192,32 +6192,32 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c001d
 			public const int abc_text_size_title_material_toolbar = 2131492893;
 			
-			// aapt resource value: 0x7f0c00b7
-			public const int avatar_margin = 2131493047;
+			// aapt resource value: 0x7f0c00b8
+			public const int avatar_margin = 2131493048;
 			
-			// aapt resource value: 0x7f0c00b3
-			public const int basic_margin = 2131493043;
-			
-			// aapt resource value: 0x7f0c00d7
-			public const int border_width = 2131493079;
+			// aapt resource value: 0x7f0c00b4
+			public const int basic_margin = 2131493044;
 			
 			// aapt resource value: 0x7f0c00d8
-			public const int border_width_light = 2131493080;
+			public const int border_width = 2131493080;
 			
-			// aapt resource value: 0x7f0c00be
-			public const int button_category_height = 2131493054;
-			
-			// aapt resource value: 0x7f0c00c2
-			public const int button_extension_height = 2131493058;
+			// aapt resource value: 0x7f0c00d9
+			public const int border_width_light = 2131493081;
 			
 			// aapt resource value: 0x7f0c00bf
-			public const int button_request_height = 2131493055;
+			public const int button_category_height = 2131493055;
 			
-			// aapt resource value: 0x7f0c00c1
-			public const int button_small_height = 2131493057;
+			// aapt resource value: 0x7f0c00c3
+			public const int button_extension_height = 2131493059;
 			
 			// aapt resource value: 0x7f0c00c0
-			public const int button_small_width = 2131493056;
+			public const int button_request_height = 2131493056;
+			
+			// aapt resource value: 0x7f0c00c2
+			public const int button_small_height = 2131493058;
+			
+			// aapt resource value: 0x7f0c00c1
+			public const int button_small_width = 2131493057;
 			
 			// aapt resource value: 0x7f0c0016
 			public const int cardview_compat_inset_shadow = 2131492886;
@@ -6227,6 +6227,9 @@ namespace GiveAndTake.Droid
 			
 			// aapt resource value: 0x7f0c0018
 			public const int cardview_default_radius = 2131492888;
+			
+			// aapt resource value: 0x7f0c00b3
+			public const int category_text_size = 2131493043;
 			
 			// aapt resource value: 0x7f0c0004
 			public const int com_facebook_auth_dialog_corner_radius = 2131492868;
@@ -6291,14 +6294,14 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c00a2
 			public const int compat_control_corner_material = 2131493026;
 			
-			// aapt resource value: 0x7f0c00d5
-			public const int createPost_button_height = 2131493077;
-			
-			// aapt resource value: 0x7f0c00cd
-			public const int default_margin = 2131493069;
+			// aapt resource value: 0x7f0c00d6
+			public const int createPost_button_height = 2131493078;
 			
 			// aapt resource value: 0x7f0c00ce
-			public const int default_padding = 2131493070;
+			public const int default_margin = 2131493070;
+			
+			// aapt resource value: 0x7f0c00cf
+			public const int default_padding = 2131493071;
 			
 			// aapt resource value: 0x7f0c007c
 			public const int design_appbar_elevation = 2131492988;
@@ -6429,8 +6432,8 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0012
 			public const int fastscroll_minimum_range = 2131492882;
 			
-			// aapt resource value: 0x7f0c00bd
-			public const int filter_height = 2131493053;
+			// aapt resource value: 0x7f0c00be
+			public const int filter_height = 2131493054;
 			
 			// aapt resource value: 0x7f0c0065
 			public const int highlight_alpha_material_colored = 2131492965;
@@ -6453,14 +6456,14 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c006b
 			public const int hint_pressed_alpha_material_light = 2131492971;
 			
+			// aapt resource value: 0x7f0c00bb
+			public const int image_avatar_size = 2131493051;
+			
 			// aapt resource value: 0x7f0c00ba
-			public const int image_avatar_size = 2131493050;
+			public const int image_multi_size = 2131493050;
 			
 			// aapt resource value: 0x7f0c00b9
-			public const int image_multi_size = 2131493049;
-			
-			// aapt resource value: 0x7f0c00b8
-			public const int image_post_size = 2131493048;
+			public const int image_post_size = 2131493049;
 			
 			// aapt resource value: 0x7f0c0013
 			public const int item_touch_helper_max_drag_scroll_per_frame = 2131492883;
@@ -6471,26 +6474,26 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0015
 			public const int item_touch_helper_swipe_escape_velocity = 2131492885;
 			
-			// aapt resource value: 0x7f0c00c8
-			public const int login_title_text_size = 2131493064;
-			
-			// aapt resource value: 0x7f0c00cb
-			public const int margin_17dp = 2131493067;
-			
-			// aapt resource value: 0x7f0c00b6
-			public const int margin_big = 2131493046;
-			
-			// aapt resource value: 0x7f0c00b5
-			public const int margin_normal = 2131493045;
-			
 			// aapt resource value: 0x7f0c00c9
-			public const int margin_popup_item = 2131493065;
+			public const int login_title_text_size = 2131493065;
 			
 			// aapt resource value: 0x7f0c00cc
-			public const int margin_separator = 2131493068;
+			public const int margin_17dp = 2131493068;
 			
-			// aapt resource value: 0x7f0c00b4
-			public const int margin_short = 2131493044;
+			// aapt resource value: 0x7f0c00b7
+			public const int margin_big = 2131493047;
+			
+			// aapt resource value: 0x7f0c00b6
+			public const int margin_normal = 2131493046;
+			
+			// aapt resource value: 0x7f0c00ca
+			public const int margin_popup_item = 2131493066;
+			
+			// aapt resource value: 0x7f0c00cd
+			public const int margin_separator = 2131493069;
+			
+			// aapt resource value: 0x7f0c00b5
+			public const int margin_short = 2131493045;
 			
 			// aapt resource value: 0x7f0c00a3
 			public const int notification_action_icon_size = 2131493027;
@@ -6537,53 +6540,53 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c00ad
 			public const int notification_top_pad_large_text = 2131493037;
 			
-			// aapt resource value: 0x7f0c00d0
-			public const int picture_button_height = 2131493072;
-			
 			// aapt resource value: 0x7f0c00d1
-			public const int picture_button_width = 2131493073;
+			public const int picture_button_height = 2131493073;
+			
+			// aapt resource value: 0x7f0c00d2
+			public const int picture_button_width = 2131493074;
+			
+			// aapt resource value: 0x7f0c00c8
+			public const int popup_button_height = 2131493064;
 			
 			// aapt resource value: 0x7f0c00c7
-			public const int popup_button_height = 2131493063;
+			public const int popup_button_width = 2131493063;
 			
 			// aapt resource value: 0x7f0c00c6
-			public const int popup_button_width = 2131493062;
+			public const int popup_line_height = 2131493062;
 			
 			// aapt resource value: 0x7f0c00c5
-			public const int popup_line_height = 2131493061;
+			public const int popup_line_width = 2131493061;
 			
-			// aapt resource value: 0x7f0c00c4
-			public const int popup_line_width = 2131493060;
+			// aapt resource value: 0x7f0c00d0
+			public const int postDescription_editText_Height = 2131493072;
 			
-			// aapt resource value: 0x7f0c00cf
-			public const int postDescription_editText_Height = 2131493071;
-			
-			// aapt resource value: 0x7f0c00d4
-			public const int postTitle_editText_height = 2131493076;
+			// aapt resource value: 0x7f0c00d5
+			public const int postTitle_editText_height = 2131493077;
 			
 			// aapt resource value: 0x7f0c00b1
 			public const int post_description_text_size = 2131493041;
 			
-			// aapt resource value: 0x7f0c00ca
-			public const int post_image_corner = 2131493066;
+			// aapt resource value: 0x7f0c00cb
+			public const int post_image_corner = 2131493067;
 			
-			// aapt resource value: 0x7f0c00d6
-			public const int round_corner_radius = 2131493078;
-			
-			// aapt resource value: 0x7f0c00d2
-			public const int spinner_button_height = 2131493074;
-			
-			// aapt resource value: 0x7f0c00d9
-			public const int spinner_button_textSize = 2131493081;
+			// aapt resource value: 0x7f0c00d7
+			public const int round_corner_radius = 2131493079;
 			
 			// aapt resource value: 0x7f0c00d3
-			public const int spinner_button_width = 2131493075;
+			public const int spinner_button_height = 2131493075;
 			
-			// aapt resource value: 0x7f0c00bb
-			public const int tab_navigation_icon_border_width = 2131493051;
+			// aapt resource value: 0x7f0c00da
+			public const int spinner_button_textSize = 2131493082;
+			
+			// aapt resource value: 0x7f0c00d4
+			public const int spinner_button_width = 2131493076;
 			
 			// aapt resource value: 0x7f0c00bc
-			public const int tab_navigation_icon_size = 2131493052;
+			public const int tab_navigation_icon_border_width = 2131493052;
+			
+			// aapt resource value: 0x7f0c00bd
+			public const int tab_navigation_icon_size = 2131493053;
 			
 			// aapt resource value: 0x7f0c006c
 			public const int tooltip_corner_radius = 2131492972;
