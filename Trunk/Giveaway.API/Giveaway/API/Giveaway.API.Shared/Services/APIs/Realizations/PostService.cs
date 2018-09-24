@@ -241,7 +241,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             IEnumerable<Post> posts;
             try
             {
-                posts = _postService.Include(x => x.Category).Include(x => x.Images).Include(x => x.ProvinceCity).Include(x => x.User).Include(x => x.Requests).Include(x => x.Comments);
+                posts = _postService.Include(x => x.Category)
+					.Include(x => x.Images)
+					.Include(x => x.ProvinceCity)
+					.Include(x => x.User)
+					.Include(x => x.Requests)
+					.Include(x => x.Comments);
                 posts = SortPosts(request, posts);
             }
             catch
@@ -272,6 +277,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
 
             //filter post by properties
+			// /REVIEW: Should filter all conditions before sorting. It's good to save time for sorting.
             posts = FilterPost(request, posts);
             total = posts.Count();
 

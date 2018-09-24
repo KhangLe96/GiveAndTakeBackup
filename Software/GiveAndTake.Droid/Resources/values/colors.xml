@@ -8,7 +8,7 @@
 	<color name="black">#000</color>
 	<color name="white">#fff</color>
 	<color name="line">#7dbef4</color>
-	<color name="divider">#e0eff7</color>
+	<color name="divider">#7dbef4</color>
 	<color name="default_text_color">#e4e4e4</color>
 	<color name="default_popup_text_color">#cccccc</color>
 	<color name="login_title_color">#3EB9E9</color>

@@ -44,6 +44,10 @@ export default class index extends React.Component {
         render: record => <Link to={`/category-management/detail/${record.id}`}>{record.categoryName}</Link>,
       },
       {
+        title: 'Mã màu nền',
+        dataIndex: 'backgroundColor',
+      },
+      {
         title: 'Ngày đăng',
         dataIndex: 'createdTime',
         key: 'createdTime',
@@ -53,11 +57,15 @@ export default class index extends React.Component {
         title: 'Trạng thái',
         dataIndex: 'status',
         key: 'CMSStatus',
-        render: val => ENG_VN_DICTIONARY[val],
-      },
-      {
-        title: 'Mã màu nền',
-        dataIndex: 'backgroundColor',
+        render: (val) => {
+          const status = ENG_VN_DICTIONARY[val];
+          let statusColor = styles.greenText;
+          if (status === ENG_VN_DICTIONARY.Blocked) {
+            statusColor = styles.redText;
+          }
+
+          return (<span className={statusColor}>{status}</span>);
+        },
       },
       {
         title: 'Hành động',
@@ -118,6 +126,7 @@ export default class index extends React.Component {
         </div>
         <div className="containerBody">
           <Table
+            bordered
             columns={this.columns}
             dataSource={categories && categories.map((post, key) => { return { ...post, key }; })}
             pagination={{

@@ -91,6 +91,7 @@ export default class index extends React.Component {
       {
         title: 'Tiêu đề bài đăng',
         key: 'title',
+        className: 'responsi',
         render: record => <Link to={`/post-management/detail/${record.post.id}`}>{record.post.title}</Link>,
       },
       {
@@ -99,20 +100,20 @@ export default class index extends React.Component {
         render: record => <Link to={`/user-management/detail/${record.user.id}`}>{record.user.username}</Link>,
       },
       {
-        title: 'Ngày báo cáo',
-        dataIndex: 'createdTime',
-        key: 'createdTime',
-        render: val => <span>{moment.utc(val).local().format(DateFormatDisplay)}</span>,
-      },
-      {
         title: 'Nội dung báo cáo',
         dataIndex: 'message',
         key: 'message',
       },
       {
-        title: 'Số lần người dùng bị cảnh báo',
+        title: 'Số lần bị cảnh báo',
         dataIndex: 'warningNumber',
         key: 'report.warningNumber',
+      },
+      {
+        title: 'Ngày báo cáo',
+        dataIndex: 'createdTime',
+        key: 'createdTime',
+        render: val => <span>{moment.utc(val).local().format(DateFormatDisplay)}</span>,
       },
       {
         title: 'Hành động',
@@ -158,8 +159,10 @@ export default class index extends React.Component {
         </div>
         <div className="containerBody">
           <Table
+            bordered
             columns={this.columns}
             dataSource={reports && reports.map((report, key) => { return { ...report, key }; })}
+            rowClassName={styles.responsi}
             pagination={{
               current: currentPage,
               onChange: this.onPageNumberChange,

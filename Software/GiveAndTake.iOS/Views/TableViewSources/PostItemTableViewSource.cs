@@ -4,6 +4,7 @@ using GiveAndTake.iOS.Views.TableViewCells;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using System;
+using System.Linq;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewSources
@@ -14,12 +15,12 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 
 		private const string CellId = "PostItemViewCell";
 
-		private bool isLoading;
+		private bool _isLoading;
 
 		public PostItemTableViewSource(UITableView tableView) : base(tableView)
 		{
 			tableView.RegisterClassForCellReuse(typeof(PostItemViewCell), new NSString(CellId));
-			isLoading = false;
+			_isLoading = false;
 		}
 
 		protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
@@ -28,37 +29,28 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 
 			cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 
-			var position = indexPath.Row;
-
-			if (!isLoading && position == ItemsSource.Count() - 1)
-			{
-				isLoading = true;
-				LoadMoreEvent?.Invoke();
-				isLoading = false;
-			}
-
 			return cell;
+		}
+
+		public override void Scrolled(UIScrollView scrollView)
+		{
+			if (scrollView is UITableView tableview)
+			{
+				var cells = tableview.IndexPathsForVisibleRows;
+
+				if (!_isLoading && cells != null && cells.Length != 0 && cells[cells.Length - 1].Row == ItemsSource.Count() - 3)
+				{
+					_isLoading = true;
+					Console.WriteLine($"LoadMoreEvent{cells[cells.Length - 1].Row} >= {ItemsSource.Count() - 3}");
+					LoadMoreEvent?.Invoke();
+					_isLoading = false;
+				}
+			}
 		}
 
 		public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
 		{
 			return DimensionHelper.PostCellHeight;
 		}
-
-		//public override void WillDisplay(UITableView tableView, UITableViewCell cell, NSIndexPath indexPath)
-		//{
-		//	if (indexPath.Row == ItemsSource.Count() - 1)
-		//	{
-		//		LoadMoreEvent?.Invoke();
-		//	}
-		//}
-
-		//public override void Scrolled(UIScrollView scrollView)
-		//{
-		//	if (scrollView.ContentOffset.Y > 0 && scrollView.ContentOffset.Y >= (scrollView.ContentSize.Height - scrollView.Frame.Size.Height))
-		//	{
-		//		LoadMoreEvent?.Invoke();
-		//	}
-		//}
 	}
 }

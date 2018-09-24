@@ -17,6 +17,7 @@ namespace Giveaway.Data.Models.Database
         public string BackgroundColor { get; set; }
 
         public string ImageUrl { get; set; }
+
         public int Priority { get; set; }
 
         [Required]

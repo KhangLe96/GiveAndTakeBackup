@@ -17,7 +17,7 @@ namespace Giveaway.API.Shared.Responses.User
         [JsonProperty(PropertyName = "username")]
         public string UserName { get; set; }
 
-        [DataMember(Name = "firtName")]
+        [DataMember(Name = "firstName")]
         public string FirstName { get; set; }
 
         [DataMember(Name = "lastName")]

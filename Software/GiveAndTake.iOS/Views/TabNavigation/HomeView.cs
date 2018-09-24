@@ -1,5 +1,4 @@
-﻿using System;
-using GiveAndTake.Core.ViewModels.TabNavigation;
+﻿using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
@@ -8,6 +7,7 @@ using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
+using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -99,6 +99,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		{
 			_searchBar = UIHelper.CreateSearchBar(DimensionHelper.FilterSize, DimensionHelper.FilterSize);
 			View.Add(_searchBar);
+
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnFilter,
@@ -110,16 +111,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 
 			_searchBar.SearchButtonClicked += OnSearchSubmit;
-			_searchBar.CancelButtonClicked += OnSearchSubmit;
-			_searchBar.TextChanged += OnTextChanged;
-		}
-
-		private void OnTextChanged(object sender, UISearchBarTextChangedEventArgs e)
-		{
-			if (string.IsNullOrEmpty(e.SearchText))
-			{
-				OnSearchSubmit(this, null);
-			}
 		}
 
 		private void InitSeparatorLine()
@@ -134,12 +125,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 	                NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort)
 	        });
 	    }
-
-        private void OnSearchSubmit(object sender, EventArgs e)
-		{
-			SearchCommand.Execute();
-			_searchBar.ResignFirstResponder();
-		}
 
 		private void InitPostsTableView()
 		{
@@ -234,6 +219,12 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.For(v => v.Selected)
 				.To(vm => vm.IsSortFilterActivated);
 			set.Apply();
+		}
+
+		private void OnSearchSubmit(object sender, EventArgs e)
+		{
+			_searchBar.ResignFirstResponder();
+			SearchCommand.Execute();
 		}
 	}
 }
