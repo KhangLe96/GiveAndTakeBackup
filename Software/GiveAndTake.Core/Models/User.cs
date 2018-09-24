@@ -29,7 +29,7 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "address")]
         public string Address { get; set; }
 
-        public string FullName => LastName + " " + FirstName;
+        public string FullName => string.Join(" ", FirstName, LastName);
 
         [DataMember(Name = "gender")]
         public string Gender { get; set; }

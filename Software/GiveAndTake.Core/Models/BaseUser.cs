@@ -11,7 +11,10 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "lastName")]
         public string LastName { get; set; }
 
-        [DataMember(Name = "username")]
+	    [DataMember(Name = "name")]
+	    public string Name { get; set; }
+
+		[DataMember(Name = "username")]
         public string UserName { get; set; }
 
         [DataMember(Name = "socialAccountId")]

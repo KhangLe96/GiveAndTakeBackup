@@ -102,6 +102,7 @@ namespace GiveAndTake.Droid.Views
 	    {
 		    FirstName = Profile.CurrentProfile.FirstName,
 		    LastName = Profile.CurrentProfile.LastName,
+			Name = Profile.CurrentProfile.Name,
 		    UserName = Profile.CurrentProfile.Id,
 		    AvatarUrl = GetProfilePicture(Profile.CurrentProfile.Id),
 		    SocialAccountId = Profile.CurrentProfile.Id

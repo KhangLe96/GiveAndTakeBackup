@@ -141,6 +141,7 @@ namespace GiveAndTake.iOS.Views
             {
                 FirstName = facebookProfile.FirstName,
                 LastName = facebookProfile.LastName,
+	            Name = facebookProfile.Name,
                 UserName = facebookProfile.Name,
                 AvatarUrl = GetProfilePicture(facebookProfile.UserID),
                 SocialAccountId = facebookProfile.UserID

@@ -187,7 +187,7 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    CategoryName = _post.Category.CategoryName;
 		    AvatarUrl = _post.User.AvatarUrl ?? AppConstants.DefaultUrl;
-		    UserName = _post.User.FullName == " " ? AppConstants.DefaultUserName : _post.User.FullName;
+		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
 		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    Description = _post.Description;
