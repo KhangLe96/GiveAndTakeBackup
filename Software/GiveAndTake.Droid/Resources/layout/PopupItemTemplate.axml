@@ -12,7 +12,7 @@
 	android:layout_margin="@dimen/margin_popup_item"/>
 	<TextView
 		android:layout_width="match_parent"
-		android:layout_height="1dp"
+		android:layout_height="@dimen/divider"
 		android:layout_margin="@dimen/margin_short"
 		android:background="@color/divider"
 		local:MvxBind="Visibility Visibility(!IsLastViewInList)"/>

@@ -6423,6 +6423,9 @@ namespace GiveAndTake.Droid
 			// aapt resource value: 0x7f0c0064
 			public const int disabled_alpha_material_light = 2131492964;
 			
+			// aapt resource value: 0x7f0c00db
+			public const int divider = 2131493083;
+			
 			// aapt resource value: 0x7f0c0010
 			public const int fastscroll_default_thickness = 2131492880;
 			

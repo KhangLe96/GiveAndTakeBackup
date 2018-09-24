@@ -44,4 +44,5 @@
 	<dimen name="border_width">2px</dimen>
 	<dimen name="border_width_light">1px</dimen>
 	<dimen name="spinner_button_textSize">15dp</dimen>
+	<dimen name="divider">0.1dp</dimen>
 </resources>

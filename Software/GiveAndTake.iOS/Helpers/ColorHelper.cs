@@ -14,7 +14,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static UIColor Gray => ToUIColor("cccccc");
 		public static UIColor LightBlue => ToUIColor("3fb8ea");
 		public static UIColor SeparatorColor => ToUIColor("cccccc");
-		public static UIColor PopupSeparator => ToUIColor("7dbef4");
+		public static UIColor PopupSeparator => ToUIColor("E0EFF7");
 		public static UIColor DefaultEditTextFieldColor => ToUIColor("f3f3f3");
 	    public static UIColor GreyLineColor => ToUIColor("f2f2f2");
 

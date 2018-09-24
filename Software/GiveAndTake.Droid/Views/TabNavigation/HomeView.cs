@@ -32,9 +32,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    _searchView = view.FindViewById<SearchView>(Resource.Id.searchView);
 		    _searchView.QueryTextSubmit += OnQueryTextSubmit;
 		    _searchView.Close += OnClose;
-		    _searchView.QueryTextChange += OnQueryTextChanged;
 			_searchView.Click += (sender, args) => _searchView.Iconified = false;
-			//_searchView.ClearFocus();
 
 			var rvPosts = view.FindViewById<MvxRecyclerView>(Resource.Id.rvPosts);
 			var layoutManager = new LinearLayoutManager(view.Context);
@@ -43,14 +41,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			    LoadMoreEvent = () => LoadMoreCommand?.Execute()
 		    });
 			rvPosts.SetLayoutManager(layoutManager);
-	    }
-
-	    private void OnQueryTextChanged(object sender, SearchView.QueryTextChangeEventArgs e)
-	    {
-		    if (string.IsNullOrEmpty(e.NewText))
-		    {
-			    OnClose(this,null);
-		    }
 	    }
 
 	    private void OnClose(object sender, SearchView.CloseEventArgs e)
