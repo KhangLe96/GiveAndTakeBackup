@@ -185,7 +185,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				parameters.Add($"order={_dataModel.SelectedSortFilter.FilterTag}");
 			}
 
-			if (_dataModel.SelectedCategory != _dataModel.Categories.First())
+			if (_dataModel.SelectedCategory?.Id != _dataModel.Categories.First().Id)
 			{
 				parameters.Add($"categoryId={_dataModel.SelectedCategory?.Id}");
 			}
