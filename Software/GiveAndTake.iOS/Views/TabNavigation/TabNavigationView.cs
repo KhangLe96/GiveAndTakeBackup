@@ -74,6 +74,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 					.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 				tabBarItem.SelectedImage = tabBarItem.SelectedImage
 					.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+				tabBarItem.ImageInsets = new UIEdgeInsets(5.5f, 0, -5.5f, 0);
+				tabBarItem.Title = null;
 			}
 
 			NavigationController?.SetNavigationBarHidden(true, animated);
