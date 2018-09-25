@@ -46,7 +46,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    private void OnClose(object sender, SearchView.CloseEventArgs e)
 	    {
 			SearchCommand.Execute();
-		    KeyboardHelper.HideKeyboard(sender as View);
+			KeyboardHelper.HideKeyboard(sender as View);
 			_searchView.ClearFocus();
 		}
 
@@ -54,7 +54,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    {
 		    SearchCommand.Execute();
 			KeyboardHelper.HideKeyboard(sender as View);
-	    }
+		    _searchView.ClearFocus();
+		}
 
 	    protected override void CreateBinding()
 	    {
