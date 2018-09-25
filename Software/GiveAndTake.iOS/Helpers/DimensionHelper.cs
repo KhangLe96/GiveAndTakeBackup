@@ -95,7 +95,7 @@ namespace GiveAndTake.iOS.Helpers
 			ButtonExtensionHeight = 3 * Rate;
 			ButtonExtensionWidth = 10 * Rate;
 			PostPhotoCornerRadius = 7 * Rate;
-			SeparateLineHeaderHeight = 1 * Rate;
+			SeparateLineHeaderHeight = 0.1f * Rate;
 			SeperatorHeight = 0.5f * Rate;
 			PostCellHeight = ImagePostSize + MarginShort * 2 + SeperatorHeight;
 			SeperatorLineHeight = 0.1f * Rate;

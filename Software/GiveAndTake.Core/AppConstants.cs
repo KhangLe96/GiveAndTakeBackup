@@ -6,7 +6,6 @@ namespace GiveAndTake.Core
 	public static class AppConstants
 	{
 		public const string AppTitle = "Give And Take";
-		public const string DefaultShortFilter = "Thời gian (mới nhất)";
 		public const string DefaultLocationFilter = "Đà Nẵng";
 		public const string Login = "ĐĂNG NHẬP";
 		public const string ApiUrl = "http://192.168.51.137:8089/api/v1/";

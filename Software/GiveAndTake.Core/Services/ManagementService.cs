@@ -206,8 +206,8 @@ namespace GiveAndTake.Core.Services
 
 	    public List<SortFilter> GetShortFilters() => new List<SortFilter>
 	    {
-			new SortFilter {FilterName = "Thời gian (mới nhất)", FilterTag = "desc"},
-			new SortFilter {FilterName = "Thời gian (cũ nhất)", FilterTag = "asc"}
+			new SortFilter {FilterName = "Mới nhất (Mặc định)", FilterTag = "desc"},
+			new SortFilter {FilterName = "Cũ nhất", FilterTag = "asc"}
 	    };
 
 		//public void CreateRequest(string postId);

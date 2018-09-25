@@ -107,7 +107,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.SortFilters = ManagementService.GetShortFilters();
 			_dataModel.SelectedCategory = _dataModel.Categories.First();
 			_dataModel.SelectedProvinceCity = _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
-			_dataModel.SelectedSortFilter = _dataModel.SortFilters.First(filter => filter.FilterName == AppConstants.DefaultShortFilter);
+			_dataModel.SelectedSortFilter = _dataModel.SortFilters.First();
 		}
 
 		private void InitCommand()
@@ -159,7 +159,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			UpdatePostViewModels();
 			IsCategoryFilterActivated = _dataModel.SelectedCategory != _dataModel.Categories.First();
 			IsLocationFilterActivated =  _dataModel.SelectedProvinceCity.ProvinceCityName != AppConstants.DefaultLocationFilter;
-			IsSortFilterActivated = _dataModel.SelectedSortFilter.FilterName != AppConstants.DefaultShortFilter;
+			IsSortFilterActivated = _dataModel.SelectedSortFilter.FilterTag != _dataModel.SortFilters.First().FilterTag;
 		}
 
 		private async void ShowNewPostView()
