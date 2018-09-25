@@ -101,7 +101,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 			if (visibleItemCount + pastVisibleItems >= totalItemCount)
 			{
-				LoadMoreEvent?.Invoke();
+				LoadMoreEvent?.BeginInvoke(null, null);
 			}
 		}
 	}

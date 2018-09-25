@@ -133,8 +133,13 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private async Task ShowPhotoCollection() =>
-			PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
+		private async Task ShowPhotoCollection()
+		{
+			if (PostImages.Any())
+			{
+				PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
+			}
+		}
 
 		private MvxCommand _takePictureCommand;
 

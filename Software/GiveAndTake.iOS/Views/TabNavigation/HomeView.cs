@@ -1,4 +1,6 @@
-﻿using GiveAndTake.Core.ViewModels.TabNavigation;
+﻿using CoreAnimation;
+using GiveAndTake.Core.ViewModels.TabNavigation;
+using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
@@ -8,7 +10,7 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using System;
-using GiveAndTake.iOS.Controls;
+using CoreGraphics;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -28,6 +30,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private MvxUIRefreshControl _refreshControl;
 		private UIButton _newPostButton;
 		private PopupItemLabel _searchResult;
+		private UIView _gradientView;
 
 		public IMvxCommand LoadMoreCommand { get; set; }
 		public IMvxCommand SearchCommand { get; set; }
@@ -50,6 +53,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		{
 			base.ViewWillAppear(animated);
 			NavigationController?.SetNavigationBarHidden(true, animated);
+		}
+
+		public override void ViewDidAppear(bool animated)
+		{
+			base.ViewDidAppear(animated);
+			var gradient = new CAGradientLayer
+			{
+				Frame = _gradientView.Bounds,
+				Colors = new[] { UIColor.White.ColorWithAlpha(0).CGColor, UIColor.White.ColorWithAlpha(0.8f).CGColor }
+			};
+			_gradientView.Layer.InsertSublayer(gradient, 0);
 		}
 
 		private void InitFilterBar()
@@ -142,6 +156,18 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 					NSLayoutAttribute.CenterX, 1, 0),
 				NSLayoutConstraint.Create(_searchResult, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.CenterY, 1, 0)
+			});
+
+			_gradientView = UIHelper.CreateView(DimensionHelper.PostCellHeight, ResolutionHelper.Width);
+			_gradientView.UserInteractionEnabled = false;
+
+			View.Add(_gradientView);
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_gradientView, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.CenterX, 1, 0),
+				NSLayoutConstraint.Create(_gradientView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Bottom, 1, 0)
 			});
 		}
 
