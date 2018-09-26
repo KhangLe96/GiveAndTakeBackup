@@ -149,44 +149,44 @@ export default class index extends React.Component {
         </div>
         <div className="containerBody">
           <Row>
-            <Col span={8}><h2> Tiêu đề </h2></Col>
-            <Col span={8}><h2> Người đăng </h2></Col>
+            <Col span={8}><span> Tiêu đề </span></Col>
+            <Col span={8}><span> Người đăng </span></Col>
           </Row>
           <Row>
-            <Col span={8}><h3> {title} </h3></Col>
-            <Col span={8}><h3> <a className={styles.detailText} onClick={() => this.handleRedirectToUserDetail(user)}> {user.username}</a></h3></Col>
-          </Row>
-
-          <Row>
-            <Col span={8}><h2> Địa chỉ </h2></Col>
-            <Col span={8}><h2> Danh mục </h2></Col>
-          </Row>
-          <Row>
-            <Col span={8}><h3> {address.provinceCityName} </h3></Col>
-            <Col span={8}><h3> <a className={styles.detailText} onClick={() => this.handleRedirectToCategoryDetail(category)}> {category.categoryName}</a></h3></Col>
+            <Col span={8}><p> {title} </p></Col>
+            <Col span={8}><p> <a className={styles.detailText} onClick={() => this.handleRedirectToUserDetail(user)}> {user.username}</a></p></Col>
           </Row>
 
           <Row>
-            <Col span={8}><h2> Trạng thái </h2></Col>
-            <Col span={8}><h2> Trạng thái trên ứng dụng di động</h2></Col>
+            <Col span={8}><span> Địa chỉ </span></Col>
+            <Col span={8}><span> Danh mục </span></Col>
           </Row>
           <Row>
-            <Col span={8}><h3 className={styles.statusText}> {ENG_VN_DICTIONARY[statusCMS]}</h3></Col>
-            <Col span={8}><h3 className={styles.statusText}> {ENG_VN_DICTIONARY[statusApp]}</h3></Col>
-          </Row>
-
-          <Row>
-            <Col span={8}><h2> Ngày tạo </h2></Col>
-          </Row>
-          <Row>
-            <Col span={8}><h3> {this.handleDateAndTimeFormat(createdTime)} </h3></Col>
+            <Col span={8}><p> {address.provinceCityName} </p></Col>
+            <Col span={8}><p> <a className={styles.detailText} onClick={() => this.handleRedirectToCategoryDetail(category)}> {category.categoryName}</a></p></Col>
           </Row>
 
           <Row>
-            <Col span={8}><h2> Mô tả </h2></Col>
+            <Col span={8}><span> Trạng thái </span></Col>
+            <Col span={8}><span> Trạng thái trên ứng dụng di động</span></Col>
           </Row>
           <Row>
-            <Col><h3> {description} </h3></Col>
+            <Col span={8}><p className={styles.statusText}> {ENG_VN_DICTIONARY[statusCMS]}</p></Col>
+            <Col span={8}><p className={styles.statusText}> {ENG_VN_DICTIONARY[statusApp]}</p></Col>
+          </Row>
+
+          <Row>
+            <Col span={8}><span> Ngày tạo </span></Col>
+          </Row>
+          <Row>
+            <Col span={8}><p> {this.handleDateAndTimeFormat(createdTime)} </p></Col>
+          </Row>
+
+          <Row>
+            <Col span={8}><span> Mô tả </span></Col>
+          </Row>
+          <Row>
+            <Col><p> {description} </p></Col>
           </Row>
           <br /><br /><br /><br />
           <Row>

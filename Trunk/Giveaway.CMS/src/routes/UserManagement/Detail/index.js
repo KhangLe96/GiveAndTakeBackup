@@ -87,44 +87,44 @@ export default class index extends React.Component {
               {this.displayImage(avatarUrl)}
               <br /><br />
               <Row>
-                <Col align="middle"><h2> {username} </h2></Col>
+                <Col align="middle"><h2> {firstName} {lastName} </h2></Col>
               </Row>
             </Col>
             <Col span={16} className={styles.inforBox}>
               <Row>
-                <Col span={12}><h2> Tên người dùng </h2></Col>
-                <Col span={12}><h2> Điện thoại </h2></Col>
+                <Col span={12}><span> Tên người dùng </span></Col>
+                <Col span={12}><span> Điện thoại </span></Col>
               </Row>
               <Row>
-                <Col span={12}><h3>{firstName} {lastName}</h3></Col>
-                <Col span={12}><h3>{phoneNumber}</h3></Col>
-              </Row>
-              <br /><br />
-              <Row>
-                <Col span={12}><h2> Email </h2></Col>
-                <Col span={12}><h2> Giới tính </h2></Col>
-              </Row>
-              <Row>
-                <Col span={12}><h3>{email}</h3></Col>
-                <Col span={12}><h3>{ENG_VN_DICTIONARY[gender]}</h3></Col>
+                <Col span={12}><p>{firstName} {lastName}</p></Col>
+                <Col span={12}><p>{phoneNumber}</p></Col>
               </Row>
               <br /><br />
               <Row>
-                <Col span={12}><h2> Ngày sinh </h2></Col>
-                <Col span={12}><h2> Địa chỉ </h2></Col>
+                <Col span={12}><span> Email </span></Col>
+                <Col span={12}><span> Giới tính </span></Col>
               </Row>
               <Row>
-                <Col span={12}><h3>{this.handleDateAndTimeFormat(birthdate)}</h3></Col>
-                <Col span={12}><h3>{address}</h3></Col>
+                <Col span={12}><p>{email}</p></Col>
+                <Col span={12}><p>{ENG_VN_DICTIONARY[gender]}</p></Col>
               </Row>
               <br /><br />
               <Row>
-                <Col span={12}><h2> Vai trò </h2></Col>
-                <Col span={12}><h2> Trạng thái </h2></Col>
+                <Col span={12}><span> Ngày sinh </span></Col>
+                <Col span={12}><span> Địa chỉ </span></Col>
               </Row>
               <Row>
-                <Col span={12}><h3>{ENG_VN_DICTIONARY[role && role[0]]} {ENG_VN_DICTIONARY[role && role[1]]}</h3></Col>
-                <Col span={12}><h3 className={styles.statusText}>{ENG_VN_DICTIONARY[status]}</h3></Col>
+                <Col span={12}><p>{this.handleDateAndTimeFormat(birthdate)}</p></Col>
+                <Col span={12}><p>{address}</p></Col>
+              </Row>
+              <br /><br />
+              <Row>
+                <Col span={12}><span> Vai trò </span></Col>
+                <Col span={12}><span> Trạng thái </span></Col>
+              </Row>
+              <Row>
+                <Col span={12}><p>{ENG_VN_DICTIONARY[role && role[0]]} {ENG_VN_DICTIONARY[role && role[1]]}</p></Col>
+                <Col span={12}><p className={styles.statusText}>{ENG_VN_DICTIONARY[status]}</p></Col>
               </Row>
             </Col>
           </Row>
