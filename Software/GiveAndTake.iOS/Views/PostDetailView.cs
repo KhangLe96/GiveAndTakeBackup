@@ -6,7 +6,8 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Views
 {
-	[MvxChildPresentation]
+	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen,
+		ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
 	public class PostDetailView : BaseView
 	{
 		protected override void InitView()

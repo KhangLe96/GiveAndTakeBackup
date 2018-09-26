@@ -1,9 +1,7 @@
 ﻿using Android.Support.V7.Widget;
 using Android.Views;
-using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Droid.Views.Base;
-using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
