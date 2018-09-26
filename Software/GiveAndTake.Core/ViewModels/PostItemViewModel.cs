@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
@@ -17,8 +18,9 @@ namespace GiveAndTake.Core.ViewModels
         #region Properties
 
         private readonly Post _post;
+		private IDataModel _dataModel;
 
-        private string _categoryName;
+		private string _categoryName;
 
         public string CategoryName 
         {
@@ -176,7 +178,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		#region Constructor
 
-		public PostItemViewModel(Post post, bool isLast = false)
+		public PostItemViewModel(Post post, bool isLast = false) 
 		{
 			_post = post;
 			Init();
@@ -203,7 +205,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private void InitCommand()
         {
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
-            ShowPostDetailCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
+            ShowPostDetailCommand = new MvxAsyncCommand(ShowPostDetailView);
 			ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
         }
 
@@ -219,12 +221,19 @@ namespace GiveAndTake.Core.ViewModels
 			}
 	    }
 
-	    #endregion
+	    private async Task ShowPostDetailView()
+	    {
 
-        #region Methods
+		    await NavigationService.Navigate<PostDetailViewModel, Post>(_post);
+	    }
 
-        public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
-        public IMvxAsyncCommand ShowPostDetailCommand { get; set; }
+
+		#endregion
+
+		#region Methods
+
+		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
+        public ICommand ShowPostDetailCommand { get; set; }
         public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
 
         #endregion

@@ -45,4 +45,6 @@
 	<dimen name="border_width_light">1px</dimen>
 	<dimen name="spinner_button_textSize">15dp</dimen>
 	<dimen name="divider">0.1dp</dimen>
+	<dimen name="margin_text_post_detail">15dp</dimen>
+	<dimen name="margin_object_post_detail">15dp</dimen>
 </resources>

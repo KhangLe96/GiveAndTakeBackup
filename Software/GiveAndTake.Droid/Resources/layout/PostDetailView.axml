@@ -1,12 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity ="center">
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="@dimen/MediumTextSize"
-    android:text="Post Detail View"/>
-</LinearLayout>
+    android:layout_height="wrap_content">
+	<giveandtake.droid.controls.CustomCardView 
+		xmlns:card_view="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/btnCategory"
+		android:layout_width="wrap_content"
+		android:layout_height="@dimen/button_category_height"
+		android:layout_marginTop="@dimen/margin_object_post_detail"
+		android:layout_marginLeft="@dimen/margin_object_post_detail"
+		android:layout_marginBottom="@dimen/default_margin"
+		android:layout_alignParentLeft="true"
+		card_view:cardCornerRadius="12dp"
+		local:MvxBind="CardBackgroundColorCustom CategoryBackgroundColor" >
+		<TextView
+			android:text="Hello Card"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/white"
+			android:textSize="14dp"
+			android:fontFamily="@font/sanfranciscodisplay_light"
+			android:layout_centerInParent="true"
+			local:MvxBind="Text CategoryName" />
+	</giveandtake.droid.controls.CustomCardView >
+	<ImageView
+		android:id="@+id/locationLogo"
+		android:layout_width="15dp"
+		android:layout_height="15dp"
+		android:layout_marginTop="16dp"
+		android:layout_toRightOf="@+id/btnCategory"
+		android:layout_marginLeft="@dimen/default_margin"
+		android:src="@drawable/location_logo"/>
+	<TextView
+		android:id="@+id/tvLocation"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="5dp"
+		android:layout_marginTop="14dp"
+		android:textSize="15dp"
+		android:layout_toRightOf="@+id/locationLogo"
+		android:fontFamily="@font/sanfranciscodisplay_light"
+		local:MvxBind="Text Address" />
+	<LinearLayout
+		android:id="@+id/extensionField"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:clickable="true"
+		android:layout_marginRight="5dp"
+		android:layout_alignParentRight="true"
+		local:MvxBind="Click ShowMenuPopupCommand">
+		<ImageButton
+			android:id="@+id/extensionButton"
+			android:layout_width="22dp"
+			android:layout_height="5dp"
+			android:layout_marginTop="23dp"
+			android:background="@null"
+			android:scaleType="fitXY"
+			android:src="@drawable/extention" />
+	</LinearLayout>
+	<TextView
+		android:id="@+id/tvStatus"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginRight="@dimen/default_margin"
+		android:layout_marginTop="14dp"
+		android:textSize="13dp"
+		android:layout_toLeftOf="@+id/extensionField"
+		android:fontFamily="@font/sanfranciscodisplay_bold"
+		local:MvxBind="Text Status" />
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@+id/btnCategory"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="10dp">
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+			<RelativeLayout
+				android:id="@+id/imageViewField"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+				<android.support.v4.view.ViewPager
+					android:id="@+id/SliderViewPager"
+					android:layout_width="match_parent"
+					android:layout_height="230dp" 
+					android:background="@color/black"/>
+			</RelativeLayout>
+			<RelativeLayout
+				android:layout_width="50dp"
+				android:layout_height="35dp"
+				android:layout_alignParentRight="true"
+				android:layout_marginTop="@dimen/margin_object_post_detail"
+				android:padding="5dp" 
+				android:gravity="center"
+				android:layout_marginRight="@dimen/margin_object_post_detail">
+				<ImageView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:alpha="0.5"
+					android:background="@drawable/display_number_image_bg" />
+				<TextView
+					android:id="@+id/CurrentImage"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="15dp"
+					android:layout_centerInParent="true"
+					android:textColor="@color/white"
+					android:fontFamily="@font/sanfranciscodisplay_light"/>
+			</RelativeLayout>
+			<ImageButton
+				android:id="@+id/navigateLeftButton"
+				android:layout_width="28dp"
+				android:layout_height="40dp"
+				android:layout_marginTop="100dp"
+				android:background="@null"
+				android:scaleType="fitCenter"
+				android:layout_marginLeft="@dimen/default_margin"
+				android:layout_alignParentLeft="true"
+				android:src="@drawable/navigateLeft" />
+			<ImageButton
+				android:id="@+id/navigateRightButton"
+				android:layout_width="28dp"
+				android:layout_height="40dp"
+				android:layout_marginTop="100dp"
+				android:background="@null"
+				android:scaleType="fitCenter"
+				android:layout_marginRight="@dimen/default_margin"
+				android:layout_alignParentRight="true"
+				android:src="@drawable/navigateRight" />
+			<TextView
+				android:layout_alignParentRight="true"
+				android:id="@+id/tvRequestCount"
+				android:layout_below="@+id/imageViewField"
+				android:layout_marginRight="@dimen/margin_object_post_detail"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="5dp"
+				android:textSize="25dp"
+				android:fontFamily="@font/sanfranciscodisplay_light"
+				local:MvxBind="Text RequestCount" />
+			<ImageButton
+				android:layout_width="28dp"
+				android:layout_height="10dp"
+				android:layout_below="@+id/imageViewField"
+				android:layout_toLeftOf="@+id/tvRequestCount"
+				android:layout_marginTop="17dp"
+				android:layout_marginRight="5dp"
+				android:id="@+id/requestImageButton"
+				android:background="@null"
+				android:scaleType="fitXY"
+				android:src="@drawable/request_off" />
+			<TextView
+				android:layout_below="@+id/imageViewField"
+				android:layout_toLeftOf="@+id/requestImageButton"
+				android:id="@+id/tvCommentCount"
+				android:layout_marginRight="25dp"
+				android:layout_marginTop="5dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:fontFamily="@font/sanfranciscodisplay_light"
+				android:textSize="25dp"
+				local:MvxBind="Text CommentCount" />
+			<ImageButton
+				android:layout_below="@+id/imageViewField"
+				android:layout_toLeftOf="@+id/tvCommentCount"
+				android:id="@+id/commentImageButton"
+				android:layout_width="18dp"
+				android:layout_height="18dp"
+				android:layout_marginTop="14dp"
+				android:layout_marginRight="10dp"
+				android:background="@null"
+				android:scaleType="fitCenter"
+				android:src="@drawable/comment" />
+			<RelativeLayout
+				android:layout_below="@+id/commentImageButton"
+				android:layout_marginTop="@dimen/margin_object_post_detail"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="@dimen/margin_object_post_detail"
+				android:layout_marginRight="@dimen/margin_object_post_detail"
+				android:background="@drawable/post_editText_bg" >
+				<ffimageloading.cross.MvxCachedImageView
+					android:id="@+id/imgAvatar"
+					android:layout_width="50dp"
+					android:layout_height="50dp"
+					android:layout_marginTop="@dimen/margin_object_post_detail"
+					android:layout_marginLeft="@dimen/margin_object_post_detail"
+					local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar.png'; 
+								ErrorPlaceholderImagePath 'res:default_avatar.png'; 
+								Transformations AvatarTransformations; 
+								ImagePath AvatarUrl; 
+								Click ShowGiverProfileCommand" />
+				<TextView
+					android:id="@+id/tvUserFullName"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/btnCategory"
+					android:layout_marginLeft="@dimen/margin_object_post_detail"
+					android:layout_marginTop="25dp"
+					android:layout_toRightOf="@id/imgAvatar"
+					android:textColor="#000"
+					android:textSize="15dp"
+					android:fontFamily="@font/sanfranciscodisplay_regular"
+					local:MvxBind="Text UserName; Click ShowGiverProfileCommand" />
+				<TextView
+					android:id="@+id/tvPostDate"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignStart="@id/tvUserFullName"
+					android:layout_below="@id/tvUserFullName"
+					android:textSize="12dp"
+					android:fontFamily="@font/sanfranciscodisplay_light"
+					local:MvxBind="Text CreatedTime" />
+				<TextView
+					android:id="@+id/tvPostTitle"
+					android:layout_marginTop="@dimen/margin_text_post_detail"
+					android:layout_marginLeft="@dimen/margin_text_post_detail"
+					android:layout_marginRight="@dimen/margin_text_post_detail"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/imgAvatar"
+					android:textSize="15dp"
+					android:fontFamily="@font/sanfranciscodisplay_bold"
+					local:MvxBind="Text PostTitle" />
+				<TextView
+					android:id="@+id/tvPostDescription"
+					android:layout_marginLeft="@dimen/margin_text_post_detail"
+					android:layout_marginRight="@dimen/margin_text_post_detail"
+					android:layout_marginBottom="@dimen/margin_text_post_detail"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/tvPostTitle"
+					android:textSize="15dp"
+					android:fontFamily="@font/sanfranciscodisplay_regular"
+					local:MvxBind="Text PostDescription" />
+			</RelativeLayout>
+		</RelativeLayout>
+	</ScrollView>
+</RelativeLayout>
