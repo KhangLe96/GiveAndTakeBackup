@@ -124,6 +124,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
             _dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
 			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+			PostViewModels.Last().IsLastViewInList = true;
 			IsSearchResultNull = PostViewModels.Any();
 		}
 
@@ -134,13 +135,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			{
 				PostViewModels.Last().IsLastViewInList = false;
 				PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+				PostViewModels.Last().IsLastViewInList = true;
 			}
 		}
 
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
-			post.IsLast = IsLast(post);
 			return new PostItemViewModel(post);
 		}
 
@@ -205,7 +206,5 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			return string.Join("&", parameters);
 		}
-
-		private bool IsLast(Post post) => _dataModel.ApiPostsResponse.Posts.GetPosition(post) + 1 == _dataModel.ApiPostsResponse.Posts.Count;
 	}
 }

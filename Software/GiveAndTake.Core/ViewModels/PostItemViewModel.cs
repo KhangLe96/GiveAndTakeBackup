@@ -170,7 +170,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
-	    public int DownsampleWidth => 200;
+	    public double DownsampleWidth => 200d;
 
 		#endregion
 
@@ -186,17 +186,17 @@ namespace GiveAndTake.Core.ViewModels
 	    private void Init()
 	    {
 		    CategoryName = _post.Category.CategoryName;
-		    AvatarUrl = _post.User.AvatarUrl ?? AppConstants.DefaultUrl;
+		    AvatarUrl = _post.User.AvatarUrl ?? AppConstants.DefaultAvatar;
 		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
 		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    Description = _post.Description;
-			PostImage = _post.Images.FirstOrDefault()?.ResizedImage ?? AppConstants.DefaultUrl;
+		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage ?? AppConstants.DefaultPost;
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;
 		    CommentCount = _post.CommentCount;
-		    IsLastViewInList = _post.IsLast;
+		    IsLastViewInList = false;
 	        BackgroundColor = _post.Category.BackgroundColor;
 	    }
 

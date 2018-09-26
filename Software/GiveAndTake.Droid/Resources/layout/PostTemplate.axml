@@ -11,8 +11,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_margin="@dimen/margin_short"
-        local:MvxBind="LoadingPlaceholderImagePath 'res:default_post.png'; 
-							ErrorPlaceholderImagePath 'res:default_post.png'; 
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_post'; 
+							ErrorPlaceholderImagePath 'res:default_post'; 
 							Transformations PostTransformations; 
 							DownsampleWidth DownsampleWidth;
 							ImagePath PostImage; 							
@@ -30,7 +30,6 @@
         local:MvxBind="Visibility Visibility(HasManyPostPhotos)"/>
   
 	<giveandtake.droid.controls.CustomCardView 
-		xmlns:card_view="http://schemas.android.com/apk/res-auto"
 		android:id="@+id/btnCategory"
 		android:layout_width="wrap_content"
 		android:layout_height="@dimen/button_category_height"
@@ -38,7 +37,7 @@
 		android:layout_marginStart="@dimen/margin_short"
 		android:layout_alignTop="@id/imgPost"
 		android:layout_toRightOf="@id/imgPost"
-		card_view:cardCornerRadius="12dp"
+		local:cardCornerRadius="12dp"
 		local:MvxBind="CardBackgroundColorCustom BackgroundColor" >
 		<TextView
             android:text="Hello Card"
@@ -48,7 +47,6 @@
 			android:textSize="@dimen/category_text_size"
 			android:layout_centerInParent="true"
 			local:MvxBind="Text CategoryName" />
-
 	</giveandtake.droid.controls.CustomCardView >
 
 	<ffimageloading.cross.MvxCachedImageView
@@ -58,13 +56,13 @@
         android:layout_alignStart="@id/btnCategory"
         android:layout_below="@id/btnCategory"
         android:layout_marginTop="@dimen/margin_short"
-        local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar.png'; 
-							ErrorPlaceholderImagePath 'res:default_avatar.png'; 
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar'; 
+							ErrorPlaceholderImagePath 'res:default_avatar'; 
 							Transformations AvatarTransformations; 
 							ImagePath AvatarUrl; 
 							Click ShowGiverProfileCommand" />
 
-    <TextView
+	 <TextView
         android:id="@+id/tvUserFullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -150,13 +148,13 @@
             android:layout_weight="1"
             android:gravity="bottom">
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="@dimen/button_small_width"
-                android:layout_height="@dimen/button_request_height"
-                android:background="@null"
-                android:scaleType="fitCenter"
-                android:src="@drawable/request_off" />
+	        <ImageButton
+		        android:id="@+id/imageButton"
+		        android:layout_width="@dimen/button_small_width"
+		        android:layout_height="@dimen/button_request_height"
+		        android:background="@null"
+		        android:scaleType="fitCenter"
+		        android:src="@drawable/request_off" />
 
             <TextView
                 android:id="@+id/tvRequestCount"
@@ -173,7 +171,7 @@
             android:layout_weight="1"
             android:gravity="center|bottom">
 
-            <ImageButton
+			<ImageButton
                 android:id="@+id/imageButton2"
                 android:layout_width="@dimen/button_small_width"
                 android:layout_height="@dimen/button_small_height"
@@ -196,7 +194,7 @@
             android:layout_weight="1"
             android:gravity="right|bottom">
 
-            <ImageButton
+	        <ImageButton
                 android:id="@+id/imageButton4"
                 android:layout_width="@dimen/button_small_width"
                 android:layout_height="@dimen/button_small_height"

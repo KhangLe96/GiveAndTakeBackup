@@ -1,0 +1,16 @@
+<resources>
+	<dimen name="image_post_size">115dp</dimen>
+	<dimen name="button_category_height">20dp</dimen>
+	<dimen name="image_avatar_size">33dp</dimen>
+	<dimen name="MediumTextSize">14sp</dimen>
+	<dimen name="SmallTextSize">9sp</dimen>
+	<dimen name="category_text_size">12sp</dimen>
+	<dimen name="post_description_text_size">10sp</dimen>
+	<dimen name="button_small_width">22dp</dimen>
+	<dimen name="button_small_height">10dp</dimen>
+	<dimen name="button_request_height">8dp</dimen>
+	<dimen name="margin_short">6dp</dimen>
+	<dimen name="margin_normal">12dp</dimen>
+	<dimen name="avatar_margin">12dp</dimen>
+	<dimen name="button_extension_height">2dp</dimen>
+</resources>

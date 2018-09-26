@@ -1,7 +1,9 @@
-﻿using Android.Content;
+﻿using System;
+using Android.Content;
 using Android.Graphics;
 using Android.Support.V7.Widget;
 using Android.Util;
+using GiveAndTake.Droid.Helpers;
 using MvvmCross.UI;
 
 namespace GiveAndTake.Droid.Controls
@@ -13,15 +15,21 @@ namespace GiveAndTake.Droid.Controls
         }
 
         private string _cardBackgroundColorCustom;
-
         public string CardBackgroundColorCustom
         {
-            get { return _cardBackgroundColorCustom; }
-            set
+            get => _cardBackgroundColorCustom;
+	        set
             {
-                _cardBackgroundColorCustom = value;
-                SetCardBackgroundColor(Color.ParseColor(_cardBackgroundColorCustom));
-            }
+				_cardBackgroundColorCustom = value;
+	            try
+	            {
+		            SetCardBackgroundColor(ColorHelper.ToColor(_cardBackgroundColorCustom));
+	            }
+	            catch (Exception e)
+	            {
+					SetCardBackgroundColor(Color.BlueViolet);
+				}
+			}
         }
     }
 }

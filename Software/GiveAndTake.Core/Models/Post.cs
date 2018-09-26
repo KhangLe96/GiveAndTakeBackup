@@ -38,7 +38,5 @@ namespace GiveAndTake.Core.Models
 		public List<Image> Images { get; set; }
 
 		public bool IsMyPost { get; set; }
-
-		public bool IsLast { get; set; }
 	}
 }

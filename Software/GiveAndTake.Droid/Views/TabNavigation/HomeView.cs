@@ -1,6 +1,7 @@
 ﻿using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
+using FFImageLoading;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Helpers;
 using GiveAndTake.Droid.Views.Base;
@@ -102,6 +103,22 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			if (visibleItemCount + pastVisibleItems >= totalItemCount)
 			{
 				LoadMoreEvent?.BeginInvoke(null, null);
+			}
+		}
+
+		public override void OnScrollStateChanged(RecyclerView recyclerView, int newState)
+		{
+			base.OnScrollStateChanged(recyclerView, newState);
+
+			switch (newState)
+			{
+				case RecyclerView.ScrollStateDragging:
+					ImageService.Instance.SetPauseWork(true);
+					break;
+
+				case RecyclerView.ScrollStateIdle:
+					ImageService.Instance.SetPauseWork(false);
+					break;
 			}
 		}
 	}
