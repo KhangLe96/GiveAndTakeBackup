@@ -1,5 +1,5 @@
 {
-  "active_environment": "local",
+  "active_environment": "development",
   "environments": {
     "development": {
       "API_URL": "http://192.168.51.137:8089/api/v1",

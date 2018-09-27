@@ -154,7 +154,7 @@ export default class index extends React.Component {
           </Row>
           <Row>
             <Col span={8}><p> {title} </p></Col>
-            <Col span={8}><p> <a className={styles.detailText} onClick={() => this.handleRedirectToUserDetail(user)}> {user.username}</a></p></Col>
+            <Col span={8}><p> <a className={styles.detailText} onClick={() => this.handleRedirectToUserDetail(user)}> {user.firstName} {user.lastName}</a></p></Col>
           </Row>
 
           <Row>

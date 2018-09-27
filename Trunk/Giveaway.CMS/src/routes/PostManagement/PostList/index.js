@@ -58,7 +58,7 @@ export default class index extends React.Component {
       {
         title: 'Người đăng',
         key: 'user',
-        render: record => <Link to={`/user-management/detail/${record.user.id}`}>{record.user.username}</Link>,
+        render: record => <Link to={`/user-management/detail/${record.user.id}`}>{record.user.firstName} {record.user.lastName}</Link>,
       },
       {
         title: 'Địa chỉ',
