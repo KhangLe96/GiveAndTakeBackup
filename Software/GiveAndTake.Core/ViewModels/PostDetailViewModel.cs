@@ -1,102 +1,103 @@
-﻿using System.Collections.Generic;
-using FFImageLoading.Transformations;
+﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
+using System.Collections.Generic;
+using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
 {
 	public class PostDetailViewModel : BaseViewModel<Post>
-    {
+	{
 		#region Properties
 
 		private string _categoryName;
-	    private string _address;
-	    private string _status;
-	    private List<Image> _postImages;
-	    private int _requestCount;
-	    private int _commentCount;
-	    private string _categoryBackgroundColor;
-	    private string _avatarUrl;
-	    private string _userName;
-	    private string _createdTime;
-	    private string _postTitle;
-	    private string _postDescription;
-	    private bool _isMyPost;
+		private string _address;
+		private string _status;
+		private List<Image> _postImages;
+		private int _requestCount;
+		private int _commentCount;
+		private string _categoryBackgroundColor;
+		private string _avatarUrl;
+		private string _userName;
+		private string _createdTime;
+		private string _postTitle;
+		private string _postDescription;
+		private bool _isMyPost;
 
 		public string CategoryName
-	    {
-		    get => $"   {_categoryName}   ";
-		    set => SetProperty(ref _categoryName, value);
-	    }
+		{
+			get => $"   {_categoryName}   ";
+			set => SetProperty(ref _categoryName, value);
+		}
 
 		public string Address
 		{
-		    get => _address;
-		    set => SetProperty(ref _address, value);
-	    }
+			get => _address;
+			set => SetProperty(ref _address, value);
+		}
 
-	    public string Status
-	    {
-		    get => _status;
-		    set => SetProperty(ref _status, value);
-	    }
-
-	    public List<Image> PostImages
-	    {
-		    get => _postImages;
-		    set => SetProperty(ref _postImages, value);
-	    }
-
-	    public int RequestCount
-	    {
-		    get => _requestCount;
-		    set => SetProperty(ref _requestCount, value);
-	    }
-
-	    public int CommentCount
+		public string Status
 		{
-		    get => _commentCount;
-		    set => SetProperty(ref _commentCount, value);
-	    }
+			get => _status;
+			set => SetProperty(ref _status, value);
+		}
 
-	    public string CategoryBackgroundColor
+		public List<Image> PostImages
 		{
-		    get => _categoryBackgroundColor;
-		    set => SetProperty(ref _categoryBackgroundColor, value);
-	    }
+			get => _postImages;
+			set => SetProperty(ref _postImages, value);
+		}
 
-	    public string AvatarUrl
+		public int RequestCount
 		{
-		    get => _avatarUrl;
-		    set => SetProperty(ref _avatarUrl, value);
-	    }
+			get => _requestCount;
+			set => SetProperty(ref _requestCount, value);
+		}
 
-	    public string UserName
+		public int CommentCount
 		{
-		    get => _userName;
-		    set => SetProperty(ref _userName, value);
-	    }
+			get => _commentCount;
+			set => SetProperty(ref _commentCount, value);
+		}
 
-	    public string CreatedTime
+		public string CategoryBackgroundColor
 		{
-		    get => _createdTime;
-		    set => SetProperty(ref _createdTime, value);
-	    }
+			get => _categoryBackgroundColor;
+			set => SetProperty(ref _categoryBackgroundColor, value);
+		}
 
-	    public string PostTitle
-	    {
-		    get => _postTitle;
-		    set => SetProperty(ref _postTitle, value);
-	    }
+		public string AvatarUrl
+		{
+			get => _avatarUrl;
+			set => SetProperty(ref _avatarUrl, value);
+		}
 
-	    public string PostDescription
-	    {
-		    get => _postDescription;
-		    set => SetProperty(ref _postDescription, value);
-	    }
+		public string UserName
+		{
+			get => _userName;
+			set => SetProperty(ref _userName, value);
+		}
+
+		public string CreatedTime
+		{
+			get => _createdTime;
+			set => SetProperty(ref _createdTime, value);
+		}
+
+		public string PostTitle
+		{
+			get => _postTitle;
+			set => SetProperty(ref _postTitle, value);
+		}
+
+		public string PostDescription
+		{
+			get => _postDescription;
+			set => SetProperty(ref _postDescription, value);
+		}
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
@@ -105,17 +106,17 @@ namespace GiveAndTake.Core.ViewModels
 		#region Constructor
 
 		public PostDetailViewModel()
-	    {
+		{
 			InitCommand();
-	    }
+		}
 
-	    private void InitCommand()
-	    {
+		private void InitCommand()
+		{
 			ShowMenuPopupCommand = new MvxCommand(ShowMenuView);
-		    ShowPostCommentCommand = new MvxCommand(async () =>
-			    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
-		    ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
-	    }
+			ShowPostCommentCommand = new MvxCommand(async () =>
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
+			ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
+		}
 
 		private void ShowMenuView()
 		{
@@ -129,13 +130,13 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-	    private void ShowMyRequestList()
-	    {
-		    if (_isMyPost)
-		    {
-			    NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-		    }
-	    }
+		private void ShowMyRequestList()
+		{
+			if (_isMyPost)
+			{
+				NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+			}
+		}
 
 
 		public override void Prepare(Post post)
@@ -150,7 +151,7 @@ namespace GiveAndTake.Core.ViewModels
 			PostImages = post.Images;
 			RequestCount = post.RequestCount;
 			CommentCount = post.CommentCount;
-			Status = post.IsMyPost ? post.PostStatus : " ";
+			Status = post.IsMyPost ? post.PostStatus.Translate() : " ";
 			CategoryBackgroundColor = post.Category.BackgroundColor;
 			_isMyPost = post.IsMyPost;
 		}
@@ -159,7 +160,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		#region Methods
 		public IMvxCommand ShowMenuPopupCommand { get; set; }
-	    public IMvxCommand ShowPostCommentCommand { get; set; }
+		public IMvxCommand ShowPostCommentCommand { get; set; }
 		public IMvxCommand ShowMyRequestListCommand { get; set; }
 		#endregion
 	}

@@ -33,9 +33,5 @@ namespace GiveAndTake.Core
 		public static string DefaultAvatar = "default_avatar";
 		public static string DefaultPost = "default_post";
 		public static string DefaultUrl = "default_post";
-		public static string GivingPostStatus = "Giving";
-		public static string GivedPostStatus = "Gived";
-		public static string GivingPostStatusVn = "Đang cho";
-		public static string GivedPostStatusVn = "Đã cho";
 	}
 }

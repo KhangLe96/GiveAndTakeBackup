@@ -1,8 +1,11 @@
-﻿using GiveAndTake.Core.Services;
+﻿using System.Diagnostics;
+using System.Reflection;
+using GiveAndTake.Core.Services;
 using MvvmCross;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System.Threading.Tasks;
+using I18NPortable;
 
 
 namespace GiveAndTake.Core.ViewModels.Base
@@ -14,6 +17,8 @@ namespace GiveAndTake.Core.ViewModels.Base
 
 		private IManagementService _managementService;
 		public IManagementService ManagementService => _managementService ?? (_managementService = Mvx.Resolve<IManagementService>());
+
+		public II18N Strings => I18N.Current;
 	}
 
 	public abstract class BaseViewModel<TParameter> : BaseViewModel, IMvxViewModel<TParameter>
