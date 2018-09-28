@@ -2,7 +2,7 @@
 {
     public enum PostStatus
     {
-        Open,
-        Close
+        Giving,
+        Gived
     }
 }
