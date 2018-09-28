@@ -33,9 +33,11 @@ namespace GiveAndTake.Droid.Views
 		}
 
 		private ViewPager _imageViewer;
+		//REVIEW : rename _currentImage to something like ImageIndex. CurrentImage seems an image name, not int
 		private int _currentImage;
 		private ImageButton _navigateLeftButton;
 		private ImageButton _navigateRightButton;
+		//REVIEW : Rename. Why a TextView named ...Image ?
 		private TextView _displayCurrentImage;
 
 		private View _view;
@@ -104,6 +106,7 @@ namespace GiveAndTake.Droid.Views
 
 		private void _imageViewer_PageSelected(object sender, ViewPager.PageSelectedEventArgs e)
 		{
+			//REVIEW : Rename the method to ImageViewerOnPageSelected
 			InitNavigationButton();
 		}
 
@@ -112,7 +115,7 @@ namespace GiveAndTake.Droid.Views
 			base.CreateBinding();
 
 			var bindingSet = this.CreateBindingSet<PostDetailView, PostDetailViewModel>();
-
+			//REVIEW : Try to name variables in View and VM at same.
 			bindingSet.Bind(this)
 				.For(v => v.ImagesPost)
 				.To(vm => vm.PostImage);

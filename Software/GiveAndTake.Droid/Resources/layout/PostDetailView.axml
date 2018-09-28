@@ -13,15 +13,17 @@
 		android:layout_marginLeft="@dimen/margin_object_post_detail"
 		android:layout_marginBottom="@dimen/default_margin"
 		android:layout_alignParentLeft="true"
-		card_view:cardCornerRadius="12dp"
+        card_view:cardCornerRadius="12dp"
 		local:MvxBind="CardBackgroundColorCustom CategoryBackgroundColor" >
-		<TextView
-			android:text="Hello Card"
-			android:layout_width="wrap_content"
+        <!--REVIEW : Define all dp in DimensionHelper-->
+         <!--//REVIEW : Remove redundant text in TextView-->
+        <TextView
+           android:text="Hello Card"
+            android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textColor="@color/white"
-			android:textSize="14dp"
-			android:fontFamily="@font/sanfranciscodisplay_light"
+            android:textSize="14dp"
+            android:fontFamily="@font/sanfranciscodisplay_light"
 			android:layout_centerInParent="true"
 			local:MvxBind="Text CategoryName" />
 	</giveandtake.droid.controls.CustomCardView >
@@ -43,8 +45,9 @@
 		android:layout_toRightOf="@+id/locationLogo"
 		android:fontFamily="@font/sanfranciscodisplay_light"
 		local:MvxBind="Text Address" />
-	<LinearLayout
-		android:id="@+id/extensionField"
+        <!--//REVIEW : No need to add android ID for controls will not be used-->
+    <LinearLayout
+        android:id="@+id/extensionField"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:clickable="true"
@@ -79,7 +82,9 @@
 		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
-			<RelativeLayout
+        <!--//REVIEW : The below RelativeLayout is redundant-->
+        <!--//REVIEW : The useful of Relative Layout is using constraint to match controls to each other. I can see it was used very RARELY-->
+            <RelativeLayout
 				android:id="@+id/imageViewField"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
@@ -111,6 +116,7 @@
 					android:textColor="@color/white"
 					android:fontFamily="@font/sanfranciscodisplay_light"/>
 			</RelativeLayout>
+            <!--REVIEW : Do we need to set background to null ? Why dont set it to a default background or just leave it default as White ?-->
 			<ImageButton
 				android:id="@+id/navigateLeftButton"
 				android:layout_width="28dp"

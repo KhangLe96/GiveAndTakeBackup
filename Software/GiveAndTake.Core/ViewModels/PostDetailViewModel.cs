@@ -14,6 +14,7 @@ namespace GiveAndTake.Core.ViewModels
 		private string _categoryName;
 	    private string _address;
 	    private string _status;
+		//REVIEW: Rename to _postImages cause It is a List
 	    private List<Image> _postImage;
 	    private int _requestCount;
 	    private int _commentCount;
@@ -152,7 +153,7 @@ namespace GiveAndTake.Core.ViewModels
 		#endregion
 
 		#region Methods
-
+		//REVIEW : Consider to user MvxCommand instead of MvxAsyncCommand except in needed cases
 		public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
 	    public IMvxAsyncCommand ShowPostCommentCommand { get; set; }
 		#endregion
