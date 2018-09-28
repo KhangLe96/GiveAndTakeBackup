@@ -1,8 +1,6 @@
 ﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels;
-using GiveAndTake.Core.ViewModels.Base;
-using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross;
 using MvvmCross.ViewModels;
 

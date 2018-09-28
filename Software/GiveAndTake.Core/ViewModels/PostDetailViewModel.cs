@@ -3,6 +3,7 @@ using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels
@@ -14,8 +15,7 @@ namespace GiveAndTake.Core.ViewModels
 		private string _categoryName;
 	    private string _address;
 	    private string _status;
-		//REVIEW: Rename to _postImages cause It is a List
-	    private List<Image> _postImage;
+	    private List<Image> _postImages;
 	    private int _requestCount;
 	    private int _commentCount;
 	    private string _categoryBackgroundColor;
@@ -24,7 +24,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private string _createdTime;
 	    private string _postTitle;
 	    private string _postDescription;
-	    private int _currentPage;
+	    private bool _isMyPost;
 
 		public string CategoryName
 	    {
@@ -44,10 +44,10 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _status, value);
 	    }
 
-	    public List<Image> PostImage
+	    public List<Image> PostImages
 	    {
-		    get => _postImage;
-		    set => SetProperty(ref _postImage, value);
+		    get => _postImages;
+		    set => SetProperty(ref _postImages, value);
 	    }
 
 	    public int RequestCount
@@ -98,12 +98,6 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _postDescription, value);
 	    }
 
-	    public int CurrentPage
-	    {
-		    get => _currentPage;
-		    set => SetProperty(ref _currentPage, value);
-	    }
-
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
 		#endregion
@@ -117,21 +111,31 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private void InitCommand()
 	    {
-			//   ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
-			//ShowPostCommentCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel>(AppConstants.DefaultWarningMessage));
+			ShowMenuPopupCommand = new MvxCommand(ShowMenuView);
+		    ShowPostCommentCommand = new MvxCommand(async () =>
+			    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
+		    ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
+	    }
+
+		private void ShowMenuView()
+		{
+			if (_isMyPost)
+			{
+				NavigationService.Navigate<PopupPostOptionViewModel>();
+			}
+			else
+			{
+				NavigationService.Navigate<PopupReportViewModel>();
+			}
 		}
 
-		//private async Task ShowMenuView()
-		//{
-		// if (_post.IsMyPost)
-		// {
-		//  await NavigationService.Navigate<PopupPostOptionViewModel>();
-		// }
-		// else
-		// {
-		//  await NavigationService.Navigate<PopupReportViewModel>();
-		// }
-		//}
+	    private void ShowMyRequestList()
+	    {
+		    if (_isMyPost)
+		    {
+			    NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+		    }
+	    }
 
 
 		public override void Prepare(Post post)
@@ -143,19 +147,20 @@ namespace GiveAndTake.Core.ViewModels
 			Address = post.ProvinceCity.ProvinceCityName;
 			PostDescription = post.Description;
 			PostTitle = post.Title;
-			PostImage = post.Images;
+			PostImages = post.Images;
 			RequestCount = post.RequestCount;
 			CommentCount = post.CommentCount;
-			Status = post.PostStatus;
+			Status = post.IsMyPost ? post.PostStatus : " ";
 			CategoryBackgroundColor = post.Category.BackgroundColor;
+			_isMyPost = post.IsMyPost;
 		}
 
 		#endregion
 
 		#region Methods
-		//REVIEW : Consider to user MvxCommand instead of MvxAsyncCommand except in needed cases
-		public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
-	    public IMvxAsyncCommand ShowPostCommentCommand { get; set; }
+		public IMvxCommand ShowMenuPopupCommand { get; set; }
+	    public IMvxCommand ShowPostCommentCommand { get; set; }
+		public IMvxCommand ShowMyRequestListCommand { get; set; }
 		#endregion
 	}
 }
