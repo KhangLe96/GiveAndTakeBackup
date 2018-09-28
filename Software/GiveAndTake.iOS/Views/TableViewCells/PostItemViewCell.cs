@@ -6,7 +6,6 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using System;
-using GiveAndTake.iOS.Converters;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -132,6 +131,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitPostPhoto()
 		{
 			_imagePost = UIHelper.CreateCustomImageView(DimensionHelper.ImagePostSize, DimensionHelper.ImagePostSize, ImageHelper.DefaultPost, DimensionHelper.PostPhotoCornerRadius);
+			_imagePost.SetPlaceHolder(ImageHelper.DefaultPost, ImageHelper.DefaultPost);
 
 			ContentView.AddSubview(_imagePost);
 
@@ -183,6 +183,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitAvatarImageView()
 		{
 			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize, ImageHelper.DefaultAvatar, DimensionHelper.ImageAvatarSize / 2);
+			_imgAvatar.SetPlaceHolder(ImageHelper.DefaultAvatar, ImageHelper.DefaultAvatar);
 
 			ContentView.AddSubview(_imgAvatar);
 

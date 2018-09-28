@@ -10,7 +10,6 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using System;
-using CoreGraphics;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation

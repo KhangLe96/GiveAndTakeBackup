@@ -102,12 +102,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private void InitDataModels()
 		{
-			_dataModel.Categories = ManagementService.GetCategories();
-			_dataModel.ProvinceCities = ManagementService.GetProvinceCities();
-			_dataModel.SortFilters = ManagementService.GetShortFilters();
-			_dataModel.SelectedCategory = _dataModel.Categories.First();
-			_dataModel.SelectedProvinceCity = _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
-			_dataModel.SelectedSortFilter = _dataModel.SortFilters.First();
+			_dataModel.Categories = _dataModel.Categories ?? ManagementService.GetCategories();
+			_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? ManagementService.GetProvinceCities();
+			_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
+			_dataModel.SelectedCategory = _dataModel.SelectedCategory ?? _dataModel.Categories.First();
+			_dataModel.SelectedProvinceCity = _dataModel.SelectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
+			_dataModel.SelectedSortFilter = _dataModel.SelectedSortFilter ?? _dataModel.SortFilters.First();
 		}
 
 		private void InitCommand()

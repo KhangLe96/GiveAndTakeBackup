@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-	<ffimageloading.cross.MvxCachedImageView
+	<giveandtake.droid.controls.CustomMvxCachedImageView
         android:id="@+id/imgPost"
         android:layout_width="@dimen/image_post_size"
         android:layout_height="@dimen/image_post_size"
@@ -15,7 +15,7 @@
 							ErrorPlaceholderImagePath 'res:default_post'; 
 							Transformations PostTransformations; 
 							DownsampleWidth DownsampleWidth;
-							ImagePath PostImage; 							
+							ImageUrl PostImage; 							
 							Click ShowPostDetailCommand" />
 
     <ImageView
@@ -49,7 +49,7 @@
 			local:MvxBind="Text CategoryName" />
 	</giveandtake.droid.controls.CustomCardView >
 
-	<ffimageloading.cross.MvxCachedImageView
+	<giveandtake.droid.controls.CustomMvxCachedImageView
 		android:id="@+id/imgAvatar"
         android:layout_width="@dimen/image_avatar_size"
         android:layout_height="@dimen/image_avatar_size"
@@ -59,7 +59,7 @@
         local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar'; 
 							ErrorPlaceholderImagePath 'res:default_avatar'; 
 							Transformations AvatarTransformations; 
-							ImagePath AvatarUrl; 
+							ImageUrl AvatarUrl; 
 							Click ShowGiverProfileCommand" />
 
 	 <TextView

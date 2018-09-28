@@ -1,7 +1,7 @@
 ﻿using GiveAndTake.Core;
-using System;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
+using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
@@ -136,19 +136,26 @@ namespace GiveAndTake.iOS.Helpers
 			return imageView;
 		}
 
-		public static CustomMvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string imagePath, nfloat cornerRadius = default(nfloat))
+		public static CustomMvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string defaultImagePath, nfloat cornerRadius = default(nfloat))
 		{
 			var imageView = new CustomMvxCachedImageView
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
-				DefaultImage = new UIImage(imagePath)
+				DefaultImage = new UIImage(defaultImagePath)
 			};
 			imageView.Layer.CornerRadius = cornerRadius;
 			imageView.ClipsToBounds = true;
-			
+
 			AddWidthHeight(height, width, imageView);
 
 			return imageView;
+		}
+
+		public static CustomMvxCachedImageView SetPlaceHolder(this CustomMvxCachedImageView customMvxCachedImageView, string loadingPlaceHolder, string errorPlaceHolder)
+		{
+			customMvxCachedImageView.LoadingPlaceholderImagePath = $"res:{loadingPlaceHolder}";
+			customMvxCachedImageView.ErrorPlaceholderImagePath = $"res:{errorPlaceHolder}";
+			return customMvxCachedImageView;
 		}
 
 		public static UISearchBar CreateSearchBar(nfloat height, nfloat width)
