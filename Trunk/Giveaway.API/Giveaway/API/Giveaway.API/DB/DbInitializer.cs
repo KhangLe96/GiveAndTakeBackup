@@ -210,7 +210,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(0).Id,
                 Description = "Mới chuyển nhà nên có 1 vài đồ không dùng tới nữa, mọi người xem cái nào dùng được thì liên hệ mình nhé",
                 Title = "Đồ nội thất cũ",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -220,7 +220,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(1).Id,
                 Description = "Điện thoại cũ không dùng tới, còn dùng gọi tốt, lên mạng thì hơi chậm. Mọi người quan tâm thì liên hệ mình",
                 Title = "Điện thoại cũ",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -230,7 +230,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(2).Id,
                 Description = "Còn nhiều quần áo cho bé còn dùng tốt, bé lớn rồi nên không mặc vừa nữa. Chị em nào có trẻ nhỏ thì liên hệ nhé.",
                 Title = "Quần áo cho bé",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -240,7 +240,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(3).Id,
                 Description = "Vỏ chai lọ, lon bia, nước ngọt sau tết còn rất nhiều. Ai đến thì mình cho luôn",
                 Title = "Vỏ chai lọ, lon",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -250,7 +250,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(4).Id,
                 Description = "Nhà có nhiều cún con, ai thích nuôi thì liên hệ sớm nhé",
                 Title = "Cho chó con",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -260,7 +260,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(5).Id,
                 Description = "Nhà có nhiều mèo con, ai thích nuôi thì liên hệ sớm nhé",
                 Title = "Cho mèo con",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -270,7 +270,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(6).Id,
                 Description = "Mới chuyển nhà nên có 1 vài đồ không dùng tới nữa, mọi người xem cái nào dùng được thì liên hệ mình nhé",
                 Title = "Đồ nội thất cũ",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -280,7 +280,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(7).Id,
                 Description = "Điện thoại cũ không dùng tới, còn dùng gọi tốt, lên mạng thì hơi chậm. Mọi người quan tâm thì liên hệ mình",
                 Title = "Điện thoại cũ",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -290,7 +290,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(8).Id,
                 Description = "Còn nhiều quần áo cho bé còn dùng tốt, bé lớn rồi nên không mặc vừa nữa. Chị em nào có trẻ nhỏ thì liên hệ nhé.",
                 Title = "Quần áo cho bé",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -300,7 +300,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(0).Id,
                 Description = "Vỏ chai lọ, lon bia, nước ngọt sau tết còn rất nhiều. Ai đến thì mình cho luôn",
                 Title = "Vỏ chai lọ, lon",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
@@ -310,7 +310,7 @@ namespace Giveaway.API.DB
                 CategoryId = categoryService.All().ToList().ElementAt(3).Id,
                 Description = "Nhà có nhiều cún con, ai thích nuôi thì liên hệ sớm nhé",
                 Title = "Cho chó con",
-                PostStatus = PostStatus.Open,
+                PostStatus = PostStatus.Giving,
                 ProvinceCityId = proviceCityService.All().Take(1).ToList().ElementAt(0).Id,
                 UserId = userService.All().OrderBy(x => x.CreatedTime).Take(1).ToList().ElementAt(0).Id
             }, out _);
