@@ -198,6 +198,9 @@
     <Reference Include="FFImageLoading.Transformations, Version=2.4.3.840, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.4.3.840\lib\Xamarin.iOS10\FFImageLoading.Transformations.dll</HintPath>
     </Reference>
+    <Reference Include="I18NPortable, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\I18NPortable.0.6.0\lib\netstandard1.1\I18NPortable.dll</HintPath>
+    </Reference>
     <Reference Include="MvvmCross, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmCross.6.1.2\lib\xamarinios10\MvvmCross.dll</HintPath>
     </Reference>
@@ -220,6 +223,8 @@
       <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\Xamarin.iOS10\Plugin.Connectivity.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="WebP.Touch, Version=1.0.6628.22311, Culture=neutral, processorArchitecture=MSIL">

@@ -32,5 +32,8 @@ namespace GiveAndTake.Core
 		public const string DefaultWarningMessage = "Chức năng này chưa xong, \n Xin vui lòng quay lại sau";
 		public static string DefaultAvatar = "default_avatar";
 		public static string DefaultPost = "default_post";
+		public static string DefaultUrl = "default_post";
+		public static string GivingStatus = "Đang cho";
+		public static string GivedStatus = "Đã cho";
 	}
 }

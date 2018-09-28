@@ -13,15 +13,17 @@
 		android:layout_marginLeft="@dimen/margin_object_post_detail"
 		android:layout_marginBottom="@dimen/default_margin"
 		android:layout_alignParentLeft="true"
-		card_view:cardCornerRadius="12dp"
+        card_view:cardCornerRadius="12dp"
 		local:MvxBind="CardBackgroundColorCustom CategoryBackgroundColor" >
-		<TextView
-			android:text="Hello Card"
-			android:layout_width="wrap_content"
+        <!--REVIEW : Define all dp in DimensionHelper-->
+         <!--//REVIEW : Remove redundant text in TextView-->
+        <TextView
+           android:text="Hello Card"
+            android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textColor="@color/white"
-			android:textSize="14dp"
-			android:fontFamily="@font/sanfranciscodisplay_light"
+            android:textSize="14dp"
+            android:fontFamily="@font/sanfranciscodisplay_light"
 			android:layout_centerInParent="true"
 			local:MvxBind="Text CategoryName" />
 	</giveandtake.droid.controls.CustomCardView >
@@ -34,7 +36,6 @@
 		android:layout_marginLeft="@dimen/default_margin"
 		android:src="@drawable/location_logo"/>
 	<TextView
-		android:id="@+id/tvLocation"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="5dp"
@@ -43,8 +44,8 @@
 		android:layout_toRightOf="@+id/locationLogo"
 		android:fontFamily="@font/sanfranciscodisplay_light"
 		local:MvxBind="Text Address" />
-	<LinearLayout
-		android:id="@+id/extensionField"
+    <LinearLayout
+        android:id="@+id/extensionField"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:clickable="true"
@@ -52,13 +53,13 @@
 		android:layout_alignParentRight="true"
 		local:MvxBind="Click ShowMenuPopupCommand">
 		<ImageButton
-			android:id="@+id/extensionButton"
 			android:layout_width="22dp"
 			android:layout_height="5dp"
 			android:layout_marginTop="23dp"
 			android:background="@null"
 			android:scaleType="fitXY"
-			android:src="@drawable/extention" />
+			android:src="@drawable/extention" 
+			local:MvxBind="Click ShowMenuPopupCommand"/>
 	</LinearLayout>
 	<TextView
 		android:id="@+id/tvStatus"
@@ -68,7 +69,7 @@
 		android:layout_marginTop="14dp"
 		android:textSize="13dp"
 		android:layout_toLeftOf="@+id/extensionField"
-		android:fontFamily="@font/sanfranciscodisplay_bold"
+		android:fontFamily="@font/sanfranciscodisplay_light"
 		local:MvxBind="Text Status" />
 	<ScrollView
 		android:layout_width="match_parent"
@@ -79,16 +80,11 @@
 		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
-			<RelativeLayout
-				android:id="@+id/imageViewField"
+			<android.support.v4.view.ViewPager
+				android:id="@+id/SliderViewPager"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content">
-				<android.support.v4.view.ViewPager
-					android:id="@+id/SliderViewPager"
-					android:layout_width="match_parent"
-					android:layout_height="230dp" 
-					android:background="@color/black"/>
-			</RelativeLayout>
+				android:layout_height="230dp" 
+				android:background="@color/black"/>
 			<RelativeLayout
 				android:layout_width="50dp"
 				android:layout_height="35dp"
@@ -103,7 +99,7 @@
 					android:alpha="0.5"
 					android:background="@drawable/display_number_image_bg" />
 				<TextView
-					android:id="@+id/CurrentImage"
+					android:id="@+id/CurrentImageTextView"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textSize="15dp"
@@ -134,7 +130,7 @@
 			<TextView
 				android:layout_alignParentRight="true"
 				android:id="@+id/tvRequestCount"
-				android:layout_below="@+id/imageViewField"
+				android:layout_below="@+id/SliderViewPager"
 				android:layout_marginRight="@dimen/margin_object_post_detail"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -145,16 +141,17 @@
 			<ImageButton
 				android:layout_width="28dp"
 				android:layout_height="10dp"
-				android:layout_below="@+id/imageViewField"
+				android:layout_below="@+id/SliderViewPager"
 				android:layout_toLeftOf="@+id/tvRequestCount"
 				android:layout_marginTop="17dp"
 				android:layout_marginRight="5dp"
 				android:id="@+id/requestImageButton"
 				android:background="@null"
 				android:scaleType="fitXY"
-				android:src="@drawable/request_off" />
+				android:src="@drawable/request_off" 
+				local:MvxBind="Click ShowMyRequestListCommand"/>
 			<TextView
-				android:layout_below="@+id/imageViewField"
+				android:layout_below="@+id/SliderViewPager"
 				android:layout_toLeftOf="@+id/requestImageButton"
 				android:id="@+id/tvCommentCount"
 				android:layout_marginRight="25dp"
@@ -163,9 +160,9 @@
 				android:layout_height="wrap_content"
 				android:fontFamily="@font/sanfranciscodisplay_light"
 				android:textSize="25dp"
-				local:MvxBind="Text CommentCount" />
+				local:MvxBind="Text CommentCount"/>
 			<ImageButton
-				android:layout_below="@+id/imageViewField"
+				android:layout_below="@+id/SliderViewPager"
 				android:layout_toLeftOf="@+id/tvCommentCount"
 				android:id="@+id/commentImageButton"
 				android:layout_width="18dp"
@@ -174,7 +171,8 @@
 				android:layout_marginRight="10dp"
 				android:background="@null"
 				android:scaleType="fitCenter"
-				android:src="@drawable/comment" />
+				android:src="@drawable/comment" 
+				local:MvxBind="Click ShowPostCommentCommand"/>
 			<RelativeLayout
 				android:layout_below="@+id/commentImageButton"
 				android:layout_marginTop="@dimen/margin_object_post_detail"

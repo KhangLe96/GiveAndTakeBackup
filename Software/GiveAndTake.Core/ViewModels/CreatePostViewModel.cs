@@ -92,8 +92,8 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _selectedImage, value);
 		}
 
-		public string PostDescriptionPlaceHolder { get; set; } = "Mô tả ...";
-		public string PostTitlePlaceHolder { get; set; } = "Tiêu đề";
+		public string PostDescriptionPlaceHolder { get; set; } = "Mô tả (Nhãn hiệu, kiểu dáng, màu sắc, ... )";
+		public string PostTitlePlaceHolder { get; set; } = "Tiêu đề (Thương hiệu, thể loại, ...)";
 		public string BtnSubmitTitle { get; set; } = "Đăng";
 		public string BtnCancelTitle { get; set; } = "Hủy";
 

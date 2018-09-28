@@ -136,13 +136,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 throw new BadRequestException(CommonConstant.Error.NotFound);
             }
 
-            if (request.UserStatus == PostStatus.Open.ToString())
+            if (request.UserStatus == PostStatus.Giving.ToString())
             {
-                post.PostStatus = PostStatus.Open;
+                post.PostStatus = PostStatus.Giving;
             }
-            else if (request.UserStatus == PostStatus.Close.ToString())
+            else if (request.UserStatus == PostStatus.Gived.ToString())
             {
-                post.PostStatus = PostStatus.Close;
+                post.PostStatus = PostStatus.Gived;
             }
             else
                 throw new BadRequestException(CommonConstant.Error.BadRequest);
@@ -258,7 +258,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 if (platform == WebConstant.Platform.CMS)
                     //display Posts that were not deleted to Admin in CMS
-                    posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted);
+                    posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.Category.EntityStatus == EntityStatus.Activated);
                 else
                     //display Posts that weren't deleted and their categories have activated status to User in App's newfeed
                     posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted & x.Category.EntityStatus == EntityStatus.Activated);
@@ -321,7 +321,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 posts = posts.Where(x => x.Title.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) || 
                                          x.Description.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) || 
                                          x.Category.CategoryName.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) ||
-                                         x.User.UserName.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) || 
+                                         x.User.FullName.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase) || 
                                          x.ProvinceCity.ProvinceCityName.Contains(request.Keyword, StringComparison.OrdinalIgnoreCase));
             }
 

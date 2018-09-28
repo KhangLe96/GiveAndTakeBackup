@@ -132,7 +132,7 @@ namespace Giveaway.API.Controllers
         }
 
         /// <summary>
-        /// Change status of a post: Open, Close
+        /// Change status of a post: Giving, Gived
         /// </summary>
         /// <param name="postId"></param>
         /// <param name="request"></param>

@@ -2,13 +2,10 @@
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using Android.Content.Res;
 using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.Support.V4.View;
 using Android.Views;
 using Android.Widget;
-using AudioUnit;
 using GiveAndTake.Core.Models;
 using Java.Net;
 
