@@ -188,12 +188,12 @@ namespace GiveAndTake.Core.ViewModels
 	    private void Init()
 	    {
 		    CategoryName = _post.Category.CategoryName;
-		    AvatarUrl = _post.User.AvatarUrl ?? AppConstants.DefaultAvatar;
+		    AvatarUrl = _post.User.AvatarUrl ?? AppConstants.DefaultUrl;
 		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
 		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    Description = _post.Description;
-		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage ?? AppConstants.DefaultPost;
+		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage ?? AppConstants.DefaultUrl;
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;
