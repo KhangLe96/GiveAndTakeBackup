@@ -9,22 +9,22 @@ using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class PostDetailViewModel : BaseViewModel<Post>
-	{
+	public class PostDetailViewModel : BaseViewModel<Post, bool>
+    {
 		#region Properties
 
 		private string _categoryName;
-		private string _address;
-		private string _status;
-		private List<Image> _postImages;
-		private int _requestCount;
-		private int _commentCount;
-		private string _categoryBackgroundColor;
-		private string _avatarUrl;
-		private string _userName;
-		private string _createdTime;
-		private string _postTitle;
-		private string _postDescription;
+	    private string _address;
+	    private string _status;
+	    private List<Image> _postImages;
+	    private int _requestCount;
+	    private int _commentCount;
+	    private string _categoryBackgroundColor;
+	    private string _avatarUrl;
+	    private string _userName;
+	    private string _createdTime;
+	    private string _postTitle;
+	    private string _postDescription;
 		private bool _isMyPost;
 
 		public string CategoryName
@@ -160,6 +160,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		#region Methods
 
+	    public IMvxAsyncCommand CloseCommand { get; set; }
 		public IMvxCommand ShowMenuPopupCommand { get; set; }
 		public IMvxCommand ShowPostCommentCommand { get; set; }
 		public IMvxCommand ShowMyRequestListCommand { get; set; }

@@ -67,6 +67,13 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat RoundCorner { get; set; }
 		public static nfloat TextPadding { get; set; }
 		public static nfloat BigTextSize { get; set; }
+		public static nfloat MarginObjectPostDetail { get; set; }
+		public static nfloat LocationLogoHeight { get; set; }
+		public static nfloat LocationLogoWidth { get; set; }
+		public static nfloat ExtensionButtonMarginTop { get; set; }
+		public static nfloat ExtensionButtonHeight { get; set; }
+		public static nfloat ExtensionButtonWidth { get; set; }
+		public static nfloat PostDetailStatusTextSize { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -133,6 +140,13 @@ namespace GiveAndTake.iOS.Helpers
 			DeletePhotoButtonWidth = 25 * Rate;
 			RoundCorner = 20 * Rate;
 			TextPadding = 15 * Rate;
+			MarginObjectPostDetail = 15 * Rate;
+			LocationLogoWidth = 12 * Rate;
+			LocationLogoHeight = 16 * Rate;
+			ExtensionButtonMarginTop = 23 * Rate;
+			ExtensionButtonWidth = 22 * Rate;
+			ExtensionButtonHeight = 5 * Rate;
+			PostDetailStatusTextSize = 13 * Rate;
 		}
 	}
 }

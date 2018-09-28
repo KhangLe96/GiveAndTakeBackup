@@ -40,5 +40,13 @@ namespace GiveAndTake.Core.ViewModels.Base
 	public abstract class BaseViewModel<TParameter, TResult> : BaseViewModelResult<TResult>, IMvxViewModel<TParameter, TResult>
 	{
 		public abstract void Prepare(TParameter parameter);
+
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			if (viewFinishing && CloseCompletionSource != null && !CloseCompletionSource.Task.IsCompleted && !CloseCompletionSource.Task.IsFaulted)
+				CloseCompletionSource?.TrySetCanceled();
+
+			base.ViewDestroy(viewFinishing);
+		}
 	}
 }

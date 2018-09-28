@@ -2,13 +2,10 @@
 {
 	public enum FontType
 	{
-		Thin,
 		Light,
 		Regular,
 		Medium,
 		Bold,
-		Italic,
-		LightItalic
 	}
 	public enum RequestMethod
 	{
