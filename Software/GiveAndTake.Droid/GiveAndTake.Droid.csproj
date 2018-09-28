@@ -71,7 +71,6 @@
     <Compile Include="Controls\CustomTextView.cs" />
     <Compile Include="Controls\ImageSliderAdapter.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
-    <Compile Include="Converters\PostStatusConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />

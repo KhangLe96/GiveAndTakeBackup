@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Support.V4.View;
 using Android.Views;
 using Android.Widget;
+using FFImageLoading;
+using GiveAndTake.Core;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
@@ -28,12 +32,24 @@ namespace GiveAndTake.Droid.Views
 			}
 		}
 
+		private string _status;
+		public string Status
+		{
+			get => _status;
+			set
+			{
+				_status = value;
+				InitChangeStatusColor();
+			}
+		}
+
 		private ViewPager _imageViewer;
 		private int _imageIndex;
 		private ImageButton _navigateLeftButton;
 		private ImageButton _navigateRightButton;
 		private TextView _displayCurrentImageTextView;
 		private View _view;
+		private TextView _tvStatus;
 
 		protected override int LayoutId => Resource.Layout.PostDetailView;
 
@@ -48,6 +64,7 @@ namespace GiveAndTake.Droid.Views
 			_navigateLeftButton = _view.FindViewById<ImageButton>(Resource.Id.navigateLeftButton);
 			_navigateRightButton = _view.FindViewById<ImageButton>(Resource.Id.navigateRightButton);
 			_displayCurrentImageTextView = _view.FindViewById<TextView>(Resource.Id.CurrentImageTextView);
+			_tvStatus = _view.FindViewById<TextView>(Resource.Id.tvStatus);
 
 			var viewPager = _view.FindViewById<ViewPager>(Resource.Id.SliderViewPager);
 			viewPager.SetClipToPadding(false);
@@ -113,6 +130,10 @@ namespace GiveAndTake.Droid.Views
 				.For(v => v.PostImages)
 				.To(vm => vm.PostImages);
 
+			bindingSet.Bind(this)
+				.For(v => v.Status)
+				.To(vm => vm.Status);
+
 			bindingSet.Apply();
 		}
 
@@ -138,6 +159,11 @@ namespace GiveAndTake.Droid.Views
 		{
 			_imageViewer.Adapter = new ImageSliderAdapter(this.Context, PostImages);
 			InitNavigationButton();
+		}
+
+		private void InitChangeStatusColor()
+		{
+			_tvStatus.SetTextColor(_status == AppConstants.GivingStatus ? Color.ParseColor("#2CB273"): Color.DarkRed);
 		}
 	}
 }

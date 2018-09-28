@@ -159,9 +159,11 @@ namespace GiveAndTake.Core.ViewModels
 		#endregion
 
 		#region Methods
+
 		public IMvxCommand ShowMenuPopupCommand { get; set; }
 		public IMvxCommand ShowPostCommentCommand { get; set; }
 		public IMvxCommand ShowMyRequestListCommand { get; set; }
+
 		#endregion
 	}
 }

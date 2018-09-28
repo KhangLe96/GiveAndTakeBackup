@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using GiveAndTake.Core.Services;
+﻿using GiveAndTake.Core.Services;
 using MvvmCross;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;

@@ -44,7 +44,6 @@
 		android:layout_toRightOf="@+id/locationLogo"
 		android:fontFamily="@font/sanfranciscodisplay_light"
 		local:MvxBind="Text Address" />
-        <!--//REVIEW : No need to add android ID for controls will not be used-->
     <LinearLayout
         android:id="@+id/extensionField"
 		android:layout_width="wrap_content"
@@ -63,13 +62,14 @@
 			local:MvxBind="Click ShowMenuPopupCommand"/>
 	</LinearLayout>
 	<TextView
+		android:id="@+id/tvStatus"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_marginRight="@dimen/default_margin"
 		android:layout_marginTop="14dp"
 		android:textSize="13dp"
 		android:layout_toLeftOf="@+id/extensionField"
-		android:fontFamily="@font/sanfranciscodisplay_bold"
+		android:fontFamily="@font/sanfranciscodisplay_light"
 		local:MvxBind="Text Status" />
 	<ScrollView
 		android:layout_width="match_parent"
