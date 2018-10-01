@@ -124,7 +124,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
             _dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
 			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
-			PostViewModels.Last().IsLastViewInList = true;
+			if (PostViewModels.Any())
+			{
+				PostViewModels.Last().IsLastViewInList = true;
+			}
 			IsSearchResultNull = PostViewModels.Any();
 		}
 
