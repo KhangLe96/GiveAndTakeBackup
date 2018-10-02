@@ -101,12 +101,15 @@ namespace GiveAndTake.Core.ViewModels
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
+		private readonly IDataModel _dataModel;
+
 		#endregion
 
 		#region Constructor
 
-		public PostDetailViewModel()
+		public PostDetailViewModel(IDataModel dataModel)
 		{
+			_dataModel = dataModel;
 			InitCommand();
 		}
 
@@ -116,6 +119,14 @@ namespace GiveAndTake.Core.ViewModels
 			ShowPostCommentCommand = new MvxCommand(async () =>
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
 			ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
+			ShowFullImageCommand = new MvxCommand<int>(ShowFullImage);
+		}
+
+		private void ShowFullImage(int position)
+		{
+			_dataModel.PostImages = PostImages;
+			_dataModel.PostImageIndex = position;
+			NavigationService.Navigate<PostImageViewModel>();
 		}
 
 		private void ShowMenuView()
@@ -163,6 +174,7 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxCommand ShowMenuPopupCommand { get; set; }
 		public IMvxCommand ShowPostCommentCommand { get; set; }
 		public IMvxCommand ShowMyRequestListCommand { get; set; }
+		public IMvxCommand<int> ShowFullImageCommand { get; set; }
 
 		#endregion
 	}

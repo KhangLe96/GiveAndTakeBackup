@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -13,6 +14,8 @@ namespace GiveAndTake.Droid.Controls
 {
 	public class ImageSliderAdapter : PagerAdapter
 	{
+		public Action HandleItemSelected { get; set; }
+
 		Context _context;
 		List<Image> _imageData;
 
@@ -44,7 +47,7 @@ namespace GiveAndTake.Droid.Controls
 			{
 				child.Click += (o, e) =>
 				{
-					//handle touch to view the image
+					HandleItemSelected?.Invoke();
 				};
 				if (_imageData.Count == 0)
 				{
