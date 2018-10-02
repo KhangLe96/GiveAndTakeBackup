@@ -247,7 +247,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 					.Include(x => x.User)
 					.Include(x => x.Requests)
 					.Include(x => x.Comments);
-                posts = SortPosts(request, posts);
             }
             catch
             {
@@ -256,12 +255,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
             if (string.IsNullOrEmpty(userId))
             {
-                if (platform == WebConstant.Platform.CMS)
-                    //display Posts that were not deleted to Admin in CMS
                     posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.Category.EntityStatus == EntityStatus.Activated);
-                else
-                    //display Posts that weren't deleted and their categories have activated status to User in App's newfeed
-                    posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted & x.Category.EntityStatus == EntityStatus.Activated);
             }
             else
             {
@@ -277,8 +271,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
 
             //filter post by properties
-			// /REVIEW: Should filter all conditions before sorting. It's good to save time for sorting.
             posts = FilterPost(request, posts);
+            posts = SortPosts(request, posts);
+
             total = posts.Count();
 
             return posts
