@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Android.Graphics;
+﻿using Android.Graphics;
 using Android.Runtime;
 using Android.Support.V4.View;
 using Android.Views;
 using Android.Widget;
-using FFImageLoading;
 using GiveAndTake.Core;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
@@ -13,7 +10,9 @@ using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Droid.Controls;
 using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using System.Collections.Generic;
 
 namespace GiveAndTake.Droid.Views
 {
@@ -21,6 +20,8 @@ namespace GiveAndTake.Droid.Views
 	[Register(nameof(PostDetailView))]
 	public class PostDetailView : BaseFragment
 	{
+		public IMvxCommand<int> ShowFullImageCommand { get; set; }
+
 		private List<Image> _postImages;
 		public List<Image> PostImages
 		{
@@ -60,7 +61,6 @@ namespace GiveAndTake.Droid.Views
 			InitNavigateLeft();
 			InitNavigateRight();
 			
-
 			_navigateLeftButton = _view.FindViewById<ImageButton>(Resource.Id.navigateLeftButton);
 			_navigateRightButton = _view.FindViewById<ImageButton>(Resource.Id.navigateRightButton);
 			_displayCurrentImageTextView = _view.FindViewById<TextView>(Resource.Id.CurrentImageTextView);
@@ -134,6 +134,10 @@ namespace GiveAndTake.Droid.Views
 				.For(v => v.Status)
 				.To(vm => vm.Status);
 
+			bindingSet.Bind(this)
+				.For(v => v.ShowFullImageCommand)
+				.To(vm => vm.ShowFullImageCommand);
+
 			bindingSet.Apply();
 		}
 
@@ -157,7 +161,11 @@ namespace GiveAndTake.Droid.Views
 
 		private void UpdateImageView()
 		{
-			_imageViewer.Adapter = new ImageSliderAdapter(this.Context, PostImages);
+			_imageViewer.Adapter = new ImageSliderAdapter(Context, PostImages)
+			{
+				HandleItemSelected = () => ShowFullImageCommand?.Execute(_imageIndex)
+
+			};
 			InitNavigationButton();
 		}
 
