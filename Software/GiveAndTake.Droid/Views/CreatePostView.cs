@@ -2,12 +2,15 @@
 using System.IO;
 using Android.Content;
 using Android.Graphics;
+using Android.InputMethodServices;
 using Android.Runtime;
 using Android.Text;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Droid.Helpers;
 using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
@@ -32,11 +35,26 @@ namespace GiveAndTake.Droid.Views
 			InitChoosePicture();
 			InitSubmit();
 
-			var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
+		    var title = _view.FindViewById<EditText>(Resource.Id.Title);
+		    title.FocusChange += OnEditTextFocusChange;
+
+		    var postDescription = _view.FindViewById<EditText>(Resource.Id.PostDescription);
+		    postDescription.FocusChange += OnEditTextFocusChange;
+
+            var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
 			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
 		}
 
-		private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
+	    private void OnEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+	    {
+	        var editText = sender as EditText;
+	        if (!editText.HasFocus)
+	        {
+	            KeyboardHelper.HideKeyboard(editText);
+	        }
+        }
+
+        private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
 		{
 			var textView = sender as TextView;
 			if (!string.IsNullOrEmpty(textView?.Text))
