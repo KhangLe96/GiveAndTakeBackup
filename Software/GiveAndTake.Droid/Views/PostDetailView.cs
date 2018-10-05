@@ -164,7 +164,6 @@ namespace GiveAndTake.Droid.Views
 			_imageViewer.Adapter = new ImageSliderAdapter(Context, PostImages)
 			{
 				HandleItemSelected = () => ShowFullImageCommand?.Execute(_imageIndex)
-
 			};
 			InitNavigationButton();
 		}

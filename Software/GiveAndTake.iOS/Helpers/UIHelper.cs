@@ -1,8 +1,11 @@
 ﻿using GiveAndTake.Core;
 using System;
+using System.Collections.Generic;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
+using GiveAndTake.iOS.Views;
 using UIKit;
+using Xamarin.iOS.iCarouselBinding;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -346,6 +349,28 @@ namespace GiveAndTake.iOS.Helpers
 			line.Layer.CornerRadius = cornerRadius;
 			line.Layer.MasksToBounds = true;
 			return line;
+		}
+
+		public static iCarousel CreateSlideView(UIView view) => new iCarousel
+		{
+			Bounds = view.Bounds,
+			ContentMode = UIViewContentMode.Center,
+			Frame = view.Frame,
+			Type = iCarouselType.Linear,
+			CenterItemWhenSelected = true
+		};
+
+		public static iCarousel CreateSlideView(nfloat height, nfloat width, UIColor black)
+		{
+			var slideView = new iCarousel
+			{
+				ContentMode = UIViewContentMode.Center,
+				Type = iCarouselType.Linear,
+				CenterItemWhenSelected = true
+			};
+			AddWidthHeight(height, width, slideView);
+
+			return slideView;
 		}
 	}
 }

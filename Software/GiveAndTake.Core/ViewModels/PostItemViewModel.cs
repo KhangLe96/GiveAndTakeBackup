@@ -193,7 +193,7 @@ namespace GiveAndTake.Core.ViewModels
 		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    Description = _post.Description;
-		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage ?? AppConstants.DefaultUrl;
+		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia") ?? AppConstants.DefaultUrl;
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;

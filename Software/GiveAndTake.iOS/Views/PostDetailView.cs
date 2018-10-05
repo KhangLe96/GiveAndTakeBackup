@@ -9,9 +9,7 @@ using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using CoreGraphics;
+using GiveAndTake.iOS.Controls;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -21,55 +19,40 @@ namespace GiveAndTake.iOS.Views
 		ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
 	public class PostDetailView : BaseView
 	{
+		public IMvxAsyncCommand CloseCommand { get; set; }
+
+		public IMvxCommand<int> ShowFullImageCommand { get; set; }
+
+		public List<Image> PostImages { get; set; }
+		
+		public int PostImageIndex
+		{
+			get => _postImageIndex;
+			set
+			{
+				_postImageIndex = value;
+				_carouselView?.ScrollToItemAtIndex(value, false);
+			}
+		}
+
 		private HeaderBar _headerBar;
 		private UIButton _btnCategory;
 		private UIImageView _imgLocation;
 		private UILabel _lbPostAddress;
 		private UIButton _btnExtension;
 		private UILabel _lbPostStatus;
+		private iCarousel _carouselView;
 		private UIView _imageView;
-
-
-		private List<Image> _postImages;
-		public List<Image> PostImages
-		{
-			get => _postImages;
-			set
-			{
-				_postImages = value;
-				UpdateImageView();
-			}
-		}
-
-		public IMvxAsyncCommand CloseCommand { get; set; }
+		private int _postImageIndex;
 
 		protected override void InitView()
 		{
-			ResolutionHelper.InitStaticVariable();
-			DimensionHelper.InitStaticVariable();
-			ImageHelper.InitStaticVariable();
-
-			var bindingSet = this.CreateBindingSet<PostDetailView, PostDetailViewModel>();
-
-			bindingSet.Bind(this)
-				.For(v => v.CloseCommand)
-				.To(vm => vm.CloseCommand);
-
-			bindingSet.Apply();
-
 			InitHeaderBar();
 			InitCategoryButton();
 			InitLocationView();
 			InitAddressLabel();
 			InitExtensionButton();
 			InitStatusLabel();
-
-			CreateBinding();
-		}
-
-		public override void ViewDidLoad()
-		{
-			base.ViewDidLoad();
 			InitImageSlider();
 		}
 
@@ -80,6 +63,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_btnCategory)
 				.For("Title")
 				.To(vm => vm.CategoryName);
+
 			bindingSet.Bind(_btnCategory)
 				.For(v => v.BackgroundColor)
 				.To(vm => vm.CategoryBackgroundColor)
@@ -91,9 +75,21 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_lbPostStatus)
 				.To(vm => vm.Status);
 
+			bindingSet.Bind(this)
+				.For(v => v.CloseCommand)
+				.To(vm => vm.CloseCommand);
+
+				bindingSet.Bind(this)
+				.For(v => v.PostImages)
+				.To(vm => vm.PostImages);
+
+			bindingSet.Bind(this)
+				.For(v => v.ShowFullImageCommand)
+				.To(vm => vm.ShowFullImageCommand);
+
 			bindingSet.Apply();
 		}
-
+		
 		private void InitHeaderBar()
 		{
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
@@ -191,28 +187,6 @@ namespace GiveAndTake.iOS.Views
 			});
 		}
 
-		//private void InitImageSlider()
-		//{
-		//	_imageSliderControl = UIHelper.CreatePageControl(DimensionHelper.ImageSliderHeight, ResolutionHelper.Width,
-		//		UIColor.Black);
-
-		//	_imageSliderControl.HidesForSinglePage = true;
-		//	_imageSliderControl.ValueChanged += HandlePageControlHeadValueChanged;
-		//	_imageSliderControl.Pages = PostImages.Count;
-
-		//	View.AddSubview(_imageSliderControl);
-
-		//	View.AddConstraints(new[]
-		//	{
-		//		NSLayoutConstraint.Create(_imageSliderControl, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnCategory,
-		//			NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
-		//		NSLayoutConstraint.Create(_imageSliderControl, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-		//			NSLayoutAttribute.Left, 1, 0)
-		//	});
-		//}
-		private List<int> _items;
-
-
 		private void InitImageSlider()
 		{
 			_imageView = UIHelper.CreateView(DimensionHelper.ImageSliderHeight, ResolutionHelper.Width,
@@ -227,101 +201,56 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_imageView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0)
 			});
+		}
 
-			_items = new List<int>();
+		public override void ViewDidAppear(bool animated)
+		{
+			base.ViewDidAppear(animated);
 
-			_items = Enumerable.Range(1, 100).ToList();
-
-			CGRect cgRect = new CGRect(0,DimensionHelper.HeaderBarHeight + DimensionHelper.ButtonCategoryHeight + DimensionHelper.MarginObjectPostDetail, ResolutionHelper.Width, DimensionHelper.ImageSliderHeight);
-			var carouselView = new iCarousel
+			_carouselView = UIHelper.CreateSlideView(_imageView);
+			_carouselView.DataSource = new SlideViewDataSource(PostImages);
+			_carouselView.Delegate = new SlideViewDelegate
 			{
-				Bounds = cgRect,
-				ContentMode = UIViewContentMode.Center,
-				Type = iCarouselType.Linear,
-				Frame = cgRect,
-				CenterItemWhenSelected = true,
-				DataSource = new SimpleDataSource(_items),
-				Delegate = new SimpleDelegate(this)
+				OnItemClicked = () => ShowFullImageCommand?.Execute((int)_carouselView.CurrentItemIndex)
 			};
 
-			View.AddSubview(carouselView);
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(carouselView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1,0),
-				NSLayoutConstraint.Create(carouselView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Left, 1, 0),
-				NSLayoutConstraint.Create(carouselView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Right, 1, 0),
-				NSLayoutConstraint.Create(carouselView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _imageView,
-					NSLayoutAttribute.Bottom, 1, 0)
-			});
+			View.AddSubview(_carouselView);
+			
+			//TODO : add 2 navigation buttons here
 
-			ViewDidLayoutSubviews();
+		}
+	}
+
+	public class SlideViewDataSource : iCarouselDataSource
+	{
+		private readonly List<Image> _images;
+
+		public SlideViewDataSource(List<Image> images)
+		{
+			_images = images;
 		}
 
-		public class SimpleDataSource : iCarouselDataSource
+		public override nint NumberOfItemsInCarousel(iCarousel carousel) => _images.Count;
+
+		public override UIView ViewForItemAtIndex(iCarousel carousel, nint index, UIView view)
 		{
-			private readonly List<int> _data;
-
-			public SimpleDataSource(List<int> data)
+			var imageView = view as CustomMvxCachedImageView ?? new CustomMvxCachedImageView(carousel.Bounds)
 			{
-				_data = data;
-			}
+				ContentMode = UIViewContentMode.ScaleAspectFit
+			};
 
-			public override nint NumberOfItemsInCarousel(iCarousel carousel) => _data.Count;
+			imageView.ImageUrl = _images[(int) index]?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia") ?? AppConstants.DefaultUrl;
 
-			public override UIView ViewForItemAtIndex(iCarousel carousel, nint index, UIView view)
-			{
-				if (view == null)
-				{
-					var imgTempView = new UIImageView(new RectangleF(100, 200, 200, 200))
-					{
-						BackgroundColor = UIColor.Orange,
-						ContentMode = UIViewContentMode.Center
-					};
-				}
-				var imgView = new UIImageView(new RectangleF(0, 200, 200, 200))
-				{
-					BackgroundColor = UIColor.Orange,
-					ContentMode = UIViewContentMode.Center
-				};
-				if (index %2== 0)
-				{
-					imgView.Image = UIImage.FromBundle(ImageHelper.DefaultAvatar);
-					view = imgView;
-				}
-				else
-				{
-					imgView.Image = UIImage.FromBundle(ImageHelper.DefaultPost);
-					view = imgView;
-				}
-
-				return view;
-			}
+			return imageView;
 		}
+	}
 
-		public class SimpleDelegate : iCarouselDelegate
+	public class SlideViewDelegate : iCarouselDelegate
+	{
+		public Action OnItemClicked { get; set; }
+		public override void DidSelectItemAtIndex(iCarousel carousel, nint index)
 		{
-			private readonly PostDetailView _viewController;
-
-			public SimpleDelegate(PostDetailView vc)
-			{
-				_viewController = vc;
-			}
-
-			public override void DidSelectItemAtIndex(iCarousel carousel, nint index)
-			{
-				var alert = UIAlertController.Create("Clicked index:", index.ToString(), UIAlertControllerStyle.Alert);
-				alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
-
-				_viewController.PresentViewController(alert, true, null);
-			}
-		}
-
-		private void UpdateImageView()
-		{
-			InitImageSlider();
+			OnItemClicked?.Invoke();
 		}
 	}
 }
