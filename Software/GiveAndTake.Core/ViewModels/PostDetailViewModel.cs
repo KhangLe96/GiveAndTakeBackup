@@ -115,6 +115,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void InitCommand()
 		{
+			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
 			ShowMenuPopupCommand = new MvxCommand(ShowMenuView);
 			ShowPostCommentCommand = new MvxCommand(async () =>
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));

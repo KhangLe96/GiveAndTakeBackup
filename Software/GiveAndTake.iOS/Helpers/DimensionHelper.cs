@@ -74,6 +74,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat ExtensionButtonHeight { get; set; }
 		public static nfloat ExtensionButtonWidth { get; set; }
 		public static nfloat PostDetailStatusTextSize { get; set; }
+		public static nfloat ImageSliderHeight { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -147,6 +148,7 @@ namespace GiveAndTake.iOS.Helpers
 			ExtensionButtonWidth = 22 * Rate;
 			ExtensionButtonHeight = 5 * Rate;
 			PostDetailStatusTextSize = 13 * Rate;
+			ImageSliderHeight = 230 * Rate;
 		}
 	}
 }

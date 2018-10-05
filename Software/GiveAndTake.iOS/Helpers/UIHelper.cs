@@ -60,6 +60,16 @@ namespace GiveAndTake.iOS.Helpers
 			return view;
 		}
 
+		public static UIPageControl CreatePageControl(nfloat height, nfloat width, UIColor backgroundColor)
+		{
+			var pageControl = new UIPageControl { TranslatesAutoresizingMaskIntoConstraints = false };
+
+			pageControl.BackgroundColor = backgroundColor;
+			AddWidthHeight(height, width, pageControl);
+
+			return pageControl;
+		}
+
 		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor)
 		{
 			var view = CreateView(height, width);
@@ -247,6 +257,19 @@ namespace GiveAndTake.iOS.Helpers
 			AddWidthHeight(height, width, tableView);
 
 			return tableView;
+		}
+
+		public static UIScrollView CreateScrollView(nfloat height, nfloat width, UIColor backgroudColor)
+		{
+			var scrollView = new UIScrollView()
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+			};
+
+			AddWidthHeight(height, width, scrollView);
+			scrollView.BackgroundColor = backgroudColor;
+
+			return scrollView;
 		}
 
 		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, string title, nfloat cornerRadius, FontType fontType = FontType.Regular)
