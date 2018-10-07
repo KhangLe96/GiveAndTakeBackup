@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
-using Newtonsoft.Json;
+using System.Linq;
 
 namespace GiveAndTake.Core.Helpers
 {
-    public static class JsonHelper
+	public static class JsonHelper
     {
         public static string Serialize(object obj)          
         {
             return JsonConvert.SerializeObject(obj);        
         }
 
-        public static T Deserialize<T>(string value)        
+        public static T Deserialize<T>(string value)
         {
             var result = default(T);
 
@@ -25,10 +26,13 @@ namespace GiveAndTake.Core.Helpers
             catch (Exception e)
             {
                 Debug.WriteLine("Deserialize fail with data: " + value);
-                Debug.WriteLine("Exeption: " + e.Message);
+                Debug.WriteLine("Exception: " + e.Message);
             }
 
             return result;
         }
+
+	    public static bool ArePropertiesNotNull<T>(this T obj) =>
+		    typeof(T).GetProperties().All(propertyInfo => propertyInfo.GetValue(obj) != null);
     }
 }

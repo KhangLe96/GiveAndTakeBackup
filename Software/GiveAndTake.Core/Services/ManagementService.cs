@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using GiveAndTake.Core.Helpers;
+﻿using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.Services
 {
-    public class ManagementService : IManagementService
+	public class ManagementService : IManagementService
     {
 	    private readonly RestClient _apiHelper;
 
@@ -23,14 +23,19 @@ namespace GiveAndTake.Core.Services
             return Task.Run(async () =>
             {
                 var response = await _apiHelper.Get(AppConstants.GetCategories);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    return JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
-                }
+				if (response?.NetworkStatus == NetworkStatus.Success)
+	            {
+		            var deserializeResult = JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
+
+		            if (deserializeResult.ArePropertiesNotNull())
+		            {
+			            return deserializeResult;
+		            }
+	            }
 
 	            //Handle popup error cannot get data
 	            Debug.WriteLine("Error cannot get data");
-				throw new Exception(response?.ErrorMessage);
+	            throw new Exception(response?.ErrorMessage);
 
 			}).Result.Categories;
         }
@@ -40,9 +45,14 @@ namespace GiveAndTake.Core.Services
 			return Task.Run(async () =>
 			{
 				var response = await _apiHelper.Get(AppConstants.GetProvinceCities);
-				if (response != null && response.NetworkStatus == NetworkStatus.Success)
+				if (response?.NetworkStatus == NetworkStatus.Success)
 				{
-					return JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
+					var deserializeResult = JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
+
+					if (deserializeResult.ArePropertiesNotNull())
+					{
+						return deserializeResult;
+					}
 				}
 
 				//Handle popup error cannot get data
@@ -60,10 +70,14 @@ namespace GiveAndTake.Core.Services
 		            ? AppConstants.GetPostList
 		            : string.Join("?", AppConstants.GetPostList, filterParams);
 				var response = await _apiHelper.Get(url);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
+                if (response?.NetworkStatus == NetworkStatus.Success)
                 {
-                    var res = JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
-                    return res;
+                    var deserializeResult = JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+
+	                if (deserializeResult.ArePropertiesNotNull())
+	                {
+		                return deserializeResult;
+	                }
                 }
 
 	            //Handle popup error cannot get data
@@ -71,7 +85,9 @@ namespace GiveAndTake.Core.Services
 				throw new Exception(response?.ErrorMessage);
 
 			}).Result;
-        }
+
+	       
+		}
 
         public void GetPostDetail(string postId)
         {
@@ -139,12 +155,17 @@ namespace GiveAndTake.Core.Services
         {
             return Task.Run(async () =>
             {
-                var userInformationInString = JsonHelper.Serialize(baseUser);
-                var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
-                var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
+				var userInformationInString = JsonHelper.Serialize(baseUser);
+				var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
+
+				var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
+                if (response?.NetworkStatus == NetworkStatus.Success)
                 {
-                    return JsonHelper.Deserialize<LoginResponse>(response.RawContent);
+					var loginResponse = JsonHelper.Deserialize<LoginResponse>(response.RawContent);
+	                if (loginResponse.ArePropertiesNotNull())
+	                {
+		                return loginResponse;
+	                }
                 }
 
 	            //Handle popup error cannot get data
@@ -227,6 +248,5 @@ namespace GiveAndTake.Core.Services
 		//public void EditComment(string commentId);
 
 		//public void DeleteComment(string commentId;
-
-	}
+    }
 }
