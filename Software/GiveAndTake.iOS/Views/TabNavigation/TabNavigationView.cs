@@ -62,6 +62,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			{
 				_imgAvatar.Bounds = new CGRect(0, 0, DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize);
 			}
+
+			//Review ThanhVo magic number
 			TabBar.Items[3].Image = ConvertViewToImage(_imgAvatar);
 
 			_imgAvatar.Layer.BorderColor = ColorHelper.LightBlue.CGColor;
@@ -81,6 +83,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			NavigationController?.SetNavigationBarHidden(true, animated);
 		}
 
+		//Review ThanhVo This should be in UIHelper
 		private static UIImage ConvertViewToImage(UIView view)
 		{
 			UIGraphics.BeginImageContext(view.Bounds.Size);

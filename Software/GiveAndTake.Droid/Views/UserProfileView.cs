@@ -5,7 +5,8 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views
 {
-    [MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
+	//Review ThanhVo Why is type of is MasterViewModel?
+	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
     [Register(nameof(UserProfileView))]
     public class UserProfileView : BaseFragment
     {

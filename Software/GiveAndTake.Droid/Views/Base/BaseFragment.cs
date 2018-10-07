@@ -11,10 +11,12 @@ namespace GiveAndTake.Droid.Views.Base
 {
     public abstract class BaseFragment : MvxFragment
 	{
+		//REVIEW THANH VO: Remove if unused
 		public event EventHandler BackPressed;
 
 		protected abstract int LayoutId { get; }
 
+		//REVIEW THANH VO: Remove if unused
 		private LayoutInflater _inflater;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
