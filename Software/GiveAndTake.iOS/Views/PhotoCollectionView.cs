@@ -61,6 +61,7 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Bottom, 1, 0),
 			});
 
+			//Review Thanh Vo Does any screen use Navigation Bar ? If not, we can move it to base view
 			NavigationController?.SetNavigationBarHidden(true, true);
 		}
 

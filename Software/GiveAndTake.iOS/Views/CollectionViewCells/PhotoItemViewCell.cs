@@ -23,12 +23,14 @@ namespace GiveAndTake.iOS.Views.CollectionViewCells
 			set
 			{
 				_imageBase64Data = value;
+				//Review Thanh Vo use var https://intellitect.com/when-to-use-and-not-use-var-in-c/
 				NSData decodedData = new NSData(_imageBase64Data, NSDataBase64DecodingOptions.None);
 				UIImage decodedImage = new UIImage(decodedData);
 				_photoImageView.Image = decodedImage;
 			}
 		}
 
+		//Review Thanh Vo Delete if it is unused
 		public IMvxCommand DeleteAPhotoCommand { get; set; }
 
 		public PhotoItemViewCell(IntPtr handle) : base(handle)

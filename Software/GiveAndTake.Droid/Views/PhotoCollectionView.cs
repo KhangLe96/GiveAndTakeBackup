@@ -11,6 +11,7 @@ namespace GiveAndTake.Droid.Views
 	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
 	public class PhotoCollectionView : BaseFragment
 	{
+		//Review Thanh Vo Remove if it is unused
 		public IMvxAsyncCommand BackPressedCommand { get; set; }
 
 		protected override int LayoutId => Resource.Layout.PhotoCollectionView;
