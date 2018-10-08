@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
-using Android.InputMethodServices;
 using Android.Runtime;
 using Android.Text;
 using Android.Views;
-using Android.Views.InputMethods;
 using Android.Widget;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
@@ -15,10 +11,12 @@ using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GiveAndTake.Droid.Views
 {
-	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
+    [MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
 	[Register(nameof(CreatePostView))]
 	public class CreatePostView : BaseFragment
 	{
