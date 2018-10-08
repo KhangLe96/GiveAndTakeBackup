@@ -26,6 +26,9 @@ namespace GiveAndTake.Core.ViewModels
 	    private string _postTitle;
 	    private string _postDescription;
 		private bool _isMyPost;
+	    private int _postImageIndex;
+	    private bool _canNavigateLeft;
+	    private bool _canNavigateRight;
 
 		public string CategoryName
 		{
@@ -99,6 +102,28 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _postDescription, value);
 		}
 
+	    public int PostImageIndex
+	    {
+		    get => _postImageIndex;
+		    set
+		    {
+			    SetProperty(ref _postImageIndex, value);
+			    UpdateNavigationButtons();
+		    }
+	    }
+
+	    public bool CanNavigateLeft
+	    {
+		    get => _canNavigateLeft;
+		    set => SetProperty(ref _canNavigateLeft, value);
+	    }
+
+	    public bool CanNavigateRight
+	    {
+		    get => _canNavigateRight;
+		    set => SetProperty(ref _canNavigateRight, value);
+	    }
+
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
 		private readonly IDataModel _dataModel;
@@ -121,6 +146,8 @@ namespace GiveAndTake.Core.ViewModels
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
 			ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
 			ShowFullImageCommand = new MvxCommand<int>(ShowFullImage);
+			NavigateLeftCommand = new MvxCommand(() => PostImageIndex--);
+			NavigateRightCommand = new MvxCommand(() => PostImageIndex++);
 		}
 
 		private void ShowFullImage(int position)
@@ -168,15 +195,23 @@ namespace GiveAndTake.Core.ViewModels
 			_isMyPost = post.IsMyPost;
 		}
 
+	    private void UpdateNavigationButtons()
+	    {
+		    CanNavigateLeft = PostImages.Count > 1 && PostImageIndex > 0;
+		    CanNavigateRight = PostImages.Count > 1 && PostImageIndex < PostImages.Count - 1;
+	    }
+
 		#endregion
 
 		#region Methods
 
-	    public IMvxAsyncCommand CloseCommand { get; set; }
+		public IMvxAsyncCommand CloseCommand { get; set; }
 		public IMvxCommand ShowMenuPopupCommand { get; set; }
 		public IMvxCommand ShowPostCommentCommand { get; set; }
 		public IMvxCommand ShowMyRequestListCommand { get; set; }
 		public IMvxCommand<int> ShowFullImageCommand { get; set; }
+		public IMvxCommand NavigateLeftCommand { get; set; }
+	    public IMvxCommand NavigateRightCommand { get; set; }
 
 		#endregion
 	}

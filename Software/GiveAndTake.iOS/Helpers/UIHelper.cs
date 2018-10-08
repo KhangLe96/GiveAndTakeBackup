@@ -360,17 +360,19 @@ namespace GiveAndTake.iOS.Helpers
 			CenterItemWhenSelected = true
 		};
 
-		public static iCarousel CreateSlideView(nfloat height, nfloat width, UIColor black)
+		public static iCarousel CreateSlideView(nfloat height, nfloat width)
 		{
-			var slideView = new iCarousel
+			var view = new iCarousel
 			{
 				ContentMode = UIViewContentMode.Center,
 				Type = iCarouselType.Linear,
-				CenterItemWhenSelected = true
+				CenterItemWhenSelected = true,
+				TranslatesAutoresizingMaskIntoConstraints = false
 			};
-			AddWidthHeight(height, width, slideView);
 
-			return slideView;
+			AddWidthHeight(height, width, view);
+
+			return view;
 		}
 	}
 }
