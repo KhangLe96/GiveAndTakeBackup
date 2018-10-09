@@ -5,6 +5,7 @@ using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
@@ -26,6 +27,9 @@ namespace GiveAndTake.Core.ViewModels
 	    private string _postTitle;
 	    private string _postDescription;
 		private bool _isMyPost;
+	    private int _postImageIndex;
+	    private bool _canNavigateLeft;
+	    private bool _canNavigateRight;
 
 		public string CategoryName
 		{
@@ -99,6 +103,29 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _postDescription, value);
 		}
 
+	    public int PostImageIndex
+	    {
+		    get => _postImageIndex;
+		    set
+		    {
+			    SetProperty(ref _postImageIndex, value);
+			    _dataModel.PostImageIndex = value;
+				UpdateNavigationButtons();
+		    }
+	    }
+
+	    public bool CanNavigateLeft
+	    {
+		    get => _canNavigateLeft;
+		    set => SetProperty(ref _canNavigateLeft, value);
+	    }
+
+	    public bool CanNavigateRight
+	    {
+		    get => _canNavigateRight;
+		    set => SetProperty(ref _canNavigateRight, value);
+	    }
+
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
 		private readonly IDataModel _dataModel;
@@ -121,15 +148,18 @@ namespace GiveAndTake.Core.ViewModels
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
 			ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
 			ShowFullImageCommand = new MvxCommand<int>(ShowFullImage);
+			NavigateLeftCommand = new MvxCommand(() => PostImageIndex--);
+			NavigateRightCommand = new MvxCommand(() => PostImageIndex++);
+			UpdateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index);
 			ShowGiverProfileCommand = new MvxAsyncCommand(async () => 
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
 		}
 
 		private void ShowFullImage(int position)
 		{
-			_dataModel.PostImages = PostImages;
-			_dataModel.PostImageIndex = position;
+			PostImageIndex = position;
 			NavigationService.Navigate<PostImageViewModel>();
+			PostImageIndex = _dataModel.PostImageIndex;
 		}
 
 		private void ShowMenuView()
@@ -168,7 +198,21 @@ namespace GiveAndTake.Core.ViewModels
 			Status = post.IsMyPost ? post.PostStatus.Translate() : " ";
 			CategoryBackgroundColor = post.Category.BackgroundColor;
 			_isMyPost = post.IsMyPost;
+			PostImageIndex = 0;
 		}
+
+	    public override Task Initialize()
+	    {
+		    _dataModel.PostImages = PostImages;
+		    _dataModel.PostImageIndex = 0;
+		    return base.Initialize();
+	    }
+
+	    private void UpdateNavigationButtons()
+	    {
+		    CanNavigateLeft = PostImages.Count > 1 && PostImageIndex > 0;
+		    CanNavigateRight = PostImages.Count > 1 && PostImageIndex < PostImages.Count - 1;
+	    }
 
 		#endregion
 
@@ -180,6 +224,9 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxCommand ShowPostCommentCommand { get; set; }
 		public IMvxCommand ShowMyRequestListCommand { get; set; }
 		public IMvxCommand<int> ShowFullImageCommand { get; set; }
+		public IMvxCommand NavigateLeftCommand { get; set; }
+	    public IMvxCommand NavigateRightCommand { get; set; }
+	    public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
 
 		#endregion
 	}

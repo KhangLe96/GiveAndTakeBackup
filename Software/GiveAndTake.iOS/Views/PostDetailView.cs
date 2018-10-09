@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core;
+﻿using CoreGraphics;
+using GiveAndTake.Core;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.CustomControls;
@@ -6,11 +7,10 @@ using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
+using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
-using System;
 using System.Collections.Generic;
 using GiveAndTake.iOS.Controls;
-using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -21,18 +21,32 @@ namespace GiveAndTake.iOS.Views
 	public class PostDetailView : BaseView
 	{
 		public IMvxAsyncCommand CloseCommand { get; set; }
-
 		public IMvxCommand<int> ShowFullImageCommand { get; set; }
+		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
 
-		public List<Image> PostImages { get; set; }
-		
+		public List<Image> PostImages
+		{
+			get => _postImages;
+			set
+			{
+				_postImages = value;
+				_carouselView.DataSource = new SlideViewDataSource(_postImages,
+					new CGRect(0, 0, ResolutionHelper.Width, DimensionHelper.ImageSliderHeight));
+				_carouselView.Delegate = new SlideViewDelegate
+				{
+					OnItemClicked = () => ShowFullImageCommand.Execute((int)_carouselView.CurrentItemIndex),
+					OnPageShowed = () => UpdateImageIndexCommand.Execute((int)_carouselView.CurrentItemIndex)
+				};
+			}
+		}
+
 		public int PostImageIndex
 		{
 			get => _postImageIndex;
 			set
 			{
 				_postImageIndex = value;
-				_carouselView?.ScrollToItemAtIndex(value, false);
+				_carouselView?.ScrollToItemAtIndex(value, true);
 			}
 		}
 
@@ -57,17 +71,12 @@ namespace GiveAndTake.iOS.Views
 		private UIView _contentView;
 		private UIView _postInformationView;
 		private UIView _imageView;
+		private UIButton _backNavigationButton;
+		private UIButton _nextNavigationButton;
+		private List<Image> _postImages;
 
 		protected override void InitView()
 		{
-			var bindingSet = this.CreateBindingSet<PostDetailView, PostDetailViewModel>();
-
-			bindingSet.Bind(this)
-				.For(v => v.CloseCommand)
-				.To(vm => vm.CloseCommand);
-
-			bindingSet.Apply();
-
 			InitHeaderBar();
 			InitScrollContentView();
 		}
@@ -100,8 +109,34 @@ namespace GiveAndTake.iOS.Views
 				.To(vm => vm.PostImages);
 
 			bindingSet.Bind(this)
+				.For(v => v.PostImageIndex)
+				.To(vm => vm.PostImageIndex);
+
+			bindingSet.Bind(this)
+				.For(v => v.UpdateImageIndexCommand)
+				.To(vm => vm.UpdateImageIndexCommand);
+
+			bindingSet.Bind(this)
 				.For(v => v.ShowFullImageCommand)
 				.To(vm => vm.ShowFullImageCommand);
+
+			bindingSet.Bind(_backNavigationButton)
+				.For("Visibility")
+				.To(vm => vm.CanNavigateLeft)
+				.WithConversion("InvertBool");
+
+			bindingSet.Bind(_nextNavigationButton)
+				.For("Visibility")
+				.To(vm => vm.CanNavigateRight)
+				.WithConversion("InvertBool");
+
+			bindingSet.Bind(_backNavigationButton.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.NavigateLeftCommand);
+
+			bindingSet.Bind(_nextNavigationButton.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.NavigateRightCommand);
 
 			bindingSet.Bind(_lbRequestCount)
 				.To(vm => vm.RequestCount);
@@ -139,7 +174,9 @@ namespace GiveAndTake.iOS.Views
 
 			bindingSet.Apply();
 		}
-		
+
+		#region InitViews
+
 		private void InitHeaderBar()
 		{
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
@@ -216,6 +253,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitScrollContentView()
 		{
 			_scrollView = UIHelper.CreateScrollView(0, ResolutionHelper.Width);
+
 			View.AddSubview(_scrollView);
 			View.AddConstraints(new[]
 			{
@@ -251,7 +289,37 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_imageView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _contentView,
 					NSLayoutAttribute.Left, 1, 0)
 			});
-	
+
+			_carouselView = UIHelper.CreateSlideView(DimensionHelper.ImageSliderHeight, ResolutionHelper.Width);
+			_imageView.AddSubview(_carouselView);
+			_imageView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_carouselView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.CenterY, 1, 0)
+			});
+
+			_backNavigationButton = UIHelper.CreateImageButton(DimensionHelper.NavigationHeight,
+				DimensionHelper.NavigationWidth, ImageHelper.BackNavigationButton);
+			_contentView.AddSubview(_backNavigationButton);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_backNavigationButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.CenterY, 1, 0),
+				NSLayoutConstraint.Create(_backNavigationButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Left, 1, DimensionHelper.MarginNormal)
+			});
+
+			_nextNavigationButton = UIHelper.CreateImageButton(DimensionHelper.NavigationHeight,
+				DimensionHelper.NavigationWidth, ImageHelper.NextNavigationButton);
+			_contentView.AddSubview(_nextNavigationButton);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_nextNavigationButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.CenterY, 1, 0),
+				NSLayoutConstraint.Create(_nextNavigationButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginNormal)
+			});
+
 			_lbRequestCount = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.PostDetailBigTextSize, FontType.Light);
 			_contentView.AddSubview(_lbRequestCount);
 			_contentView.AddConstraints(new[]
@@ -361,63 +429,12 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail)
 			});
 
-			_contentView.AddConstraints(new []
+			_contentView.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _postInformationView,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail)
 			});
 		}
-
-		public override void ViewDidAppear(bool animated)
-		{
-			base.ViewDidAppear(animated);
-
-			_carouselView = UIHelper.CreateSlideView(_imageView);
-			_carouselView.DataSource = new SlideViewDataSource(PostImages);
-			_carouselView.Delegate = new SlideViewDelegate
-			{
-				OnItemClicked = () => ShowFullImageCommand?.Execute((int)_carouselView.CurrentItemIndex)
-			};
-
-			_contentView.AddSubview(_carouselView);
-
-			_scrollView.ContentSize = _contentView.Frame.Size;
-
-			//TODO : add 2 navigation buttons here
-
-		}
-	}
-
-	public class SlideViewDataSource : iCarouselDataSource
-	{
-		private readonly List<Image> _images;
-
-		public SlideViewDataSource(List<Image> images)
-		{
-			_images = images;
-		}
-
-		public override nint NumberOfItemsInCarousel(iCarousel carousel) => _images.Count;
-
-		public override UIView ViewForItemAtIndex(iCarousel carousel, nint index, UIView view)
-		{
-			var imageView = view as CustomMvxCachedImageView ?? new CustomMvxCachedImageView(carousel.Bounds)
-			{
-				ContentMode = UIViewContentMode.ScaleAspectFit
-			};
-
-			imageView.ImageUrl = _images[(int) index]?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia") ?? AppConstants.DefaultUrl;
-
-			return imageView;
-		}
-	}
-
-	public class SlideViewDelegate : iCarouselDelegate
-	{
-		public Action OnItemClicked { get; set; }
-		public override void DidSelectItemAtIndex(iCarousel carousel, nint index)
-		{
-			OnItemClicked?.Invoke();
-		}
+		#endregion
 	}
 }

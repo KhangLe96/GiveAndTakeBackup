@@ -17,7 +17,9 @@ namespace GiveAndTake.Droid.Views
 	{
 		#region Properties
 
-		private List<Image> _postImages;
+		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
+		protected override int LayoutId => Resource.Layout.PostImageView;
+
 		public List<Image> PostImages
 		{
 			get => _postImages;
@@ -28,7 +30,6 @@ namespace GiveAndTake.Droid.Views
 			}
 		}
 
-		private int _postImageIndex;
 		public int PostImageIndex
 		{
 			get => _postImageIndex;
@@ -39,10 +40,8 @@ namespace GiveAndTake.Droid.Views
 			}
 		}
 
-		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
-
-		protected override int LayoutId => Resource.Layout.PostImageView;
-
+		private List<Image> _postImages;
+		private int _postImageIndex;
 		private ViewPager _imageViewer;
 
 		#endregion
