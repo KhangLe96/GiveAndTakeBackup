@@ -46,6 +46,8 @@ namespace GiveAndTake.iOS.Views
 			set
 			{
 				_postImageIndex = value;
+				var pageIndicator = _postImageIndex + 1 + " / " + PostImages.Count;
+				_lbPageIndex.Text = pageIndicator;
 				_carouselView?.ScrollToItemAtIndex(value, true);
 			}
 		}
@@ -53,6 +55,8 @@ namespace GiveAndTake.iOS.Views
 		private HeaderBar _headerBar;
 		private UIButton _btnCategory;
 		private UIButton _btnExtension;
+		private UIButton _backNavigationButton;
+		private UIButton _nextNavigationButton;
 		private iCarousel _carouselView;
 		private int _postImageIndex;
 		private UIImageView _imgRequest;
@@ -67,12 +71,12 @@ namespace GiveAndTake.iOS.Views
 		private UILabel _lbPostDate;
 		private UILabel _lbPostTitle;
 		private UILabel _lbPostDescription;
+		private UILabel _lbPageIndex;
 		private UIScrollView _scrollView;
 		private UIView _contentView;
 		private UIView _postInformationView;
 		private UIView _imageView;
-		private UIButton _backNavigationButton;
-		private UIButton _nextNavigationButton;
+		private UIView _pageIndexView;
 		private List<Image> _postImages;
 
 		protected override void InitView()
@@ -320,6 +324,26 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginNormal)
 			});
 
+			_pageIndexView = UIHelper.CreateView(DimensionHelper.PostDetailImageIndexHeight, DimensionHelper.PostDetailImageIndexWidth, UIColor.Black.ColorWithAlpha((float)0.5), 5);
+			_contentView.AddSubview(_pageIndexView);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_pageIndexView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Top, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_pageIndexView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginNormal)
+			});
+
+			_lbPageIndex = UIHelper.CreateLabel(UIColor.White, DimensionHelper.BigTextSize, FontType.Light);
+			_pageIndexView.AddSubview(_lbPageIndex);
+			_pageIndexView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbPageIndex, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _pageIndexView,
+					NSLayoutAttribute.CenterY, 1, 0),
+				NSLayoutConstraint.Create(_lbPageIndex, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _pageIndexView,
+					NSLayoutAttribute.CenterX, 1, 0)
+			});
+
 			_lbRequestCount = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.PostDetailBigTextSize, FontType.Light);
 			_contentView.AddSubview(_lbRequestCount);
 			_contentView.AddConstraints(new[]
@@ -382,7 +406,7 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_imgAvatar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _postInformationView,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginObjectPostDetail)
 			});
-		
+
 			_lbUserName = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDetailNormalTextSize);
 			_postInformationView.AddSubview(_lbUserName);
 			_postInformationView.AddConstraints(new[]
@@ -434,6 +458,12 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _postInformationView,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail)
 			});
+		}
+
+		public override void ViewDidAppear(bool animated)
+		{
+			base.ViewDidAppear(animated);
+			_scrollView.ContentSize = _contentView.Frame.Size;
 		}
 		#endregion
 	}

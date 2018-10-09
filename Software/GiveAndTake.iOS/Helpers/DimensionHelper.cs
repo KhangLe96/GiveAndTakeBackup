@@ -91,6 +91,10 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PostDetailCommentLogoSize { get; set; }
 		public static nfloat PostDetailContentViewWidth { get; set; }
 		public static nfloat PostDetailAvatarSize { get; set; }
+		public static nfloat PostDetailImageIndexHeight { get; set; }
+		public static nfloat PostDetailImageIndexWidth { get; set; }
+		public static nfloat PostImageMarginObject { get; set; }
+
 
 		public static void InitStaticVariable()
 		{
@@ -180,6 +184,9 @@ namespace GiveAndTake.iOS.Helpers
 			PostDetailCommentLogoSize = 20 * Rate;
 			PostDetailContentViewWidth = ResolutionHelper.Width - 2 * MarginObjectPostDetail;
 			PostDetailAvatarSize = 50 * Rate;
+			PostDetailImageIndexHeight = 35 * Rate;
+			PostDetailImageIndexWidth = 50 * Rate;
+			PostImageMarginObject = 40 * Rate;
 		}
 	}
 }
