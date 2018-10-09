@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class PostImageViewModel : BaseViewModel
+	public class PostImageViewModel : BaseViewModelResult<bool>
 	{
 
 		#region Properties
@@ -56,7 +56,7 @@ namespace GiveAndTake.Core.ViewModels
 		public PostImageViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			CloseCommand = new MvxCommand(() => NavigationService.Close(this));
+			CloseCommand = new MvxCommand(() => NavigationService.Close(this, false));
 			NavigateLeftCommand = new MvxCommand(() => PostImageIndex--);
 			NavigateRightCommand = new MvxCommand(() => PostImageIndex++);
 			UpdateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index);

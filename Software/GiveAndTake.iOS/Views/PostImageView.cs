@@ -104,7 +104,7 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginNormal)
 			});
 
-			_closeButton = UIHelper.CreateImageButton(DimensionHelper.NavigationHeight,
+			_closeButton = UIHelper.CreateImageButton(DimensionHelper.NavigationWidth,
 				DimensionHelper.NavigationWidth, ImageHelper.DeletePhotoButton);
 
 			View.AddSubview(_closeButton);
