@@ -31,18 +31,10 @@ namespace GiveAndTake.iOS.Views
 		private UILabel _selectedImageTextView;
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
-		public IMvxAsyncCommand CloseCommand { get; set; }
+		public IMvxCommand BackPressedCommand { get; set; }
 
 		protected override void InitView()
 		{
-			var bindingSet = this.CreateBindingSet<CreatePostView, CreatePostViewModel>();
-
-			bindingSet.Bind(this)
-				.For(v => v.CloseCommand)
-				.To(vm => vm.CloseCommand);
-
-			bindingSet.Apply();
-
 			InitHeaderBar();
 			InitChooseProvinceCityButton();
 			InitChooseCategoryButton();
@@ -53,8 +45,6 @@ namespace GiveAndTake.iOS.Views
 			InitSelectedImageTextView();
 			InitCancelButton();
 			InitSubmitButton();
-
-			CreateBinding();
 		}
 
 		protected override void CreateBinding()
@@ -90,7 +80,7 @@ namespace GiveAndTake.iOS.Views
 
 			bindingSet.Bind(_btnCancel.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.CloseCommand);
+				.To(vm => vm.BackPressedCommand);
 
 			bindingSet.Bind(this)
 				.For(v => v.ImageCommand)
@@ -129,6 +119,10 @@ namespace GiveAndTake.iOS.Views
 				.For("Title")
 				.To(vm => vm.BtnSubmitTitle);
 
+			bindingSet.Bind(this)
+				.For(v => v.BackPressedCommand)
+				.To(vm => vm.BackPressedCommand);
+
 			bindingSet.Apply();
 		}
 
@@ -136,7 +130,8 @@ namespace GiveAndTake.iOS.Views
 		{
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
 				UIColor.White, true);
-			_headerBar.BackPressedCommand = CloseCommand;
+			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
+
 			View.Add(_headerBar);
 
 			View.AddConstraints(new[]

@@ -128,7 +128,7 @@
 				android:background="@drawable/cancel_button_bg"
 				android:textColor="@drawable/cancel_button_text"
 				android:fontFamily="@font/sanfranciscodisplay_light"
-				local:MvxBind="Text BtnCancelTitle; Click CloseCommand"/>
+				local:MvxBind="Text BtnCancelTitle; Click BackPressedCommand"/>
 			<Button
 				android:textAllCaps="false"
 				android:layout_width="wrap_content"

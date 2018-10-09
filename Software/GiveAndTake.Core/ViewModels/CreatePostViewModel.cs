@@ -42,7 +42,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
 		public IMvxAsyncCommand ShowProvinceCityCommand { get; set; }
-		public IMvxAsyncCommand CloseCommand { get; set; }
+		public IMvxCommand BackPressedCommand { get; set; }
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
 
@@ -111,7 +111,7 @@ namespace GiveAndTake.Core.ViewModels
 			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
 			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
 			ShowProvinceCityCommand = new MvxAsyncCommand(ShowProvinceCities);
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			BackPressedCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
 		}
 
 		private async Task ShowCategories()

@@ -161,6 +161,7 @@ namespace GiveAndTake.Core.ViewModels
 			UpdateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index);
 			ShowGiverProfileCommand = new MvxAsyncCommand(async () => 
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
+			BackPressedCommand = new MvxCommand(() => NavigationService.Close(this, true));
 		}
 
 		private void ShowFullImage(int position)
@@ -238,7 +239,8 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxCommand NavigateLeftCommand { get; set; }
 	    public IMvxCommand NavigateRightCommand { get; set; }
 	    public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
+	    public IMvxCommand BackPressedCommand { get; set; }
 
-		#endregion
+	    #endregion
 	}
 }

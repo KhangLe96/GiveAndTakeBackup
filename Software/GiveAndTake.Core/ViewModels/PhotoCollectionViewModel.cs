@@ -24,15 +24,9 @@ namespace GiveAndTake.Core.ViewModels
 			_deleteAPhotoCommand ??
 			(_deleteAPhotoCommand = new MvxCommand<int>(DeleteAPhoto));
 
-		private IMvxAsyncCommand _iOSBackPressedCommand;
-		public IMvxAsyncCommand IOSBackPressedCommand => _iOSBackPressedCommand ??
-		(_iOSBackPressedCommand = new MvxAsyncCommand(IOSBackPressed));
-
-		private async Task IOSBackPressed()
-		{
-			await NavigationService.Close(this);
-		}
-
+		private IMvxAsyncCommand _backPressedCommand;
+		public IMvxAsyncCommand BackPressedCommand => _backPressedCommand ?? (_backPressedCommand = new MvxAsyncCommand(() => NavigationService.Close(this)));
+		
 		public override void Prepare(List<PostImage> postImages)
 		{
 			PostImages = postImages;

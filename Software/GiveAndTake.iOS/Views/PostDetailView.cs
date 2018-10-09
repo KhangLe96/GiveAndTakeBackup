@@ -20,9 +20,9 @@ namespace GiveAndTake.iOS.Views
 		ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
 	public class PostDetailView : BaseView
 	{
-		public IMvxAsyncCommand CloseCommand { get; set; }
 		public IMvxCommand<int> ShowFullImageCommand { get; set; }
 		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
+		public IMvxCommand BackPressedCommand { get; set; }
 
 		public List<Image> PostImages
 		{
@@ -179,6 +179,10 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_lbPostDescription)
 				.To(vm => vm.PostDescription);
 
+			bindingSet.Bind(this)
+				.For(v => v.BackPressedCommand)
+				.To(vm => vm.BackPressedCommand);
+
 			bindingSet.Apply();
 		}
 
@@ -188,7 +192,7 @@ namespace GiveAndTake.iOS.Views
 		{
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
 				UIColor.White, true);
-			_headerBar.BackPressedCommand = CloseCommand;
+			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
 			View.Add(_headerBar);
 			View.AddConstraints(new[]
 			{
