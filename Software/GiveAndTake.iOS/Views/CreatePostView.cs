@@ -35,10 +35,6 @@ namespace GiveAndTake.iOS.Views
 
 		protected override void InitView()
 		{
-			ResolutionHelper.InitStaticVariable();
-			DimensionHelper.InitStaticVariable();
-			ImageHelper.InitStaticVariable();
-
 			var bindingSet = this.CreateBindingSet<CreatePostView, CreatePostViewModel>();
 
 			bindingSet.Bind(this)

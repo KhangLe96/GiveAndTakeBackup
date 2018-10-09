@@ -10,6 +10,7 @@ using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
 using GiveAndTake.iOS.Controls;
+using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -37,23 +38,38 @@ namespace GiveAndTake.iOS.Views
 
 		private HeaderBar _headerBar;
 		private UIButton _btnCategory;
-		private UIImageView _imgLocation;
-		private UILabel _lbPostAddress;
 		private UIButton _btnExtension;
-		private UILabel _lbPostStatus;
 		private iCarousel _carouselView;
-		private UIView _imageView;
 		private int _postImageIndex;
+		private UIImageView _imgRequest;
+		private UIImageView _imgLocation;
+		private UIImageView _imgComment;
+		private CustomMvxCachedImageView _imgAvatar;
+		private UILabel _lbCommentCount;
+		private UILabel _lbPostStatus;
+		private UILabel _lbPostAddress;
+		private UILabel _lbRequestCount;
+		private UILabel _lbUserName;
+		private UILabel _lbPostDate;
+		private UILabel _lbPostTitle;
+		private UILabel _lbPostDescription;
+		private UIScrollView _scrollView;
+		private UIView _contentView;
+		private UIView _postInformationView;
+		private UIView _imageView;
 
 		protected override void InitView()
 		{
+			var bindingSet = this.CreateBindingSet<PostDetailView, PostDetailViewModel>();
+
+			bindingSet.Bind(this)
+				.For(v => v.CloseCommand)
+				.To(vm => vm.CloseCommand);
+
+			bindingSet.Apply();
+
 			InitHeaderBar();
-			InitCategoryButton();
-			InitLocationView();
-			InitAddressLabel();
-			InitExtensionButton();
-			InitStatusLabel();
-			InitImageSlider();
+			InitScrollContentView();
 		}
 
 		protected override void CreateBinding()
@@ -75,17 +91,51 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_lbPostStatus)
 				.To(vm => vm.Status);
 
-			bindingSet.Bind(this)
-				.For(v => v.CloseCommand)
-				.To(vm => vm.CloseCommand);
+			bindingSet.Bind(_btnExtension.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowMenuPopupCommand);
 
-				bindingSet.Bind(this)
+			bindingSet.Bind(this)
 				.For(v => v.PostImages)
 				.To(vm => vm.PostImages);
 
 			bindingSet.Bind(this)
 				.For(v => v.ShowFullImageCommand)
 				.To(vm => vm.ShowFullImageCommand);
+
+			bindingSet.Bind(_lbRequestCount)
+				.To(vm => vm.RequestCount);
+
+			bindingSet.Bind(_imgRequest.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowMyRequestListCommand);
+
+			bindingSet.Bind(_lbCommentCount)
+				.To(vm => vm.CommentCount);
+
+			bindingSet.Bind(_imgComment.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowPostCommentCommand);
+
+			bindingSet.Bind(_imgAvatar)
+				.For(v => v.ImageUrl)
+				.To(vm => vm.AvatarUrl);
+
+			bindingSet.Bind(_imgAvatar.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowGiverProfileCommand);
+
+			bindingSet.Bind(_lbUserName)
+				.To(vm => vm.UserName);
+
+			bindingSet.Bind(_lbPostDate)
+				.To(vm => vm.CreatedTime);
+
+			bindingSet.Bind(_lbPostTitle)
+				.To(vm => vm.PostTitle);
+
+			bindingSet.Bind(_lbPostDescription)
+				.To(vm => vm.PostDescription);
 
 			bindingSet.Apply();
 		}
@@ -96,7 +146,6 @@ namespace GiveAndTake.iOS.Views
 				UIColor.White, true);
 			_headerBar.BackPressedCommand = CloseCommand;
 			View.Add(_headerBar);
-
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
@@ -104,10 +153,7 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0),
 			});
-		}
 
-		private void InitCategoryButton()
-		{
 			_btnCategory = UIHelper.CreateButton(DimensionHelper.ButtonCategoryHeight,
 				0,
 				ColorHelper.Blue,
@@ -115,9 +161,7 @@ namespace GiveAndTake.iOS.Views
 				DimensionHelper.ButtonTextSize,
 				null,
 				DimensionHelper.ButtonCategoryHeight / 2);
-
 			View.AddSubview(_btnCategory);
-
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
@@ -125,14 +169,10 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginObjectPostDetail)
 			});
-		}
 
-		private void InitLocationView()
-		{
-			_imgLocation = UIHelper.CreateImageView(DimensionHelper.LocationLogoHeight, DimensionHelper.LocationLogoWidth, ImageHelper.LocationLogo);
-
+			_imgLocation = UIHelper.CreateImageView(DimensionHelper.LocationLogoHeight,
+				DimensionHelper.LocationLogoWidth, ImageHelper.LocationLogo);
 			View.AddSubview(_imgLocation);
-
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_imgLocation, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
@@ -140,14 +180,9 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_imgLocation, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _btnCategory,
 					NSLayoutAttribute.Right, 1, DimensionHelper.DefaultMargin)
 			});
-		}
 
-		private void InitAddressLabel()
-		{
 			_lbPostAddress = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize, FontType.Light);
-
 			View.AddSubview(_lbPostAddress);
-
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_lbPostAddress, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
@@ -155,14 +190,10 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_lbPostAddress, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgLocation,
 					NSLayoutAttribute.Right, 1, DimensionHelper.MarginShort)
 			});
-		}
-
-		private void InitExtensionButton()
-		{
-			_btnExtension = UIHelper.CreateImageButton(DimensionHelper.ExtensionButtonHeight, DimensionHelper.ExtensionButtonWidth, ImageHelper.Extension);
-
+	
+			_btnExtension = UIHelper.CreateImageButton(DimensionHelper.ExtensionButtonHeight,
+				DimensionHelper.ExtensionButtonWidth, ImageHelper.Extension);
 			View.AddSubview(_btnExtension);
-
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_btnExtension, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
@@ -170,14 +201,9 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_btnExtension, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginShort)
 			});
-		}
-
-		private void InitStatusLabel()
-		{
+	
 			_lbPostStatus = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDetailStatusTextSize, FontType.Bold);
-
 			View.AddSubview(_lbPostStatus);
-
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_lbPostStatus, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
@@ -187,19 +213,158 @@ namespace GiveAndTake.iOS.Views
 			});
 		}
 
-		private void InitImageSlider()
+		private void InitScrollContentView()
 		{
-			_imageView = UIHelper.CreateView(DimensionHelper.ImageSliderHeight, ResolutionHelper.Width,
-				UIColor.Black);
-
-			View.AddSubview(_imageView);
-
+			_scrollView = UIHelper.CreateScrollView(0, ResolutionHelper.Width);
+			View.AddSubview(_scrollView);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_imageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnCategory,
+				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _btnCategory,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
-				NSLayoutConstraint.Create(_imageView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Left, 1, 0),
+				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Right, 1, 0),
+				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Bottom, 1, 0),
+			});
+	
+			_contentView = UIHelper.CreateView(0, ResolutionHelper.Width);
+			_scrollView.AddSubview(_contentView);
+			_scrollView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _scrollView,
+					NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _scrollView,
+					NSLayoutAttribute.Left, 1, 0),
+				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _scrollView,
+					NSLayoutAttribute.Right, 1, 0),
+			});
+		
+			_imageView = UIHelper.CreateView(DimensionHelper.ImageSliderHeight, ResolutionHelper.Width,
+				UIColor.Black);
+			_contentView.AddSubview(_imageView);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_imageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_imageView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _contentView,
 					NSLayoutAttribute.Left, 1, 0)
+			});
+	
+			_lbRequestCount = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.PostDetailBigTextSize, FontType.Light);
+			_contentView.AddSubview(_lbRequestCount);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbRequestCount, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_lbRequestCount, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginObjectPostDetail)
+			});
+		
+			_imgRequest = UIHelper.CreateImageView(DimensionHelper.PostDetailRequestListLogoHeight, DimensionHelper.PostDetailRequestListLogoWidth, ImageHelper.RequestOff);
+			_contentView.AddSubview(_imgRequest);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_imgRequest, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.PostDetailRequestListLogoMarginTop),
+				NSLayoutConstraint.Create(_imgRequest, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _lbRequestCount,
+					NSLayoutAttribute.Left, 1, -DimensionHelper.PostDetailSmallMargin)
+			});
+		
+			_lbCommentCount = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.PostDetailBigTextSize, FontType.Light);
+			_contentView.AddSubview(_lbCommentCount);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _imgRequest,
+					NSLayoutAttribute.Left, 1, -DimensionHelper.PostDetailBigMargin)
+			});
+		
+			_imgComment = UIHelper.CreateImageView(DimensionHelper.PostDetailCommentLogoSize, DimensionHelper.PostDetailCommentLogoSize, ImageHelper.CommentIcon);
+			_contentView.AddSubview(_imgComment);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.PostDetailCommentLogoMarginTop),
+				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _lbCommentCount,
+					NSLayoutAttribute.Left, 1, -DimensionHelper.DefaultMargin)
+			});
+		
+			_postInformationView = UIHelper.CreateView(0, DimensionHelper.PostDetailContentViewWidth, ColorHelper.LightGray,
+				DimensionHelper.RoundCorner);
+			_postInformationView.Layer.BorderColor = ColorHelper.Gray.CGColor;
+			_postInformationView.Layer.BorderWidth = 1;
+			_contentView.AddSubview(_postInformationView);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_postInformationView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imgComment,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_postInformationView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.Left, 1, DimensionHelper.MarginObjectPostDetail)
+			});
+		
+			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.PostDetailAvatarSize, DimensionHelper.PostDetailAvatarSize, ImageHelper.DefaultAvatar, DimensionHelper.PostDetailAvatarSize / 2);
+			_postInformationView.AddSubview(_imgAvatar);
+			_postInformationView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_imgAvatar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _postInformationView,
+					NSLayoutAttribute.Top, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_imgAvatar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _postInformationView,
+					NSLayoutAttribute.Left, 1, DimensionHelper.MarginObjectPostDetail)
+			});
+		
+			_lbUserName = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDetailNormalTextSize);
+			_postInformationView.AddSubview(_lbUserName);
+			_postInformationView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbUserName, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _postInformationView,
+					NSLayoutAttribute.Top, 1, DimensionHelper.PostDetailBigMargin),
+				NSLayoutConstraint.Create(_lbUserName, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgAvatar,
+					NSLayoutAttribute.Right, 1, DimensionHelper.MarginNormal)
+			});
+		
+			_lbPostDate = UIHelper.CreateLabel(UIColor.Gray, DimensionHelper.PostDetailSmallTextSize, FontType.Light);
+			_postInformationView.AddSubview(_lbPostDate);
+			_postInformationView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbPostDate, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbUserName,
+					NSLayoutAttribute.Bottom, 1, 1),
+				NSLayoutConstraint.Create(_lbPostDate, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgAvatar,
+					NSLayoutAttribute.Right, 1, DimensionHelper.MarginNormal)
+			});
+	
+			_lbPostTitle = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDetailNormalTextSize, FontType.Bold);
+			_postInformationView.AddSubview(_lbPostTitle);
+			_postInformationView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbPostTitle, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imgAvatar,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_lbPostTitle, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _postInformationView,
+					NSLayoutAttribute.Left, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_lbPostTitle, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _postInformationView,
+					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginObjectPostDetail)
+			});
+		
+			_lbPostDescription = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDetailNormalTextSize);
+			_postInformationView.AddSubview(_lbPostDescription);
+			_postInformationView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbPostDescription, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbPostTitle,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_lbPostDescription, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _postInformationView,
+					NSLayoutAttribute.Left, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_lbPostDescription, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _postInformationView,
+					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_postInformationView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _lbPostDescription,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail)
+			});
+
+			_contentView.AddConstraints(new []
+			{
+				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _postInformationView,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail)
 			});
 		}
 
@@ -214,8 +379,10 @@ namespace GiveAndTake.iOS.Views
 				OnItemClicked = () => ShowFullImageCommand?.Execute((int)_carouselView.CurrentItemIndex)
 			};
 
-			View.AddSubview(_carouselView);
-			
+			_contentView.AddSubview(_carouselView);
+
+			_scrollView.ContentSize = _contentView.Frame.Size;
+
 			//TODO : add 2 navigation buttons here
 
 		}

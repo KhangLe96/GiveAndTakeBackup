@@ -262,15 +262,15 @@ namespace GiveAndTake.iOS.Helpers
 			return tableView;
 		}
 
-		public static UIScrollView CreateScrollView(nfloat height, nfloat width, UIColor backgroudColor)
+		public static UIScrollView CreateScrollView(nfloat height, nfloat width)
 		{
 			var scrollView = new UIScrollView()
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
+				ScrollEnabled = true
 			};
 
 			AddWidthHeight(height, width, scrollView);
-			scrollView.BackgroundColor = backgroudColor;
 
 			return scrollView;
 		}
@@ -357,7 +357,8 @@ namespace GiveAndTake.iOS.Helpers
 			ContentMode = UIViewContentMode.Center,
 			Frame = view.Frame,
 			Type = iCarouselType.Linear,
-			CenterItemWhenSelected = true
+			CenterItemWhenSelected = true,
+
 		};
 
 		public static iCarousel CreateSlideView(nfloat height, nfloat width, UIColor black)

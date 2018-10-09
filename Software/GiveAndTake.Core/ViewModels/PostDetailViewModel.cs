@@ -121,6 +121,8 @@ namespace GiveAndTake.Core.ViewModels
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
 			ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
 			ShowFullImageCommand = new MvxCommand<int>(ShowFullImage);
+			ShowGiverProfileCommand = new MvxAsyncCommand(async () => 
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
 		}
 
 		private void ShowFullImage(int position)
@@ -172,7 +174,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		#region Methods
 
-	    public IMvxAsyncCommand CloseCommand { get; set; }
+	    public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
+		public IMvxAsyncCommand CloseCommand { get; set; }
 		public IMvxCommand ShowMenuPopupCommand { get; set; }
 		public IMvxCommand ShowPostCommentCommand { get; set; }
 		public IMvxCommand ShowMyRequestListCommand { get; set; }
