@@ -46,8 +46,6 @@ namespace GiveAndTake.iOS.Views
 			set
 			{
 				_postImageIndex = value;
-				var pageIndicator = _postImageIndex + 1 + " / " + PostImages.Count;
-				_lbPageIndex.Text = pageIndicator;
 				_carouselView?.ScrollToItemAtIndex(value, true);
 			}
 		}
@@ -102,7 +100,9 @@ namespace GiveAndTake.iOS.Views
 				.To(vm => vm.Address);
 
 			bindingSet.Bind(_lbPostStatus)
-				.To(vm => vm.Status);
+				.For(v => v.AttributedText)
+				.To(vm => vm.Status)
+				.WithConversion("StringToAttributedString", _lbPostStatus);
 
 			bindingSet.Bind(_btnExtension.Tap())
 				.For(v => v.Command)
@@ -141,6 +141,9 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_nextNavigationButton.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.NavigateRightCommand);
+
+			bindingSet.Bind(_lbPageIndex)
+				.To(vm => vm.ImageIndexIndicator);
 
 			bindingSet.Bind(_lbRequestCount)
 				.To(vm => vm.RequestCount);

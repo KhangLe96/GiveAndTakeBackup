@@ -108,7 +108,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_selectedImageTextView)
 				.For(v => v.AttributedText)
 				.To(vm => vm.SelectedImage)
-				.WithConversion("SelectedImage", _selectedImageTextView);
+				.WithConversion("StringToAttributedString", _selectedImageTextView);
 
 			bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)

@@ -30,6 +30,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private int _postImageIndex;
 	    private bool _canNavigateLeft;
 	    private bool _canNavigateRight;
+	    private string _imageIndexIndicator;
 
 		public string CategoryName
 		{
@@ -110,6 +111,7 @@ namespace GiveAndTake.Core.ViewModels
 		    {
 			    SetProperty(ref _postImageIndex, value);
 			    _dataModel.PostImageIndex = value;
+			    UpdateImageIndexIndicator();
 				UpdateNavigationButtons();
 		    }
 	    }
@@ -124,6 +126,12 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    get => _canNavigateRight;
 		    set => SetProperty(ref _canNavigateRight, value);
+	    }
+
+	    public string ImageIndexIndicator 
+	    {
+		    get => _imageIndexIndicator;
+		    set => SetProperty(ref _imageIndexIndicator, value);
 	    }
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
@@ -214,6 +222,10 @@ namespace GiveAndTake.Core.ViewModels
 		    CanNavigateRight = PostImages.Count > 1 && PostImageIndex < PostImages.Count - 1;
 	    }
 
+	    private void UpdateImageIndexIndicator()
+	    {
+		    ImageIndexIndicator = _postImageIndex + 1 + " / " + _postImages.Count;
+	    }
 		#endregion
 
 		#region Methods
