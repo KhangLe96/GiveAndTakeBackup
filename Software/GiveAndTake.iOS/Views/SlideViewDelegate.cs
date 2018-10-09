@@ -15,6 +15,7 @@ namespace GiveAndTake.iOS.Views
 
 		public override void CarouselDidEndScrollingAnimation(iCarousel carousel)
 		{
+			Console.WriteLine($"CarouselDidEndScrollingAnimation {carousel.CurrentItemIndex}");
 			OnPageShowed?.Invoke();
 		}
 	}

@@ -158,11 +158,10 @@ namespace GiveAndTake.Core.ViewModels
 		private void ShowFullImage(int position)
 		{
 			PostImageIndex = position;
-			NavigationService.Navigate<PostImageViewModel>();
-			PostImageIndex = _dataModel.PostImageIndex;
+			NavigationService.Navigate<PostImageViewModel, bool>().ContinueWith(task => PostImageIndex = _dataModel.PostImageIndex);
 		}
 
-		private void ShowMenuView()
+	    private void ShowMenuView()
 		{
 			if (_isMyPost)
 			{

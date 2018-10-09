@@ -1,9 +1,7 @@
 ﻿using GiveAndTake.Core;
-using System;
-using System.Collections.Generic;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
-using GiveAndTake.iOS.Views;
+using System;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -368,8 +366,9 @@ namespace GiveAndTake.iOS.Helpers
 				ContentMode = UIViewContentMode.Center,
 				Type = iCarouselType.Linear,
 				CenterItemWhenSelected = true,
-				TranslatesAutoresizingMaskIntoConstraints = false
-			};
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				PagingEnabled = true
+		};
 
 			AddWidthHeight(height, width, view);
 
