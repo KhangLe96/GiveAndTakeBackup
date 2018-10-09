@@ -62,7 +62,7 @@ namespace GiveAndTake.iOS.Views
 			});
 
 			//Review Thanh Vo Does any screen use Navigation Bar ? If not, we can move it to base view
-			NavigationController?.SetNavigationBarHidden(true, true);
+			
 		}
 
 		protected override void CreateBinding()
