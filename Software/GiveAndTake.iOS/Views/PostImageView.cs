@@ -39,7 +39,7 @@ namespace GiveAndTake.iOS.Views
 			set
 			{
 				_postImageIndex = value;
-				_carouselView?.ScrollToItemAtIndex(value, false);
+				_carouselView?.ScrollToItemAtIndex(value, true);
 			}
 		}
 

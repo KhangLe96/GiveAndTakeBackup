@@ -5,6 +5,7 @@ using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
@@ -108,7 +109,8 @@ namespace GiveAndTake.Core.ViewModels
 		    set
 		    {
 			    SetProperty(ref _postImageIndex, value);
-			    UpdateNavigationButtons();
+			    _dataModel.PostImageIndex = value;
+				UpdateNavigationButtons();
 		    }
 	    }
 
@@ -148,13 +150,14 @@ namespace GiveAndTake.Core.ViewModels
 			ShowFullImageCommand = new MvxCommand<int>(ShowFullImage);
 			NavigateLeftCommand = new MvxCommand(() => PostImageIndex--);
 			NavigateRightCommand = new MvxCommand(() => PostImageIndex++);
+			UpdateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index);
 		}
 
 		private void ShowFullImage(int position)
 		{
-			_dataModel.PostImages = PostImages;
-			_dataModel.PostImageIndex = position;
+			PostImageIndex = position;
 			NavigationService.Navigate<PostImageViewModel>();
+			PostImageIndex = _dataModel.PostImageIndex;
 		}
 
 		private void ShowMenuView()
@@ -193,7 +196,15 @@ namespace GiveAndTake.Core.ViewModels
 			Status = post.IsMyPost ? post.PostStatus.Translate() : " ";
 			CategoryBackgroundColor = post.Category.BackgroundColor;
 			_isMyPost = post.IsMyPost;
+			PostImageIndex = 0;
 		}
+
+	    public override Task Initialize()
+	    {
+		    _dataModel.PostImages = PostImages;
+		    _dataModel.PostImageIndex = 0;
+		    return base.Initialize();
+	    }
 
 	    private void UpdateNavigationButtons()
 	    {
@@ -212,6 +223,7 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxCommand<int> ShowFullImageCommand { get; set; }
 		public IMvxCommand NavigateLeftCommand { get; set; }
 	    public IMvxCommand NavigateRightCommand { get; set; }
+	    public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
 
 		#endregion
 	}

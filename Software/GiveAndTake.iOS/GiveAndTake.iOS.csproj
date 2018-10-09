@@ -113,6 +113,8 @@
     <Compile Include="Views\Popups\PopupView.cs" />
     <Compile Include="Views\Popups\PopupWarningView.cs" />
     <Compile Include="Views\PostImageView.cs" />
+    <Compile Include="Views\SlideViewDataSource.cs" />
+    <Compile Include="Views\SlideViewDelegate.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />

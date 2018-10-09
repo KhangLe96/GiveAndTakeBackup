@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core;
+﻿using CoreGraphics;
+using GiveAndTake.Core;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.CustomControls;
@@ -6,12 +7,9 @@ using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
-using MvvmCross.Platforms.Ios.Presenters.Attributes;
-using System;
-using System.Collections.Generic;
-using CoreGraphics;
-using GiveAndTake.iOS.Controls;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
+using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using System.Collections.Generic;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -22,8 +20,8 @@ namespace GiveAndTake.iOS.Views
 	public class PostDetailView : BaseView
 	{
 		public IMvxAsyncCommand CloseCommand { get; set; }
-
 		public IMvxCommand<int> ShowFullImageCommand { get; set; }
+		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
 
 		public List<Image> PostImages
 		{
@@ -35,7 +33,8 @@ namespace GiveAndTake.iOS.Views
 					new CGRect(0, 0, ResolutionHelper.Width, DimensionHelper.ImageSliderHeight));
 				_carouselView.Delegate = new SlideViewDelegate
 				{
-					OnItemClicked = () => ShowFullImageCommand?.Execute((int)_carouselView.CurrentItemIndex)
+					OnItemClicked = () => ShowFullImageCommand.Execute((int)_carouselView.CurrentItemIndex),
+					OnPageShowed = () => UpdateImageIndexCommand.Execute((int)_carouselView.CurrentItemIndex)
 				};
 			}
 		}
@@ -46,7 +45,7 @@ namespace GiveAndTake.iOS.Views
 			set
 			{
 				_postImageIndex = value;
-				_carouselView?.ScrollToItemAtIndex(value, false);
+				_carouselView?.ScrollToItemAtIndex(value, true);
 			}
 		}
 
@@ -100,6 +99,14 @@ namespace GiveAndTake.iOS.Views
 				bindingSet.Bind(this)
 				.For(v => v.PostImages)
 				.To(vm => vm.PostImages);
+
+			bindingSet.Bind(this)
+				.For(v => v.PostImageIndex)
+				.To(vm => vm.PostImageIndex);
+
+			bindingSet.Bind(this)
+				.For(v => v.UpdateImageIndexCommand)
+				.To(vm => vm.UpdateImageIndexCommand);
 
 			bindingSet.Bind(this)
 				.For(v => v.ShowFullImageCommand)
@@ -278,48 +285,5 @@ namespace GiveAndTake.iOS.Views
 		}
 
 		#endregion
-	}
-
-	public class SlideViewDataSource : iCarouselDataSource
-	{
-		private readonly List<Image> _images;
-		private readonly CGRect _cellFrame;
-
-		public SlideViewDataSource(List<Image> images, CGRect cellFrame)
-		{
-			_images = images;
-			_cellFrame = cellFrame;
-		}
-
-		public override nint NumberOfItemsInCarousel(iCarousel carousel) => _images.Count;
-
-		public override UIView ViewForItemAtIndex(iCarousel carousel, nint index, UIView view)
-		{
-			var imageView = view as CustomMvxCachedImageView ?? new CustomMvxCachedImageView
-			{
-				ContentMode = UIViewContentMode.ScaleAspectFit,
-				Frame = _cellFrame
-			};
-
-			imageView.ImageUrl = _images[(int) index]?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia") ?? AppConstants.DefaultUrl;
-
-			return imageView;
-		}
-	}
-
-	public class SlideViewDelegate : iCarouselDelegate
-	{
-		public Action OnItemClicked { get; set; }
-		public Action OnPageShowed { get; set; }
-
-		public override void DidSelectItemAtIndex(iCarousel carousel, nint index)
-		{
-			OnItemClicked?.Invoke();
-		}
-
-		public override void CarouselDidEndScrollingAnimation(iCarousel carousel)
-		{
-			OnPageShowed?.Invoke();
-		}
 	}
 }

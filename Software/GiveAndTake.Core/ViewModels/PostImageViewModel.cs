@@ -25,6 +25,7 @@ namespace GiveAndTake.Core.ViewModels
 			set
 			{
 				SetProperty(ref _postImageIndex, value);
+				_dataModel.PostImageIndex = value;
 				UpdateNavigationButtons();
 			}
 		}
