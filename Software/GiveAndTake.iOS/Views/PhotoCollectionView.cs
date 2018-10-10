@@ -60,9 +60,6 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Bottom, 1, 0),
 			});
-
-			//Review Thanh Vo Does any screen use Navigation Bar ? If not, we can move it to base view
-			
 		}
 
 		protected override void CreateBinding()
