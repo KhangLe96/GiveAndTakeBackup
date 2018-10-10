@@ -14,6 +14,7 @@ namespace GiveAndTake.iOS.Views.Popups
 	{
 		private UIView _contentView;
 		private UIView _overlayView;
+		//Review ThanhVo Why message id PopupItemLabel?
 		private PopupItemLabel _messageLabel;
 		private UIButton _closeButton;
 
@@ -24,6 +25,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			View.BackgroundColor = UIColor.Clear;
 
 			_overlayView = UIHelper.CreateView(0, 0, UIColor.Black.ColorWithAlpha(0.7f));
+			//Review ThanhVo This can bind to command in ViewModel
 			_overlayView.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			View.Add(_overlayView);
@@ -54,6 +56,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_messageLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
+			//Review ThanhVo Title should be binded from ViewModel => support multiple language
 			_closeButton = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight,
 				DimensionHelper.PopupMessageButtonWidth,
 				ColorHelper.Blue,
@@ -62,6 +65,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				"Xác nhận",
 				DimensionHelper.PopupButtonHeight / 2);
 
+			//Review ThanhVo Can bind command directly to ViewModel
 			_closeButton.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			_contentView.Add(_closeButton);

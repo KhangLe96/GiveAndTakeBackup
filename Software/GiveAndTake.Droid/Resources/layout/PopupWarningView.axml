@@ -16,7 +16,7 @@
 		android:textColor="@color/black"
 		android:textSize="@dimen/MediumTextSize"
 		local:MvxBind="Text Message" />
-
+	<!--Review Thanh Vo Text should be binded from ViewModel -->
 	<Button
 		android:layout_width="wrap_content"
 		android:layout_height="@dimen/popup_button_height"

@@ -23,6 +23,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			CancelCommand = new MvxAsyncCommand(OnCancel);
 		}
 
+		//Review ThanhVo bool result that is not clear which action user has choosen
 		public Task OnSubmit() => NavigationService.Close(this, true);
 
 		public Task OnCancel() => NavigationService.Close(this, false);

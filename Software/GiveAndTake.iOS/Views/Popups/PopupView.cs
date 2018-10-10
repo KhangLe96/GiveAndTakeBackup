@@ -19,6 +19,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			View.BackgroundColor = UIColor.Clear;
 
 			OverlayView = UIHelper.CreateView(0, 0, UIColor.Clear);
+			//Review ThanhVo using binding
 			OverlayView.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			View.Add(OverlayView);

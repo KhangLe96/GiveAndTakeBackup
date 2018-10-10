@@ -56,6 +56,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_messageLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
+			//Review ThanhVo Title/Text should bind from ViewModel. Don't set on view, it will help to support multiple language
 			_cancelButton = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight,
 				DimensionHelper.PopupMessageButtonWidth, 
 				UIColor.White, 
@@ -65,7 +66,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				DimensionHelper.PopupButtonHeight / 2,
 				ColorHelper.Blue,
 				DimensionHelper.PopupCancelButtonBorder);
-
+			//Review ThanhVo using binding
 			_cancelButton.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			_contentView.Add(_cancelButton);
@@ -82,7 +83,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				DimensionHelper.SmallTextSize,
 				"Xác nhận",
 				DimensionHelper.PopupButtonHeight / 2);
-
+			//Review ThanhVo using binding
 			_submitButton.AddGestureRecognizer(new UITapGestureRecognizer(OnSubmitPopup));
 
 			_contentView.Add(_submitButton);
