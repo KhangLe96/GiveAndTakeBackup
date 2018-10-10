@@ -41,7 +41,9 @@ namespace GiveAndTake.Droid.Views
 
             var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
 			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
-		}
+
+		    this.Activity.Window.SetSoftInputMode(SoftInput.AdjustResize);
+        }
 
 	    private void OnEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
 	    {
