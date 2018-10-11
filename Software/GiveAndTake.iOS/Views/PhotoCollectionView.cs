@@ -60,8 +60,6 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Bottom, 1, 0),
 			});
-
-			NavigationController?.SetNavigationBarHidden(true, true);
 		}
 
 		protected override void CreateBinding()
