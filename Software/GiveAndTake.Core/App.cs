@@ -1,8 +1,9 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System.Diagnostics;
+using System.Reflection;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels;
-using GiveAndTake.Core.ViewModels.Base;
-using GiveAndTake.Core.ViewModels.TabNavigation;
+using I18NPortable;
 using MvvmCross;
 using MvvmCross.ViewModels;
 
@@ -10,6 +11,18 @@ namespace GiveAndTake.Core
 {
 	public class App : MvxApplication
 	{
+		public App()
+		{
+			var currentAssembly = GetType().GetTypeInfo().Assembly;
+
+			I18N
+				.Current
+				.SetLogger(text => Debug.WriteLine(text))
+				.SetNotFoundSymbol("$")
+				.SetFallbackLocale("vi")
+				.Init(currentAssembly);
+		}
+
 		public override void Initialize()
 		{
 			base.Initialize();

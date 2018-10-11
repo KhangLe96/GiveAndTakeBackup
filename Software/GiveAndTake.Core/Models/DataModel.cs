@@ -12,5 +12,8 @@ namespace GiveAndTake.Core.Models
 		public ProvinceCity SelectedProvinceCity { get; set; }
 		public SortFilter SelectedSortFilter { get; set; }
 		public LoginResponse LoginResponse { get; set; }
+		public BaseUser CurrentUser { get; set; }
+		public List<Image> PostImages { get; set; }
+		public int PostImageIndex { get; set; }
 	}
 }

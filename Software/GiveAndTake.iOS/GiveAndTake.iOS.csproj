@@ -81,7 +81,7 @@
     <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
-    <Compile Include="Converters\SelectedImageValueConverter.cs" />
+    <Compile Include="Converters\StringToAttributedStringValueConverter.cs" />
     <Compile Include="Converters\StringToUIColorValueConverter.cs" />
     <Compile Include="CustomControls\HeaderBar.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
@@ -112,6 +112,9 @@
     <Compile Include="Views\Popups\PopupShortFilterView.cs" />
     <Compile Include="Views\Popups\PopupView.cs" />
     <Compile Include="Views\Popups\PopupWarningView.cs" />
+    <Compile Include="Views\PostImageView.cs" />
+    <Compile Include="Views\SlideViewDataSource.cs" />
+    <Compile Include="Views\SlideViewDelegate.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />
@@ -167,6 +170,9 @@
     <BundleResource Include="Resources\Images\back_button.png" />
     <BundleResource Include="Resources\Images\btn_delete_photo%402x.png" />
     <BundleResource Include="Resources\Images\btn_delete_photo.png" />
+    <BundleResource Include="Resources\Images\location_logo.png" />
+    <BundleResource Include="Resources\Images\navigateLeft.png" />
+    <BundleResource Include="Resources\Images\navigateRight.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
@@ -198,6 +204,9 @@
     <Reference Include="FFImageLoading.Transformations, Version=2.4.3.840, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.FFImageLoading.Transformations.2.4.3.840\lib\Xamarin.iOS10\FFImageLoading.Transformations.dll</HintPath>
     </Reference>
+    <Reference Include="I18NPortable, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\I18NPortable.0.6.0\lib\netstandard1.1\I18NPortable.dll</HintPath>
+    </Reference>
     <Reference Include="MvvmCross, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmCross.6.1.2\lib\xamarinios10\MvvmCross.dll</HintPath>
     </Reference>
@@ -220,12 +229,17 @@
       <HintPath>..\packages\Xam.Plugin.Connectivity.3.2.0\lib\Xamarin.iOS10\Plugin.Connectivity.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="WebP.Touch, Version=1.0.6628.22311, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WebP.Touch.1.0.8\lib\Xamarin.iOS10\WebP.Touch.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
+    <Reference Include="Xamarin.iOS.iCarousel.Binding, Version=1.0.6379.43115, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.iOS.iCarousel.1.8.4\lib\Xamarin.iOS10\Xamarin.iOS.iCarousel.Binding.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
