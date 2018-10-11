@@ -16,17 +16,16 @@
 		android:textColor="@color/black"
 		android:textSize="@dimen/MediumTextSize"
 		local:MvxBind="Text Message" />
-	<!--Review Thanh Vo Text should be binded from ViewModel -->
+
 	<Button
 		android:layout_width="wrap_content"
 		android:layout_height="@dimen/popup_button_height"
 		android:layout_margin="@dimen/margin_short"
 		android:background="@drawable/popup_button_bg"
-		android:text="Đồng ý"
 		android:textAllCaps="false"
 		android:textColor="@color/white"
 		android:textSize="@dimen/SmallTextSize"
 		android:textStyle="normal"
-		local:MvxBind="Click CloseCommand" />
+		local:MvxBind="Text CloseButtonTitle;Click CloseCommand" />
 
 </LinearLayout>

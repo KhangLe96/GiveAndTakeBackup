@@ -1,9 +1,8 @@
-﻿using System.Windows.Input;
-using GiveAndTake.Core.ViewModels.Popup;
-using GiveAndTake.iOS.Controls;
+﻿using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
 
@@ -14,19 +13,14 @@ namespace GiveAndTake.iOS.Views.Popups
 	{
 		private UIView _contentView;
 		private UIView _overlayView;
-		//Review ThanhVo Why message id PopupItemLabel?
-		private PopupItemLabel _messageLabel;
+		private UILabel _messageLabel;
 		private UIButton _closeButton;
-
-		public ICommand CloseCommand { get; set; }
 
 		protected override void InitView()
 		{
 			View.BackgroundColor = UIColor.Clear;
 
 			_overlayView = UIHelper.CreateView(0, 0, UIColor.Black.ColorWithAlpha(0.7f));
-			//Review ThanhVo This can bind to command in ViewModel
-			_overlayView.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			View.Add(_overlayView);
 			View.AddConstraints(new[]
@@ -56,17 +50,13 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_messageLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			//Review ThanhVo Title should be binded from ViewModel => support multiple language
 			_closeButton = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight,
 				DimensionHelper.PopupMessageButtonWidth,
 				ColorHelper.Blue,
 				UIColor.White,
 				DimensionHelper.SmallTextSize,
-				"Xác nhận",
+				null,
 				DimensionHelper.PopupButtonHeight / 2);
-
-			//Review ThanhVo Can bind command directly to ViewModel
-			_closeButton.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			_contentView.Add(_closeButton);
 			_contentView.AddConstraints(new[]
@@ -77,8 +67,6 @@ namespace GiveAndTake.iOS.Views.Popups
 			});
 		}
 
-		private void OnClosePopup() => CloseCommand?.Execute(null);
-
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
@@ -87,9 +75,17 @@ namespace GiveAndTake.iOS.Views.Popups
 
 			bindingSet.Bind(_messageLabel)
 				.To(vm => vm.Message);
+			
+			bindingSet.Bind(_closeButton)
+				.For("Title")
+				.To(vm => vm.CloseButtonTitle);
 
-			bindingSet.Bind(this)
-				.For(v => v.CloseCommand)
+			bindingSet.Bind(_overlayView.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.CloseCommand);
+
+			bindingSet.Bind(_closeButton.Tap())
+				.For(v => v.Command)
 				.To(vm => vm.CloseCommand);
 
 			bindingSet.Apply();

@@ -7,13 +7,15 @@ namespace GiveAndTake.Core.ViewModels.Popup
 	{
 		public IMvxAsyncCommand CloseCommand { get; set; }
 
+		public string CloseButtonTitle { get; set; } = AppConstants.SubmitTitle;
+
 		private string _message;
 		public string Message
 		{
 			get => _message;
 			set => SetProperty(ref _message, value);
 		}
-
+		
 		public PopupWarningViewModel()
 		{
 			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this));
