@@ -25,4 +25,10 @@
 		Timeout,
 		Exception
 	}
+
+	public enum PopupListType
+	{
+		FilterType,
+		MenuType
+	}
 }

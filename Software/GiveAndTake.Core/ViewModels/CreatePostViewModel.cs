@@ -40,8 +40,8 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
 															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
 
-		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
-		public IMvxAsyncCommand ShowProvinceCityCommand { get; set; }
+		public IMvxCommand ShowCategoriesCommand { get; set; }
+		public IMvxCommand ShowProvinceCityCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
@@ -54,6 +54,8 @@ namespace GiveAndTake.Core.ViewModels
 		private string _provinceCity = AppConstants.DefaultLocationFilter;
 		private byte[] _bytes;
 		private string _selectedImage;
+		private Category _selectedCategory;
+		private ProvinceCity _selectedProvinceCity;
 
 		public string PostDescription
 		{
@@ -102,35 +104,47 @@ namespace GiveAndTake.Core.ViewModels
 			_debouncer = new DebouncerHelper();
 			_dataModel = dataModel;
 			_pictureChooserTask = pictureChooserTask;
-			_dataModel.SelectedCategory = _dataModel.Categories.FirstOrDefault((category => category.CategoryName == AppConstants.DefaultCategoryCreatePostName));
+			_selectedCategory = _dataModel.Categories.FirstOrDefault(category => category.CategoryName == AppConstants.DefaultCategoryCreatePostName);
+			_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
 			InitCommand();
 		}
 
 		private void InitCommand()
 		{
 			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
-			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
-			ShowProvinceCityCommand = new MvxAsyncCommand(ShowProvinceCities);
+			ShowCategoriesCommand = new MvxCommand(ShowCategoriesPopup);
+			ShowProvinceCityCommand = new MvxCommand(ShowLocationFiltersPopup);
 			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
 		}
 
-		private async Task ShowCategories()
+		private async void ShowCategoriesPopup()
 		{
-			var result = await NavigationService.Navigate<PopupCategoriesViewModel, bool>();
-			if (result)
+			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
-				Category = _dataModel.SelectedCategory?.CategoryName;
-			}
+				Title = AppConstants.PopupCategoriesTitle,
+				Items = _dataModel.Categories.Select(c => c.CategoryName).ToList(),
+				SelectedItem = _selectedCategory.CategoryName
+			});
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			_selectedCategory = _dataModel.Categories.First(c => c.CategoryName == result);
+			Category = result;
 		}
 
-
-		private async Task ShowProvinceCities()
+		private async void ShowLocationFiltersPopup()
 		{
-			var result = await NavigationService.Navigate<PopupLocationFilterViewModel, bool>();
-			if (result)
+			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
-				ProvinceCity = _dataModel.SelectedProvinceCity.ProvinceCityName;
-			}
+				Title = AppConstants.PopupLocationFiltersTitle,
+				Items = _dataModel.ProvinceCities.Select(c => c.ProvinceCityName).ToList(),
+				SelectedItem = _selectedProvinceCity.ProvinceCityName
+			});
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			_selectedProvinceCity = _dataModel.ProvinceCities.First(c => c.ProvinceCityName == result);
+			ProvinceCity = result;
 		}
 
 		private async Task ShowPhotoCollection()
@@ -206,8 +220,8 @@ namespace GiveAndTake.Core.ViewModels
 				Title = PostTitle,
 				Description = PostDescription,
 				PostImages = _postImages,
-				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
-				Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
+				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
+				Address = _selectedProvinceCity.Id,   //Da Nang
 			};
 			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
 			NavigationService.Close(this,true);

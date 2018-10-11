@@ -103,13 +103,10 @@
     <Compile Include="Views\CollectionViewSources\PhotoItemViewSource.cs" />
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
-    <Compile Include="Views\Popups\PopupCategoriesView.cs" />
     <Compile Include="Views\Popups\PopupListView.cs" />
-    <Compile Include="Views\Popups\PopupLocationFilterView.cs" />
     <Compile Include="Views\Popups\PopupMessageView.cs" />
     <Compile Include="Views\Popups\PopupPostOptionView.cs" />
     <Compile Include="Views\Popups\PopupReportView.cs" />
-    <Compile Include="Views\Popups\PopupShortFilterView.cs" />
     <Compile Include="Views\Popups\PopupView.cs" />
     <Compile Include="Views\Popups\PopupWarningView.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
