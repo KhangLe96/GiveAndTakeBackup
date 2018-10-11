@@ -1,78 +1,63 @@
 ﻿using GiveAndTake.Core.Models;
-using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
-using MvvmCross;
-using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
 	public class HomeViewModel : BaseViewModel
 	{
-		private readonly IDataModel _dataModel;
-		private readonly IManagementService _managementService = Mvx.Resolve<IManagementService>();
-		private MvxObservableCollection<PostItemViewModel> _postViewModels;
+		#region Properties
 
-		public MvxObservableCollection<PostItemViewModel> PostViewModels
-		{
-			get => _postViewModels;
-			set => SetProperty(ref _postViewModels, value);
-		}
+		public IMvxCommand ShowFilterCommand { get; set; }
 
-		public IMvxAsyncCommand ShowFilterCommand { get; set; }
+		public IMvxCommand ShowShortPostCommand { get; set; }
 
-		public IMvxAsyncCommand ShowShortPostCommand { get; set; }
-
-		public IMvxAsyncCommand ShowCategoriesCommand { get; set; }
+		public IMvxCommand ShowCategoriesCommand { get; set; }
 
 		public IMvxCommand CreatePostCommand { get; set; }
 
-		public ICommand SearchCommand { get; private set; }
+		public IMvxCommand SearchCommand { get; private set; }
 
-		public ICommand LoadMoreCommand { get; private set; }
+		public IMvxCommand LoadMoreCommand { get; private set; }
 
-		private bool _isRefresh;
+		public IMvxCommand RefreshCommand { get; private set; }
+
 		public bool IsRefreshing
 		{
 			get => _isRefresh;
 			set => SetProperty(ref _isRefresh, value);
 		}
 
-		private bool _isCategoryFilterActivated;
 		public bool IsCategoryFilterActivated
 		{
 			get => _isCategoryFilterActivated;
 			set => SetProperty(ref _isCategoryFilterActivated, value);
 		}
 
-		private bool _isSortFilterActivated;
 		public bool IsSortFilterActivated
 		{
 			get => _isSortFilterActivated;
 			set => SetProperty(ref _isSortFilterActivated, value);
 		}
 
-		private bool _isLocationFilterActivated;
 		public bool IsLocationFilterActivated
 		{
 			get => _isLocationFilterActivated;
 			set => SetProperty(ref _isLocationFilterActivated, value);
 		}
 
-		private bool _isSearchResultNull;
 		public bool IsSearchResultNull
 		{
 			get => _isSearchResultNull;
 			set => SetProperty(ref _isSearchResultNull, value);
 		}
 
-		private string _currentQueryString;
 		public string CurrentQueryString
 		{
 			get => _currentQueryString;
@@ -87,59 +72,117 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 
-		private MvxCommand _refreshCommand;
-		
-		public ICommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
+		public MvxObservableCollection<PostItemViewModel> PostViewModels
+		{
+			get => _postViewModels;
+			set => SetProperty(ref _postViewModels, value);
+		}
 
+		private bool _isSearchResultNull;
+		private bool _isLocationFilterActivated;
+		private bool _isSortFilterActivated;
+		private bool _isCategoryFilterActivated;
+		private bool _isRefresh;
+		private string _currentQueryString;
+		private readonly IDataModel _dataModel;
+		private MvxObservableCollection<PostItemViewModel> _postViewModels;
+
+		#endregion
 
 		public HomeViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
 			InitDataModels();
-			UpdatePostViewModels();
 			InitCommand();
 		}
 
-		private void InitDataModels()
+		private async void InitDataModels()
 		{
-			_dataModel.Categories = _dataModel.Categories ?? ManagementService.GetCategories();
-			_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? ManagementService.GetProvinceCities();
-			_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
-			_dataModel.SelectedCategory = _dataModel.SelectedCategory ?? _dataModel.Categories.First();
-			_dataModel.SelectedProvinceCity = _dataModel.SelectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
-			_dataModel.SelectedSortFilter = _dataModel.SelectedSortFilter ?? _dataModel.SortFilters.First();
+			try
+			{
+				_dataModel.Categories = _dataModel.Categories ?? ManagementService.GetCategories();
+				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? ManagementService.GetProvinceCities();
+				_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
+				_dataModel.SelectedCategory = _dataModel.SelectedCategory ?? _dataModel.Categories.First();
+				_dataModel.SelectedProvinceCity = _dataModel.SelectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
+				_dataModel.SelectedSortFilter = _dataModel.SelectedSortFilter ?? _dataModel.SortFilters.First();
+				UpdatePostViewModels();
+			}
+			catch (Exception)
+			{
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				if (result)
+				{
+					InitDataModels();
+				}
+			}
 		}
 
 		private void InitCommand()
 		{
-			ShowCategoriesCommand = new MvxAsyncCommand(ShowViewResult<PopupCategoriesViewModel>);
-			ShowShortPostCommand = new MvxAsyncCommand(ShowViewResult<PopupShortFilterViewModel>);
-			ShowFilterCommand = new MvxAsyncCommand(ShowViewResult<PopupLocationFilterViewModel>);
+			ShowCategoriesCommand = new MvxCommand(ShowViewResult<PopupCategoriesViewModel>);
+			ShowShortPostCommand = new MvxCommand(ShowViewResult<PopupShortFilterViewModel>);
+			ShowFilterCommand = new MvxCommand(ShowViewResult<PopupLocationFilterViewModel>);
 			CreatePostCommand = new MvxCommand(ShowNewPostView);
 			SearchCommand = new MvxCommand(UpdatePostViewModels);
 			LoadMoreCommand = new MvxCommand(OnLoadMore);
+			RefreshCommand = new MvxCommand(OnRefresh);
 		}
 
-		private void UpdatePostViewModels()
+		private async void UpdatePostViewModels()
 		{
-            _dataModel.ApiPostsResponse = _managementService.GetPostList(GetFilterParams());
-			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
-			if (PostViewModels.Any())
+			try
 			{
-				PostViewModels.Last().IsLastViewInList = true;
+				var t = DateTimeOffset.Now;
+
+				_dataModel.ApiPostsResponse = ManagementService.GetPostList(GetFilterParams());
+				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+				if (PostViewModels.Any())
+				{
+					PostViewModels.Last().IsLastViewInList = true;
+				}
+				IsSearchResultNull = PostViewModels.Any();
+
+				Console.WriteLine($"UpdatePostViewModels lasted {(DateTimeOffset.Now - t).Milliseconds}");
 			}
-			IsSearchResultNull = PostViewModels.Any();
+			catch (Exception )
+			{
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				if (result)
+				{
+					UpdatePostViewModels();
+				}
+			}
 		}
 
-		private void OnLoadMore()
+		private async void OnLoadMore()
 		{
-			_dataModel.ApiPostsResponse = _managementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
-			if (_dataModel.ApiPostsResponse.Posts.Any())
+			try
 			{
-				PostViewModels.Last().IsLastViewInList = false;
-				PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
-				PostViewModels.Last().IsLastViewInList = true;
+				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
+				if (_dataModel.ApiPostsResponse.Posts.Any())
+				{
+					PostViewModels.Last().IsLastViewInList = false;
+					PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+					PostViewModels.Last().IsLastViewInList = true;
+				}
 			}
+			catch (Exception)
+			{
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				if (result)
+				{
+					OnLoadMore();
+				}
+			}
+		}
+
+		private void OnRefresh()
+		{
+			IsRefreshing = true;
+			Task.Run(() => UpdatePostViewModels())
+				.ContinueWith(task => Task.Delay(1000))
+				.ContinueWith(task => { IsRefreshing = false; });
 		}
 
 		private PostItemViewModel GeneratePostViewModels(Post post)
@@ -148,15 +191,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			return new PostItemViewModel(post);
 		}
 
-		private async void OnRefresh()
-		{
-			IsRefreshing = true;
-			UpdatePostViewModels();
-			await Task.Delay(1000);
-			IsRefreshing = false;
-		}
-
-		private async Task ShowViewResult<T>() where T : BaseViewModelResult<bool>
+		private async void ShowViewResult<T>() where T : BaseViewModelResult<bool>
 		{
 			var result = await NavigationService.Navigate<T, bool>();
 			if (!result) return;

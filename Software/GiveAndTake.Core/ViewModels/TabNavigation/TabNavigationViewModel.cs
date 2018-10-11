@@ -16,7 +16,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_showInitialViewModelsCommand ??
 			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));
 
-		public string AvatarUrl => _dataModel.CurrentUser?.AvatarUrl;
+		public string AvatarUrl => _dataModel.LoginResponse.Profile.AvatarUrl;
 
 		public TabNavigationViewModel(IDataModel dataModel)
 		{

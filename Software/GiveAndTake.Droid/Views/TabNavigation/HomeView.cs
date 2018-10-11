@@ -42,7 +42,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			    LoadMoreEvent = () => LoadMoreCommand?.Execute()
 		    });
 			rvPosts.SetLayoutManager(layoutManager);
-	    }
+		}
 
 	    private void OnClose(object sender, SearchView.CloseEventArgs e)
 	    {
@@ -87,9 +87,12 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		private readonly LinearLayoutManager _layoutManager;
 
+		private bool _isLoading;
+
 		public ScrollListener(LinearLayoutManager layoutManager)
 		{
 			_layoutManager = layoutManager;
+			_isLoading = false;
 		}
 
 		public override void OnScrolled(RecyclerView recyclerView, int dx, int dy)
@@ -100,9 +103,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			var totalItemCount = recyclerView.GetAdapter().ItemCount;
 			var pastVisibleItems = _layoutManager.FindFirstVisibleItemPosition();
 
-			if (visibleItemCount + pastVisibleItems >= totalItemCount)
+			if (!_isLoading && visibleItemCount + pastVisibleItems >= totalItemCount - 5)
 			{
-				LoadMoreEvent?.BeginInvoke(null, null);
+				_isLoading = true;
+				LoadMoreEvent?.BeginInvoke(result => _isLoading = false, null);
 			}
 		}
 
