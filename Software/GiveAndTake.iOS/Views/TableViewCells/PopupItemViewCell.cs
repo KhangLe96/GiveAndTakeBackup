@@ -6,6 +6,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using System;
 using System.Windows.Input;
+using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -48,6 +49,11 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Right, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
+
+			//Review ThanhVo Does this binding work?
+			//bindingSet.Bind(this.Tap())
+			//	.For(v => v.Command)
+			//	.To(vm => vm.ClickCommand);
 
 			AddGestureRecognizer(new UITapGestureRecognizer(() =>
 			{

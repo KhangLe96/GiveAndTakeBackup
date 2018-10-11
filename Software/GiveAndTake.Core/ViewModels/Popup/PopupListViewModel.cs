@@ -8,6 +8,12 @@ using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
+	//Revew ThanhVo The popup list item just show the list of item (string)
+	//What do you expect from popup list, just get selected item, right?
+	//So the return value is selected item (string)
+	//Where do you handle base on selected item => where you call the popup list item, right?
+	//How you init data fro PopupItemViewModels? => you can pass it from Parameter of ViewModel,
+	//but MVVMCross does not allow you pass a list, you can convert to json as string => Write json helper to serialize and deserialize object
 	public abstract class PopupListViewModel : BaseViewModelResult<bool>
 	{
 		protected readonly IDataModel DataModel;
@@ -42,6 +48,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			return base.Initialize();
 		}
 
+		//Review ThanhVo Name of method does not match with command
 		protected virtual Task OnCloseCommand()
 		{
 			return NavigationService.Close(this, true);

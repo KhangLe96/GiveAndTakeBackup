@@ -18,6 +18,8 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			set => SetProperty(ref _itemName, value);
 		}
 
+		//Review Thanh Vo This is should property of item, when you think about a object, you should think about its charactices
+		//In this view, you has bring a list into each item. Instead of last item in view, you can define this item which show the bottom line or not
 		private bool _isLastViewInList;
 		public bool IsLastViewInList
 		{
