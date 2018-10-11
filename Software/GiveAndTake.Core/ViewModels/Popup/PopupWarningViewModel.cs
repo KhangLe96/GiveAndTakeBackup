@@ -7,6 +7,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 	{
 		public IMvxAsyncCommand CloseCommand { get; set; }
 
+		//Review Thanh Vo just only get
 		public string CloseButtonTitle { get; set; } = AppConstants.SubmitTitle;
 
 		private string _message;
