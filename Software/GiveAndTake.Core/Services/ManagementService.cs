@@ -17,12 +17,15 @@ namespace GiveAndTake.Core.Services
         {
             _apiHelper = new RestClient();
         }
-
+		//Review ThanhVo Apply my reviews in this method for all methods which calling api
+		//Review ThanhVo Check all place where call this method and catch ApiException
         public List<Category> GetCategories()
         {
             return Task.Run(async () =>
             {
                 var response = await _apiHelper.Get(AppConstants.GetCategories);
+
+				//Review ThanhVo Do we need to know network status to deserialize. You should check the result of response, the data for next step
 				if (response?.NetworkStatus == NetworkStatus.Success)
 	            {
 		            var deserializeResult = JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
@@ -33,9 +36,12 @@ namespace GiveAndTake.Core.Services
 		            }
 	            }
 
+				//Review ThanhVo Don't add debug writeline code in the code when submiting
 	            //Handle popup error cannot get data
 	            Debug.WriteLine("Error cannot get data");
-	            throw new Exception(response?.ErrorMessage);
+				//Review ThanhVo Should create our exception "ApiException" to handle disconnect internet connection cases
+				//Put all code in try catch and throw ApiException if it has exception
+				throw new Exception(response?.ErrorMessage);
 
 			}).Result.Categories;
         }
