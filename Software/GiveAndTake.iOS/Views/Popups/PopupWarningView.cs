@@ -50,13 +50,11 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_messageLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			//Review Thanh Vo Remove title argument in CreateButton method
 			_closeButton = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight,
 				DimensionHelper.PopupMessageButtonWidth,
 				ColorHelper.Blue,
 				UIColor.White,
 				DimensionHelper.SmallTextSize,
-				null,
 				DimensionHelper.PopupButtonHeight / 2);
 
 			_contentView.Add(_closeButton);

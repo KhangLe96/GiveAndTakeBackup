@@ -155,7 +155,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitChooseProvinceCityButton()
 		{
 			_chooseProvinceCityButton = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
-				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, null, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
+				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
 
 			_chooseProvinceCityButton.Layer.BorderColor = ColorHelper.Gray.CGColor;
 			_chooseProvinceCityButton.Layer.BorderWidth = 1;
@@ -176,7 +176,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitChooseCategoryButton()
 		{
 			_chooseCategoryButton = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
-				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, null, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
+				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
 
 			_chooseCategoryButton.Layer.BorderColor = ColorHelper.Gray.CGColor;
 			_chooseCategoryButton.Layer.BorderWidth = 1;

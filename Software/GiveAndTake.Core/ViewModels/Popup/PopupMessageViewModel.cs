@@ -10,10 +10,8 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		public IMvxAsyncCommand SubmitCommand { get; set; }
 		public IMvxAsyncCommand CancelCommand { get; set; }
 
-		//Review Thanh Vo just only get
-		public string SubmitButtonTitle { get; set; } = AppConstants.SubmitTitle;
-		//Review Thanh Vo just only get
-		public string CancelButtonTitle { get; set; } = AppConstants.CancelTitle;
+		public string SubmitButtonTitle { get; } = AppConstants.SubmitTitle;
+		public string CancelButtonTitle { get; } = AppConstants.CancelTitle;
 
 		private string _message ;
 		public string Message
