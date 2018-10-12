@@ -124,7 +124,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			ShowShortPostCommand = new MvxCommand(ShowViewResult<PopupShortFilterViewModel>);
 			ShowFilterCommand = new MvxCommand(ShowViewResult<PopupLocationFilterViewModel>);
 			CreatePostCommand = new MvxCommand(ShowNewPostView);
-			SearchCommand = new MvxCommand(UpdatePostViewModels);
+			SearchCommand = new MvxCommand(() => Task.Run(() => UpdatePostViewModels()));
 			LoadMoreCommand = new MvxCommand(OnLoadMore);
 			RefreshCommand = new MvxCommand(OnRefresh);
 		}
@@ -195,10 +195,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			var result = await NavigationService.Navigate<T, bool>();
 			if (!result) return;
-			UpdatePostViewModels();
-			IsCategoryFilterActivated = _dataModel.SelectedCategory != _dataModel.Categories.First();
-			IsLocationFilterActivated =  _dataModel.SelectedProvinceCity.ProvinceCityName != AppConstants.DefaultLocationFilter;
-			IsSortFilterActivated = _dataModel.SelectedSortFilter.FilterTag != _dataModel.SortFilters.First().FilterTag;
+			await Task.Run(() =>
+			{
+				UpdatePostViewModels();
+				IsCategoryFilterActivated = _dataModel.SelectedCategory != _dataModel.Categories.First();
+				IsLocationFilterActivated = _dataModel.SelectedProvinceCity.ProvinceCityName != AppConstants.DefaultLocationFilter;
+				IsSortFilterActivated = _dataModel.SelectedSortFilter.FilterTag != _dataModel.SortFilters.First().FilterTag;
+			});
 		}
 
 		private async void ShowNewPostView()
