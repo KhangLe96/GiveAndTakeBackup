@@ -1,9 +1,9 @@
-﻿using System.Windows.Input;
-using GiveAndTake.Core.ViewModels.Popup;
+﻿using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
 
@@ -18,15 +18,11 @@ namespace GiveAndTake.iOS.Views.Popups
 		private UIButton _cancelButton;
 		private UIButton _submitButton;
 
-		public ICommand CloseCommand { get; set; }
-		public ICommand SubmitCommand { get; set; }
-
 		protected override void InitView()
 		{
 			View.BackgroundColor = UIColor.Clear;
 
 			_overlayView = UIHelper.CreateView(0,0, UIColor.Black.ColorWithAlpha(0.7f));
-			_overlayView.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			View.Add(_overlayView);
 			View.AddConstraints(new[]
@@ -61,12 +57,10 @@ namespace GiveAndTake.iOS.Views.Popups
 				UIColor.White, 
 				ColorHelper.Blue,
 				DimensionHelper.SmallTextSize,
-				"Hủy",
+				null,
 				DimensionHelper.PopupButtonHeight / 2,
 				ColorHelper.Blue,
 				DimensionHelper.PopupCancelButtonBorder);
-
-			_cancelButton.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			_contentView.Add(_cancelButton);
 			_contentView.AddConstraints(new[]
@@ -80,10 +74,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				ColorHelper.Blue,
 				UIColor.White,
 				DimensionHelper.SmallTextSize,
-				"Xác nhận",
 				DimensionHelper.PopupButtonHeight / 2);
-
-			_submitButton.AddGestureRecognizer(new UITapGestureRecognizer(OnSubmitPopup));
 
 			_contentView.Add(_submitButton);
 			_contentView.AddConstraints(new[]
@@ -94,9 +85,6 @@ namespace GiveAndTake.iOS.Views.Popups
 			});
 		}
 
-		private void OnClosePopup() => CloseCommand?.Execute(null);
-		private void OnSubmitPopup() => SubmitCommand?.Execute(null);
-
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
@@ -106,12 +94,24 @@ namespace GiveAndTake.iOS.Views.Popups
 			bindingSet.Bind(_messageLabel)
 				.To(vm => vm.Message);
 
-			bindingSet.Bind(this)
-				.For(v => v.CloseCommand)
+			bindingSet.Bind(_submitButton)
+				.For("Title")
+				.To(vm => vm.SubmitButtonTitle);
+
+			bindingSet.Bind(_cancelButton)
+				.For("Title")
+				.To(vm => vm.CancelButtonTitle);
+
+			bindingSet.Bind(_overlayView.Tap())
+				.For(v => v.Command)
 				.To(vm => vm.CancelCommand);
 
-			bindingSet.Bind(this)
-				.For(v => v.SubmitCommand)
+			bindingSet.Bind(_cancelButton.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.CancelCommand);
+
+			bindingSet.Bind(_submitButton.Tap())
+				.For(v => v.Command)
 				.To(vm => vm.SubmitCommand);
 
 			bindingSet.Apply();

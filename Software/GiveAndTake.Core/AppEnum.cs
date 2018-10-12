@@ -22,4 +22,10 @@
 		Timeout,
 		Exception
 	}
+
+	public enum RequestStatus
+	{
+		Submitted,
+		Cancelled
+	}
 }

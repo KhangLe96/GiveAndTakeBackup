@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using GiveAndTake.Core.ViewModels.Popup;
+﻿using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
@@ -13,8 +12,6 @@ namespace GiveAndTake.iOS.Views.Popups
 	{
 		private UIView _popupLine;
 		private UILabel _labelReport;
-
-		public override ICommand CloseCommand { get; set; }
 
 		protected override void InitView()
 		{
@@ -59,10 +56,6 @@ namespace GiveAndTake.iOS.Views.Popups
 			base.CreateBinding();
 
 			var bindingSet = this.CreateBindingSet<PopupReportView, PopupReportViewModel>();
-
-			bindingSet.Bind(this)
-				.For(v => v.CloseCommand)
-				.To(vm => vm.CloseCommand);
 
 			bindingSet.Bind(_labelReport.Tap())
 				.For(v => v.Command)

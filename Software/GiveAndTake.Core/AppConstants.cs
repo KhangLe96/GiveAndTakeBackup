@@ -27,5 +27,8 @@
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
+		public static string SubmitTitle = "Xác nhận";
+		public static string CancelTitle = "Hủy";
+		public static string Done = "Xong";
 	}
 }

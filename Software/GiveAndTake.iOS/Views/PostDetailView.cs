@@ -207,7 +207,6 @@ namespace GiveAndTake.iOS.Views
 				ColorHelper.Blue,
 				UIColor.White,
 				DimensionHelper.ButtonTextSize,
-				null,
 				DimensionHelper.ButtonCategoryHeight / 2);
 			View.AddSubview(_btnCategory);
 			View.AddConstraints(new[]

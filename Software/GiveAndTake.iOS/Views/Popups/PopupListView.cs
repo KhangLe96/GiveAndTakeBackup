@@ -38,7 +38,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				DimensionHelper.PopupButtonWidth,
 				ColorHelper.Blue, 
 				UIColor.White, 
-				DimensionHelper.ButtonTextSize, "Xong",
+				DimensionHelper.ButtonTextSize, 
 				DimensionHelper.PopupButtonHeight / 2);
 
 			container.Add(_btnClose);
@@ -141,6 +141,10 @@ namespace GiveAndTake.iOS.Views.Popups
 			bindingSet.Bind(_background.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.CloseCommand);
+
+			bindingSet.Bind(_btnClose)
+				.For("Title")
+				.To(vm => vm.SubmitButtonTitle);
 
 			bindingSet.Bind(this)
 				.For(v => v.CloseCommand)
