@@ -19,8 +19,6 @@ namespace GiveAndTake.Droid.Views.Base
 
 		protected override void CreateBinding()
 		{
-			//REVIEW THANH VO: Duplicated
-			base.CreateBinding();
 			base.CreateBinding();
 			var bindingSet = this.CreateBindingSet<MasterView, MasterViewModel>();
 
@@ -34,11 +32,12 @@ namespace GiveAndTake.Droid.Views.Base
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
-			//REVIEW THANH VO: before and end of if block should insert newline
+
 			if (bundle == null)
 			{
 				ShowInitialViewModelsCommand.Execute();
 			}
+
 		}
 	}
 }

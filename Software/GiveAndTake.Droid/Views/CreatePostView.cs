@@ -15,7 +15,6 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views
 {
-	//Review ThanhVo Why is type of is MasterViewModel?
 	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
 	[Register(nameof(CreatePostView))]
 	public class CreatePostView : BaseFragment

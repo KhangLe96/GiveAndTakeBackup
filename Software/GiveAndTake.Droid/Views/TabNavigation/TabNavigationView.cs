@@ -35,6 +35,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		#region Properties
 
 		public string AvatarUrl { get; set; }
+		public int LastTab { get; set; }
 
 		protected override int LayoutId => Resource.Layout.TabNavigation;
 
@@ -57,6 +58,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			bindingSet.Bind(this)
 				.For(v => v.AvatarUrl)
 				.To(vm => vm.AvatarUrl);
+
+			bindingSet.Bind(this)
+				.For(v => v.LastTab)
+				.To(vm => vm.LastTab);
 
 			bindingSet.Apply();
 		}
@@ -89,23 +94,15 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 						(int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size)),
 			};
 
-			//Review ThanhVo What happend if _tabLayout.TabCount is different with expectation TabTitleIconsDictionary.Count?
 			for (var index = 0; index < _tabLayout.TabCount; index++)
 			{
 				var tab = _tabLayout.GetTabAt(index);
 				tab.SetIcon(TabTitleIconsDictionary[tab.Text]);
 				tab.SetText("");
-
-				if (index == _tabLayout.TabCount - 1)
-				{
-				}
-
 			}
 
-			//Review Thanh Vo Don't use magic number here. If profile is last tab, you can set in last item of for block above
-			_tabLayout.GetTabAt(3).SetCustomView(_ccimProfile);
+			_tabLayout.GetTabAt(LastTab).SetCustomView(_ccimProfile);
 
-			//Review ThanhVo Can move this register into InitView part?
 			_tabLayout.TabSelected += OnTabSelected;
 		}
 
@@ -115,8 +112,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		private void OnTabSelected(object sender, TabLayout.TabSelectedEventArgs e)
 		{
-			//Review Thanh Vo Should expect it is a last tab, don't use magic number
-			if (e.Tab.Position == 3)
+			if (e.Tab.Position == LastTab)
 			{
 				_ccimProfile.Transformations = new List<ITransformation>
 				{
@@ -132,7 +128,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 					new CircleTransformation()
 				};
 			}
-			_tabLayout.GetTabAt(3).SetCustomView(_ccimProfile);
+			_tabLayout.GetTabAt(LastTab).SetCustomView(_ccimProfile);
 		}
 
 		#endregion

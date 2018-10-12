@@ -15,7 +15,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private string _address;
 	    private string _status;
 		//REVIEW: Rename to _postImages cause It is a List
-	    private List<Image> _postImage;
+	    private List<Image> _postImages;
 	    private int _requestCount;
 	    private int _commentCount;
 	    private string _categoryBackgroundColor;
@@ -44,10 +44,10 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _status, value);
 	    }
 
-	    public List<Image> PostImage
+	    public List<Image> PostImages
 	    {
-		    get => _postImage;
-		    set => SetProperty(ref _postImage, value);
+		    get => _postImages;
+		    set => SetProperty(ref _postImages, value);
 	    }
 
 	    public int RequestCount
@@ -143,7 +143,7 @@ namespace GiveAndTake.Core.ViewModels
 			Address = post.ProvinceCity.ProvinceCityName;
 			PostDescription = post.Description;
 			PostTitle = post.Title;
-			PostImage = post.Images;
+			PostImages = post.Images;
 			RequestCount = post.RequestCount;
 			CommentCount = post.CommentCount;
 			Status = post.PostStatus;

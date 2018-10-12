@@ -9,6 +9,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
 	public class TabNavigationViewModel : BaseViewModel
 	{
+		private const int NumberOfTab = 4;
+		public int LastTab { get; set; } = NumberOfTab - 1;
 		private readonly IDataModel _dataModel;
 
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
