@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
 using Android.Text;
@@ -12,132 +10,164 @@ using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GiveAndTake.Droid.Views
 {
-	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
-	[Register(nameof(CreatePostView))]
-	public class CreatePostView : BaseFragment
-	{
-		protected override int LayoutId => Resource.Layout.CreatePostView;
-		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
-		public IMvxCommand SubmitCommand { get; set; }
-		private View _view;
+    [MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
+    [Register(nameof(CreatePostView))]
+    public class CreatePostView : BaseFragment
+    {
+        protected override int LayoutId => Resource.Layout.CreatePostView;
+        public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
+        public IMvxCommand SubmitCommand { get; set; }
+        private View _view;
+        private EditText _postDescriptionEditText;
 
-		private ImageButton _choosePictureButton;
 
-		protected override void InitView(View view)
-		{
-			_view = view;
-			InitChoosePicture();
-			InitSubmit();
+        private ImageButton _choosePictureButton;
 
-			var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
-			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
-		}
+        protected override void InitView(View view)
+        {
+            _view = view;
+            InitChoosePicture();
+            InitSubmit();
 
-		private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
-		{
-			var textView = sender as TextView;
-			if (!string.IsNullOrEmpty(textView?.Text))
-			{
-				textView.PaintFlags = PaintFlags.UnderlineText;
-			}
-			else
-			{
-				if (textView != null) textView.PaintFlags = PaintFlags.LinearText;
-			}
-		}
+            _postDescriptionEditText = _view.FindViewById<EditText>(Resource.Id.PostDescription);
 
-		protected override void CreateBinding()
-		{
-			base.CreateBinding();
+            _postDescriptionEditText.SetOnTouchListener(new MyTouchListener()
+            {
+                TouchViewId = _postDescriptionEditText.Id
+            });
 
-			var bindingSet = this.CreateBindingSet<CreatePostView, CreatePostViewModel>();
+            var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
+            tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
+        }
 
-			bindingSet.Bind(this)
-				.For(v => v.ImageCommand)
-				.To(vm => vm.ImageCommand);
+        private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textView = sender as TextView;
+            if (!string.IsNullOrEmpty(textView?.Text))
+            {
+                textView.PaintFlags = PaintFlags.UnderlineText;
+            }
+            else
+            {
+                if (textView != null) textView.PaintFlags = PaintFlags.LinearText;
+            }
+        }
 
-			bindingSet.Bind(this)
-				.For(v => v.SubmitCommand)
-				.To(vm => vm.SubmitCommand);
+        protected override void CreateBinding()
+        {
+            base.CreateBinding();
 
-			bindingSet.Apply();
-		}
+            var bindingSet = this.CreateBindingSet<CreatePostView, CreatePostViewModel>();
 
-		private void InitSubmit()
-		{
-			Button submitButton = _view.FindViewById<Button>(Resource.Id.Submit);
-			submitButton.Click += delegate
-			{
-				SubmitCommand.Execute(null);
-			};
-		}
+            bindingSet.Bind(this)
+                .For(v => v.ImageCommand)
+                .To(vm => vm.ImageCommand);
 
-		private void InitChoosePicture()
-		{
-			_choosePictureButton = _view.FindViewById<ImageButton>(Resource.Id.ChoosePicture);
-			_choosePictureButton.Click += ChoosePictureButton_Click;
-		}
+            bindingSet.Bind(this)
+                .For(v => v.SubmitCommand)
+                .To(vm => vm.SubmitCommand);
 
-		public override void OnDestroyView()
-		{
-			base.OnDestroyView();
-			_choosePictureButton.Click -= ChoosePictureButton_Click;
-		}
+            bindingSet.Apply();
+        }
 
-		private void ChoosePictureButton_Click(object sender, System.EventArgs e)
-		{
-			Intent intent = new Intent();
-			intent.SetType("image/*");
-			intent.PutExtra(Intent.ExtraAllowMultiple, true);
-			intent.SetAction(Intent.ActionGetContent);
-			StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 9001);
-		}
+        private void InitSubmit()
+        {
+            Button submitButton = _view.FindViewById<Button>(Resource.Id.Submit);
+            submitButton.Click += delegate
+            {
+                SubmitCommand.Execute(null);
+            };
+        }
 
-		public override void OnActivityResult(int requestCode, int resultCode, Intent data)
-		{
-			List<byte[]> image = new List<byte[]>();
-			base.OnActivityResult(requestCode, resultCode, data);
-			if (requestCode == 9001)
-			{
-				if (data?.ClipData != null)
-				{
-					var imageCount = data.ClipData.ItemCount;
-					for (int i = 0; i < imageCount; i++)
-					{
-						var selectedImage = data.ClipData.GetItemAt(i).Uri;
-						var imageInByte = ConvertUriToByte(selectedImage);
-						image.Add(imageInByte);
-					}
+        private void InitChoosePicture()
+        {
+            _choosePictureButton = _view.FindViewById<ImageButton>(Resource.Id.ChoosePicture);
+            _choosePictureButton.Click += ChoosePictureButton_Click;
+        }
 
-					ImageCommand.Execute(image);
-				}
-				else
-				{
-					if (data != null)
-					{
-						var selectedImage = Android.Net.Uri.Parse(data.DataString);
-						var imageInByte = ConvertUriToByte(selectedImage);
-						image.Add(imageInByte);
-						ImageCommand.Execute(image);
-					}
-				}
-			}
-		}
+        public override void OnDestroyView()
+        {
+            base.OnDestroyView();
+            _choosePictureButton.Click -= ChoosePictureButton_Click;
+        }
 
-		public byte[] ConvertUriToByte(Android.Net.Uri uri)
-		{
-			Stream stream = Activity.ContentResolver.OpenInputStream(uri);
-			byte[] byteArray;
+        private void ChoosePictureButton_Click(object sender, System.EventArgs e)
+        {
+            Intent intent = new Intent();
+            intent.SetType("image/*");
+            intent.PutExtra(Intent.ExtraAllowMultiple, true);
+            intent.SetAction(Intent.ActionGetContent);
+            StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 9001);
+        }
 
-			using (var memoryStream = new MemoryStream())
-			{
-				stream.CopyTo(memoryStream);
-				byteArray = memoryStream.ToArray();
-			}
-			return byteArray;
-		}
-	}
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
+        {
+            List<byte[]> image = new List<byte[]>();
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == 9001)
+            {
+                if (data?.ClipData != null)
+                {
+                    var imageCount = data.ClipData.ItemCount;
+                    for (int i = 0; i < imageCount; i++)
+                    {
+                        var selectedImage = data.ClipData.GetItemAt(i).Uri;
+                        var imageInByte = ConvertUriToByte(selectedImage);
+                        image.Add(imageInByte);
+                    }
+
+                    ImageCommand.Execute(image);
+                }
+                else
+                {
+                    if (data != null)
+                    {
+                        var selectedImage = Android.Net.Uri.Parse(data.DataString);
+                        var imageInByte = ConvertUriToByte(selectedImage);
+                        image.Add(imageInByte);
+                        ImageCommand.Execute(image);
+                    }
+                }
+            }
+        }
+
+        public byte[] ConvertUriToByte(Android.Net.Uri uri)
+        {
+            Stream stream = Activity.ContentResolver.OpenInputStream(uri);
+            byte[] byteArray;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                byteArray = memoryStream.ToArray();
+            }
+            return byteArray;
+        }
+    }
+
+    public class MyTouchListener : Java.Lang.Object, View.IOnTouchListener
+    {
+        public int TouchViewId { get; set; }
+
+        public bool OnTouch(View v, MotionEvent e)
+        {
+            if (v.Id == TouchViewId)
+            {
+                v.Parent.RequestDisallowInterceptTouchEvent(true);
+                switch (e.Action & MotionEventActions.Mask)
+                {
+                    case MotionEventActions.Up:
+                        v.Parent.RequestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+            }
+
+            return false;
+        }
+    }
 }

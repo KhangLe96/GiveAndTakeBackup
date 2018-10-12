@@ -4,15 +4,15 @@
 	xmlns:local="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
-	<RelativeLayout
+    <RelativeLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
-		<LinearLayout
+        <LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/SpinnerBar">
-			<Button
+            <Button
 				android:textAllCaps="false"
 				android:textSize="@dimen/spinner_button_textSize"
 				android:layout_width="@dimen/spinner_button_width"
@@ -27,7 +27,7 @@
 				android:background="@drawable/spinner_button_bg"
 				android:fontFamily="@font/sanfranciscodisplay_light"
 				local:MvxBind="Text ProvinceCity; Click ShowProvinceCityCommand"/>
-			<Button
+            <Button
 				android:textSize="@dimen/spinner_button_textSize"
 				android:textAllCaps="false"
 				android:layout_width="@dimen/spinner_button_width"
@@ -43,8 +43,8 @@
 				android:background="@drawable/spinner_button_bg"
 				android:fontFamily="@font/sanfranciscodisplay_light"
 				local:MvxBind="Text Category; Click ShowCategoriesCommand"/>
-		</LinearLayout>
-		<EditText
+        </LinearLayout>
+        <EditText
 			android:textSize="@dimen/MediumTextSize"
 			android:textAllCaps="false"
 			android:textColorHint="@color/default_popup_text_color"
@@ -60,23 +60,24 @@
 			android:paddingLeft="@dimen/default_padding"
 			android:fontFamily="@font/sanfranciscodisplay_light"
 			local:MvxBind="Text PostTitle; Hint PostTitlePlaceHolder"/>
-		<EditText
-			android:textSize="@dimen/MediumTextSize"
-			android:textAllCaps="false"
-			android:textColorHint="@color/default_popup_text_color"
-			android:id="@+id/PostDescription"
-			android:padding="@dimen/default_padding"
-			android:layout_marginLeft="@dimen/default_margin"
-			android:layout_marginRight="@dimen/default_margin"
-			android:background="@drawable/post_editText_bg"
-			android:layout_width="match_parent"
-			android:layout_height="@dimen/postDescription_editText_Height"
-			android:layout_below="@+id/Title"
-			android:layout_marginTop="@dimen/default_margin"
-			android:gravity ="top"
-			android:fontFamily="@font/sanfranciscodisplay_light"
-			local:MvxBind="Text PostDescription; Hint PostDescriptionPlaceHolder"/>
-		<ImageButton
+        <EditText
+            android:layout_below="@+id/Title"
+	        android:textSize="@dimen/MediumTextSize"
+	        android:textAllCaps="false"
+	        android:textColorHint="@color/default_popup_text_color"
+            android:id="@+id/PostDescription"
+	        android:padding="@dimen/default_padding"
+	        android:layout_marginLeft="@dimen/default_margin"
+	        android:layout_marginRight="@dimen/default_margin"
+	        android:background="@drawable/post_editText_bg"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/postDescription_editText_Height"
+	        android:layout_marginTop="@dimen/default_margin"
+	        android:gravity ="top"
+            android:inputType="textMultiLine"
+	        android:fontFamily="@font/sanfranciscodisplay_light"
+	        local:MvxBind="Text PostDescription; Hint PostDescriptionPlaceHolder"/>
+        <ImageButton
 			android:id="@+id/ChoosePicture"
 			android:layout_width="@dimen/picture_button_width"
 			android:layout_height="@dimen/picture_button_height"
@@ -87,7 +88,7 @@
 			android:src="@drawable/gallery_button"
 			android:layout_below="@+id/PostDescription"
 			android:scaleType="fitXY"/>
-		<ImageButton
+        <ImageButton
 			android:layout_width="@dimen/picture_button_width"
 			android:layout_height="@dimen/picture_button_height"
 			android:layout_toLeftOf="@+id/ChoosePicture"
@@ -98,7 +99,7 @@
 			local:MvxBind="Click TakePictureCommand"
 			android:layout_below="@+id/PostDescription"
 			android:scaleType="fitXY"/>
-		<TextView
+        <TextView
 			android:id="@+id/tvSelectedImage"
 			android:hint="@string/selected_image"
 			android:textColorHint="@color/default_popup_text_color"
@@ -111,12 +112,12 @@
 			android:layout_below="@+id/PostDescription"
 			android:fontFamily="@font/sanfranciscodisplay_light"
 			local:MvxBind="Text SelectedImage; Click ShowPhotoCollectionCommand"/>
-		<LinearLayout
+        <LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_below="@+id/ChoosePicture"
 			android:layout_marginBottom="@dimen/default_margin">
-			<Button
+            <Button
 				android:textAllCaps="false"
 				android:layout_width="wrap_content"
 				android:layout_below="@+id/ChoosePicture"
@@ -129,7 +130,7 @@
 				android:textColor="@drawable/cancel_button_text"
 				android:fontFamily="@font/sanfranciscodisplay_light"
 				local:MvxBind="Text BtnCancelTitle; Click CloseCommand"/>
-			<Button
+            <Button
 				android:textAllCaps="false"
 				android:layout_width="wrap_content"
 				android:id="@+id/Submit"
@@ -139,9 +140,9 @@
 				android:layout_height="@dimen/createPost_button_height"
 				android:layout_marginTop="@dimen/default_margin"
 				android:background="@drawable/submit_button_bg"
-				android:textColor="@color/white" 
+				android:textColor="@color/white"
 				android:fontFamily="@font/sanfranciscodisplay_light"
 				local:MvxBind="Text BtnSubmitTitle"/>
-		</LinearLayout>
-	</RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
