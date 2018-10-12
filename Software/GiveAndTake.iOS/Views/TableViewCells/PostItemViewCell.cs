@@ -166,7 +166,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				ColorHelper.Blue,
 				UIColor.White, 
 				DimensionHelper.ButtonTextSize, 
-				null, 
 				DimensionHelper.ButtonCategoryHeight / 2);
 
 			ContentView.AddSubview(_btnCategory);

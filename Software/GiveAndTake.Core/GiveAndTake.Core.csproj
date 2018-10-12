@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Locales\vi.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Locales\vi.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="I18NPortable" Version="0.6.0" />
     <PackageReference Include="MvvmCross" Version="6.1.2" />
     <PackageReference Include="MvvmCross.Plugin.Json" Version="6.1.2" />
     <PackageReference Include="MvvmCross.Plugin.PictureChooser" Version="6.1.2" />

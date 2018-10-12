@@ -23,11 +23,5 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 					NSLayoutAttribute.CenterY, 1, 0)
 			});
 		}
-
-		public override void ViewWillAppear(bool animated)
-		{
-			base.ViewWillAppear(animated);
-			NavigationController?.SetNavigationBarHidden(true, animated);
-		}
 	}
 }

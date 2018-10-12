@@ -1,21 +1,23 @@
-﻿using System.Collections.Generic;
-using FFImageLoading.Transformations;
+﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class PostDetailViewModel : BaseViewModel<Post>
+	public class PostDetailViewModel : BaseViewModel<Post, bool>
     {
 		#region Properties
 
 		private string _categoryName;
 	    private string _address;
 	    private string _status;
-		//REVIEW: Rename to _postImages cause It is a List
-	    private List<Image> _postImage;
+	    private List<Image> _postImages;
 	    private int _requestCount;
 	    private int _commentCount;
 	    private string _categoryBackgroundColor;
@@ -24,114 +26,169 @@ namespace GiveAndTake.Core.ViewModels
 	    private string _createdTime;
 	    private string _postTitle;
 	    private string _postDescription;
-	    private int _currentPage;
+		private bool _isMyPost;
+	    private int _postImageIndex;
+	    private bool _canNavigateLeft;
+	    private bool _canNavigateRight;
+	    private string _imageIndexIndicator;
 
 		public string CategoryName
-	    {
-		    get => $"   {_categoryName}   ";
-		    set => SetProperty(ref _categoryName, value);
-	    }
+		{
+			get => $"   {_categoryName}   ";
+			set => SetProperty(ref _categoryName, value);
+		}
 
 		public string Address
 		{
-		    get => _address;
-		    set => SetProperty(ref _address, value);
-	    }
+			get => _address;
+			set => SetProperty(ref _address, value);
+		}
 
-	    public string Status
-	    {
-		    get => _status;
-		    set => SetProperty(ref _status, value);
-	    }
-
-	    public List<Image> PostImage
-	    {
-		    get => _postImage;
-		    set => SetProperty(ref _postImage, value);
-	    }
-
-	    public int RequestCount
-	    {
-		    get => _requestCount;
-		    set => SetProperty(ref _requestCount, value);
-	    }
-
-	    public int CommentCount
+		public string Status
 		{
-		    get => _commentCount;
-		    set => SetProperty(ref _commentCount, value);
-	    }
+			get => _status;
+			set => SetProperty(ref _status, value);
+		}
 
-	    public string CategoryBackgroundColor
+		public List<Image> PostImages
 		{
-		    get => _categoryBackgroundColor;
-		    set => SetProperty(ref _categoryBackgroundColor, value);
-	    }
+			get => _postImages;
+			set => SetProperty(ref _postImages, value);
+		}
 
-	    public string AvatarUrl
+		public int RequestCount
 		{
-		    get => _avatarUrl;
-		    set => SetProperty(ref _avatarUrl, value);
-	    }
+			get => _requestCount;
+			set => SetProperty(ref _requestCount, value);
+		}
 
-	    public string UserName
+		public int CommentCount
 		{
-		    get => _userName;
-		    set => SetProperty(ref _userName, value);
-	    }
+			get => _commentCount;
+			set => SetProperty(ref _commentCount, value);
+		}
 
-	    public string CreatedTime
+		public string CategoryBackgroundColor
 		{
-		    get => _createdTime;
-		    set => SetProperty(ref _createdTime, value);
-	    }
+			get => _categoryBackgroundColor;
+			set => SetProperty(ref _categoryBackgroundColor, value);
+		}
 
-	    public string PostTitle
+		public string AvatarUrl
+		{
+			get => _avatarUrl;
+			set => SetProperty(ref _avatarUrl, value);
+		}
+
+		public string UserName
+		{
+			get => _userName;
+			set => SetProperty(ref _userName, value);
+		}
+
+		public string CreatedTime
+		{
+			get => _createdTime;
+			set => SetProperty(ref _createdTime, value);
+		}
+
+		public string PostTitle
+		{
+			get => _postTitle;
+			set => SetProperty(ref _postTitle, value);
+		}
+
+		public string PostDescription
+		{
+			get => _postDescription;
+			set => SetProperty(ref _postDescription, value);
+		}
+
+	    public int PostImageIndex
 	    {
-		    get => _postTitle;
-		    set => SetProperty(ref _postTitle, value);
+		    get => _postImageIndex;
+		    set
+		    {
+			    SetProperty(ref _postImageIndex, value);
+			    _dataModel.PostImageIndex = value;
+			    UpdateImageIndexIndicator();
+				UpdateNavigationButtons();
+		    }
 	    }
 
-	    public string PostDescription
+	    public bool CanNavigateLeft
 	    {
-		    get => _postDescription;
-		    set => SetProperty(ref _postDescription, value);
+		    get => _canNavigateLeft;
+		    set => SetProperty(ref _canNavigateLeft, value);
 	    }
 
-	    public int CurrentPage
+	    public bool CanNavigateRight
 	    {
-		    get => _currentPage;
-		    set => SetProperty(ref _currentPage, value);
+		    get => _canNavigateRight;
+		    set => SetProperty(ref _canNavigateRight, value);
+	    }
+
+	    public string ImageIndexIndicator 
+	    {
+		    get => _imageIndexIndicator;
+		    set => SetProperty(ref _imageIndexIndicator, value);
 	    }
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
+
+		private readonly IDataModel _dataModel;
 
 		#endregion
 
 		#region Constructor
 
-		public PostDetailViewModel()
-	    {
+		public PostDetailViewModel(IDataModel dataModel)
+		{
+			_dataModel = dataModel;
 			InitCommand();
-	    }
-
-	    private void InitCommand()
-	    {
-			//   ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
-			//ShowPostCommentCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel>(AppConstants.DefaultWarningMessage));
 		}
 
-		//private async Task ShowMenuView()
-		//{
-		// if (_post.IsMyPost)
-		// {
-		//  await NavigationService.Navigate<PopupPostOptionViewModel>();
-		// }
-		// else
-		// {
-		//  await NavigationService.Navigate<PopupReportViewModel>();
-		// }
-		//}
+		private void InitCommand()
+		{
+			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			ShowMenuPopupCommand = new MvxCommand(ShowMenuView);
+			ShowPostCommentCommand = new MvxCommand(async () =>
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
+			ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
+			ShowFullImageCommand = new MvxCommand<int>(ShowFullImage);
+			NavigateLeftCommand = new MvxCommand(() => PostImageIndex--);
+			NavigateRightCommand = new MvxCommand(() => PostImageIndex++);
+			UpdateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index);
+			ShowGiverProfileCommand = new MvxAsyncCommand(async () => 
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
+			BackPressedCommand = new MvxCommand(() => NavigationService.Close(this, true));
+		}
+
+		private void ShowFullImage(int position)
+		{
+			PostImageIndex = position;
+			NavigationService.Navigate<PostImageViewModel, bool>().ContinueWith(task => PostImageIndex = _dataModel.PostImageIndex);
+		}
+
+	    private void ShowMenuView()
+		{
+			if (_isMyPost)
+			{
+				NavigationService.Navigate<PopupPostOptionViewModel>();
+			}
+			else
+			{
+				NavigationService.Navigate<PopupReportViewModel>();
+			}
+		}
+
+		private void ShowMyRequestList()
+		{
+			if (_isMyPost)
+			{
+				NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+			}
+		}
 
 
 		public override void Prepare(Post post)
@@ -143,19 +200,47 @@ namespace GiveAndTake.Core.ViewModels
 			Address = post.ProvinceCity.ProvinceCityName;
 			PostDescription = post.Description;
 			PostTitle = post.Title;
-			PostImage = post.Images;
+			PostImages = post.Images;
 			RequestCount = post.RequestCount;
 			CommentCount = post.CommentCount;
-			Status = post.PostStatus;
+			Status = post.IsMyPost ? post.PostStatus.Translate() : " ";
 			CategoryBackgroundColor = post.Category.BackgroundColor;
+			_isMyPost = post.IsMyPost;
+			PostImageIndex = 0;
 		}
 
+	    public override Task Initialize()
+	    {
+		    _dataModel.PostImages = PostImages;
+		    _dataModel.PostImageIndex = 0;
+		    return base.Initialize();
+	    }
+
+	    private void UpdateNavigationButtons()
+	    {
+		    CanNavigateLeft = PostImages.Count > 1 && PostImageIndex > 0;
+		    CanNavigateRight = PostImages.Count > 1 && PostImageIndex < PostImages.Count - 1;
+	    }
+
+	    private void UpdateImageIndexIndicator()
+	    {
+		    ImageIndexIndicator = _postImageIndex + 1 + " / " + _postImages.Count;
+	    }
 		#endregion
 
 		#region Methods
-		//REVIEW : Consider to user MvxCommand instead of MvxAsyncCommand except in needed cases
-		public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
-	    public IMvxAsyncCommand ShowPostCommentCommand { get; set; }
-		#endregion
+
+	    public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
+		public IMvxAsyncCommand CloseCommand { get; set; }
+		public IMvxCommand ShowMenuPopupCommand { get; set; }
+		public IMvxCommand ShowPostCommentCommand { get; set; }
+		public IMvxCommand ShowMyRequestListCommand { get; set; }
+		public IMvxCommand<int> ShowFullImageCommand { get; set; }
+		public IMvxCommand NavigateLeftCommand { get; set; }
+	    public IMvxCommand NavigateRightCommand { get; set; }
+	    public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
+	    public IMvxCommand BackPressedCommand { get; set; }
+
+	    #endregion
 	}
 }

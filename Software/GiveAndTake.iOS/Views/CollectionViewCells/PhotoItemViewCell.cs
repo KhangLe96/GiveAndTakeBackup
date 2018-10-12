@@ -23,13 +23,14 @@ namespace GiveAndTake.iOS.Views.CollectionViewCells
 			set
 			{
 				_imageBase64Data = value;
-				NSData decodedData = new NSData(_imageBase64Data, NSDataBase64DecodingOptions.None);
-				UIImage decodedImage = new UIImage(decodedData);
+
+				var decodedData = new NSData(_imageBase64Data, NSDataBase64DecodingOptions.None);
+				var decodedImage = new UIImage(decodedData);
+
 				_photoImageView.Image = decodedImage;
 			}
 		}
 
-		public IMvxCommand DeleteAPhotoCommand { get; set; }
 
 		public PhotoItemViewCell(IntPtr handle) : base(handle)
 		{

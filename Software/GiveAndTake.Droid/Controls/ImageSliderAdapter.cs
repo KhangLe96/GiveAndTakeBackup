@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using Android.Content.Res;
 using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.Support.V4.View;
 using Android.Views;
 using Android.Widget;
@@ -15,6 +14,8 @@ namespace GiveAndTake.Droid.Controls
 {
 	public class ImageSliderAdapter : PagerAdapter
 	{
+		public Action HandleItemSelected { get; set; }
+
 		Context _context;
 		List<Image> _imageData;
 
@@ -46,7 +47,7 @@ namespace GiveAndTake.Droid.Controls
 			{
 				child.Click += (o, e) =>
 				{
-					//handle touch to view the image
+					HandleItemSelected?.Invoke();
 				};
 				if (_imageData.Count == 0)
 				{
@@ -58,7 +59,7 @@ namespace GiveAndTake.Droid.Controls
 					Bitmap image = null;
 					Task.Run(() =>
 					{
-						URL url = new URL(_imageData[position].ResizedImage);
+						URL url = new URL(_imageData[position].ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia"));
 						image = BitmapFactory.DecodeStream(url.OpenConnection().InputStream);
 					}).ContinueWith(t =>
 					{

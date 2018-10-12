@@ -16,9 +16,8 @@ namespace GiveAndTake.Core.ViewModels
         #region Properties
 
         private readonly Post _post;
-		private IDataModel _dataModel;
 
-		private string _categoryName;
+	    private string _categoryName;
 
         public string CategoryName 
         {
@@ -191,7 +190,7 @@ namespace GiveAndTake.Core.ViewModels
 		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    Description = _post.Description;
-		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage;
+		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;

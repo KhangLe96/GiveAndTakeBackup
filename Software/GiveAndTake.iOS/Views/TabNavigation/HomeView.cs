@@ -48,12 +48,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			InitNewPostButton();
 		}
 
-		public override void ViewWillAppear(bool animated)
-		{
-			base.ViewWillAppear(animated);
-			NavigationController?.SetNavigationBarHidden(true, animated);
-		}
-
 		public override void ViewDidAppear(bool animated)
 		{
 			base.ViewDidAppear(animated);
