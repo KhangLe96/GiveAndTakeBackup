@@ -209,13 +209,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
 
-			_dataModel.Categories = ManagementService.GetCategories();
-			_dataModel.SelectedCategory = categoryFilter;
-			_dataModel.SelectedProvinceCity = locationFilter;
-			if (result)
+			await Task.Run(() =>
 			{
-				UpdatePostViewModels();
-			}
+				_dataModel.Categories = ManagementService.GetCategories();
+				_dataModel.SelectedCategory = categoryFilter;
+				_dataModel.SelectedProvinceCity = locationFilter;
+				if (result)
+				{
+					UpdatePostViewModels();
+				}
+			});
 		}
 
 		private string GetFilterParams()

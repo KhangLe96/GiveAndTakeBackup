@@ -44,7 +44,7 @@ namespace GiveAndTake.iOS.Views
 					new CGRect(0, 0, UIScreen.MainScreen.Bounds.Width - DimensionHelper.PopupLineHeight,
 						UIScreen.MainScreen.Bounds.Height), _customImageFlowLayout)
 				{
-					BackgroundColor = ColorHelper.SeparatorColor,
+					BackgroundColor = ColorHelper.PhotoCollectionViewBackground,
 					TranslatesAutoresizingMaskIntoConstraints = false
 				};
 			_photoItemViewSource = new PhotoItemViewSource(_photoCollectionView);
