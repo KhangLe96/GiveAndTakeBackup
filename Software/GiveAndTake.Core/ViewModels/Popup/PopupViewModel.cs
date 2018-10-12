@@ -5,6 +5,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class PopupViewModel : BaseViewModel
 	{
+		public string SubmitButtonTitle { get; set; } = AppConstants.Done;
 		public IMvxCommand CloseCommand { get; set; }
 
 		public PopupViewModel()

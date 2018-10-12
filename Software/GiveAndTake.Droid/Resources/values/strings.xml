@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">Give And Take</string>
+	<string name="app_name">Cho Và Nhận</string>
 	<string name="login_title">Đăng nhập với tài khoản</string>
 	<string name="facebook_app_id">643536022700414</string>
 	<string name="fb_login_protocol_scheme">fb643536022700414</string>

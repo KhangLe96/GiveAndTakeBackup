@@ -147,19 +147,26 @@ namespace GiveAndTake.iOS.Helpers
 			return imageView;
 		}
 
-		public static CustomMvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string imagePath, nfloat cornerRadius = default(nfloat))
+		public static CustomMvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string defaultImagePath, nfloat cornerRadius = default(nfloat))
 		{
 			var imageView = new CustomMvxCachedImageView
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
-				DefaultImage = new UIImage(imagePath)
+				DefaultImage = new UIImage(defaultImagePath)
 			};
 			imageView.Layer.CornerRadius = cornerRadius;
 			imageView.ClipsToBounds = true;
-			
+
 			AddWidthHeight(height, width, imageView);
 
 			return imageView;
+		}
+
+		public static CustomMvxCachedImageView SetPlaceHolder(this CustomMvxCachedImageView customMvxCachedImageView, string loadingPlaceHolder, string errorPlaceHolder)
+		{
+			customMvxCachedImageView.LoadingPlaceholderImagePath = $"res:{loadingPlaceHolder}";
+			customMvxCachedImageView.ErrorPlaceholderImagePath = $"res:{errorPlaceHolder}";
+			return customMvxCachedImageView;
 		}
 
 		public static UISearchBar CreateSearchBar(nfloat height, nfloat width)
@@ -273,7 +280,7 @@ namespace GiveAndTake.iOS.Helpers
 			return scrollView;
 		}
 
-		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, string title, nfloat cornerRadius, FontType fontType = FontType.Regular)
+		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, nfloat cornerRadius, FontType fontType = FontType.Regular)
 		{
 			var button = new UIButton
 			{
@@ -281,8 +288,6 @@ namespace GiveAndTake.iOS.Helpers
 			};
 			button.SetTitleColor(textColor, UIControlState.Normal);
 			button.Font = GetFont(fontType, textSize);
-			button.SetTitle(title, UIControlState.Normal);
-
 			button.BackgroundColor = backgroundColor;
 			button.Layer.CornerRadius = cornerRadius;
 			button.Layer.MasksToBounds = true;
@@ -297,7 +302,7 @@ namespace GiveAndTake.iOS.Helpers
 			nfloat textSize, string title, nfloat cornerRadius, 
 			UIColor borderColor, nfloat borderWidth, FontType fontType = FontType.Regular)
 		{
-			var button = CreateButton(height, width, backgroundColor, textColor, textSize, title, cornerRadius, fontType);
+			var button = CreateButton(height, width, backgroundColor, textColor, textSize, cornerRadius, fontType);
 
 			button.Layer.BorderWidth = borderWidth;
 			button.Layer.BorderColor = borderColor.CGColor;

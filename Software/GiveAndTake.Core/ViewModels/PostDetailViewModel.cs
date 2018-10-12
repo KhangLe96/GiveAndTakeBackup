@@ -194,7 +194,7 @@ namespace GiveAndTake.Core.ViewModels
 		public override void Prepare(Post post)
 		{
 			CategoryName = post.Category.CategoryName;
-			AvatarUrl = post.User.AvatarUrl ?? AppConstants.DefaultAvatar;
+			AvatarUrl = post.User.AvatarUrl;
 			UserName = post.User.FullName ?? AppConstants.DefaultUserName;
 			CreatedTime = post.CreatedTime.ToString("dd.MM.yyyy");
 			Address = post.ProvinceCity.ProvinceCityName;

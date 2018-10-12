@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Give And Take</string>
+	<string>Cho Và Nhận</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.sioux.giveandtake</string>
 	<key>CFBundleShortVersionString</key>

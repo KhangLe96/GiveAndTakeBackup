@@ -9,12 +9,12 @@ namespace Giveaway.API.Controllers
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
 			// /REVIEW: Only validate ApiKey if Jwt is null or empty
-            var isValidToken = filterContext.HttpContext.Request.Headers.TryGetValue("ApiKey", out var apiKey);
-            if (!isValidToken | apiKey != AppConstant.API_KEY)
-            {
-                filterContext.Result = new BadRequestObjectResult("Invalid Api key");
-                return;
-            }
+            //var isValidToken = filterContext.HttpContext.Request.Headers.TryGetValue("ApiKey", out var apiKey);
+            //if (!isValidToken | apiKey != AppConstant.API_KEY)
+            //{
+            //    filterContext.Result = new BadRequestObjectResult("Invalid Api key");
+            //    return;
+            //}
         }
     }
 }

@@ -44,7 +44,7 @@ namespace GiveAndTake.iOS.Views
 					new CGRect(0, 0, UIScreen.MainScreen.Bounds.Width - DimensionHelper.PopupLineHeight,
 						UIScreen.MainScreen.Bounds.Height), _customImageFlowLayout)
 				{
-					BackgroundColor = ColorHelper.SeparatorColor,
+					BackgroundColor = ColorHelper.PhotoCollectionViewBackground,
 					TranslatesAutoresizingMaskIntoConstraints = false
 				};
 			_photoItemViewSource = new PhotoItemViewSource(_photoCollectionView);
@@ -62,8 +62,6 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Bottom, 1, 0),
 			});
-
-			NavigationController?.SetNavigationBarHidden(true, true);
 		}
 
 		protected override void CreateBinding()

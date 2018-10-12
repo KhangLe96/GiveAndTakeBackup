@@ -20,6 +20,8 @@ namespace GiveAndTake.iOS.Views.Base
 
 			base.ViewDidLoad();
 
+			NavigationController?.SetNavigationBarHidden(true, true);
+
 			InitView();
 			DismissKeyboard();
 			CreateBinding();

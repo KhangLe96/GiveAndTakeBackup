@@ -11,7 +11,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 	public abstract class PopupListViewModel : BaseViewModelResult<bool>
 	{
 		protected readonly IDataModel DataModel;
-
+		public string SubmitButtonTitle { get; } = AppConstants.Done;
 		public IMvxAsyncCommand SubmitCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
 		public abstract string Title { get; }

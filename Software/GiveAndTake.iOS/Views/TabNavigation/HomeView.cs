@@ -10,7 +10,6 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using System;
-using CoreGraphics;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -47,12 +46,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			InitFilterBar();
             InitPostsTableView();
 			InitNewPostButton();
-		}
-
-		public override void ViewWillAppear(bool animated)
-		{
-			base.ViewWillAppear(animated);
-			NavigationController?.SetNavigationBarHidden(true, animated);
 		}
 
 		public override void ViewDidAppear(bool animated)

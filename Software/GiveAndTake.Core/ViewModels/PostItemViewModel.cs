@@ -1,26 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using FFImageLoading.Transformations;
+﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
-using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Commands;
-using MvvmCross.UI;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels
 {
-    public class PostItemViewModel : BaseViewModel
+	public class PostItemViewModel : BaseViewModel
     {
         #region Properties
 
         private readonly Post _post;
-		private IDataModel _dataModel;
 
-		private string _categoryName;
+	    private string _categoryName;
 
         public string CategoryName 
         {
@@ -188,12 +185,12 @@ namespace GiveAndTake.Core.ViewModels
 	    private void Init()
 	    {
 		    CategoryName = _post.Category.CategoryName;
-		    AvatarUrl = _post.User.AvatarUrl ?? AppConstants.DefaultUrl;
+		    AvatarUrl = _post.User.AvatarUrl;
 		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
 		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    Description = _post.Description;
-		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia") ?? AppConstants.DefaultUrl;
+		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;

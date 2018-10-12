@@ -59,7 +59,7 @@ namespace GiveAndTake.Droid.Controls
 					Bitmap image = null;
 					Task.Run(() =>
 					{
-						URL url = new URL(_imageData[position].ResizedImage);
+						URL url = new URL(_imageData[position].ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia"));
 						image = BitmapFactory.DecodeStream(url.OpenConnection().InputStream);
 					}).ContinueWith(t =>
 					{

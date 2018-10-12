@@ -1,8 +1,9 @@
-﻿using GiveAndTake.iOS.Helpers;
+﻿using GiveAndTake.Core.ViewModels.Popup;
+using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
-using System.Windows.Input;
-using CoreGraphics;
-using GiveAndTake.iOS.Controls;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
+using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.Popups
@@ -12,14 +13,13 @@ namespace GiveAndTake.iOS.Views.Popups
 		public UIView ContentView;
 		public UIView OverlayView;
 
-		public abstract ICommand CloseCommand { get; set; }
+		public IMvxCommand CloseCommand { get; set; }
 
 		protected override void InitView()
 		{
 			View.BackgroundColor = UIColor.Clear;
 
 			OverlayView = UIHelper.CreateView(0, 0, UIColor.Clear);
-			OverlayView.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			View.Add(OverlayView);
 			View.AddConstraints(new[]
@@ -39,6 +39,24 @@ namespace GiveAndTake.iOS.Views.Popups
 				Direction = UISwipeGestureRecognizerDirection.Down
 			};
 			View.AddGestureRecognizer(swipeGesture);
+		}
+
+		protected override void CreateBinding()
+		{
+			base.CreateBinding();
+
+			var bindingSet = this.CreateBindingSet<PopupView, PopupViewModel>();
+			
+			bindingSet.Bind(OverlayView.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.CloseCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.CloseCommand)
+				.To(vm => vm.CloseCommand);
+
+			bindingSet.Apply();
+
 		}
 
 		public override void ViewWillAppear(bool animated)
@@ -63,7 +81,5 @@ namespace GiveAndTake.iOS.Views.Popups
 				},
 				() => { });
 		}
-
-		private void OnClosePopup() => CloseCommand?.Execute(null);
 	}
 }

@@ -74,7 +74,7 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controls\CustomMvxImageView.cs" />
+    <Compile Include="Controls\CustomMvxCachedImageView.cs" />
     <Compile Include="Controls\AlphaUiButton.cs" />
     <Compile Include="Controls\CustomTextField.cs" />
     <Compile Include="Controls\CustomTextView.cs" />
