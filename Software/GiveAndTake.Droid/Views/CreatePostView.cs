@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
 using Android.Text;
@@ -8,14 +6,17 @@ using Android.Views;
 using Android.Widget;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Droid.Helpers;
 using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GiveAndTake.Droid.Views
 {
-	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
+    [MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
 	[Register(nameof(CreatePostView))]
 	public class CreatePostView : BaseFragment
 	{
@@ -32,11 +33,28 @@ namespace GiveAndTake.Droid.Views
 			InitChoosePicture();
 			InitSubmit();
 
-			var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
-			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
-		}
+		    var title = _view.FindViewById<EditText>(Resource.Id.Title);
+		    title.FocusChange += OnEditTextFocusChange;
 
-		private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
+		    var postDescription = _view.FindViewById<EditText>(Resource.Id.PostDescription);
+		    postDescription.FocusChange += OnEditTextFocusChange;
+
+            var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
+			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
+
+		    this.Activity.Window.SetSoftInputMode(SoftInput.AdjustResize);
+        }
+
+	    private void OnEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+	    {
+	        var editText = sender as EditText;
+	        if (!editText.HasFocus)
+	        {
+	            KeyboardHelper.HideKeyboard(editText);
+	        }
+        }
+
+        private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
 		{
 			var textView = sender as TextView;
 			if (!string.IsNullOrEmpty(textView?.Text))
