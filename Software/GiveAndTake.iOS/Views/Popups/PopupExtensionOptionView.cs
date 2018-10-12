@@ -12,13 +12,11 @@ using UIKit;
 namespace GiveAndTake.iOS.Views.Popups
 {
 	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverCurrentContext, ModalTransitionStyle = UIModalTransitionStyle.CoverVertical)]
-	public class PopupListView : BaseView
+	public class PopupExtensionOptionView : BaseView
 	{
 		private UIView _popupLine;
-		private UIButton _btnClose;
 		private UITableView _popupTableView;
 		private PopupItemTableViewSource _popupItemTableViewSource;
-		private UILabel _titleLabel;
 		private UIView _background;
 		public ICommand CloseCommand { get; set; }
 
@@ -34,44 +32,22 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(container, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
 			});
 
-			_btnClose = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight, 
-				DimensionHelper.PopupButtonWidth,
-				ColorHelper.Blue, 
-				UIColor.White, 
-				DimensionHelper.ButtonTextSize, "Xong",
-				DimensionHelper.PopupButtonHeight / 2);
-
-			container.Add(_btnClose);
-			container.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_btnClose, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, container, NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginNormal),
-				NSLayoutConstraint.Create(_btnClose, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
-			});
-
 			_popupTableView = UIHelper.CreateTableView(0, 0);
 			_popupItemTableViewSource = new PopupItemTableViewSource(_popupTableView);
 			_popupTableView.Source = _popupItemTableViewSource;
 			container.Add(_popupTableView);
 			container.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _btnClose, NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, container, NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, container, NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, container, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
-			});
-
-			_titleLabel = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize, FontType.Bold);
-			container.Add(_titleLabel);
-			container.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_titleLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _popupTableView, NSLayoutAttribute.Top, 1, 0),
-				NSLayoutConstraint.Create(_titleLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
 			_popupLine = UIHelper.CreatePopupLine(DimensionHelper.PopupLineHeight, DimensionHelper.PopupLineWidth, ColorHelper.Blue, DimensionHelper.PopupLineHeight / 2);
 			container.Add(_popupLine);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_popupLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _titleLabel, NSLayoutAttribute.Top, 1, -DimensionHelper.MarginNormal),
+				NSLayoutConstraint.Create(_popupLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _popupTableView, NSLayoutAttribute.Top, 1, -DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_popupLine, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
@@ -99,8 +75,8 @@ namespace GiveAndTake.iOS.Views.Popups
 
 		public override void ViewDidAppear(bool animated)
 		{
-			_background.BackgroundColor = UIColor.Black.ColorWithAlpha(0.7f);
 			base.ViewDidAppear(animated);
+			_background.BackgroundColor = UIColor.Black.ColorWithAlpha(0.7f);
 		}
 
 		public override void ViewWillUnload()
@@ -118,7 +94,7 @@ namespace GiveAndTake.iOS.Views.Popups
 		public override void UpdateViewConstraints()
 		{
 			base.UpdateViewConstraints();
-			_popupTableView.AddConstraints(new []
+			_popupTableView.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 0, _popupTableView.ContentSize.Height)
 			});
@@ -126,14 +102,7 @@ namespace GiveAndTake.iOS.Views.Popups
 
 		protected override void CreateBinding()
 		{
-			var bindingSet = this.CreateBindingSet<PopupListView, PopupListViewModel>();
-			
-			bindingSet.Bind(_titleLabel)
-				.To(vm => vm.Title);
-
-			bindingSet.Bind(_btnClose.Tap())
-				.For(v => v.Command)
-				.To(vm => vm.SubmitCommand);
+			var bindingSet = this.CreateBindingSet<PopupExtensionOptionView, PopupExtensionOptionViewModel>();
 
 			bindingSet.Bind(_popupItemTableViewSource)
 				.To(vm => vm.PopupItemViewModels);

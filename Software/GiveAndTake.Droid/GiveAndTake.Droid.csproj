@@ -76,6 +76,7 @@
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\Popup\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popup\PopupListView.cs" />
     <Compile Include="Views\Popup\PopupPostOptionView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -590,6 +591,11 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\display_number_image_bg.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupExtensionOptionView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

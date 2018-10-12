@@ -43,25 +43,24 @@ namespace GiveAndTake.iOS.Views.Popups
 
 		public override void ViewWillAppear(bool animated)
 		{
-			base.ViewWillAppear(animated);
 			UIView.Animate(1, 0, UIViewAnimationOptions.TransitionCrossDissolve,
 				() =>
 				{
 					OverlayView.BackgroundColor = UIColor.Black.ColorWithAlpha(0.7f);
 				},
 				() => { });
+			base.ViewWillAppear(animated);
 		}
 
 		public override void ViewWillDisappear(bool animated)
 		{
-			base.ViewWillDisappear(animated);
-
 			UIView.Animate(0.1, 0, UIViewAnimationOptions.TransitionCrossDissolve,
 				() =>
 				{
 					OverlayView.BackgroundColor = UIColor.Clear;
 				},
 				() => { });
+			base.ViewWillDisappear(animated);
 		}
 
 		private void OnClosePopup() => CloseCommand?.Execute(null);

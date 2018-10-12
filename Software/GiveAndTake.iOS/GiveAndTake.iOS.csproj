@@ -103,6 +103,7 @@
     <Compile Include="Views\CollectionViewSources\PhotoItemViewSource.cs" />
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
+    <Compile Include="Views\Popups\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popups\PopupListView.cs" />
     <Compile Include="Views\Popups\PopupMessageView.cs" />
     <Compile Include="Views\Popups\PopupPostOptionView.cs" />

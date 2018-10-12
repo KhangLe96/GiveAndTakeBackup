@@ -45,6 +45,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		public PopupItemViewModel(string name)
 		{
 			ItemName = name;
+			IsSelected = true;
 			InitCommand();
 		}
 
