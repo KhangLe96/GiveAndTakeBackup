@@ -78,7 +78,6 @@
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Views\Popup\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popup\PopupListView.cs" />
-    <Compile Include="Views\Popup\PopupPostOptionView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
@@ -90,7 +89,6 @@
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popup\PopupMessageView.cs" />
-    <Compile Include="Views\Popup\PopupReportView.cs" />
     <Compile Include="Views\Popup\PopupWarningView.cs" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />

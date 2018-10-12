@@ -22,6 +22,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			OverlayView.AddGestureRecognizer(new UITapGestureRecognizer(OnClosePopup));
 
 			View.Add(OverlayView);
+
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(OverlayView, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0),
@@ -32,7 +33,15 @@ namespace GiveAndTake.iOS.Views.Popups
 
 			ContentView = UIHelper.CreateView(0, 0, UIColor.White);
 			ContentView.AddGestureRecognizer(new UITapGestureRecognizer { CancelsTouchesInView = true });
+
 			View.Add(ContentView);
+
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(ContentView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(ContentView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, 0),
+				NSLayoutConstraint.Create(ContentView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
+			});
 
 			var swipeGesture = new UISwipeGestureRecognizer(() => CloseCommand?.Execute(null))
 			{

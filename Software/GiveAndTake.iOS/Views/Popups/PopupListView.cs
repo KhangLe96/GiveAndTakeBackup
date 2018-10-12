@@ -1,10 +1,10 @@
-﻿using System.Windows.Input;
-using GiveAndTake.Core;
+﻿using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
@@ -14,13 +14,14 @@ namespace GiveAndTake.iOS.Views.Popups
 	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverCurrentContext, ModalTransitionStyle = UIModalTransitionStyle.CoverVertical)]
 	public class PopupListView : BaseView
 	{
+		public IMvxCommand CloseCommand { get; set; }
+
 		private UIView _popupLine;
 		private UIButton _btnClose;
 		private UITableView _popupTableView;
 		private PopupItemTableViewSource _popupItemTableViewSource;
 		private UILabel _titleLabel;
 		private UIView _background;
-		public ICommand CloseCommand { get; set; }
 
 		protected override void InitView()
 		{

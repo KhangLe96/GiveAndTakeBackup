@@ -219,41 +219,33 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async Task ShowMenuView()
 	    {
-			//var postOptions = _post.IsMyPost ? MyPostOptions : OtherPostOptions;
+			var postOptions = _post.IsMyPost ? MyPostOptions : OtherPostOptions;
 
-		 //   var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
+			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
 
-		 //   if (string.IsNullOrEmpty(result)) return;
+			if (string.IsNullOrEmpty(result)) return;
 
-		 //   switch (result)
-		 //   {
-			//    case AppConstants.ChangePostStatus:
-			//	    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			//	    break;
+			switch (result)
+			{
+				case AppConstants.ChangePostStatus:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
 
-			//    case AppConstants.ModifyPost:
-			//	    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			//	    break;
+				case AppConstants.ModifyPost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
 
-			//    case AppConstants.ViewPostRequests:
-			//	    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			//	    break;
+				case AppConstants.ViewPostRequests:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
 
-			//    case AppConstants.DeletePost:
-			//	    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			//	    break;
-			//    case AppConstants.ReportPost:
-			//	    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			//	    break;
-		 //   }
-		    if (_post.IsMyPost)
-		    {
-				await NavigationService.Navigate<PopupPostOptionViewModel>();
-		    }
-		    else
-		    {
-			    await NavigationService.Navigate<PopupReportViewModel>();
-		    }
+				case AppConstants.DeletePost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+				case AppConstants.ReportPost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+			}
 		}
 
 	    private async Task ShowPostDetailView()

@@ -106,8 +106,6 @@
     <Compile Include="Views\Popups\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popups\PopupListView.cs" />
     <Compile Include="Views\Popups\PopupMessageView.cs" />
-    <Compile Include="Views\Popups\PopupPostOptionView.cs" />
-    <Compile Include="Views\Popups\PopupReportView.cs" />
     <Compile Include="Views\Popups\PopupView.cs" />
     <Compile Include="Views\Popups\PopupWarningView.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
