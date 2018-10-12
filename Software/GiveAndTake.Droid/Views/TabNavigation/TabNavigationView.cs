@@ -94,6 +94,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 						(int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size)),
 			};
 
+			//Review ThanhVo What happend if _tabLayout.TabCount is different with expectation TabTitleIconsDictionary.Count?
+			// => Handle Internet Connection failed
 			for (var index = 0; index < _tabLayout.TabCount; index++)
 			{
 				var tab = _tabLayout.GetTabAt(index);
