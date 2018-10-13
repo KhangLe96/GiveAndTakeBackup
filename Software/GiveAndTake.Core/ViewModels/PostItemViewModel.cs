@@ -146,12 +146,12 @@ namespace GiveAndTake.Core.ViewModels
             }
         }
 
-	    private bool _isLastViewInList;
+	    private bool _isSeparatorLineShown;
 
-	    public bool IsLastViewInList
+	    public bool IsSeparatorLineShown
 	    {
-		    get => _isLastViewInList;
-		    set => SetProperty(ref _isLastViewInList, value);
+		    get => _isSeparatorLineShown;
+		    set => SetProperty(ref _isSeparatorLineShown, value);
 	    }
 
         private string _backgroundColor;
@@ -206,7 +206,7 @@ namespace GiveAndTake.Core.ViewModels
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;
 		    CommentCount = _post.CommentCount;
-		    IsLastViewInList = false;
+		    IsSeparatorLineShown = true;
 	        BackgroundColor = _post.Category.BackgroundColor;
 	    }
 

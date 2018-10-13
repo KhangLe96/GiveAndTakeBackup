@@ -4,9 +4,8 @@ using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
-using System;
-using System.Windows.Input;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
+using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -14,9 +13,8 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 	[Register(nameof(PopupItemViewCell))]
 	public class PopupItemViewCell : MvxTableViewCell
 	{
-		public ICommand ClickCommand { get;set; }
 		private PopupItemLabel _itemLabel;
-		private UIView _seperatorLine;
+		private UIView _separatorLine;
 
 		public PopupItemViewCell(IntPtr handle) : base(handle)
 		{
@@ -38,27 +36,17 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 					NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			_seperatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.PopupSeparator);
-			AddSubview(_seperatorLine);
+			_separatorLine = UIHelper.CreateView(DimensionHelper.SeperatorHeight, 0, ColorHelper.PopupSeparator);
+			AddSubview(_separatorLine);
 			AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, this,
+				NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Left, NSLayoutRelation.Equal, this,
+				NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Left, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
-				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Right, NSLayoutRelation.Equal, this,
+				NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Right, NSLayoutRelation.Equal, this,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
-
-			//Review ThanhVo Does this binding work?
-			//bindingSet.Bind(this.Tap())
-			//	.For(v => v.Command)
-			//	.To(vm => vm.ClickCommand);
-
-			AddGestureRecognizer(new UITapGestureRecognizer(() =>
-			{
-				ClickCommand?.Execute(null);
-			}));
 		}
 
 		private void CreateBinding()
@@ -72,14 +60,15 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				.For(v => v.IsSelected)
 				.To(vm => vm.IsSelected);
 
-			bindingSet.Bind(_seperatorLine)
+			bindingSet.Bind(_separatorLine)
 				.For("Visibility")
-				.To(vm => vm.IsLastViewInList);
+				.To(vm => vm.IsSeparatorLineShown)
+				.WithConversion("InvertBool");
 
-			bindingSet.Bind(this)
-				.For(v => v.ClickCommand)
+			bindingSet.Bind(this.Tap())
+				.For(v => v.Command)
 				.To(vm => vm.ClickCommand);
-			
+
 			bindingSet.Apply();
 		}
 	}

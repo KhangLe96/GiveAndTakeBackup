@@ -103,9 +103,10 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 			set.Bind(_seperatorLine)
 				.For("Visibility")
-				.To(vm => vm.IsLastViewInList);
+				.To(vm => vm.IsSeparatorLineShown)
+				.WithConversion("InvertBool");
 
-		    set.Bind(_btnCategory)
+			set.Bind(_btnCategory)
 		        .For(v => v.BackgroundColor)
 		        .To(vm => vm.BackgroundColor)
 		        .WithConversion("StringToUIColor");

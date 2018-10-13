@@ -126,7 +126,7 @@
         android:layout_below="@id/imgPost"
         android:layout_margin="@dimen/margin_short"
         android:background="@color/post_line_color"
-        local:MvxBind="Visibility Visibility(!IsLastViewInList)" />
+        local:MvxBind="Visibility Visibility(IsSeparatorLineShown)" />
 
     <LinearLayout
         android:id="@+id/linearlayout"

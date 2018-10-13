@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
@@ -51,17 +52,16 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			{
 				var itemViewModel = new PopupItemViewModel(itemName)
 				{
-					IsLastViewInList = IsLast(itemName),
 					IsSelected = itemName == _selectedItem
 				};
 				itemViewModel.ItemSelected += OnItemSelected;
 				itemViewModels.Add(itemViewModel);
 			}
 
+			itemViewModels.Last().IsSeparatorLineShown = false;
+
 			return itemViewModels;
 		}
-
-		private bool IsLast(string name) => _popupItems.GetPosition(name) + 1 == _popupItems.Count;
 
 		private void OnItemSelected(object sender, EventArgs e)
 		{

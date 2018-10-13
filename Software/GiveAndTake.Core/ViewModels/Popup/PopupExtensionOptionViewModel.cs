@@ -2,6 +2,7 @@
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.Popup
@@ -41,17 +42,14 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 			foreach (var itemName in _popupItems)
 			{
-				var itemViewModel = new PopupItemViewModel(itemName)
-				{
-					IsLastViewInList = IsLast(itemName)
-				};
+				var itemViewModel = new PopupItemViewModel(itemName);
 				itemViewModel.ItemSelected += (sender, args) => { NavigationService.Close(this, itemName); };
 				itemViewModels.Add(itemViewModel);
 			}
 
+			itemViewModels.Last().IsSeparatorLineShown = false;
+
 			return itemViewModels;
 		}
-
-		private bool IsLast(string name) => _popupItems.GetPosition(name) + 1 == _popupItems.Count;
 	}
 }

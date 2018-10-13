@@ -131,7 +131,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 			if (PostViewModels.Any())
 			{
-				PostViewModels.Last().IsLastViewInList = true;
+				PostViewModels.Last().IsSeparatorLineShown = false;
 			}
 			IsSearchResultNull = PostViewModels.Any();
 		}
@@ -141,9 +141,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.ApiPostsResponse = _managementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
 			if (_dataModel.ApiPostsResponse.Posts.Any())
 			{
-				PostViewModels.Last().IsLastViewInList = false;
+				PostViewModels.Last().IsSeparatorLineShown = true;
 				PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
-				PostViewModels.Last().IsLastViewInList = true;
+				PostViewModels.Last().IsSeparatorLineShown = false;
 			}
 		}
 
