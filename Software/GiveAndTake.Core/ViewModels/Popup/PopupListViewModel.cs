@@ -25,6 +25,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			}
 		}
 
+		//Review ThanhVo Select item should be PopupItemViewModel because this is the view model of list of PopupItemViewModel
 		private string _selectedItem;
 		private List<string> _popupItems;
 		private List<PopupItemViewModel> _popupItemViewModels;
@@ -54,10 +55,13 @@ namespace GiveAndTake.Core.ViewModels.Popup
 				{
 					IsSelected = itemName == _selectedItem
 				};
+
+				//REview ThanhVo Should unregister event when destroy view model
 				itemViewModel.ItemSelected += OnItemSelected;
 				itemViewModels.Add(itemViewModel);
 			}
 
+			//Review ThanhVo itemViewModels.Last() can raise exception if it is empty list
 			itemViewModels.Last().IsSeparatorLineShown = false;
 
 			return itemViewModels;
