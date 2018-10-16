@@ -14,6 +14,7 @@ namespace GiveAndTake.Core.Services
 		void EditPost(EditPost post);
 		LoginResponse LoginFacebook(BaseUser baseUser);
 		bool CreatePost(CreatePost post, string token);
+	    bool CreateRequest(Request request, string token);
 		void UpdateCurrentUserProfile(User user);
 	    void GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();

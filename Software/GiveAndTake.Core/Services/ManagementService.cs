@@ -194,6 +194,19 @@ namespace GiveAndTake.Core.Services
 			}).Result;
 		}
 
+	    public bool CreateRequest(Request request, string token)
+	    {
+		    return Task.Run(async () =>
+		    {
+			    var requestInformationInString = JsonHelper.Serialize(request);
+			    var content = new StringContent(requestInformationInString, Encoding.UTF8, "application/json");
+			    var response = await _apiHelper.Post(AppConstants.CreateRequest, content, token);
+
+			    return response != null && response.NetworkStatus == NetworkStatus.Success;
+
+		    }).Result;
+	    }
+
 		public void UpdateCurrentUserProfile(User user)
         {
             Task.Run(async () =>
