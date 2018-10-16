@@ -111,7 +111,17 @@ namespace GiveAndTake.Core.ViewModels
 			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
 			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
 			ShowProvinceCityCommand = new MvxAsyncCommand(ShowProvinceCities);
-			BackPressedCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			BackPressedCommand = new MvxCommand(BackPressed);
+
+		}
+
+		private async void BackPressed()
+		{
+			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.DeleteConfirmationMessage);
+			if (result == RequestStatus.Submitted)
+			{
+				NavigationService.Close(this, false);
+			}
 		}
 
 		private async Task ShowCategories()

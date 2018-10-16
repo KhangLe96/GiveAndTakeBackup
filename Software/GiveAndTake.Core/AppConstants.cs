@@ -30,5 +30,6 @@
 		public static string SubmitTitle = "Xác nhận";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
+		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
 	}
 }
