@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
-using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.Services
 {
-    public interface IManagementService
+	public interface IManagementService
     {
-        List<Category> GetCategories();
-	    List<ProvinceCity> GetProvinceCities();
-	    ApiPostsResponse GetPostList(string filterParams);
-        void GetPostDetail(string postId);
-        void GetPostOfUser(string userId);
+	    Task<CategoryResponse> GetCategories();
+	    Task<ProvinceCitiesResponse> GetProvinceCities();
+	    Task<ApiPostsResponse> GetPostList(string filterParams);
+        Task<Post> GetPostDetail(string postId);
+        Task<ApiPostsResponse> GetPostOfUser(string userId);
         void ChangeStatusOfPost(string postId, string newStatus);
 		void EditPost(EditPost post);
-		LoginResponse LoginFacebook(BaseUser baseUser);
-		bool CreatePost(CreatePost post, string token);
-		void UpdateCurrentUserProfile(User user);
-	    void GetUserProfile(string userId);
+	    Task<LoginResponse> LoginFacebook(BaseUser baseUser);
+		Task<bool> CreatePost(CreatePost post, string token);
+		Task<User> UpdateCurrentUserProfile(User user);
+	    Task<User> GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
     }
 }

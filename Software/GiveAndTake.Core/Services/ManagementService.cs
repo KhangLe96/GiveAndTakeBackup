@@ -17,119 +17,96 @@ namespace GiveAndTake.Core.Services
         {
             _apiHelper = new RestClient();
         }
-		//Review ThanhVo Apply my reviews in this method for all methods which calling api
-		//Review ThanhVo Check all place where call this method and catch ApiException
-        public List<Category> GetCategories()
+
+        public async Task<CategoryResponse> GetCategories()
         {
-            return Task.Run(async () =>
-            {
-                var response = await _apiHelper.Get(AppConstants.GetCategories);
+			var response = await _apiHelper.Get(AppConstants.GetCategories);
 
-				//Review ThanhVo Do we need to know network status to deserialize. You should check the result of response, the data for next step
-				if (response?.NetworkStatus == NetworkStatus.Success)
-	            {
-		            var deserializeResult = JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
+			if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new ApiException(response.NetworkStatus.ToString());
+	        }
 
-		            if (deserializeResult.ArePropertiesNotNull())
-		            {
-			            return deserializeResult;
-		            }
-	            }
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new ApiException(response.ErrorMessage);
+	        }
 
-				//Review ThanhVo Don't add debug writeline code in the code when submiting
-	            //Handle popup error cannot get data
-	            Debug.WriteLine("Error cannot get data");
-				//Review ThanhVo Should create our exception "ApiException" to handle disconnect internet connection cases
-				//Put all code in try catch and throw ApiException if it has exception
-				throw new Exception(response?.ErrorMessage);
+	        return JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
+		}
 
-			}).Result.Categories;
-        }
-
-	    public List<ProvinceCity> GetProvinceCities()
+	    public async Task<ProvinceCitiesResponse> GetProvinceCities()
 	    {
-			return Task.Run(async () =>
-			{
-				var response = await _apiHelper.Get(AppConstants.GetProvinceCities);
-				if (response?.NetworkStatus == NetworkStatus.Success)
-				{
-					var deserializeResult = JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
+		    var response = await _apiHelper.Get(AppConstants.GetProvinceCities);
 
-					if (deserializeResult.ArePropertiesNotNull())
-					{
-						return deserializeResult;
-					}
-				}
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new ApiException(response.NetworkStatus.ToString());
+		    }
 
-				//Handle popup error cannot get data
-				Debug.WriteLine("Error cannot get data");
-				throw new Exception(response?.ErrorMessage);
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new ApiException(response.ErrorMessage);
+		    }
 
-			}).Result.ProvinceCities;
+		    return JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
 		}
 
-	    public ApiPostsResponse GetPostList(string filterParams)
+	    public async Task<ApiPostsResponse> GetPostList(string filterParams)
         {
-            return Task.Run(async () =>
-            {
-	            var url = string.IsNullOrEmpty(filterParams)
-		            ? AppConstants.GetPostList
-		            : string.Join("?", AppConstants.GetPostList, filterParams);
-				var response = await _apiHelper.Get(url);
-                if (response?.NetworkStatus == NetworkStatus.Success)
-                {
-                    var deserializeResult = JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+			var url = string.IsNullOrEmpty(filterParams)
+		        ? AppConstants.GetPostList
+		        : string.Join("?", AppConstants.GetPostList, filterParams);
+	        var response = await _apiHelper.Get(url);
 
-	                if (deserializeResult.ArePropertiesNotNull())
-	                {
-		                return deserializeResult;
-	                }
-                }
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new ApiException(response.NetworkStatus.ToString());
+	        }
 
-	            //Handle popup error cannot get data
-	            Debug.WriteLine("Error cannot get data");
-				throw new Exception(response?.ErrorMessage);
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new ApiException(response.ErrorMessage);
+	        }
 
-			}).Result;
+	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
 
-	       
 		}
 
-        public void GetPostDetail(string postId)
+        public async Task<Post> GetPostDetail(string postId)
         {
-            Task.Run(async () =>
-            {
-                string parameters = $"/{postId}";
-                var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    var postDetail = JsonHelper.Deserialize<Post>(response.RawContent);
-                }
-                else
-                {
-                    //Handle popup error cannot get data
-                    Debug.WriteLine("Error cannot get data");
-                }
-            });
-        }
+			var parameters = $"/{postId}";
+	        var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new ApiException(response.NetworkStatus.ToString());
+	        }
 
-        public void GetPostOfUser(string userId)
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<Post>(response.RawContent);
+		}
+
+        public async Task<ApiPostsResponse> GetPostOfUser(string userId)
         {
-            Task.Run(async () =>
-            {
-                string parameters = $"/{userId}";
-                var response = await _apiHelper.Get(AppConstants.GetPostOfUser + parameters, AppConstants.Token);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    var postOfUser = JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
-                }
-                else
-                {
-                    //Handle popup error cannot get data
-                    Debug.WriteLine("Error cannot get data");
-                }
-            });
-        }
+			var parameters = $"/{userId}";
+	        var response = await _apiHelper.Get(AppConstants.GetPostOfUser + parameters, AppConstants.Token);
+
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+		}
 
         public void ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
         {
@@ -157,78 +134,78 @@ namespace GiveAndTake.Core.Services
 			});
 		}
 
-		public LoginResponse LoginFacebook(BaseUser baseUser)
-        {
-            return Task.Run(async () =>
-            {
-				var userInformationInString = JsonHelper.Serialize(baseUser);
-				var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
+		public async Task<LoginResponse> LoginFacebook(BaseUser baseUser)
+	    {
+		    var userInformationInString = JsonHelper.Serialize(baseUser);
+		    var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
 
-				var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
-                if (response?.NetworkStatus == NetworkStatus.Success)
-                {
-					var loginResponse = JsonHelper.Deserialize<LoginResponse>(response.RawContent);
-	                if (loginResponse.ArePropertiesNotNull())
-	                {
-		                return loginResponse;
-	                }
-                }
+		    var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
 
-	            //Handle popup error cannot get data
-	            Debug.WriteLine("Error cannot get data");
-	            throw new Exception(response?.ErrorMessage);
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new ApiException(response.NetworkStatus.ToString());
+		    }
 
-            }).Result;
-        }
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new ApiException(response.ErrorMessage);
+		    }
 
-		public bool CreatePost(CreatePost post, string token)
+		    return JsonHelper.Deserialize<LoginResponse>(response.RawContent);
+	    }
+
+	    public async Task<bool> CreatePost(CreatePost post, string token)
 		{
-			return Task.Run(async () =>
+			var postInformationInString = JsonHelper.Serialize(post);
+			var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
+			var response = await _apiHelper.Post(AppConstants.CreatePost, content, token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
 			{
-				var postInformationInString = JsonHelper.Serialize(post);
-				var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
-				var response = await _apiHelper.Post(AppConstants.CreatePost, content, token);
+				throw new ApiException(response.NetworkStatus.ToString());
+			}
 
-				return response != null && response.NetworkStatus == NetworkStatus.Success;
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new ApiException(response.ErrorMessage);
+			}
 
-			}).Result;
+			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
-		public void UpdateCurrentUserProfile(User user)
+		public async Task<User> UpdateCurrentUserProfile(User user)
         {
-            Task.Run(async () =>
-            {
-                var userInformationInString = JsonHelper.Serialize(user);
-                var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
-                var response = await _apiHelper.Put(AppConstants.GetUserProfile, content);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    var userInformation = JsonHelper.Deserialize<User>(response.RawContent);
-                }
-                else
-                {
-                    //Handle popup error cannot get data
-                    Debug.WriteLine("Error cannot get data");
-                }
-            });
-        }
+			var userInformationInString = JsonHelper.Serialize(user);
+	        var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
+	        var response = await _apiHelper.Put(AppConstants.GetUserProfile, content);
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new ApiException(response.NetworkStatus.ToString());
+	        }
 
-	    public void GetUserProfile(string userId)
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<User>(response.RawContent);
+		}
+
+	    public async Task<User> GetUserProfile(string userId)
 	    {
-			Task.Run(async () =>
+		    var parameters = $"/{userId}";
+		    var response = await _apiHelper.Get(AppConstants.GetUserProfile + parameters, AppConstants.Token);
+		    if (response.NetworkStatus != NetworkStatus.Success)
 		    {
-			    string parameters = $"/{userId}";
-				var response = await _apiHelper.Get(AppConstants.GetUserProfile + parameters, AppConstants.Token);
-				if (response != null && response.NetworkStatus == NetworkStatus.Success)
-			    {
-				    var UserInformation = JsonHelper.Deserialize<User>(response.RawContent);
-			    }
-			    else
-			    {
-				    //Handle popup error cannot get data
-				    Debug.WriteLine("Error cannot get data");
-			    }
-		    });
+			    throw new ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<User>(response.RawContent);
 		}
 
 	    public List<SortFilter> GetShortFilters() => new List<SortFilter>

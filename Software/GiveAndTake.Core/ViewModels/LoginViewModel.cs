@@ -34,11 +34,11 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			try
 			{
-				_dataModel.LoginResponse = ManagementService.LoginFacebook(baseUser);
+				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}
-			catch (Exception)
+			catch (ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 				if (result)

@@ -100,15 +100,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.Categories = _dataModel.Categories ?? ManagementService.GetCategories();
-				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? ManagementService.GetProvinceCities();
+				_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
+				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
 				_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
 				_dataModel.SelectedCategory = _dataModel.SelectedCategory ?? _dataModel.Categories.First();
 				_dataModel.SelectedProvinceCity = _dataModel.SelectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
 				_dataModel.SelectedSortFilter = _dataModel.SelectedSortFilter ?? _dataModel.SortFilters.First();
 				UpdatePostViewModels();
 			}
-			catch (Exception)
+			catch (ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 				if (result)
@@ -135,7 +135,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			{
 				var t = DateTimeOffset.Now;
 
-				_dataModel.ApiPostsResponse = ManagementService.GetPostList(GetFilterParams());
+				_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams());
 				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 				if (PostViewModels.Any())
 				{
@@ -159,7 +159,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
+				_dataModel.ApiPostsResponse = await ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
 					PostViewModels.Last().IsLastViewInList = false;
@@ -209,7 +209,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
 
-			_dataModel.Categories = ManagementService.GetCategories();
+			_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
 			_dataModel.SelectedCategory = categoryFilter;
 			_dataModel.SelectedProvinceCity = locationFilter;
 			if (result)
