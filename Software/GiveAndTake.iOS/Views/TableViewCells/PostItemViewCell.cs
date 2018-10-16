@@ -25,7 +25,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private UILabel _lbPostDate;
 		private UILabel _lbSeperator;
 		private UILabel _lbPostAddress;
-		private UILabel _lbPostDescription;
+		private UILabel _lbPostTitle;
 		private UILabel _lbRequestCount;
 		private UILabel _lbAppreciationCount;
 		private UILabel _lbCommentCount;
@@ -81,10 +81,10 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			set.Bind(_lbPostAddress)
 				.To(vm => vm.Address);
 
-			set.Bind(_lbPostDescription)
-				.To(vm => vm.Description);
+			set.Bind(_lbPostTitle)
+				.To(vm => vm.PostTitle);
 
-			set.Bind(_lbPostDescription.Tap())
+			set.Bind(_lbPostTitle.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowPostDetailCommand);
 
@@ -259,19 +259,19 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 		private void InitPostDescriptionLabel()
 		{
-			_lbPostDescription = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDescriptionTextSize);
-			_lbPostDescription.Lines = 2;
-			_lbPostDescription.LineBreakMode = UILineBreakMode.TailTruncation;
+			_lbPostTitle = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDescriptionTextSize);
+			_lbPostTitle.Lines = 2;
+			_lbPostTitle.LineBreakMode = UILineBreakMode.TailTruncation;
 
-			ContentView.AddSubview(_lbPostDescription);
+			ContentView.AddSubview(_lbPostTitle);
 
 			ContentView.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_lbPostDescription, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbPostDate,
+				NSLayoutConstraint.Create(_lbPostTitle, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbPostDate,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort),
-				NSLayoutConstraint.Create(_lbPostDescription, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imagePost,
+				NSLayoutConstraint.Create(_lbPostTitle, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imagePost,
 					NSLayoutAttribute.Right, 1, DimensionHelper.MarginNormal),
-				NSLayoutConstraint.Create(_lbPostDescription, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
+				NSLayoutConstraint.Create(_lbPostTitle, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
 		}
@@ -285,7 +285,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			ContentView.Add(_reactionArea);
 			ContentView.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_reactionArea, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbPostDescription, NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_reactionArea, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbPostTitle, NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_reactionArea, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imagePost, NSLayoutAttribute.Right, 1, DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_reactionArea, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _imagePost, NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_reactionArea, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)

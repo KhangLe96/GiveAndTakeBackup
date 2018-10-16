@@ -134,7 +134,7 @@
 			</LinearLayout>
 
 			<TextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/tvPostTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_short"
@@ -145,7 +145,7 @@
                 android:minLines="2"
                 android:singleLine="false"
                 android:textSize="@dimen/post_description_text_size"
-                local:MvxBind="Text Description; Click ShowPostDetailCommand" />
+                local:MvxBind="Text PostTitle; Click ShowPostDetailCommand" />
 
 			<LinearLayout
                 android:id="@+id/linearlayout"
