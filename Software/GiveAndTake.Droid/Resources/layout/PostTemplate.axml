@@ -253,5 +253,5 @@
         android:layout_marginLeft="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"
         android:background="@color/post_line_color"
-        local:MvxBind="Visibility Visibility(!IsLastViewInList)" />
+		local:MvxBind="Visibility Visibility(IsSeparatorLineShown)" />
 </LinearLayout>

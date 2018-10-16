@@ -73,7 +73,8 @@
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
-    <Compile Include="Views\Popup\PopupPostOptionView.cs" />
+    <Compile Include="Views\Popup\PopupExtensionOptionView.cs" />
+    <Compile Include="Views\Popup\PopupListView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
@@ -85,15 +86,11 @@
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popup\PopupMessageView.cs" />
-    <Compile Include="Views\Popup\PopupReportView.cs" />
     <Compile Include="Views\Popup\PopupWarningView.cs" />
     <Compile Include="Views\PostImageView.cs" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />
     <Compile Include="Views\LoginView.cs" />
-    <Compile Include="Views\Popup\PopupCategoriesView.cs" />
-    <Compile Include="Views\Popup\PopupLocationFilter.cs" />
-    <Compile Include="Views\Popup\PopupShortFilterView.cs" />
     <Compile Include="Views\TabNavigation\NotificationView.cs" />
     <Compile Include="Views\PostDetailView.cs" />
     <Compile Include="Views\TabNavigation\ProfileView.cs" />
@@ -316,7 +313,7 @@
     <AndroidResource Include="Resources\drawable\profile_on.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\PopupView.axml">
+    <AndroidResource Include="Resources\layout\PopupListView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -593,6 +590,11 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\display_number_image_bg.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupExtensionOptionView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

@@ -23,6 +23,12 @@
 		Exception
 	}
 
+	public enum PopupListType
+	{
+		FilterType,
+		MenuType
+	}
+
 	public enum RequestStatus
 	{
 		Submitted,

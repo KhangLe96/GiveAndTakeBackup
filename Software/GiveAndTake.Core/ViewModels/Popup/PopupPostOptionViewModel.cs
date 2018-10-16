@@ -2,6 +2,7 @@
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
+	//REview Thanh Vo Make it generic
 	public class PopupPostOptionViewModel : PopupViewModel
 	{
 		public IMvxCommand ChangeStatusCommand { get; set; }
