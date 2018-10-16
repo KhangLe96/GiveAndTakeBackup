@@ -1,5 +1,4 @@
 ﻿using GiveAndTake.Core.ViewModels.Base;
-using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,33 +20,36 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			}
 		}
 
-		private List<string> _popupItems;
 		private List<PopupItemViewModel> _popupItemViewModels;
 
 		public override void Prepare(List<string> popupItems)
 		{
-			_popupItems = popupItems;
+			PopupItemViewModels = InitPopupList(popupItems);
 		}
 
 		public override Task Initialize()
 		{
-			PopupItemViewModels = InitPopupList();
 			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, null));
 			return base.Initialize();
 		}
 
-		private List<PopupItemViewModel> InitPopupList()
+		private List<PopupItemViewModel> InitPopupList(List<string> popupItems)
 		{
 			var itemViewModels = new List<PopupItemViewModel>();
 
-			foreach (var itemName in _popupItems)
+			foreach (var itemName in popupItems)
 			{
-				var itemViewModel = new PopupItemViewModel(itemName);
-				itemViewModel.ItemSelected += (sender, args) => { NavigationService.Close(this, itemName); };
+				var itemViewModel = new PopupItemViewModel(itemName)
+				{
+					ItemSelected = item => NavigationService.Close(this, item.ItemName)
+				};
 				itemViewModels.Add(itemViewModel);
 			}
 
-			itemViewModels.Last().IsSeparatorLineShown = false;
+			if (itemViewModels.Any())
+			{
+				itemViewModels.Last().IsSeparatorLineShown = false;
+			}
 
 			return itemViewModels;
 		}

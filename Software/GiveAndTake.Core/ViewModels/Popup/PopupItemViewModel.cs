@@ -1,15 +1,13 @@
-﻿using System;
-using System.Windows.Input;
-using GiveAndTake.Core.ViewModels.Base;
+﻿using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
+using System;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class PopupItemViewModel : BaseViewModel
 	{
-		public EventHandler ItemSelected { get; set; }
-		private MvxCommand _clickCommand;
-		public ICommand ClickCommand => _clickCommand;
+		public Action<PopupItemViewModel> ItemSelected { get; set; }
+		public IMvxCommand ClickCommand { get; set; }
 
 		private string _itemName;
 		public string ItemName
@@ -49,8 +47,12 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			InitCommand();
 		}
 
-		private void InitCommand() => _clickCommand = new MvxCommand(OnClickedCommand);
+		private void InitCommand() => ClickCommand = new MvxCommand(OnClickedCommand);
 
-		private void OnClickedCommand() => ItemSelected?.Invoke(this, null);
+		private void OnClickedCommand()
+		{
+			IsSelected = true;
+			ItemSelected?.Invoke(this);
+		}
 	}
 }
