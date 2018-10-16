@@ -155,11 +155,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 
-		private async void OnLoadMore()
+		private void OnLoadMore()
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = await ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
+				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}").Result;
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
 					PostViewModels.Last().IsLastViewInList = false;
@@ -169,7 +169,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 			catch (Exception)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				var result = NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage).Result;
 				if (result)
 				{
 					OnLoadMore();
