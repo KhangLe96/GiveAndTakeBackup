@@ -5,11 +5,14 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Controls;
 using GiveAndTake.Droid.Helpers;
 using GiveAndTake.Droid.Views.Base;
+using Java.Lang;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
@@ -24,10 +27,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		private CustomCircleImageView _ccimProfile;
 		private TabLayout _tabLayout;
 		private static readonly Dictionary<string, int> TabTitleIconsDictionary = new Dictionary<string, int>(){
-			{"Home",Resource.Drawable.tab_navigation_icon_home},
-			{"Notification",Resource.Drawable.tab_navigation_icon_notification},
-			{"Conversation",Resource.Drawable.tab_navigation_icon_conversation},
-			{"Profile",Resource.Drawable.tab_navigation_icon_profile},
+			{AppConstants.HomeTab,Resource.Drawable.tab_navigation_icon_home},
+			{AppConstants.NotificationTab,Resource.Drawable.tab_navigation_icon_notification},
+			{AppConstants.ConversationTab,Resource.Drawable.tab_navigation_icon_conversation},
+			{AppConstants.ProfileTab,Resource.Drawable.tab_navigation_icon_profile},
 		};
 
 		#endregion
@@ -35,11 +38,11 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		#region Properties
 
 		public string AvatarUrl { get; set; }
-		public int LastTab { get; set; }
 
 		protected override int LayoutId => Resource.Layout.TabNavigation;
 
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
+		public IMvxCommand ErrorCommand { get; set; }
 
 		#endregion
 
@@ -60,8 +63,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				.To(vm => vm.AvatarUrl);
 
 			bindingSet.Bind(this)
-				.For(v => v.LastTab)
-				.To(vm => vm.LastTab);
+				.For(v => v.ErrorCommand)
+				.To(vm => vm.ErrorCommand);
 
 			bindingSet.Apply();
 		}
@@ -94,8 +97,12 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 						(int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size)),
 			};
 
-			//Review ThanhVo What happend if _tabLayout.TabCount is different with expectation TabTitleIconsDictionary.Count?
-			// => Handle Internet Connection failed
+			if (_tabLayout.TabCount != TabTitleIconsDictionary.Count)
+			{
+				ErrorCommand.Execute(null);
+				return;
+			}
+
 			for (var index = 0; index < _tabLayout.TabCount; index++)
 			{
 				var tab = _tabLayout.GetTabAt(index);
@@ -103,7 +110,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				tab.SetText("");
 			}
 
-			_tabLayout.GetTabAt(LastTab).SetCustomView(_ccimProfile);
+			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
 
 			_tabLayout.TabSelected += OnTabSelected;
 		}
@@ -114,7 +121,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		private void OnTabSelected(object sender, TabLayout.TabSelectedEventArgs e)
 		{
-			if (e.Tab.Position == LastTab)
+			if (e.Tab.Position == _tabLayout.TabCount - 1)
 			{
 				_ccimProfile.Transformations = new List<ITransformation>
 				{
@@ -130,7 +137,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 					new CircleTransformation()
 				};
 			}
-			_tabLayout.GetTabAt(LastTab).SetCustomView(_ccimProfile);
+			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
 		}
 
 		#endregion

@@ -4,6 +4,7 @@ using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Views;
 using UIKit;
 
@@ -14,7 +15,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private HeaderBar _headerBar;
 		private CustomMvxCachedImageView _imgAvatar;
 
-		public int LastTab { get; set; }
+		//public IMvxCommand ErrorCommand { get; set; }
 
 		public TabNavigationView()
 		{
@@ -25,7 +26,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		{
 			base.ViewWillAppear(animated);
 			ViewModel.ShowInitialViewModelsCommand.Execute();
-			LastTab = ViewModel.LastTab;
 			ConfigTabBar(animated);
 		}
 
@@ -59,11 +59,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				_imgAvatar.Bounds = new CGRect(0, 0, DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize);
 			}
 
-			TabBar.Items[LastTab].Image = UIHelper.ConvertViewToImage(_imgAvatar);
+			if (TabBar.Items.Length != ViewModel.NumberOfTab)
+			{
+				ViewModel.ErrorCommand.Execute(null);
+				return;
+			}
+
+			TabBar.Items[TabBar.Items.Length - 1].Image = UIHelper.ConvertViewToImage(_imgAvatar);
 
 			_imgAvatar.Layer.BorderColor = ColorHelper.LightBlue.CGColor;
 			_imgAvatar.Layer.BorderWidth = DimensionHelper.BorderWidth;
-			TabBar.Items[LastTab].SelectedImage = UIHelper.ConvertViewToImage(_imgAvatar);
+			TabBar.Items[TabBar.Items.Length - 1].SelectedImage = UIHelper.ConvertViewToImage(_imgAvatar);
 
 			foreach (var tabBarItem in TabBar.Items)
 			{

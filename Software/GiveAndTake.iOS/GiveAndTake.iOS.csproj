@@ -111,6 +111,7 @@
     <Compile Include="Views\Popups\PopupReportView.cs" />
     <Compile Include="Views\Popups\PopupShortFilterView.cs" />
     <Compile Include="Views\Popups\PopupView.cs" />
+    <Compile Include="Views\Popups\PopupWarningResponseView.cs" />
     <Compile Include="Views\Popups\PopupWarningView.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
