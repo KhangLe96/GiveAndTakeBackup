@@ -115,7 +115,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<RequestPostResponse> GetPagedRequests(string postId, PagingQueryRequestPostRequest request, out int total)
         {
-            var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Where(x => x.EntityStatus != EntityStatus.Deleted);
+            var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Include(x => x.User).Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (requests == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
