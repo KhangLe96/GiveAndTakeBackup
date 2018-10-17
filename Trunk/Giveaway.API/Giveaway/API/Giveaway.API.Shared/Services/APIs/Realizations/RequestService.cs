@@ -26,10 +26,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             _requestService = requestService;
         }
 
-        public PagingQueryResponse<RequestPostResponse> GetRequesttForPaging(IDictionary<string, string> @params)
+        public PagingQueryResponse<RequestPostResponse> GetRequestForPaging(string postId, IDictionary<string, string> @params)
         {
             var request = @params.ToObject<PagingQueryRequestPostRequest>();
-            var reports = GetPagedRequests(request, out var total);
+            var reports = GetPagedRequests(postId, request, out var total);
             return new PagingQueryResponse<RequestPostResponse>
             {
                 Data = reports,
@@ -48,11 +48,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             request.Id = Guid.NewGuid();
 
             _requestService.Create(request, out var isPostSaved);
-            if(isPostSaved == false)
+            if (isPostSaved == false)
             {
                 throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
             }
-            
+
             var requestDb = _requestService.Include(x => x.Post).Include(x => x.Response).FirstAsync(x => x.Id == request.Id).Result;
             var postResponse = Mapper.Map<RequestPostResponse>(requestDb);
 
@@ -105,12 +105,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 throw new BadRequestException(CommonConstant.Error.BadRequest);
         }
 
-        private List<RequestPostResponse> GetPagedRequests(PagingQueryRequestPostRequest request, out int total)
+        private List<RequestPostResponse> GetPagedRequests(string postId, PagingQueryRequestPostRequest request, out int total)
         {
             var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (requests == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
+            }
+
+            if (!string.IsNullOrEmpty(postId))
+            {
+                try
+                {
+                    Guid id = Guid.Parse(postId);
+                    requests = requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == id);
+                }
+                catch
+                {
+                    throw new BadRequestException(CommonConstant.Error.NotFound);
+                }
             }
 
             if (!string.IsNullOrEmpty(request.RequestStatus.ToString()))
