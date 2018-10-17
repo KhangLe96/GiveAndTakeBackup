@@ -17,6 +17,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
 		private ICommand _errorCommand;
+		//Review ThanhVo Command name should be start with Verb: ex: ShowErrorCommand
+		//Change in the view too.
 		public ICommand ErrorCommand => _errorCommand ?? (_errorCommand = new MvxCommand(InitErrorResponseAsync));
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
 			_showInitialViewModelsCommand ??
