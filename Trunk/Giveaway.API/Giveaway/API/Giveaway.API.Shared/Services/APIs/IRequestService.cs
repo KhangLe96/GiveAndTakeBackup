@@ -13,5 +13,6 @@ namespace Giveaway.API.Shared.Services.APIs
         RequestPostResponse Create(RequestPostRequest request);
         bool UpdateStatus(Guid requestId, StatusRequest request);
         bool Delete(Guid requestId);
+        bool CheckUserRequest(Guid postId, Guid userId);
     }
 }
