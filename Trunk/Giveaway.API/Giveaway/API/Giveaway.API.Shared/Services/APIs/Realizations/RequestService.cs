@@ -85,6 +85,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return updated;
         }
 
+        public bool CheckUserRequest(Guid postId, Guid userId)
+        {
+            var requests = _requestService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == postId && x.UserId == userId);
+            if (requests.Any()) return true;
+
+            return false;
+        }
+
         #region Utils
 
         private void ChangeStatus(StatusRequest statusRequest, Request request)

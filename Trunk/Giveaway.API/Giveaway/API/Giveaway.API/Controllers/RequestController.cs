@@ -77,12 +77,31 @@ namespace Giveaway.API.Controllers
             return _requestService.UpdateStatus(requestId, request);
         }
 
+        /// <summary>
+        /// Delete a request by id
+        /// </summary>
+        /// <param name="requestId"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete("delete/{requestId}")]
         [Produces("application/json")]
         public bool Delete(Guid requestId)
         {
             return _requestService.Delete(requestId);
+        }
+
+        /// <summary>
+        /// Check if an user requested a post or not
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("checkUserRequest/{postId}/{userId}")]
+        [Produces("application/json")]
+        public bool CheckUserRequest(Guid postId, Guid userId)
+        {
+            return _requestService.CheckUserRequest(postId, userId);
         }
     }
 }
