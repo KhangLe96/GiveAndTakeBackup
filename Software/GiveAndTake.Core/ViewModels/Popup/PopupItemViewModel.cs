@@ -24,6 +24,8 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			set
 			{
 				_isSeparatorLineShown = value;
+				//Review ThanhVo Any reason to use RaisePropertyChanged instead of SetProperty
+				//Check all places using RaisePropertyChanged in this task
 				RaisePropertyChanged(() => IsSeparatorLineShown);
 			}
 		}
