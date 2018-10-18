@@ -21,24 +21,14 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		public bool IsSeparatorLineShown
 		{
 			get => _isSeparatorLineShown;
-			set
-			{
-				_isSeparatorLineShown = value;
-				//Review ThanhVo Any reason to use RaisePropertyChanged instead of SetProperty
-				//Check all places using RaisePropertyChanged in this task
-				RaisePropertyChanged(() => IsSeparatorLineShown);
-			}
+			set => SetProperty(ref _isSeparatorLineShown, value);
 		}
 
 		private bool _isSelected;
 		public bool IsSelected
 		{
 			get => _isSelected;
-			set
-			{
-				_isSelected = value;
-				RaisePropertyChanged(() => IsSelected);
-			}
+			set => SetProperty(ref _isSelected, value);
 		}
 
 		public PopupItemViewModel(string name)
