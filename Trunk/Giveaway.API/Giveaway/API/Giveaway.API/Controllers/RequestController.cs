@@ -97,10 +97,11 @@ namespace Giveaway.API.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("checkUserRequest/{postId}/{userId}")]
+        [HttpGet("checkUserRequest/{postId}")]
         [Produces("application/json")]
-        public object CheckUserRequest(Guid postId, Guid userId)
+        public object CheckUserRequest(Guid postId)
         {
+            var userId = User.GetUserId();
             return _requestService.CheckUserRequest(postId, userId);
         }
     }
