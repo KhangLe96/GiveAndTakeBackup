@@ -1,8 +1,8 @@
-﻿using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
-using System;
 using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels
@@ -38,7 +38,7 @@ namespace GiveAndTake.Core.ViewModels
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}
-			catch (ApiException)
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 				if (result)

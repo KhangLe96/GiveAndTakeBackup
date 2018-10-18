@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Helpers;
+﻿using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -22,12 +23,12 @@ namespace GiveAndTake.Core.Services
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 	        {
-		        throw new ApiException(response.NetworkStatus.ToString());
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
 	        }
 
 	        if (!string.IsNullOrEmpty(response.ErrorMessage))
 	        {
-		        throw new ApiException(response.ErrorMessage);
+		        throw new AppException.ApiException(response.ErrorMessage);
 	        }
 
 	        return JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
@@ -39,12 +40,12 @@ namespace GiveAndTake.Core.Services
 
 		    if (response.NetworkStatus != NetworkStatus.Success)
 		    {
-			    throw new ApiException(response.NetworkStatus.ToString());
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
 		    }
 
 		    if (!string.IsNullOrEmpty(response.ErrorMessage))
 		    {
-			    throw new ApiException(response.ErrorMessage);
+			    throw new AppException.ApiException(response.ErrorMessage);
 		    }
 
 		    return JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
@@ -59,12 +60,12 @@ namespace GiveAndTake.Core.Services
 
 	        if (response.NetworkStatus != NetworkStatus.Success)
 	        {
-		        throw new ApiException(response.NetworkStatus.ToString());
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
 	        }
 
 	        if (!string.IsNullOrEmpty(response.ErrorMessage))
 	        {
-		        throw new ApiException(response.ErrorMessage);
+		        throw new AppException.ApiException(response.ErrorMessage);
 	        }
 
 	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
@@ -77,12 +78,12 @@ namespace GiveAndTake.Core.Services
 	        var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
 	        if (response.NetworkStatus != NetworkStatus.Success)
 	        {
-		        throw new ApiException(response.NetworkStatus.ToString());
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
 	        }
 
 	        if (!string.IsNullOrEmpty(response.ErrorMessage))
 	        {
-		        throw new ApiException(response.ErrorMessage);
+		        throw new AppException.ApiException(response.ErrorMessage);
 	        }
 
 	        return JsonHelper.Deserialize<Post>(response.RawContent);
@@ -95,43 +96,55 @@ namespace GiveAndTake.Core.Services
 
 	        if (response.NetworkStatus != NetworkStatus.Success)
 	        {
-		        throw new ApiException(response.NetworkStatus.ToString());
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
 	        }
 
 	        if (!string.IsNullOrEmpty(response.ErrorMessage))
 	        {
-		        throw new ApiException(response.ErrorMessage);
+		        throw new AppException.ApiException(response.ErrorMessage);
 	        }
 
 	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
 		}
 
-		//Review ThanhVo Handle internet connection for this one
-        public void ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
+        public async Task ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
         {
-			Task.Run(async () =>
-			{
-				var postStatus = new PostStatus
-				{
-					Status = newStatus,
-				};
-				var statusInString = JsonHelper.Serialize(postStatus);
-				var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
-				string parameters = $"/{postId}";
-				var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
-			});
+	        var postStatus = new PostStatus
+	        {
+		        Status = newStatus,
+	        };
+	        var statusInString = JsonHelper.Serialize(postStatus);
+	        var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+	        string parameters = $"/{postId}";
+	        var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
+
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
 		}
 
-	    //Review ThanhVo Handle internet connection for this one
-		public void EditPost(EditPost post)
+		public async Task EditPost(EditPost post)
 		{
-			Task.Run(async () =>
+			var postInformationInString = JsonHelper.Serialize(post);
+			var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
+			string parameters = $"/{post.PostId}";
+			var response = await _apiHelper.Put(AppConstants.EditPost + parameters, content, AppConstants.Token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
 			{
-				var postInformationInString = JsonHelper.Serialize(post);
-				var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
-				string parameters = $"/{post.PostId}";
-				var response = await _apiHelper.Put(AppConstants.EditPost + parameters, content, AppConstants.Token);
-			});
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
+
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}
 		}
 
 		public async Task<LoginResponse> LoginFacebook(BaseUser baseUser)
@@ -143,12 +156,12 @@ namespace GiveAndTake.Core.Services
 
 		    if (response.NetworkStatus != NetworkStatus.Success)
 		    {
-			    throw new ApiException(response.NetworkStatus.ToString());
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
 		    }
 
 		    if (!string.IsNullOrEmpty(response.ErrorMessage))
 		    {
-			    throw new ApiException(response.ErrorMessage);
+			    throw new AppException.ApiException(response.ErrorMessage);
 		    }
 
 		    return JsonHelper.Deserialize<LoginResponse>(response.RawContent);
@@ -162,12 +175,12 @@ namespace GiveAndTake.Core.Services
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 			{
-				throw new ApiException(response.NetworkStatus.ToString());
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
 			}
 
 			if (!string.IsNullOrEmpty(response.ErrorMessage))
 			{
-				throw new ApiException(response.ErrorMessage);
+				throw new AppException.ApiException(response.ErrorMessage);
 			}
 
 			return JsonHelper.Deserialize<bool>(response.RawContent);
@@ -180,12 +193,12 @@ namespace GiveAndTake.Core.Services
 	        var response = await _apiHelper.Put(AppConstants.GetUserProfile, content);
 	        if (response.NetworkStatus != NetworkStatus.Success)
 	        {
-		        throw new ApiException(response.NetworkStatus.ToString());
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
 	        }
 
 	        if (!string.IsNullOrEmpty(response.ErrorMessage))
 	        {
-		        throw new ApiException(response.ErrorMessage);
+		        throw new AppException.ApiException(response.ErrorMessage);
 	        }
 
 	        return JsonHelper.Deserialize<User>(response.RawContent);
@@ -197,12 +210,12 @@ namespace GiveAndTake.Core.Services
 		    var response = await _apiHelper.Get(AppConstants.GetUserProfile + parameters, AppConstants.Token);
 		    if (response.NetworkStatus != NetworkStatus.Success)
 		    {
-			    throw new ApiException(response.NetworkStatus.ToString());
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
 		    }
 
 		    if (!string.IsNullOrEmpty(response.ErrorMessage))
 		    {
-			    throw new ApiException(response.ErrorMessage);
+			    throw new AppException.ApiException(response.ErrorMessage);
 		    }
 
 		    return JsonHelper.Deserialize<User>(response.RawContent);

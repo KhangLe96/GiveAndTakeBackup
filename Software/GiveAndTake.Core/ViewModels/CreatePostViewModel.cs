@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.Exceptions;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -187,7 +188,7 @@ namespace GiveAndTake.Core.ViewModels
 			InitSelectedImage();
 		}
 
-		public void InitSubmit()
+		public async void InitSubmit()
 		{
 			//if (_postImages == null || !_postImages.Any())
 			//{
@@ -195,7 +196,18 @@ namespace GiveAndTake.Core.ViewModels
 			//	return;
 			//}
 
-			InitCreateNewPost();
+			try
+			{
+				InitCreateNewPost();
+			}
+			catch (AppException.ApiException)
+			{
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				if (result)
+				{
+					InitCreateNewPost();
+				}
+			}
 		}
 
 		public void InitCreateNewPost()
@@ -209,7 +221,6 @@ namespace GiveAndTake.Core.ViewModels
 				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
 				Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
 			};
-			//Review ThanhVo this can raise ApiException
 			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
 			NavigationService.Close(this,true);
 		}

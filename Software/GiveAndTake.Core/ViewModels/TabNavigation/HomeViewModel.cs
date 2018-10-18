@@ -1,9 +1,10 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -108,7 +109,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				_dataModel.SelectedSortFilter = _dataModel.SelectedSortFilter ?? _dataModel.SortFilters.First();
 				UpdatePostViewModels();
 			}
-			catch (ApiException)
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 				if (result)
@@ -133,10 +134,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				//Review ThanhVo should Name the clear name
-				var t = DateTimeOffset.Now;
-
-				//REview ThanhVo This can raise ApiException, so should catch ApiException not general Exception
 				_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams());
 				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 				if (PostViewModels.Any())
@@ -144,10 +141,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					PostViewModels.Last().IsLastViewInList = true;
 				}
 				IsSearchResultNull = PostViewModels.Any();
-
-				Console.WriteLine($"UpdatePostViewModels lasted {(DateTimeOffset.Now - t).Milliseconds}");
 			}
-			catch (Exception )
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 				if (result)
@@ -161,7 +156,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				//Review ThanhVo This can raise ApiException, so should catch ApiException
 				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}").Result;
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
@@ -170,7 +164,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					PostViewModels.Last().IsLastViewInList = true;
 				}
 			}
-			catch (Exception)
+			catch (AppException.ApiException)
 			{
 				var result = NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage).Result;
 				if (result)
@@ -212,8 +206,18 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
 
-			//Review ThanhVo this can raise ApiException, please check all method from API and make sure catch exception if raising exception
-			_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
+			try
+			{
+				_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
+			}
+			catch (AppException.ApiException)
+			{
+				var popupResult = NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage).Result;
+				if (popupResult)
+				{
+					_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
+				}
+			}
 			_dataModel.SelectedCategory = categoryFilter;
 			_dataModel.SelectedProvinceCity = locationFilter;
 			if (result)
