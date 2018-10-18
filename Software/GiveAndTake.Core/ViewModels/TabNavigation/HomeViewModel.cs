@@ -133,8 +133,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
+				//Review ThanhVo should Name the clear name
 				var t = DateTimeOffset.Now;
 
+				//REview ThanhVo This can raise ApiException, so should catch ApiException not general Exception
 				_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams());
 				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 				if (PostViewModels.Any())
@@ -159,6 +161,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
+				//Review ThanhVo This can raise ApiException, so should catch ApiException
 				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}").Result;
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
@@ -209,6 +212,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
 
+			//Review ThanhVo this can raise ApiException, please check all method from API and make sure catch exception if raising exception
 			_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
 			_dataModel.SelectedCategory = categoryFilter;
 			_dataModel.SelectedProvinceCity = locationFilter;

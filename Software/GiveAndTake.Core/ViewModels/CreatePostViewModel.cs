@@ -209,6 +209,7 @@ namespace GiveAndTake.Core.ViewModels
 				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
 				Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
 			};
+			//Review ThanhVo this can raise ApiException
 			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
 			NavigationService.Close(this,true);
 		}

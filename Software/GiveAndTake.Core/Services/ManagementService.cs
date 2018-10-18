@@ -1,8 +1,6 @@
 ﻿using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -108,6 +106,7 @@ namespace GiveAndTake.Core.Services
 	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
 		}
 
+		//Review ThanhVo Handle internet connection for this one
         public void ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
         {
 			Task.Run(async () =>
@@ -123,6 +122,7 @@ namespace GiveAndTake.Core.Services
 			});
 		}
 
+	    //Review ThanhVo Handle internet connection for this one
 		public void EditPost(EditPost post)
 		{
 			Task.Run(async () =>
