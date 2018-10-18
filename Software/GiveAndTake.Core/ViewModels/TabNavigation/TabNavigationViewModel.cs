@@ -1,5 +1,4 @@
-﻿using System;
-using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System.Collections.Generic;
@@ -16,10 +15,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public int NumberOfTab { get; set; }
 
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
-		private ICommand _errorCommand;
-		//Review ThanhVo Command name should be start with Verb: ex: ShowErrorCommand
-		//Change in the view too.
-		public ICommand ErrorCommand => _errorCommand ?? (_errorCommand = new MvxCommand(InitErrorResponseAsync));
+		private ICommand _showErrorCommand;
+		public ICommand ShowErrorCommand => _showErrorCommand ?? (_showErrorCommand = new MvxCommand(InitErrorResponseAsync));
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
 			_showInitialViewModelsCommand ??
 			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));

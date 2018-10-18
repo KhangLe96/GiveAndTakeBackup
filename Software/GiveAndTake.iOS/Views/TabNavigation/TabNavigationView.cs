@@ -4,7 +4,6 @@ using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
-using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Views;
 using UIKit;
 
@@ -15,7 +14,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private HeaderBar _headerBar;
 		private CustomMvxCachedImageView _imgAvatar;
 
-		//public IMvxCommand ErrorCommand { get; set; }
 
 		public TabNavigationView()
 		{
@@ -61,7 +59,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 			if (TabBar.Items.Length != ViewModel.NumberOfTab)
 			{
-				ViewModel.ErrorCommand.Execute(null);
+				ViewModel.ShowErrorCommand.Execute(null);
 				return;
 			}
 

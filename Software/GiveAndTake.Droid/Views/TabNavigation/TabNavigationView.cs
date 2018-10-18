@@ -7,12 +7,10 @@ using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels.Base;
-using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Controls;
 using GiveAndTake.Droid.Helpers;
 using GiveAndTake.Droid.Views.Base;
-using Java.Lang;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
@@ -42,7 +40,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		protected override int LayoutId => Resource.Layout.TabNavigation;
 
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
-		public IMvxCommand ErrorCommand { get; set; }
+		public IMvxCommand ShowErrorCommand { get; set; }
 
 		#endregion
 
@@ -63,8 +61,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				.To(vm => vm.AvatarUrl);
 
 			bindingSet.Bind(this)
-				.For(v => v.ErrorCommand)
-				.To(vm => vm.ErrorCommand);
+				.For(v => v.ShowErrorCommand)
+				.To(vm => vm.ShowErrorCommand);
 
 			bindingSet.Apply();
 		}
@@ -99,7 +97,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 			if (_tabLayout.TabCount != TabTitleIconsDictionary.Count)
 			{
-				ErrorCommand.Execute(null);
+				ShowErrorCommand.Execute(null);
 				return;
 			}
 
