@@ -8,4 +8,9 @@ namespace GiveAndTake.iOS.Converters
 	{
 		protected override bool Convert(bool value, Type targetType, object parameter, CultureInfo culture) => !value;
 	}
+
+	public class RevertBoolValueConverter : MvxValueConverter<bool, bool>
+	{
+		protected override bool Convert(bool value, Type targetType, object parameter, CultureInfo culture) => value;
+	}
 }

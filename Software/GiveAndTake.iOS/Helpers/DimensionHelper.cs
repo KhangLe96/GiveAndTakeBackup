@@ -94,6 +94,14 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PostDetailImageIndexHeight { get; set; }
 		public static nfloat PostDetailImageIndexWidth { get; set; }
 		public static nfloat PostImageMarginObject { get; set; }
+		public static nfloat PopupRequestTitleTextSize { get; set; }
+		public static nfloat PopupRequestGiverInformationViewWidth { get; set; }
+		public static nfloat PopupRequestGiverInformationViewHeight { get; set; }
+		public static nfloat PopupRequestGiverAvartarSize { get; set; }
+		public static nfloat PopupRequestSmallMargin { get; set; }
+		public static nfloat PopupRequestHeight { get; set; }
+		public static nfloat PopupRequestDescriptionTextViewHeight { get; set; }
+		public static nfloat PopupRequestButtonWidth { get; set; }
 
 
 		public static void InitStaticVariable()
@@ -187,6 +195,16 @@ namespace GiveAndTake.iOS.Helpers
 			PostDetailImageIndexHeight = 35 * Rate;
 			PostDetailImageIndexWidth = 50 * Rate;
 			PostImageMarginObject = 40 * Rate;
+			PopupRequestTitleTextSize = 20 * Rate;
+			PopupRequestGiverInformationViewWidth = PopupContentWidth - 2 * PopupRequestSmallMargin;
+			PopupRequestGiverInformationViewHeight = 2 * PopupRequestSmallMargin + PopupRequestGiverAvartarSize;
+			PopupRequestGiverAvartarSize = 30 * Rate;
+			PopupRequestSmallMargin = 5 * Rate;
+			PopupRequestHeight = PopupRequestDescriptionTextViewHeight + MarginBig + DefaultMargin * 4 +
+			                     PopupRequestGiverInformationViewHeight + 60 * Rate;
+			PopupRequestDescriptionTextViewHeight = 220 * Rate;
+			PopupRequestButtonWidth =
+				PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
 		}
 	}
 }

@@ -80,6 +80,7 @@
     <Compile Include="Controls\CustomTextView.cs" />
     <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
+    <Compile Include="Converters\BoolToColorValueConverter.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
     <Compile Include="Converters\StringToAttributedStringValueConverter.cs" />
     <Compile Include="Converters\StringToUIColorValueConverter.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popups\PopupCategoriesView.cs" />
+    <Compile Include="Views\Popups\PopupCreateRequestView.cs" />
     <Compile Include="Views\Popups\PopupListView.cs" />
     <Compile Include="Views\Popups\PopupLocationFilterView.cs" />
     <Compile Include="Views\Popups\PopupMessageView.cs" />
