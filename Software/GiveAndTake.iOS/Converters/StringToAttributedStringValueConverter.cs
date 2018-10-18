@@ -13,9 +13,9 @@ namespace GiveAndTake.iOS.Converters
 			, Type targetType
 			, object parameter, System.Globalization.CultureInfo culture)
 		{
-			if (value == null || value == "Đã chọn 0 hình")
+			if (value == null || value == AppConstants.SelectedImage)
 			{
-				value = "Đã chọn 0 hình";
+				value = AppConstants.SelectedImage;
 				var attrStr = new NSAttributedString(value, foregroundColor: ColorHelper.Gray, underlineStyle: NSUnderlineStyle.Single);
 				return attrStr;
 			}

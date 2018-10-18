@@ -104,7 +104,7 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.Command)
 				.To(vm => vm.ShowPhotoCollectionCommand);
 
-			if (_postDescriptionTextView.Text == null)
+			if (string.IsNullOrEmpty(_postDescriptionTextView.Text))
 			{
 				bindingSet.Bind(_postDescriptionTextView)
 					.For(v => v.Text)

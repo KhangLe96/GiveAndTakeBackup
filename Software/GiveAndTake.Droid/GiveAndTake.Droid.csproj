@@ -73,6 +73,7 @@
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\Popup\PopupCreateRequestView.cs" />
     <Compile Include="Views\Popup\PopupPostOptionView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -598,6 +599,17 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\PostImageView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupCreateRequestRequestView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\submit_button_bg__disable_state.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
