@@ -99,7 +99,7 @@ namespace Giveaway.API.Controllers
         [Authorize]
         [HttpGet("checkUserRequest/{postId}/{userId}")]
         [Produces("application/json")]
-        public bool CheckUserRequest(Guid postId, Guid userId)
+        public object CheckUserRequest(Guid postId, Guid userId)
         {
             return _requestService.CheckUserRequest(postId, userId);
         }
