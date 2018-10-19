@@ -91,10 +91,23 @@ namespace Giveaway.API.Controllers
         }
 
         /// <summary>
+        /// A current user deletes his request for a post
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpDelete("deleteCurrentUserRequest/{postId}")]
+        [Produces("application/json")]
+        public bool DeleteCurrentUserRequest(Guid postId)
+        {
+            var userId = User.GetUserId();
+            return _requestService.DeleteCurrentUserRequest(postId, userId);
+        }
+
+        /// <summary>
         /// Check if an user requested a post or not
         /// </summary>
         /// <param name="postId"></param>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("checkUserRequest/{postId}")]
