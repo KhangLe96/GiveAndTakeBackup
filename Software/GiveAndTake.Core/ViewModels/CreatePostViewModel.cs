@@ -205,6 +205,7 @@ namespace GiveAndTake.Core.ViewModels
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 				if (result)
 				{
+					//Review ThanhVo What happen if exception raises again?
 					InitCreateNewPost();
 				}
 			}
