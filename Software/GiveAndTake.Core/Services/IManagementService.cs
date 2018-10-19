@@ -17,5 +17,6 @@ namespace GiveAndTake.Core.Services
 		void UpdateCurrentUserProfile(User user);
 	    void GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
+        ApiRequestsResponse GetRequestOfPost(string postId, string filterParams);
     }
 }

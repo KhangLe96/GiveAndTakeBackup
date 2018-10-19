@@ -18,6 +18,29 @@ namespace GiveAndTake.Core.Services
             _apiHelper = new RestClient();
         }
 
+        public ApiRequestsResponse GetRequestOfPost(string postId, string filterParams)
+        {
+            return Task.Run(async () =>
+            {
+                var url = string.IsNullOrEmpty(filterParams)
+                    ? AppConstants.GetRequestOfPost
+                    : string.Join("?", AppConstants.GetRequestOfPost, filterParams);
+                //string parameters = $"/{postId}";
+
+                var response = await _apiHelper.Get(url, AppConstants.Token);
+                if (response != null && response.NetworkStatus == NetworkStatus.Success)
+                {
+                    var a = JsonHelper.Deserialize<ApiRequestsResponse>(response.RawContent);
+                    return JsonHelper.Deserialize<ApiRequestsResponse>(response.RawContent);
+                }
+
+                //Handle popup error cannot get data
+                Debug.WriteLine("Error cannot get data");
+                throw new Exception(response?.ErrorMessage);
+
+            }).Result;
+        }
+
         public List<Category> GetCategories()
         {
             return Task.Run(async () =>

@@ -3,7 +3,6 @@ using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross;
-using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
-	public class HomeViewModel : BaseViewModel
+    public class HomeViewModel : BaseViewModel
 	{
 		private readonly IDataModel _dataModel;
 		private readonly IManagementService _managementService = Mvx.Resolve<IManagementService>();

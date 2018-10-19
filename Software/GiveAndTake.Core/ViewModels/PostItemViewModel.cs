@@ -4,6 +4,7 @@ using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -205,9 +206,15 @@ namespace GiveAndTake.Core.ViewModels
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
             ShowPostDetailCommand = new MvxAsyncCommand(ShowPostDetailView);
 			ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
+            ShowRequestListCommand = new MvxAsyncCommand(ShowRequestListView);
         }
 
-	    private async Task ShowMenuView()
+        private async Task ShowRequestListView()
+        {
+            await NavigationService.Navigate<RequestsViewModel>();
+        }
+
+        private async Task ShowMenuView()
 	    {
 		    if (_post.IsMyPost)
 		    {
@@ -233,21 +240,7 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public ICommand ShowPostDetailCommand { get; set; }
         public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
-
-        #endregion
-
-        #region Utils
-
-        private int ConvertHexToDec(string hex)
-        {
-            string color = hex.TrimStart('#');
-            string R = color.Substring(2, 2);
-            string G = color.Substring(4, 2);
-            string B = color.Substring(6, 2);
-
-            int decValue = int.Parse(B + G + R, System.Globalization.NumberStyles.HexNumber);
-            return decValue;
-        }
+        public ICommand ShowRequestListCommand { get; set; }
 
         #endregion
     }

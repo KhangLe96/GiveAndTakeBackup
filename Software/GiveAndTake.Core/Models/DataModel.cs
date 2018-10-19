@@ -13,5 +13,6 @@ namespace GiveAndTake.Core.Models
 		public SortFilter SelectedSortFilter { get; set; }
 		public LoginResponse LoginResponse { get; set; }
 		public BaseUser CurrentUser { get; set; }
-	}
+        public ApiRequestsResponse ApiRequestsResponse { get; set; }
+    }
 }

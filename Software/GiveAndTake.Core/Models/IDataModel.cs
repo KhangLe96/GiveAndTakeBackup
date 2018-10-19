@@ -13,5 +13,6 @@ namespace GiveAndTake.Core.Models
 		ProvinceCity SelectedProvinceCity { get; set; }
 		SortFilter SelectedSortFilter { get; set; }
 		BaseUser CurrentUser { get; set; }
-	}
+	    ApiRequestsResponse ApiRequestsResponse { get; set; }
+    }
 }
