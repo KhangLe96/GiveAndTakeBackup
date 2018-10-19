@@ -1,9 +1,9 @@
-﻿using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -103,15 +103,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.Categories = _dataModel.Categories ?? ManagementService.GetCategories();
-				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? ManagementService.GetProvinceCities();
+				_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
+				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
 				_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
 				_selectedCategory = _selectedCategory ?? _dataModel.Categories.First();
 				_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
 				_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();
 				UpdatePostViewModels();
 			}
-			catch (Exception)
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
@@ -136,7 +136,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = ManagementService.GetPostList(GetFilterParams());
+				_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams());
 				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 				if (PostViewModels.Any())
 				{
@@ -144,7 +144,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				}
 				IsSearchResultNull = PostViewModels.Any();
 			}
-			catch (Exception)
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
@@ -158,7 +158,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
+				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}").Result;
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
 					PostViewModels.Last().IsSeparatorLineShown = true;
@@ -167,7 +167,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				}
 			
 			}
-			catch (Exception)
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
@@ -245,13 +245,28 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
 
-			await Task.Run(() => _dataModel.Categories = ManagementService.GetCategories());
-
+			UpdateCategories();
 			if (result)
 			{
 				UpdatePostViewModels();
 			}
 
+		}
+
+		private async void UpdateCategories()
+		{
+			try
+			{
+				_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
+			}
+			catch (AppException.ApiException)
+			{
+				var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				if (popupResult == RequestStatus.Submitted)
+				{
+					UpdateCategories();
+				}
+			}
 		}
 
 		private string GetFilterParams()

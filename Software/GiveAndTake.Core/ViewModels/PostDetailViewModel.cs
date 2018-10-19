@@ -136,9 +136,19 @@ namespace GiveAndTake.Core.ViewModels
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
+	    private static readonly List<string> MyPostOptions = new List<string>
+	    {
+		    AppConstants.ChangePostStatus,
+		    AppConstants.ModifyPost,
+		    AppConstants.ViewPostRequests,
+		    AppConstants.DeletePost
+	    };
+
+	    private static readonly List<string> OtherPostOptions = new List<string> { AppConstants.ReportPost };
+
 		private readonly IDataModel _dataModel;
 
-		#endregion
+	    #endregion
 
 		#region Constructor
 
@@ -170,15 +180,34 @@ namespace GiveAndTake.Core.ViewModels
 			NavigationService.Navigate<PostImageViewModel, bool>().ContinueWith(task => PostImageIndex = _dataModel.PostImageIndex);
 		}
 
-	    private void ShowMenuView()
+		private async void ShowMenuView()
 		{
-			if (_isMyPost)
+			var postOptions = _isMyPost ? AppConstants.MyPostOptions : AppConstants.OtherPostOptions;
+
+			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			switch (result)
 			{
-				NavigationService.Navigate<PopupPostOptionViewModel>();
-			}
-			else
-			{
-				NavigationService.Navigate<PopupReportViewModel>();
+				case AppConstants.ChangePostStatus:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.ModifyPost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.ViewPostRequests:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.DeletePost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+				case AppConstants.ReportPost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
 			}
 		}
 

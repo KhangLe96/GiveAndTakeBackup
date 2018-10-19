@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.Exceptions;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -203,15 +204,20 @@ namespace GiveAndTake.Core.ViewModels
 			InitSelectedImage();
 		}
 
-		public void InitSubmit()
+		public async void InitSubmit()
 		{
-			//if (_postImages == null || !_postImages.Any())
-			//{
-			//	// Show message
-			//	return;
-			//}
-
-			InitCreateNewPost();
+			try
+			{
+				InitCreateNewPost();
+			}
+			catch (AppException.ApiException)
+			{
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				if (result == RequestStatus.Submitted)
+				{
+					InitSubmit();
+				}
+			}
 		}
 
 		public void InitCreateNewPost()

@@ -1,4 +1,6 @@
-﻿namespace GiveAndTake.Core
+﻿using System.Collections.Generic;
+
+namespace GiveAndTake.Core
 {
 	public static class AppConstants
 	{
@@ -33,6 +35,8 @@
 		public const string ViewPostRequests = "Duyệt cho";
 		public const string DeletePost = "Xóa";
 		public const string ReportPost = "Báo cáo";
+		public static List<string> MyPostOptions = new List<string> {ChangePostStatus, ModifyPost, ViewPostRequests, DeletePost};
+		public static List<string> OtherPostOptions = new List<string> { ReportPost };
 
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";

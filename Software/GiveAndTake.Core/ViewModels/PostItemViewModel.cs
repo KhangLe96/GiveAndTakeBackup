@@ -1,5 +1,4 @@
-﻿using System;
-using FFImageLoading.Transformations;
+﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
@@ -172,7 +171,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public double DownsampleWidth => 200d;
 
-	    public static List<string> MyPostOptions = new List<string>
+	    private static readonly List<string> MyPostOptions = new List<string>
 	    {
 		    AppConstants.ChangePostStatus,
 		    AppConstants.ModifyPost,
@@ -180,7 +179,7 @@ namespace GiveAndTake.Core.ViewModels
 		    AppConstants.DeletePost
 	    };
 
-	    public static List<string> OtherPostOptions = new List<string> {AppConstants.ReportPost};
+	    private static readonly List<string> OtherPostOptions = new List<string> { AppConstants.ReportPost };
 
 		#endregion
 
@@ -219,7 +218,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async Task ShowMenuView()
 	    {
-			var postOptions = _post.IsMyPost ? MyPostOptions : OtherPostOptions;
+			var postOptions = _post.IsMyPost ? AppConstants.MyPostOptions : AppConstants.OtherPostOptions;
 
 			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
 
@@ -261,21 +260,6 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public ICommand ShowPostDetailCommand { get; set; }
         public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
-
-        #endregion
-
-        #region Utils
-
-        private int ConvertHexToDec(string hex)
-        {
-            string color = hex.TrimStart('#');
-            string R = color.Substring(2, 2);
-            string G = color.Substring(4, 2);
-            string B = color.Substring(6, 2);
-
-            int decValue = int.Parse(B + G + R, System.Globalization.NumberStyles.HexNumber);
-            return decValue;
-        }
 
         #endregion
     }
