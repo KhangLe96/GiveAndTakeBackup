@@ -18,11 +18,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		public List<PopupItemViewModel> PopupItemViewModels
 		{
 			get => _popupItemViewModels;
-			set
-			{
-				_popupItemViewModels = value;
-				RaisePropertyChanged(() => PopupItemViewModels);
-			}
+			set => SetProperty(ref _popupItemViewModels, value);
 		}
 
 		private PopupItemViewModel _selectedPopupItem;

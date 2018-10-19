@@ -21,22 +21,14 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		public bool IsSeparatorLineShown
 		{
 			get => _isSeparatorLineShown;
-			set
-			{
-				_isSeparatorLineShown = value;
-				RaisePropertyChanged(() => IsSeparatorLineShown);
-			}
+			set => SetProperty(ref _isSeparatorLineShown, value);
 		}
 
 		private bool _isSelected;
 		public bool IsSelected
 		{
 			get => _isSelected;
-			set
-			{
-				_isSelected = value;
-				RaisePropertyChanged(() => IsSelected);
-			}
+			set => SetProperty(ref _isSelected, value);
 		}
 
 		public PopupItemViewModel(string name)
