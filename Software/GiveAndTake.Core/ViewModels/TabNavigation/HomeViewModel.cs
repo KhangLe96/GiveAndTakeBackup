@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Exceptions;
+﻿using System;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -167,7 +168,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				}
 			
 			}
-			catch (AppException.ApiException)
+			catch (AggregateException ex) when (ex.InnerException is AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
