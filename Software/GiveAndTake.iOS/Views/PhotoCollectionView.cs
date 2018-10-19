@@ -14,6 +14,7 @@ namespace GiveAndTake.iOS.Views
 	[MvxModalPresentation]
 	public class PhotoCollectionView : BaseView
 	{
+		public IMvxCommand BackPressedCommand { get; set; }
 
 		private CustomImageFlowLayout _customImageFlowLayout;
 		private UICollectionView _photoCollectionView;
@@ -26,6 +27,7 @@ namespace GiveAndTake.iOS.Views
 
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
 				UIColor.White, true);
+			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
 
 			View.Add(_headerBar);
 			View.AddConstraints(new[]
@@ -42,7 +44,7 @@ namespace GiveAndTake.iOS.Views
 					new CGRect(0, 0, UIScreen.MainScreen.Bounds.Width - DimensionHelper.PopupLineHeight,
 						UIScreen.MainScreen.Bounds.Height), _customImageFlowLayout)
 				{
-					BackgroundColor = ColorHelper.SeparatorColor,
+					BackgroundColor = ColorHelper.PhotoCollectionViewBackground,
 					TranslatesAutoresizingMaskIntoConstraints = false
 				};
 			_photoItemViewSource = new PhotoItemViewSource(_photoCollectionView);
@@ -70,9 +72,9 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_photoItemViewSource)
 				.To(vm => vm.PhotoTemplateViewModels);
 
-			bindingSet.Bind(_headerBar)
+			bindingSet.Bind(this)
 				.For(v => v.BackPressedCommand)
-				.To(vm => vm.IOSBackPressedCommand);
+				.To(vm => vm.BackPressedCommand);
 
 			bindingSet.Apply();
 		}

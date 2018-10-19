@@ -2,13 +2,10 @@
 {
 	public enum FontType
 	{
-		Thin,
 		Light,
 		Regular,
 		Medium,
 		Bold,
-		Italic,
-		LightItalic
 	}
 	public enum RequestMethod
 	{
@@ -24,5 +21,17 @@
 		NoWifi,
 		Timeout,
 		Exception
+	}
+
+	public enum PopupListType
+	{
+		FilterType,
+		MenuType
+	}
+
+	public enum RequestStatus
+	{
+		Submitted,
+		Cancelled
 	}
 }

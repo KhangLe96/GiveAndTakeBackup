@@ -1,4 +1,5 @@
 ﻿using System;
+using HealthKit;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -67,6 +68,33 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat RoundCorner { get; set; }
 		public static nfloat TextPadding { get; set; }
 		public static nfloat BigTextSize { get; set; }
+		public static nfloat MarginObjectPostDetail { get; set; }
+		public static nfloat LocationLogoHeight { get; set; }
+		public static nfloat LocationLogoWidth { get; set; }
+		public static nfloat ExtensionButtonMarginTop { get; set; }
+		public static nfloat ExtensionButtonHeight { get; set; }
+		public static nfloat ExtensionButtonWidth { get; set; }
+		public static nfloat PostDetailStatusTextSize { get; set; }
+		public static nfloat ImageSliderHeight { get; set; }
+		public static nfloat NavigationHeight { get; set; }
+		public static nfloat NavigationWidth { get; set; }
+		public static nfloat PostDetailContentMarginTop { get; set; }
+		public static nfloat PostDetailBigTextSize { get; set; }
+		public static nfloat PostDetailNormalTextSize { get; set; }
+		public static nfloat PostDetailSmallTextSize { get; set; }
+		public static nfloat PostDetailRequestListLogoWidth { get; set; }
+		public static nfloat PostDetailRequestListLogoHeight { get; set; }
+		public static nfloat PostDetailRequestListLogoMarginTop { get; set; }
+		public static nfloat PostDetailSmallMargin { get; set; }
+		public static nfloat PostDetailBigMargin { get; set; }
+		public static nfloat PostDetailCommentLogoMarginTop { get; set; }
+		public static nfloat PostDetailCommentLogoSize { get; set; }
+		public static nfloat PostDetailContentViewWidth { get; set; }
+		public static nfloat PostDetailAvatarSize { get; set; }
+		public static nfloat PostDetailImageIndexHeight { get; set; }
+		public static nfloat PostDetailImageIndexWidth { get; set; }
+		public static nfloat PostImageMarginObject { get; set; }
+
 
 		public static void InitStaticVariable()
 		{
@@ -133,6 +161,32 @@ namespace GiveAndTake.iOS.Helpers
 			DeletePhotoButtonWidth = 25 * Rate;
 			RoundCorner = 20 * Rate;
 			TextPadding = 15 * Rate;
+			MarginObjectPostDetail = 15 * Rate;
+			LocationLogoWidth = 12 * Rate;
+			LocationLogoHeight = 16 * Rate;
+			ExtensionButtonMarginTop = 23 * Rate;
+			ExtensionButtonWidth = 22 * Rate;
+			ExtensionButtonHeight = 5 * Rate;
+			PostDetailStatusTextSize = 13 * Rate;
+			ImageSliderHeight = 230 * Rate;
+			NavigationHeight = 40 * Rate;
+			NavigationWidth = 28 * Rate;
+			PostDetailContentMarginTop = HeaderBarHeight + ButtonCategoryHeight + MarginObjectPostDetail * 3;
+			PostDetailBigTextSize = 27 * Rate;
+			PostDetailNormalTextSize = 16 * Rate;
+			PostDetailSmallTextSize = 12 * Rate;
+			PostDetailRequestListLogoHeight = 12 * Rate;
+			PostDetailRequestListLogoWidth = 30 * Rate;
+			PostDetailRequestListLogoMarginTop = 27 * Rate;
+			PostDetailSmallMargin = 5 * Rate;
+			PostDetailBigMargin = 28 * Rate;
+			PostDetailCommentLogoMarginTop = 22 * Rate;
+			PostDetailCommentLogoSize = 20 * Rate;
+			PostDetailContentViewWidth = ResolutionHelper.Width - 2 * MarginObjectPostDetail;
+			PostDetailAvatarSize = 50 * Rate;
+			PostDetailImageIndexHeight = 35 * Rate;
+			PostDetailImageIndexWidth = 50 * Rate;
+			PostImageMarginObject = 40 * Rate;
 		}
 	}
 }

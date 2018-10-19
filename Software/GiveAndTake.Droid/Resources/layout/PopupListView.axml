@@ -29,10 +29,9 @@
 		android:layout_width="@dimen/popup_button_width"
 		android:layout_height="@dimen/popup_button_height"
 		android:textColor="@color/white"
-		android:textSize="@dimen/MediumTextSize"
-		android:text="Xong"
+		android:textSize="@dimen/MediumTextSize"		
 		android:background="@drawable/popup_button_bg"
 		android:layout_marginBottom="@dimen/margin_normal"
 		android:textAllCaps="false"
-		local:MvxBind="Click SubmitCommand"/>
+		local:MvxBind="Text SubmitButtonTitle; Click SubmitCommand"/>
 </LinearLayout>

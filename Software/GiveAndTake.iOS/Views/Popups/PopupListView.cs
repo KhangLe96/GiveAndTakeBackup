@@ -1,10 +1,10 @@
-﻿using System.Windows.Input;
-using GiveAndTake.Core;
+﻿using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using GiveAndTake.iOS.Views.TableViewSources;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
@@ -14,13 +14,14 @@ namespace GiveAndTake.iOS.Views.Popups
 	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverCurrentContext, ModalTransitionStyle = UIModalTransitionStyle.CoverVertical)]
 	public class PopupListView : BaseView
 	{
+		public IMvxCommand CloseCommand { get; set; }
+
 		private UIView _popupLine;
-		private UIButton _btnClose;
+		private UIButton _btnSubmit;
 		private UITableView _popupTableView;
 		private PopupItemTableViewSource _popupItemTableViewSource;
 		private UILabel _titleLabel;
 		private UIView _background;
-		public ICommand CloseCommand { get; set; }
 
 		protected override void InitView()
 		{
@@ -34,18 +35,18 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(container, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
 			});
 
-			_btnClose = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight, 
+			_btnSubmit = UIHelper.CreateButton(DimensionHelper.PopupButtonHeight, 
 				DimensionHelper.PopupButtonWidth,
 				ColorHelper.Blue, 
 				UIColor.White, 
-				DimensionHelper.ButtonTextSize, "Xong",
+				DimensionHelper.ButtonTextSize, 
 				DimensionHelper.PopupButtonHeight / 2);
 
-			container.Add(_btnClose);
+			container.Add(_btnSubmit);
 			container.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnClose, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, container, NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginNormal),
-				NSLayoutConstraint.Create(_btnClose, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
+				NSLayoutConstraint.Create(_btnSubmit, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, container, NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginNormal),
+				NSLayoutConstraint.Create(_btnSubmit, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
 			_popupTableView = UIHelper.CreateTableView(0, 0);
@@ -54,7 +55,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			container.Add(_popupTableView);
 			container.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _btnClose, NSLayoutAttribute.Top, 1, 0),
+				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _btnSubmit, NSLayoutAttribute.Top, 1, 0),
 				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, container, NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_popupTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, container, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
@@ -99,8 +100,8 @@ namespace GiveAndTake.iOS.Views.Popups
 
 		public override void ViewDidAppear(bool animated)
 		{
-			base.ViewDidAppear(animated);
 			_background.BackgroundColor = UIColor.Black.ColorWithAlpha(0.7f);
+			base.ViewDidAppear(animated);
 		}
 
 		public override void ViewWillUnload()
@@ -131,7 +132,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			bindingSet.Bind(_titleLabel)
 				.To(vm => vm.Title);
 
-			bindingSet.Bind(_btnClose.Tap())
+			bindingSet.Bind(_btnSubmit.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.SubmitCommand);
 
@@ -141,6 +142,10 @@ namespace GiveAndTake.iOS.Views.Popups
 			bindingSet.Bind(_background.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.CloseCommand);
+
+			bindingSet.Bind(_btnSubmit)
+				.For("Title")
+				.To(vm => vm.SubmitButtonTitle);
 
 			bindingSet.Bind(this)
 				.For(v => v.CloseCommand)

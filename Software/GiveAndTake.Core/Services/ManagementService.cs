@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.Services
 {
-    public class ManagementService : IManagementService
+	public class ManagementService : IManagementService
     {
 	    private readonly RestClient _apiHelper;
 
@@ -18,190 +17,208 @@ namespace GiveAndTake.Core.Services
             _apiHelper = new RestClient();
         }
 
-        public List<Category> GetCategories()
+        public async Task<CategoryResponse> GetCategories()
         {
-            return Task.Run(async () =>
-            {
-                var response = await _apiHelper.Get(AppConstants.GetCategories);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    return JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
-                }
+			var response = await _apiHelper.Get(AppConstants.GetCategories);
 
-	            //Handle popup error cannot get data
-	            Debug.WriteLine("Error cannot get data");
-				throw new Exception(response?.ErrorMessage);
+			if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
 
-			}).Result.Categories;
-        }
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
 
-	    public List<ProvinceCity> GetProvinceCities()
+	        return JsonHelper.Deserialize<CategoryResponse>(response.RawContent);
+		}
+
+	    public async Task<ProvinceCitiesResponse> GetProvinceCities()
 	    {
-			return Task.Run(async () =>
-			{
-				var response = await _apiHelper.Get(AppConstants.GetProvinceCities);
-				if (response != null && response.NetworkStatus == NetworkStatus.Success)
-				{
-					return JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
-				}
+		    var response = await _apiHelper.Get(AppConstants.GetProvinceCities);
 
-				//Handle popup error cannot get data
-				Debug.WriteLine("Error cannot get data");
-				throw new Exception(response?.ErrorMessage);
-
-			}).Result.ProvinceCities;
-		}
-
-	    public ApiPostsResponse GetPostList(string filterParams)
-        {
-            return Task.Run(async () =>
-            {
-	            var url = string.IsNullOrEmpty(filterParams)
-		            ? AppConstants.GetPostList
-		            : string.Join("?", AppConstants.GetPostList, filterParams);
-				var response = await _apiHelper.Get(url);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    var res = JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
-                    return res;
-                }
-
-	            //Handle popup error cannot get data
-	            Debug.WriteLine("Error cannot get data");
-				throw new Exception(response?.ErrorMessage);
-
-			}).Result;
-        }
-
-        public void GetPostDetail(string postId)
-        {
-            Task.Run(async () =>
-            {
-                string parameters = $"/{postId}";
-                var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    var postDetail = JsonHelper.Deserialize<Post>(response.RawContent);
-                }
-                else
-                {
-                    //Handle popup error cannot get data
-                    Debug.WriteLine("Error cannot get data");
-                }
-            });
-        }
-
-        public void GetPostOfUser(string userId)
-        {
-            Task.Run(async () =>
-            {
-                string parameters = $"/{userId}";
-                var response = await _apiHelper.Get(AppConstants.GetPostOfUser + parameters, AppConstants.Token);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    var postOfUser = JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
-                }
-                else
-                {
-                    //Handle popup error cannot get data
-                    Debug.WriteLine("Error cannot get data");
-                }
-            });
-        }
-
-        public void ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
-        {
-			Task.Run(async () =>
-			{
-				var postStatus = new PostStatus
-				{
-					Status = newStatus,
-				};
-				var statusInString = JsonHelper.Serialize(postStatus);
-				var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
-				string parameters = $"/{postId}";
-				var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
-			});
-		}
-
-		public void EditPost(EditPost post)
-		{
-			Task.Run(async () =>
-			{
-				var postInformationInString = JsonHelper.Serialize(post);
-				var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
-				string parameters = $"/{post.PostId}";
-				var response = await _apiHelper.Put(AppConstants.EditPost + parameters, content, AppConstants.Token);
-			});
-		}
-
-		public LoginResponse LoginFacebook(BaseUser baseUser)
-        {
-            return Task.Run(async () =>
-            {
-                var userInformationInString = JsonHelper.Serialize(baseUser);
-                var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
-                var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    return JsonHelper.Deserialize<LoginResponse>(response.RawContent);
-                }
-
-	            //Handle popup error cannot get data
-	            Debug.WriteLine("Error cannot get data");
-	            throw new Exception(response?.ErrorMessage);
-
-            }).Result;
-        }
-
-		public bool CreatePost(CreatePost post, string token)
-		{
-			return Task.Run(async () =>
-			{
-				var postInformationInString = JsonHelper.Serialize(post);
-				var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
-				var response = await _apiHelper.Post(AppConstants.CreatePost, content, token);
-
-				return response != null && response.NetworkStatus == NetworkStatus.Success;
-
-			}).Result;
-		}
-
-		public void UpdateCurrentUserProfile(User user)
-        {
-            Task.Run(async () =>
-            {
-                var userInformationInString = JsonHelper.Serialize(user);
-                var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
-                var response = await _apiHelper.Put(AppConstants.GetUserProfile, content);
-                if (response != null && response.NetworkStatus == NetworkStatus.Success)
-                {
-                    var userInformation = JsonHelper.Deserialize<User>(response.RawContent);
-                }
-                else
-                {
-                    //Handle popup error cannot get data
-                    Debug.WriteLine("Error cannot get data");
-                }
-            });
-        }
-
-	    public void GetUserProfile(string userId)
-	    {
-			Task.Run(async () =>
+		    if (response.NetworkStatus != NetworkStatus.Success)
 		    {
-			    string parameters = $"/{userId}";
-				var response = await _apiHelper.Get(AppConstants.GetUserProfile + parameters, AppConstants.Token);
-				if (response != null && response.NetworkStatus == NetworkStatus.Success)
-			    {
-				    var UserInformation = JsonHelper.Deserialize<User>(response.RawContent);
-			    }
-			    else
-			    {
-				    //Handle popup error cannot get data
-				    Debug.WriteLine("Error cannot get data");
-			    }
-		    });
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
+		}
+
+	    public async Task<ApiPostsResponse> GetPostList(string filterParams)
+        {
+			var url = string.IsNullOrEmpty(filterParams)
+		        ? AppConstants.GetPostList
+		        : string.Join("?", AppConstants.GetPostList, filterParams);
+	        var response = await _apiHelper.Get(url);
+
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+
+		}
+
+        public async Task<Post> GetPostDetail(string postId)
+        {
+			var parameters = $"/{postId}";
+	        var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<Post>(response.RawContent);
+		}
+
+        public async Task<ApiPostsResponse> GetPostOfUser(string userId)
+        {
+			var parameters = $"/{userId}";
+	        var response = await _apiHelper.Get(AppConstants.GetPostOfUser + parameters, AppConstants.Token);
+
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+		}
+
+        public async Task ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
+        {
+	        var postStatus = new PostStatus
+	        {
+		        Status = newStatus,
+	        };
+	        var statusInString = JsonHelper.Serialize(postStatus);
+	        var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+	        string parameters = $"/{postId}";
+	        var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
+
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
+		}
+
+		public async Task EditPost(EditPost post)
+		{
+			var postInformationInString = JsonHelper.Serialize(post);
+			var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
+			string parameters = $"/{post.PostId}";
+			var response = await _apiHelper.Put(AppConstants.EditPost + parameters, content, AppConstants.Token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
+			{
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
+
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}
+		}
+
+		public async Task<LoginResponse> LoginFacebook(BaseUser baseUser)
+	    {
+		    var userInformationInString = JsonHelper.Serialize(baseUser);
+		    var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
+
+		    var response = await _apiHelper.Post(AppConstants.LoginFacebook, content);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<LoginResponse>(response.RawContent);
+	    }
+
+	    public async Task<bool> CreatePost(CreatePost post, string token)
+		{
+			var postInformationInString = JsonHelper.Serialize(post);
+			var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
+			var response = await _apiHelper.Post(AppConstants.CreatePost, content, token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
+			{
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
+
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}
+
+			return JsonHelper.Deserialize<bool>(response.RawContent);
+		}
+
+		public async Task<User> UpdateCurrentUserProfile(User user)
+        {
+			var userInformationInString = JsonHelper.Serialize(user);
+	        var content = new StringContent(userInformationInString, Encoding.UTF8, "application/json");
+	        var response = await _apiHelper.Put(AppConstants.GetUserProfile, content);
+	        if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<User>(response.RawContent);
+		}
+
+	    public async Task<User> GetUserProfile(string userId)
+	    {
+		    var parameters = $"/{userId}";
+		    var response = await _apiHelper.Get(AppConstants.GetUserProfile + parameters, AppConstants.Token);
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<User>(response.RawContent);
 		}
 
 	    public List<SortFilter> GetShortFilters() => new List<SortFilter>
@@ -227,6 +244,5 @@ namespace GiveAndTake.Core.Services
 		//public void EditComment(string commentId);
 
 		//public void DeleteComment(string commentId;
-
-	}
+    }
 }

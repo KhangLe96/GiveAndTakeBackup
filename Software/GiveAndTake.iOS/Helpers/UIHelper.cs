@@ -3,6 +3,7 @@ using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using System;
 using UIKit;
+using Xamarin.iOS.iCarouselBinding;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -58,6 +59,16 @@ namespace GiveAndTake.iOS.Helpers
 			AddWidthHeight(height, width, view);
 
 			return view;
+		}
+
+		public static UIPageControl CreatePageControl(nfloat height, nfloat width, UIColor backgroundColor)
+		{
+			var pageControl = new UIPageControl { TranslatesAutoresizingMaskIntoConstraints = false };
+
+			pageControl.BackgroundColor = backgroundColor;
+			AddWidthHeight(height, width, pageControl);
+
+			return pageControl;
 		}
 
 		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor)
@@ -256,7 +267,20 @@ namespace GiveAndTake.iOS.Helpers
 			return tableView;
 		}
 
-		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, string title, nfloat cornerRadius, FontType fontType = FontType.Regular)
+		public static UIScrollView CreateScrollView(nfloat height, nfloat width)
+		{
+			var scrollView = new UIScrollView()
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				ScrollEnabled = true
+			};
+
+			AddWidthHeight(height, width, scrollView);
+
+			return scrollView;
+		}
+
+		public static UIButton CreateButton(nfloat height, nfloat width, UIColor backgroundColor, UIColor textColor, nfloat textSize, nfloat cornerRadius, FontType fontType = FontType.Regular)
 		{
 			var button = new UIButton
 			{
@@ -264,8 +288,6 @@ namespace GiveAndTake.iOS.Helpers
 			};
 			button.SetTitleColor(textColor, UIControlState.Normal);
 			button.Font = GetFont(fontType, textSize);
-			button.SetTitle(title, UIControlState.Normal);
-
 			button.BackgroundColor = backgroundColor;
 			button.Layer.CornerRadius = cornerRadius;
 			button.Layer.MasksToBounds = true;
@@ -280,7 +302,7 @@ namespace GiveAndTake.iOS.Helpers
 			nfloat textSize, string title, nfloat cornerRadius, 
 			UIColor borderColor, nfloat borderWidth, FontType fontType = FontType.Regular)
 		{
-			var button = CreateButton(height, width, backgroundColor, textColor, textSize, title, cornerRadius, fontType);
+			var button = CreateButton(height, width, backgroundColor, textColor, textSize, cornerRadius, fontType);
 
 			button.Layer.BorderWidth = borderWidth;
 			button.Layer.BorderColor = borderColor.CGColor;
@@ -330,6 +352,32 @@ namespace GiveAndTake.iOS.Helpers
 			line.Layer.CornerRadius = cornerRadius;
 			line.Layer.MasksToBounds = true;
 			return line;
+		}
+
+		public static iCarousel CreateSlideView(UIView view) => new iCarousel
+		{
+			Bounds = view.Bounds,
+			ContentMode = UIViewContentMode.Center,
+			Frame = view.Frame,
+			Type = iCarouselType.Linear,
+			CenterItemWhenSelected = true,
+
+		};
+
+		public static iCarousel CreateSlideView(nfloat height, nfloat width)
+		{
+			var view = new iCarousel
+			{
+				ContentMode = UIViewContentMode.Center,
+				Type = iCarouselType.Linear,
+				CenterItemWhenSelected = true,
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				PagingEnabled = true
+		};
+
+			AddWidthHeight(height, width, view);
+
+			return view;
 		}
 	}
 }
