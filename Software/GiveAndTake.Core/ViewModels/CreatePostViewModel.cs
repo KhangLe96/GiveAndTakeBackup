@@ -190,12 +190,6 @@ namespace GiveAndTake.Core.ViewModels
 
 		public async void InitSubmit()
 		{
-			//if (_postImages == null || !_postImages.Any())
-			//{
-			//	// Show message
-			//	return;
-			//}
-
 			try
 			{
 				InitCreateNewPost();
@@ -205,8 +199,7 @@ namespace GiveAndTake.Core.ViewModels
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 				if (result)
 				{
-					//Review ThanhVo What happen if exception raises again?
-					InitCreateNewPost();
+					InitSubmit();
 				}
 			}
 		}

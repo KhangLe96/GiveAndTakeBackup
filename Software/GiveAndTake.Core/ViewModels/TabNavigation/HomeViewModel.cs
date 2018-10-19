@@ -206,6 +206,18 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
 
+			UpdateCategories();
+
+			_dataModel.SelectedCategory = categoryFilter;
+			_dataModel.SelectedProvinceCity = locationFilter;
+			if (result)
+			{
+				UpdatePostViewModels();
+			}
+		}
+
+		private async void UpdateCategories()
+		{
 			try
 			{
 				_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
@@ -215,14 +227,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				var popupResult = NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage).Result;
 				if (popupResult)
 				{
-					_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
+					UpdateCategories();
 				}
-			}
-			_dataModel.SelectedCategory = categoryFilter;
-			_dataModel.SelectedProvinceCity = locationFilter;
-			if (result)
-			{
-				UpdatePostViewModels();
 			}
 		}
 
