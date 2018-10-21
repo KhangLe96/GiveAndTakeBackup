@@ -199,6 +199,9 @@ namespace GiveAndTake.Core.ViewModels
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 				if (result)
 				{
+					//Review ThanhVo Don't do like this, because how to user can escape this loop if no internet connection.
+					//So just ask user check the internet connection and try it later and back to create post
+					//So he can decide to continue or cancel to do another thing
 					InitSubmit();
 				}
 			}
