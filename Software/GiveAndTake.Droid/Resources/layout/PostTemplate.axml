@@ -17,7 +17,7 @@
 							Transformations PostTransformations; 
 							DownsampleWidth DownsampleWidth;
 							ImageUrl PostImage; 							
-							Click ShowPostDetailCommand" />
+							Click ShowPostDetailCommand" /><!--Do we still need it-->
 
     <ImageView
         android:id="@+id/imgMultiImages"
