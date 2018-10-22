@@ -194,6 +194,7 @@ namespace GiveAndTake.Core.Services
 			}).Result;
 		}
 
+		//Review ThanhVo  Check the internet connection handler branch to know how to write api method
 	    public bool CreateRequest(Request request, string token)
 	    {
 		    return Task.Run(async () =>

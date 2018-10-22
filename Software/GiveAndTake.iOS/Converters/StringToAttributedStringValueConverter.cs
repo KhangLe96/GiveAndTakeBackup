@@ -9,6 +9,9 @@ namespace GiveAndTake.iOS.Converters
 {
 	public class StringToAttributedStringValueConverter : MvxValueConverter<string, NSAttributedString>
 	{
+		//Review ThanhVo Do we really need this converter? Converter is something wich generic.
+		//Don't create converter for specific UI in many screen with many options like this.
+		//You can handle these in each screen.
 		protected override NSAttributedString Convert(string value
 			, Type targetType
 			, object parameter, System.Globalization.CultureInfo culture)
