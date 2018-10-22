@@ -14,6 +14,7 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System.Collections.Generic;
 using System.IO;
 
+
 namespace GiveAndTake.Droid.Views
 {
     [MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
@@ -23,8 +24,9 @@ namespace GiveAndTake.Droid.Views
 		protected override int LayoutId => Resource.Layout.CreatePostView;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 		public IMvxCommand SubmitCommand { get; set; }
+		public IMvxCommand BackPressedCommand { get; set; }
 		private View _view;
-
+		
 		private ImageButton _choosePictureButton;
 
 		protected override void InitView(View view)
@@ -43,7 +45,9 @@ namespace GiveAndTake.Droid.Views
 			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
 
 		    this.Activity.Window.SetSoftInputMode(SoftInput.AdjustResize);
-        }
+
+			
+		}
 
 	    private void OnEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
 	    {
@@ -80,6 +84,9 @@ namespace GiveAndTake.Droid.Views
 			bindingSet.Bind(this)
 				.For(v => v.SubmitCommand)
 				.To(vm => vm.SubmitCommand);
+			bindingSet.Bind(this)
+				.For(v => v.BackPressedCommand)
+				.To(vm => vm.BackPressedCommand);
 
 			bindingSet.Apply();
 		}
@@ -97,6 +104,11 @@ namespace GiveAndTake.Droid.Views
 		{
 			_choosePictureButton = _view.FindViewById<ImageButton>(Resource.Id.ChoosePicture);
 			_choosePictureButton.Click += ChoosePictureButton_Click;
+		}
+
+		protected override void HandleActivityCommandFromFragment()
+		{
+			((MasterView)Activity).BackPressedCommand = BackPressedCommand;
 		}
 
 		public override void OnDestroyView()
