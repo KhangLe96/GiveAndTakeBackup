@@ -13,17 +13,12 @@ namespace GiveAndTake.Droid.Views.Base
 {
     public abstract class BaseFragment : MvxFragment
 	{
-		public event EventHandler BackPressed;
-
 		protected abstract int LayoutId { get; }
 
-		private LayoutInflater _inflater;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
-
-			_inflater = inflater;
 
 			var view = this.BindingInflate(LayoutId, null);
 			view.SetBackgroundColor(Color.White);

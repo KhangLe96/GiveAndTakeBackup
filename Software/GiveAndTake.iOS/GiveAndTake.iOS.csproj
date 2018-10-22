@@ -107,6 +107,7 @@
     <Compile Include="Views\Popups\PopupListView.cs" />
     <Compile Include="Views\Popups\PopupMessageView.cs" />
     <Compile Include="Views\Popups\PopupView.cs" />
+    <Compile Include="Views\Popups\PopupWarningResponseView.cs" />
     <Compile Include="Views\Popups\PopupWarningView.cs" />
     <Compile Include="Views\PostImageView.cs" />
     <Compile Include="Views\SlideViewDataSource.cs" />
