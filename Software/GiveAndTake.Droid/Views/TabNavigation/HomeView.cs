@@ -10,7 +10,8 @@ using MvvmCross.Commands;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
-using SearchView = Android.Widget.SearchView;
+using Android.Widget;
+using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace GiveAndTake.Droid.Views.TabNavigation
 {
@@ -25,16 +26,21 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public IMvxCommand LoadMoreCommand { get; set; }
 	    protected override int LayoutId => Resource.Layout.HomeView;
 	    private SearchView _searchView;
-
+		
 	    protected override void InitView(View view)
 	    {
 		    base.InitView(view);
 
 		    _searchView = view.FindViewById<SearchView>(Resource.Id.searchView);
 		    _searchView.QueryTextSubmit += OnQueryTextSubmit;
-		    _searchView.Close += OnClose;
 			_searchView.Click += (sender, args) => _searchView.Iconified = false;
-
+		    ImageView closeButtonSearchView = (ImageView) _searchView.FindViewById(MvvmCross.Droid.Support.V7.AppCompat.Resource.Id.search_close_btn);
+		    closeButtonSearchView.Click += delegate
+		    {
+				_searchView.SetQuery("",false);
+				_searchView.ClearFocus();
+			    closeButtonSearchView.Visibility = ViewStates.Gone;
+		    };
 			var rvPosts = view.FindViewById<MvxRecyclerView>(Resource.Id.rvPosts);
 			var layoutManager = new LinearLayoutManager(view.Context);
 		    rvPosts.AddOnScrollListener(new ScrollListener(layoutManager)
@@ -44,18 +50,11 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			rvPosts.SetLayoutManager(layoutManager);
 		}
 
-	    private void OnClose(object sender, SearchView.CloseEventArgs e)
-	    {
-			SearchCommand.Execute();
-			KeyboardHelper.HideKeyboard(sender as View);
-			_searchView.ClearFocus();
-		}
-
 	    private void OnQueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
 	    {
-		    SearchCommand.Execute();
 			KeyboardHelper.HideKeyboard(sender as View);
 		    _searchView.ClearFocus();
+		    SearchCommand.Execute();
 		}
 
 	    protected override void CreateBinding()
