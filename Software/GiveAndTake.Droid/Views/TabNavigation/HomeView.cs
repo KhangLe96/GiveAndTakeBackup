@@ -11,7 +11,6 @@ using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
 using GiveAndTake.Core;
-using SearchView = Android.Widget.SearchView;
 using Android.Widget;
 using SearchView = Android.Support.V7.Widget.SearchView;
 
