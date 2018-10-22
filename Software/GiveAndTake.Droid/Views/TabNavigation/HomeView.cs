@@ -10,13 +10,15 @@ using MvvmCross.Commands;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
+using GiveAndTake.Core;
+using SearchView = Android.Widget.SearchView;
 using Android.Widget;
 using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace GiveAndTake.Droid.Views.TabNavigation
 {
 	[MvxTabLayoutPresentation(TabLayoutResourceId = Resource.Id.tabLayout,
-        Title = "Home",
+        Title = AppConstants.HomeTab,
         ViewPagerResourceId = Resource.Id.viewPager,
         FragmentHostViewType = typeof(TabNavigationView))]
     [Register(nameof(HomeView))]

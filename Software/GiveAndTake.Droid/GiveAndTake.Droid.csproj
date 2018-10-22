@@ -86,6 +86,8 @@
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popup\PopupMessageView.cs" />
+    <Compile Include="Views\Popup\PopupReportView.cs" />
+    <Compile Include="Views\Popup\PopupWarningResponseView.cs" />
     <Compile Include="Views\Popup\PopupWarningView.cs" />
     <Compile Include="Views\PostImageView.cs" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />

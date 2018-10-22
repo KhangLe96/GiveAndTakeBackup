@@ -24,16 +24,11 @@ namespace GiveAndTake.Droid.Controls
 					ImagePath = value;
 				}
                 else
-                {
-                    if (Build.VERSION.SdkInt >= BuildVersionCodes.LollipopMr1)
-                    {
-                        SetImageDrawable(Resources.GetDrawable(Resource.Drawable.default_avatar, null));
-                    }
-                    else
-                    {
-                        SetImageDrawable(ContextCompat.GetDrawable(Application.Context, Resource.Drawable.default_avatar));
-                    }
-                }
+				{
+					SetImageDrawable(Build.VERSION.SdkInt >= BuildVersionCodes.LollipopMr1
+						? Resources.GetDrawable(Resource.Drawable.default_avatar, null)
+						: ContextCompat.GetDrawable(Application.Context, Resource.Drawable.default_avatar));
+				}
             }
         }
 
