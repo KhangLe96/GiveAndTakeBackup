@@ -9,6 +9,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
+using System.Threading.Tasks;
 using Android.OS;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
@@ -53,11 +54,14 @@ namespace GiveAndTake.Droid.Views
 	    {
 		    base.OnViewModelSet();
 
-		    accessToken = AccessToken.CurrentAccessToken;
+			accessToken = AccessToken.CurrentAccessToken;
 		    bool isLoggedIn = accessToken != null && !accessToken.IsExpired;
 		    if (isLoggedIn)
 		    {
-			    HandleSuccessfulLogin();
+
+				    HandleSuccessfulLogin();
+
+			    //HandleSuccessfulLogin();
 		    }
 		}
 

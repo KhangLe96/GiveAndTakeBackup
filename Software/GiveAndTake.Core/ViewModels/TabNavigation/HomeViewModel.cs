@@ -8,6 +8,7 @@ using MvvmCross.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Services;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -90,12 +91,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private Category _selectedCategory;
 		private ProvinceCity _selectedProvinceCity;
 		private SortFilter _selectedSortFilter;
+		private ILoadingOverlayService _loadingOverlayService;
 		#endregion
 
 
-		public HomeViewModel(IDataModel dataModel)
+		public HomeViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
+			_loadingOverlayService = loadingOverlayService;
 			InitDataModels();
 			InitCommand();
 		}
@@ -104,6 +107,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
+				_loadingOverlayService.ShowOverlay(new LoadingOverlayViewModel(), "Hello World!");
 				_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
 				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
 				_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
@@ -120,6 +124,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					InitDataModels();
 				}
 			}
+
+			_loadingOverlayService.CloseOverlay(3000);
 		}
 
 		private void InitCommand()

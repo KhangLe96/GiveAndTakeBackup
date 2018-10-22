@@ -44,6 +44,7 @@ namespace GiveAndTake.Core
 		protected void RegisterServices()
 		{
 			Mvx.RegisterType<IManagementService, ManagementService>();
+			Mvx.RegisterType<ILoadingOverlayService, LoadingOverlayService>();
 		}
 	}
 }
