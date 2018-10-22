@@ -12,24 +12,24 @@ namespace GiveAndTake.Core.Services
 {
 	class LoadingOverlayService : ILoadingOverlayService
 	{
-		private Task _navigationTask;
 
 		private IMvxNavigationService _navigationService;
 		public IMvxNavigationService NavigationService => _navigationService ?? (_navigationService = Mvx.Resolve<IMvxNavigationService>());
 
-		public LoadingOverlayViewModel LoadingOverlayViewModel { get; set; }
-		public async Task ShowOverlay(LoadingOverlayViewModel loadingOverlayViewModel, string loadingText)
+		private LoadingOverlayViewModel _loadingOverlayViewModel;
+
+		public async Task ShowOverlay(string loadingText)
 		{
-			LoadingOverlayViewModel = loadingOverlayViewModel;
+			_loadingOverlayViewModel = new LoadingOverlayViewModel();
 			await NavigationService.Navigate<LoadingOverlayViewModel, string>(loadingText);
 			await Task.Delay(1000);
 		}
 		public async Task CloseOverlay(int delayMilliseconds = 0)
 		{
-			if (LoadingOverlayViewModel == null) return;
-			await NavigationService.Close(LoadingOverlayViewModel);
+			if (_loadingOverlayViewModel == null) return;
+			await NavigationService.Close(_loadingOverlayViewModel);
 			await Task.Delay(delayMilliseconds);
-			LoadingOverlayViewModel = null;
+			_loadingOverlayViewModel = null;
 		}
 	}
 }

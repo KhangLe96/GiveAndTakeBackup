@@ -12,13 +12,9 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		public string TvLoadingIndicator
 		{
 			get => _tvLoadingIndicator;
-			set
-			{
-				_tvLoadingIndicator = value;
-				RaisePropertyChanged(() => TvLoadingIndicator);
-			}
+			set => SetProperty(ref _tvLoadingIndicator, value);
 		}
-
+		
 		public override void Prepare(string parameter)
 		{
 			TvLoadingIndicator = parameter;

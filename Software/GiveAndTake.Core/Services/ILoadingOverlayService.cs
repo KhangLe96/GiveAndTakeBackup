@@ -8,7 +8,7 @@ namespace GiveAndTake.Core.Services
 {
 	public interface ILoadingOverlayService
 	{
-		Task ShowOverlay(LoadingOverlayViewModel loadingOverlayViewModel, string loadingText);
+		Task ShowOverlay(string loadingText);
 		Task CloseOverlay(int delayMillisecond);
 	}
 }

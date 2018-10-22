@@ -107,7 +107,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_loadingOverlayService.ShowOverlay(new LoadingOverlayViewModel(), "Hello World!");
+				_loadingOverlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 				_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
 				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
 				_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
@@ -125,7 +125,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				}
 			}
 
-			_loadingOverlayService.CloseOverlay(3000);
+			_loadingOverlayService.CloseOverlay(300);
 		}
 
 		private void InitCommand()
