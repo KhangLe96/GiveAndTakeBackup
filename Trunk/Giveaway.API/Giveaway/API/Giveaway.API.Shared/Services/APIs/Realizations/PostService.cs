@@ -50,7 +50,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
             try
             {
-                var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).Include(x => x.User).FirstAsync(x => x.Id == postId).Result;
+                var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity)
+                    .Include(x => x.User).Include(x => x.Requests).Include(x => x.Comments).FirstAsync(x => x.Id == postId).Result;
                 var postResponse = Mapper.Map<T>(post);
 
                 return postResponse;
