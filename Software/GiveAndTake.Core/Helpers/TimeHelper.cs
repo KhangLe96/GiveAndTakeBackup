@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GiveAndTake.Core.Helpers
 {
-	class TimeAgoHelper
+	class TimeHelper
 	{
 		public static string ToTimeAgo(DateTime dateTime)
 		{

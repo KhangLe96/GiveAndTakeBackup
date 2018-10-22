@@ -189,7 +189,7 @@ namespace GiveAndTake.Core.ViewModels
 		    CategoryName = _post.Category.CategoryName;
 		    AvatarUrl = _post.User.AvatarUrl;
 		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
-		    CreatedTime = TimeAgoHelper.ToTimeAgo(_post.CreatedTime);
+		    CreatedTime = TimeHelper.ToTimeAgo(_post.CreatedTime);
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    Description = _post.Title;
 		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage;
