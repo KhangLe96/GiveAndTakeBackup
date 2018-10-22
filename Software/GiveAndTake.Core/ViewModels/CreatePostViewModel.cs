@@ -192,34 +192,22 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			try
 			{
-				InitCreateNewPost();
+				var managementService = Mvx.Resolve<IManagementService>();
+				var post = new CreatePost()
+				{
+					Title = PostTitle,
+					Description = PostDescription,
+					PostImages = _postImages,
+					PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
+					Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
+				};
+				await managementService.CreatePost(post, _dataModel.LoginResponse.Token);
+				await NavigationService.Close(this, true);
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-				if (result)
-				{
-					//Review ThanhVo Don't do like this, because how to user can escape this loop if no internet connection.
-					//So just ask user check the internet connection and try it later and back to create post
-					//So he can decide to continue or cancel to do another thing
-					InitSubmit();
-				}
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorConnectionMessage);
 			}
-		}
-
-		public void InitCreateNewPost()
-		{
-			var managementService = Mvx.Resolve<IManagementService>();
-			var post = new CreatePost()
-			{
-				Title = PostTitle,
-				Description = PostDescription,
-				PostImages = _postImages,
-				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
-				Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
-			};
-			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
-			NavigationService.Close(this,true);
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)
