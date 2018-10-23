@@ -44,6 +44,8 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _canNavigateRight, value);
 		}
 
+
+		// REVIEW [KHOA]: use lazy initialize for all commands
 		public IMvxCommand CloseCommand { get; set; }
 		public IMvxCommand NavigateLeftCommand { get; set; }
 		public IMvxCommand NavigateRightCommand { get; set; }

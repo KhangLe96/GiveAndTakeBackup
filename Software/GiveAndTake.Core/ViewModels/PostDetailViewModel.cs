@@ -10,6 +10,7 @@ using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
 {
+	// REVIEW [KHOA]: order methods: public -> protected -> private
 	public class PostDetailViewModel : BaseViewModel<Post, bool>
     {
 		#region Properties
@@ -230,7 +231,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		#region Methods
 
-	    public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
+	    // REVIEW [KHOA]: use lazy initialize for all commands
+		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
 		public IMvxCommand ShowMenuPopupCommand { get; set; }
 		public IMvxCommand ShowPostCommentCommand { get; set; }

@@ -65,9 +65,7 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Height, 1, 0)
 			});
 
-
 			_carouselView = UIHelper.CreateSlideView(0, 0);
-
 			_imageView.AddSubview(_carouselView);
 
 			_imageView.AddConstraints(new[]
