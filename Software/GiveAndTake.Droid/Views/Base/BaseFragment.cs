@@ -7,6 +7,8 @@ using MvvmCross.Droid.Support.V4;
 using MvvmCross.Platforms.Android.Binding.BindingContext;
 using System;
 
+using MvvmCross.Commands;
+
 namespace GiveAndTake.Droid.Views.Base
 {
     public abstract class BaseFragment : MvxFragment
@@ -28,8 +30,13 @@ namespace GiveAndTake.Droid.Views.Base
 
 			InitView(view);
 			CreateBinding();
-
+			HandleActivityCommandFromFragment();
+	
 			return view;
+		}
+
+		protected virtual void HandleActivityCommandFromFragment()
+		{		
 		}
 
 		protected virtual void InitView(View view)

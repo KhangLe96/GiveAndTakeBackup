@@ -49,5 +49,6 @@ namespace GiveAndTake.Core
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
+		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
 	}
 }
