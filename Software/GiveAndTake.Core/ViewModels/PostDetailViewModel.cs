@@ -14,6 +14,7 @@ namespace GiveAndTake.Core.ViewModels
     {
 		#region Properties
 
+	    private Post _post;
 		private string _categoryName;
 	    private string _address;
 	    private string _status;
@@ -217,11 +218,16 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
 			}
+			else
+			{
+				NavigationService.Navigate<PopupCreateRequestViewModel, Post>(_post);
+			}
 		}
 
 
 		public override void Prepare(Post post)
 		{
+			_post = post;
 			CategoryName = post.Category.CategoryName;
 			AvatarUrl = post.User.AvatarUrl;
 			UserName = post.User.FullName ?? AppConstants.DefaultUserName;

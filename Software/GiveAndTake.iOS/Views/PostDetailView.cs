@@ -128,6 +128,8 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_backNavigationButton)
 				.For("Visibility")
 				.To(vm => vm.CanNavigateLeft)
+				//Review ThanhVo Instead of using converter, you can define value which map with Visibility directly or try do like this .To(vm => !vm.CanNavigateLeft)
+				//Check all places which use this converter
 				.WithConversion("InvertBool");
 
 			bindingSet.Bind(_nextNavigationButton)

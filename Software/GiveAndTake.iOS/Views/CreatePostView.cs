@@ -104,7 +104,8 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.Command)
 				.To(vm => vm.ShowPhotoCollectionCommand);
 
-			if (_postDescriptionTextView.Text == null)
+			//Review ThanhVo I wonder how the PostDescription can have string value when user type in the textview if no binding here
+			if (string.IsNullOrEmpty(_postDescriptionTextView.Text))
 			{
 				bindingSet.Bind(_postDescriptionTextView)
 					.For(v => v.Text)

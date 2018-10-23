@@ -227,7 +227,18 @@ namespace GiveAndTake.Core.Services
 			new SortFilter {FilterName = "Cũ nhất", FilterTag = "asc"}
 	    };
 
-		//public void CreateRequest(string postId);
+	    public bool CreateRequest(Request request, string token)
+	    {
+		    return Task.Run(async () =>
+		    {
+			    var requestInformationInString = JsonHelper.Serialize(request);
+			    var content = new StringContent(requestInformationInString, Encoding.UTF8, "application/json");
+			    var response = await _apiHelper.Post(AppConstants.CreateRequest, content, token);
+
+			    return response != null && response.NetworkStatus == NetworkStatus.Success;
+
+		    }).Result;
+	    }
 
 		//public void ReportPost(string postId);
 
@@ -244,5 +255,5 @@ namespace GiveAndTake.Core.Services
 		//public void EditComment(string commentId);
 
 		//public void DeleteComment(string commentId;
-    }
+	}
 }

@@ -18,5 +18,7 @@ namespace GiveAndTake.Core.Services
 		Task<User> UpdateCurrentUserProfile(User user);
 	    Task<User> GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
+	    bool CreateRequest(Request request, string token);
+
     }
 }
