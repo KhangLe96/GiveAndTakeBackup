@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using GiveAndTake.Core.ViewModels.Base;
 
 namespace GiveAndTake.Core.ViewModels.Popup
@@ -19,5 +20,6 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		{
 			TvLoadingIndicator = parameter;
 		}
+
 	}
 }

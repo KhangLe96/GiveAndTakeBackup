@@ -125,7 +125,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				}
 			}
 
-			_loadingOverlayService.CloseOverlay(300);
+			await _loadingOverlayService.CloseOverlay();
 		}
 
 		private void InitCommand()

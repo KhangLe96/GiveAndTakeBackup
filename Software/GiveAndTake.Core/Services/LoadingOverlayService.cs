@@ -10,7 +10,7 @@ using MvvmCross.ViewModels;
 
 namespace GiveAndTake.Core.Services
 {
-	class LoadingOverlayService : ILoadingOverlayService
+	public class LoadingOverlayService : ILoadingOverlayService
 	{
 
 		private IMvxNavigationService _navigationService;
@@ -22,13 +22,11 @@ namespace GiveAndTake.Core.Services
 		{
 			_loadingOverlayViewModel = new LoadingOverlayViewModel();
 			await NavigationService.Navigate<LoadingOverlayViewModel, string>(loadingText);
-			await Task.Delay(1000);
 		}
-		public async Task CloseOverlay(int delayMilliseconds = 0)
+		public async Task CloseOverlay()
 		{
 			if (_loadingOverlayViewModel == null) return;
 			await NavigationService.Close(_loadingOverlayViewModel);
-			await Task.Delay(delayMilliseconds);
 			_loadingOverlayViewModel = null;
 		}
 	}
