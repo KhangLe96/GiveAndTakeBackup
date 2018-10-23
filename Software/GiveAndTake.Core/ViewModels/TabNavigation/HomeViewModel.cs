@@ -100,7 +100,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			InitCommand();
 		}
 
-		private async void InitDataModels()
+		private async void InitDataModels() //REVIEW: should not return void in async
 		{
 			try
 			{
@@ -128,7 +128,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			ShowShortPostCommand = new MvxCommand(ShowSortFiltersPopup);
 			ShowFilterCommand = new MvxCommand(ShowLocationFiltersPopup);
 			CreatePostCommand = new MvxCommand(ShowNewPostView);
-			SearchCommand = new MvxCommand(() => Task.Run(UpdatePostViewModels));
+			SearchCommand = new MvxCommand(() => Task.Run(UpdatePostViewModels)); //REVIEW:Define as a method will be easier to maintain
 			LoadMoreCommand = new MvxCommand(OnLoadMore);
 			RefreshCommand = new MvxCommand(OnRefresh);
 		}
@@ -155,7 +155,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 
-		private async void OnLoadMore()
+		private async void OnLoadMore() //REVIEW: Asynchronous should not return void
 		{
 			try
 			{
@@ -178,7 +178,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 
-		private async void OnRefresh()
+		private async void OnRefresh() //REVIEW: Asynchronous should not return void
 		{
 			IsRefreshing = true;
 			await UpdatePostViewModels();
@@ -192,7 +192,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			return new PostItemViewModel(post);
 		}
 		
-		private async void ShowCategoriesPopup()
+		private async void ShowCategoriesPopup() //REVIEW: Asynchronous should not return void
 		{
 			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
@@ -208,7 +208,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdatePostViewModels();
 		}
 
-		private async void ShowSortFiltersPopup()
+		private async void ShowSortFiltersPopup() //REVIEW: Asynchronous should not return void
 		{
 			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
@@ -224,7 +224,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdatePostViewModels();
 		}
 
-		private async void ShowLocationFiltersPopup()
+		private async void ShowLocationFiltersPopup() //REVIEW: Asynchronous should not return void
 		{
 			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
@@ -240,7 +240,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdatePostViewModels();
 		}
 
-		private async void ShowNewPostView()
+		private async void ShowNewPostView() //REVIEW: Asynchronous should not return void
 		{
 			_dataModel.Categories.RemoveAt(0);
 
@@ -272,7 +272,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private string GetFilterParams()
 		{
-			var parameters = new List<string>{"limit=20"};
+			var parameters = new List<string>{"limit=20"}; //REVIEW: Should limit was defined as a constant ?
 
 			if (!string.IsNullOrEmpty(CurrentQueryString))
 			{

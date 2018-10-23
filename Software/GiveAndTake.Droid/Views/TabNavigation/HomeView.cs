@@ -33,15 +33,21 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    base.InitView(view);
 
 		    _searchView = view.FindViewById<SearchView>(Resource.Id.searchView);
-		    _searchView.QueryTextSubmit += OnQueryTextSubmit;
+
+			//REVIEW : Register 2 below events as a delagate method and unregister after view disposing
+			_searchView.QueryTextSubmit += OnQueryTextSubmit;
 			_searchView.Click += (sender, args) => _searchView.Iconified = false;
+
 		    ImageView closeButtonSearchView = (ImageView) _searchView.FindViewById(MvvmCross.Droid.Support.V7.AppCompat.Resource.Id.search_close_btn);
-		    closeButtonSearchView.Click += delegate
+
+			//REVIEW : Register event below as a delagate method and unregister after view disposing
+			closeButtonSearchView.Click += delegate
 		    {
 				_searchView.SetQuery("",false);
 				_searchView.ClearFocus();
 			    closeButtonSearchView.Visibility = ViewStates.Gone;
 		    };
+
 			var rvPosts = view.FindViewById<MvxRecyclerView>(Resource.Id.rvPosts);
 			var layoutManager = new LinearLayoutManager(view.Context);
 		    rvPosts.AddOnScrollListener(new ScrollListener(layoutManager)
@@ -81,6 +87,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    }
     }
 
+	//Scroll listener should be put splitty in order to re-use in future
 	public class ScrollListener : RecyclerView.OnScrollListener
 	{
 		public Action LoadMoreEvent { get; set; }

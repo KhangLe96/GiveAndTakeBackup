@@ -37,6 +37,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
+
+			//REVIEW : Refactor these 2 below lines
 			var g = new UITapGestureRecognizer(() => View.EndEditing(true)) {CancelsTouchesInView = false};
 			View.AddGestureRecognizer(g);
 		}
@@ -54,6 +56,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			var gradient = new CAGradientLayer
 			{
 				Frame = _gradientView.Bounds,
+
+				//REVIEW : Should ColorWithAlpha(0) be removed ?
 				Colors = new[] { UIColor.White.ColorWithAlpha(0).CGColor, UIColor.White.ColorWithAlpha(0.8f).CGColor }
 			};
 			_gradientView.Layer.InsertSublayer(gradient, 0);
@@ -105,8 +109,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort)
 			});
-
-			_searchBar.SearchButtonClicked += OnSearchSubmit;
+			//REVIEW : Make sure to unregister event after view disposing
+			_searchBar.SearchButtonClicked += OnSearchSubmit; 
 
 			_separatorLine = UIHelper.CreateView(DimensionHelper.MenuSeparatorLineHeight, DimensionHelper.HeaderBarLogoWidth, ColorHelper.GreyLineColor);
 			View.Add(_separatorLine);
@@ -141,7 +145,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 
 			_searchResult = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.BigTextSize);
-			_searchResult.Text = "Không tìm thấy kết quả nào";
+			_searchResult.Text = "Không tìm thấy kết quả nào"; // REVIEW : Use binding text
 			View.Add(_searchResult);
 			View.AddConstraints(new[]
 			{
