@@ -5,7 +5,6 @@ using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -74,11 +73,11 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _isLastViewInList, value);
 	    }
 
+	    private readonly Request _request;
 	    private IMvxCommand _rejectCommand;
 	    private IMvxCommand _acceptCommand;
 	    private IMvxCommand _clickCommand;
-	    private Request _request;
-		private string _userName;
+	    private string _userName;
         private string _avatarUrl;
         private string _createdTime;
         private string _requestMessage;
