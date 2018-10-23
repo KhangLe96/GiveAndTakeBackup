@@ -8,17 +8,26 @@ namespace GiveAndTake.Core.ViewModels
 {
 	public class PostImageViewModel : BaseViewModelResult<bool>
 	{
-
 		#region Properties
 
-		private List<Image> _postImages;
+		public IMvxCommand CloseCommand =>
+			_closeCommand ?? (_closeCommand = new MvxCommand(() => NavigationService.Close(this, false)));
+
+		public IMvxCommand NavigateLeftCommand =>
+			_navigateLeftCommand ?? (_navigateLeftCommand = new MvxCommand(() => PostImageIndex--));
+
+		public IMvxCommand NavigateRightCommand =>
+			_navigateRightCommand ?? (_navigateRightCommand = new MvxCommand(() => PostImageIndex++));
+
+		public IMvxCommand<int> UpdateImageIndexCommand => 
+			_updateImageIndexCommand ??(_updateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index));
+
 		public List<Image> PostImages
 		{
 			get => _postImages;
 			set => SetProperty(ref _postImages, value);
 		}
 
-		private int _postImageIndex;
 		public int PostImageIndex
 		{
 			get => _postImageIndex;
@@ -30,38 +39,33 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private bool _canNavigateLeft;
 		public bool CanNavigateLeft
 		{
 			get => _canNavigateLeft;
 			set => SetProperty(ref _canNavigateLeft, value);
 		}
 
-		private bool _canNavigateRight;
 		public bool CanNavigateRight
 		{
 			get => _canNavigateRight;
 			set => SetProperty(ref _canNavigateRight, value);
 		}
-
-
-		// REVIEW [KHOA]: use lazy initialize for all commands
-		public IMvxCommand CloseCommand { get; set; }
-		public IMvxCommand NavigateLeftCommand { get; set; }
-		public IMvxCommand NavigateRightCommand { get; set; }
-		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
-
+		
 		private readonly IDataModel _dataModel;
+		private IMvxCommand _navigateLeftCommand;
+		private IMvxCommand _navigateRightCommand;
+		private IMvxCommand<int> _updateImageIndexCommand;
+		private IMvxCommand _closeCommand;
+		private List<Image> _postImages;
+		private int _postImageIndex;
+		private bool _canNavigateLeft;
+		private bool _canNavigateRight;
 
 		#endregion
 
 		public PostImageViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			CloseCommand = new MvxCommand(() => NavigationService.Close(this, false));
-			NavigateLeftCommand = new MvxCommand(() => PostImageIndex--);
-			NavigateRightCommand = new MvxCommand(() => PostImageIndex++);
-			UpdateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index);
 		}
 
 		public override Task Initialize()

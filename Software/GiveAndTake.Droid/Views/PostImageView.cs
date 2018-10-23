@@ -18,7 +18,6 @@ namespace GiveAndTake.Droid.Views
 		#region Properties
 
 		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
-		protected override int LayoutId => Resource.Layout.PostImageView;
 
 		public List<Image> PostImages
 		{
@@ -40,6 +39,8 @@ namespace GiveAndTake.Droid.Views
 			}
 		}
 
+		protected override int LayoutId => Resource.Layout.PostImageView;
+
 		private List<Image> _postImages;
 		private int _postImageIndex;
 		private ViewPager _imageViewer;
@@ -52,8 +53,13 @@ namespace GiveAndTake.Droid.Views
 
 			_imageViewer.SetClipToPadding(false);
 
-			// REVIEW [KHOA]: unsubcribe when activity is destroyed
-			_imageViewer.PageSelected += (sender, args) => UpdateImageIndexCommand?.Execute(_imageViewer.CurrentItem);
+			_imageViewer.PageSelected += OnPageSelected;
+		}
+
+		protected override void OnDestroy()
+		{
+			base.OnDestroy();
+			_imageViewer.PageSelected -= OnPageSelected;
 		}
 
 		protected override void CreateBinding()
@@ -76,5 +82,8 @@ namespace GiveAndTake.Droid.Views
 
 			bindingSet.Apply();
 		}
+
+		private void OnPageSelected(object sender, ViewPager.PageSelectedEventArgs args) =>
+			UpdateImageIndexCommand?.Execute(_imageViewer.CurrentItem);
 	}
 }

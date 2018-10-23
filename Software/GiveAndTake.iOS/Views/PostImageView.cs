@@ -18,6 +18,7 @@ namespace GiveAndTake.iOS.Views
 	public class PostImageView : BaseView
 	{
 		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
+
 		public List<Image> PostImages
 		{
 			get => _postImages;
