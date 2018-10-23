@@ -1,7 +1,7 @@
-﻿using Android.Runtime;
+﻿using System;
+using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
-using FFImageLoading;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Helpers;
 using GiveAndTake.Droid.Views.Base;
@@ -9,7 +9,6 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
-using System;
 using GiveAndTake.Core;
 using Android.Widget;
 using SearchView = Android.Support.V7.Widget.SearchView;
@@ -27,26 +26,18 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public IMvxCommand LoadMoreCommand { get; set; }
 	    protected override int LayoutId => Resource.Layout.HomeView;
 	    private SearchView _searchView;
-		
+	    private ImageView _clearButton;
+
 	    protected override void InitView(View view)
 	    {
 		    base.InitView(view);
 
 		    _searchView = view.FindViewById<SearchView>(Resource.Id.searchView);
+		    _searchView.QueryTextSubmit += OnQueryTextSubmit;
+		    _searchView.Click += OnSearchViewClicked;
 
-			//REVIEW : Register 2 below events as a delagate method and unregister after view disposing
-			_searchView.QueryTextSubmit += OnQueryTextSubmit;
-			_searchView.Click += (sender, args) => _searchView.Iconified = false;
-
-		    ImageView closeButtonSearchView = (ImageView) _searchView.FindViewById(MvvmCross.Droid.Support.V7.AppCompat.Resource.Id.search_close_btn);
-
-			//REVIEW : Register event below as a delagate method and unregister after view disposing
-			closeButtonSearchView.Click += delegate
-		    {
-				_searchView.SetQuery("",false);
-				_searchView.ClearFocus();
-			    closeButtonSearchView.Visibility = ViewStates.Gone;
-		    };
+			_clearButton = (ImageView)_searchView.FindViewById(MvvmCross.Droid.Support.V7.AppCompat.Resource.Id.search_close_btn);
+			_clearButton.Click += OnClearButtonClicked;
 
 			var rvPosts = view.FindViewById<MvxRecyclerView>(Resource.Id.rvPosts);
 			var layoutManager = new LinearLayoutManager(view.Context);
@@ -55,13 +46,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			    LoadMoreEvent = () => LoadMoreCommand?.Execute()
 		    });
 			rvPosts.SetLayoutManager(layoutManager);
-		}
-
-	    private void OnQueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
-	    {
-			KeyboardHelper.HideKeyboard(sender as View);
-		    _searchView.ClearFocus();
-		    SearchCommand.Execute();
 		}
 
 	    protected override void CreateBinding()
@@ -85,52 +69,32 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    base.OnPause();
 			KeyboardHelper.HideKeyboard(_searchView);
 	    }
+
+	    protected override void Dispose(bool disposing)
+	    {
+		    _searchView.QueryTextSubmit -= OnQueryTextSubmit;
+		    _searchView.Click -= OnSearchViewClicked;
+		    _clearButton.Click -= OnClearButtonClicked;
+			base.Dispose(disposing);
+		}
+
+	    private void OnClearButtonClicked(object sender, EventArgs e)
+	    {
+		    _searchView.SetQuery("", false);
+		    _searchView.ClearFocus();
+		    _clearButton.Visibility = ViewStates.Gone;
+	    }
+
+	    private void OnSearchViewClicked(object sender, EventArgs args)
+	    {
+		    _searchView.Iconified = false;
+	    }
+
+	    private void OnQueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
+	    {
+		    KeyboardHelper.HideKeyboard(sender as View);
+		    _searchView.ClearFocus();
+		    SearchCommand.Execute();
+	    }
     }
-
-	//Scroll listener should be put splitty in order to re-use in future
-	public class ScrollListener : RecyclerView.OnScrollListener
-	{
-		public Action LoadMoreEvent { get; set; }
-
-		private readonly LinearLayoutManager _layoutManager;
-
-		private bool _isLoading;
-
-		public ScrollListener(LinearLayoutManager layoutManager)
-		{
-			_layoutManager = layoutManager;
-			_isLoading = false;
-		}
-
-		public override void OnScrolled(RecyclerView recyclerView, int dx, int dy)
-		{
-			base.OnScrolled(recyclerView, dx, dy);
-
-			var visibleItemCount = recyclerView.ChildCount;
-			var totalItemCount = recyclerView.GetAdapter().ItemCount;
-			var pastVisibleItems = _layoutManager.FindFirstVisibleItemPosition();
-
-			if (!_isLoading && visibleItemCount + pastVisibleItems >= totalItemCount - 5)
-			{
-				_isLoading = true;
-				LoadMoreEvent?.BeginInvoke(result => _isLoading = false, null);
-			}
-		}
-
-		public override void OnScrollStateChanged(RecyclerView recyclerView, int newState)
-		{
-			base.OnScrollStateChanged(recyclerView, newState);
-
-			switch (newState)
-			{
-				case RecyclerView.ScrollStateDragging:
-					ImageService.Instance.SetPauseWork(true);
-					break;
-
-				case RecyclerView.ScrollStateIdle:
-					ImageService.Instance.SetPauseWork(false);
-					break;
-			}
-		}
-	}
 }
