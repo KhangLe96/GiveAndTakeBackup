@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.Exceptions;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -187,30 +188,26 @@ namespace GiveAndTake.Core.ViewModels
 			InitSelectedImage();
 		}
 
-		public void InitSubmit()
+		public async void InitSubmit()
 		{
-			//if (_postImages == null || !_postImages.Any())
-			//{
-			//	// Show message
-			//	return;
-			//}
-
-			InitCreateNewPost();
-		}
-
-		public void InitCreateNewPost()
-		{
-			var managementService = Mvx.Resolve<IManagementService>();
-			var post = new CreatePost()
+			try
 			{
-				Title = PostTitle,
-				Description = PostDescription,
-				PostImages = _postImages,
-				PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
-				Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
-			};
-			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
-			NavigationService.Close(this,true);
+				var managementService = Mvx.Resolve<IManagementService>();
+				var post = new CreatePost()
+				{
+					Title = PostTitle,
+					Description = PostDescription,
+					PostImages = _postImages,
+					PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
+					Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
+				};
+				await managementService.CreatePost(post, _dataModel.LoginResponse.Token);
+				await NavigationService.Close(this, true);
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorConnectionMessage);
+			}
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)
