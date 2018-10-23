@@ -84,10 +84,20 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private void OnRequestAccepted(Request request)
 	    {
+
 	    }
 
-	    private void OnItemClicked(Request request)
+	    private async void OnItemClicked(Request request)
 	    {
+		    var popupResult = await NavigationService.Navigate<RequestDetailViewModel, Request, PopupRequestDetailResult>(request);
+		    switch (popupResult)
+		    {
+			    case PopupRequestDetailResult.Rejected:
+				    await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
+				    break;
+			    case PopupRequestDetailResult.Accepted:
+				    break;
+		    }
 	    }
 
 	    private async void OnRefresh()

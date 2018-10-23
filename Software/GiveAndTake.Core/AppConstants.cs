@@ -55,5 +55,8 @@ namespace GiveAndTake.Core
 		public static string Done = "Xong";
 		public static string SelectedImage = "Đã chọn 0 hình";
 		public static string RequestRejectingMessage = "Bạn có chắc chắn từ chối yêu cầu?";
+		public static string PopupRequestDetailTitle = "Chi tiết yêu cầu";
+		public static string ButtonRejectTitle = "Từ chối";
+		public static string ButtonAcceptTitle = "Chấp nhận";
 	}
 }

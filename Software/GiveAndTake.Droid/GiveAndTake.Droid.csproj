@@ -89,6 +89,7 @@
     <Compile Include="Views\Popup\PopupMessageView.cs" />
     <Compile Include="Views\Popup\PopupWarningResponseView.cs" />
     <Compile Include="Views\Popup\PopupWarningView.cs" />
+    <Compile Include="Views\RequestDetailView.cs" />
     <Compile Include="Views\RequestsView.cs" />
     <Compile Include="Views\PostImageView.cs" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
@@ -623,6 +624,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\submit_button_bg__disable_state.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\RequestDetailView.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
