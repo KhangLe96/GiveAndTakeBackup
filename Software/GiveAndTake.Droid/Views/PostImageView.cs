@@ -52,6 +52,7 @@ namespace GiveAndTake.Droid.Views
 
 			_imageViewer.SetClipToPadding(false);
 
+			// REVIEW [KHOA]: unsubcribe when activity is destroyed
 			_imageViewer.PageSelected += (sender, args) => UpdateImageIndexCommand?.Execute(_imageViewer.CurrentItem);
 		}
 

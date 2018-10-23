@@ -1,13 +1,13 @@
-﻿using GiveAndTake.Core.Models;
+﻿using CoreGraphics;
+using GiveAndTake.Core.Models;
+using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
-using MvvmCross.Commands;
-using System.Collections.Generic;
-using CoreGraphics;
-using GiveAndTake.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using System.Collections.Generic;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 

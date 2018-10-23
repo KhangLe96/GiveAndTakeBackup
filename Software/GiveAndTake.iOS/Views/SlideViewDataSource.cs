@@ -30,6 +30,8 @@ namespace GiveAndTake.iOS.Views
 				Frame = _cellFrame
 			};
 
+			// REVIEW [KHOA]: hard-coded values -> move to constant
+			// REVIEW [KHOA]: why you need to replace?
 			imageView.ImageUrl = _images[(int) index]?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
 
 			return imageView;
