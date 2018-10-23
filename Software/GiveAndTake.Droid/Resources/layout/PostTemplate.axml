@@ -132,6 +132,7 @@
 
 
 			</LinearLayout>
+				
 
 			<TextView
                 android:id="@+id/tvPostTitle"
@@ -169,7 +170,8 @@
                         android:layout_height="@dimen/button_request_height"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/request_off" />
+                        android:src="@drawable/request_off" 
+						local:MvxBind="Click ShowRequestListCommand" />
 
 					<TextView
                         android:id="@+id/tvRequestCount"

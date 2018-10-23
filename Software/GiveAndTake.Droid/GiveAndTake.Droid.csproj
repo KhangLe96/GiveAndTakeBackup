@@ -89,6 +89,7 @@
     <Compile Include="Views\Popup\PopupMessageView.cs" />
     <Compile Include="Views\Popup\PopupWarningResponseView.cs" />
     <Compile Include="Views\Popup\PopupWarningView.cs" />
+    <Compile Include="Views\RequestsView.cs" />
     <Compile Include="Views\PostImageView.cs" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />
@@ -587,6 +588,21 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\display_number_image_bg.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\RequestsView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\request_number_bg.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\RequestTemplate.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

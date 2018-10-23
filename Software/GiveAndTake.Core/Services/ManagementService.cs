@@ -1,7 +1,9 @@
 ﻿using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +17,54 @@ namespace GiveAndTake.Core.Services
         public ManagementService()
         {
             _apiHelper = new RestClient();
-        }
+		}
 
-        public async Task<CategoryResponse> GetCategories()
+	    public async Task ChangeStatusOfRequest(string requestId, string newStatus, string token)
+		{
+			var requestStatus = new StatusObj
+			{
+				Status = newStatus,
+			};
+			var statusInString = JsonHelper.Serialize(requestStatus);
+			var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+			string parameters = $"/{requestId}";
+			var response = await _apiHelper.Put(AppConstants.ChangeStatusOfRequest + parameters, content, token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
+			{
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
+
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}
+		}
+
+		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)
+        {
+
+			var url = string.IsNullOrEmpty(filterParams)
+		        ? AppConstants.GetRequestOfPost
+		        : string.Join("?", AppConstants.GetRequestOfPost, filterParams);
+	        //string parameters = $"/{postId}";
+
+	        var response = await _apiHelper.Get(url, AppConstants.Token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<ApiRequestsResponse>(response.RawContent);
+		}
+
+	    public async Task<CategoryResponse> GetCategories()
         {
 			var response = await _apiHelper.Get(AppConstants.GetCategories);
 
@@ -109,24 +156,35 @@ namespace GiveAndTake.Core.Services
 
         public async Task ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
         {
-	        var postStatus = new PostStatus
-	        {
-		        Status = newStatus,
-	        };
-	        var statusInString = JsonHelper.Serialize(postStatus);
-	        var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
-	        string parameters = $"/{postId}";
-	        var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
+			var postStatus = new StatusObj
+			{
+				Status = newStatus
+			};
+			var statusInString = JsonHelper.Serialize(postStatus);
+			var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+			string parameters = $"/{postId}";
+			var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
 
-	        if (response.NetworkStatus != NetworkStatus.Success)
-	        {
-		        throw new AppException.ApiException(response.NetworkStatus.ToString());
-	        }
+			if (response.NetworkStatus != NetworkStatus.Success)
+			{
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
 
-	        if (!string.IsNullOrEmpty(response.ErrorMessage))
-	        {
-		        throw new AppException.ApiException(response.ErrorMessage);
-	        }
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}
+			//Task.Run(async () =>
+			//{
+			//	var postStatus = new StatusObj
+			//	{
+			//		Status = newStatus,
+			//	};
+			//	var statusInString = JsonHelper.Serialize(postStatus);
+			//	var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+			//	string parameters = $"/{postId}";
+			//	var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
+			//});
 		}
 
 		public async Task EditPost(EditPost post)

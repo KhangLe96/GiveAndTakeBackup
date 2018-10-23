@@ -1,7 +1,9 @@
 ﻿using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
+using Android.Widget;
 using FFImageLoading;
+using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Helpers;
 using GiveAndTake.Droid.Views.Base;
@@ -10,8 +12,6 @@ using MvvmCross.Commands;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
-using GiveAndTake.Core;
-using Android.Widget;
 using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace GiveAndTake.Droid.Views.TabNavigation
@@ -26,6 +26,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public IMvxCommand SearchCommand { get; set; }
 	    public IMvxCommand LoadMoreCommand { get; set; }
 	    protected override int LayoutId => Resource.Layout.HomeView;
+
 	    private SearchView _searchView;
 		
 	    protected override void InitView(View view)
@@ -58,27 +59,27 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    SearchCommand.Execute();
 		}
 
-	    protected override void CreateBinding()
-	    {
-		    base.CreateBinding();
-		    var bindingSet = this.CreateBindingSet<HomeView, HomeViewModel>();
+        protected override void CreateBinding()
+        {
+            base.CreateBinding();
+            var bindingSet = this.CreateBindingSet<HomeView, HomeViewModel>();
 
-		    bindingSet.Bind(this)
-			    .For(v => v.SearchCommand)
-			    .To(vm => vm.SearchCommand);
+            bindingSet.Bind(this)
+                .For(v => v.SearchCommand)
+                .To(vm => vm.SearchCommand);
 
-		    bindingSet.Bind(this)
-			    .For(v => v.LoadMoreCommand)
-			    .To(vm => vm.LoadMoreCommand);
+            bindingSet.Bind(this)
+                .For(v => v.LoadMoreCommand)
+                .To(vm => vm.LoadMoreCommand);
 
-			bindingSet.Apply();
-	    }
+            bindingSet.Apply();
+        }
 
-	    public override void OnPause()
-	    {
-		    base.OnPause();
-			KeyboardHelper.HideKeyboard(_searchView);
-	    }
+        public override void OnPause()
+        {
+            base.OnPause();
+            KeyboardHelper.HideKeyboard(_searchView);
+        }
     }
 
 	public class ScrollListener : RecyclerView.OnScrollListener

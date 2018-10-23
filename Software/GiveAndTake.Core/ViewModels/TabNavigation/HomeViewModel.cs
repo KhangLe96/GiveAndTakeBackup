@@ -3,6 +3,7 @@ using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
+using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
-	public class HomeViewModel : BaseViewModel
+    public class HomeViewModel : BaseViewModel
 	{
 		#region Properties
 

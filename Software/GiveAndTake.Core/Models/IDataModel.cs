@@ -10,6 +10,7 @@ namespace GiveAndTake.Core.Models
 		ApiPostsResponse ApiPostsResponse { get; set; }
 		LoginResponse LoginResponse { get; set; }
 		BaseUser CurrentUser { get; set; }
+	    ApiRequestsResponse ApiRequestsResponse { get; set; }
 		List<Image> PostImages { get; set; }
 		int PostImageIndex { get; set; }
 	}
