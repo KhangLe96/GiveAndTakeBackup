@@ -16,5 +16,6 @@ namespace GiveAndTake.Core.ViewModels.Base
 		{
 			await NavigationService.Navigate<TabNavigationViewModel>();
 		}
+
 	}
 }
