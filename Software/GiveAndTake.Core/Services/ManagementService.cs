@@ -19,7 +19,7 @@ namespace GiveAndTake.Core.Services
             _apiHelper = new RestClient();
 		}
 
-	    public async Task ChangeStatusOfRequest(string requestId, string newStatus, string token)
+	    public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
 		{
 			var requestStatus = new StatusObj
 			{
@@ -39,6 +39,8 @@ namespace GiveAndTake.Core.Services
 			{
 				throw new AppException.ApiException(response.ErrorMessage);
 			}
+
+			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
 		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)

@@ -21,7 +21,7 @@ namespace GiveAndTake.Core.Services
 	    bool CreateRequest(Request request, string token);
 
         Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams);
-		Task ChangeStatusOfRequest(string requestId, string newStatus, string token);
+		Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
 
     }
 }
