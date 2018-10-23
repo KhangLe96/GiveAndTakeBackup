@@ -19,5 +19,9 @@ namespace Giveaway.API.Shared.Responses.Post
         [DataMember(Name = "requestCount", EmitDefaultValue = false)]
         [JsonProperty(PropertyName = "requestCount")]
         public int RequestCount { get; set; }
+
+	    [DataMember(Name = "isCurrentUserRequested", EmitDefaultValue = false)]
+	    [JsonProperty(PropertyName = "isCurrentUserRequested")]
+	    public bool IsCurrentUserRequested { get; set; } = false;
     }
 }

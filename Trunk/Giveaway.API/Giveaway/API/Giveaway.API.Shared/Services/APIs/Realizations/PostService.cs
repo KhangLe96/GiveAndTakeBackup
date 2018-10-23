@@ -23,17 +23,24 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     {
         private readonly DbService.IPostService _postService;
         private readonly DbService.IImageService _imageService;
+	    private readonly DbService.IRequestService _requestService;
 
-        public PostService(DbService.IPostService postService, DbService.IImageService imageService)
+		public PostService(DbService.IPostService postService, DbService.IImageService imageService, DbService.IRequestService requestService)
         {
             _postService = postService;
             _imageService = imageService;
+	        _requestService = requestService;
         }
 
-        public PagingQueryResponse<T> GetPostForPaging(string userId, IDictionary<string, string> @params, string platform)
+        public PagingQueryResponse<T> GetPostForPaging(IDictionary<string, string> @params, string userId, bool isListOfSingleUser)
         {
-            var request = @params.ToObject<PagingQueryPostRequest>();
-            var posts = GetPagedPosts(userId, request, platform, out var total);
+			var request = @params.ToObject<PagingQueryPostRequest>();
+
+	        int total = 0;
+			var posts = isListOfSingleUser ? GetPagedPosts(userId, request, out total) : GetPagedPosts(null, request, out total); 
+
+			CheckIfCurrentUserRequested(userId, posts);
+	        
             return new PagingQueryResponse<T>
             {
                 Data = posts,
@@ -46,15 +53,28 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public T GetDetail(Guid postId)
-        {
+        public T GetDetail(Guid postId, string userId)
+		{
             try
             {
                 var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity)
                     .Include(x => x.User).Include(x => x.Requests).Include(x => x.Comments).FirstAsync(x => x.Id == postId).Result;
                 var postResponse = Mapper.Map<T>(post);
 
-                return postResponse;
+	            if (typeof(T) == typeof(PostAppResponse) && !string.IsNullOrEmpty(userId))
+	            {
+		            Guid id = Guid.Parse(userId);
+		            var postAppResponse = postResponse as PostAppResponse;
+
+						var requests = _requestService.FirstOrDefault(x =>
+				            x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+			            if (requests != null)
+			            {
+				            postAppResponse.IsCurrentUserRequested = true;
+			            }
+	            }
+
+				return postResponse;
             }
             catch
             {
@@ -155,9 +175,26 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return updated;
         }
 
-        #region Utils
+		#region Utils
 
-        private void CreateImage(PostRequest post)
+		private void CheckIfCurrentUserRequested(string userId, List<T> posts)
+		{
+			if (typeof(T) == typeof(PostAppResponse) && !string.IsNullOrEmpty(userId))
+			{
+				Guid id = Guid.Parse(userId);
+				foreach (PostAppResponse post in posts as List<PostAppResponse>)
+				{
+					var requests = _requestService.FirstOrDefault(x =>
+						x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+					if (requests != null)
+					{
+						post.IsCurrentUserRequested = true;
+					}
+				}
+			}
+		}
+
+		private void CreateImage(PostRequest post)
         {
             var imageBase64Requests = InitImageBase64Requests(post);
             var imagesDTO = ConvertFromBase64(imageBase64Requests);
@@ -237,7 +274,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, string platform, out int total)
+        private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, out int total)
         {
             IEnumerable<Post> posts;
             try
