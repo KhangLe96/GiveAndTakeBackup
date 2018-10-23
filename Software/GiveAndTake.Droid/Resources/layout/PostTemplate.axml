@@ -16,8 +16,7 @@
 							ErrorPlaceholderImagePath 'res:default_post'; 
 							Transformations PostTransformations; 
 							DownsampleWidth DownsampleWidth;
-							ImageUrl PostImage; 							
-							Click ShowPostDetailCommand" /><!--Do we still need it-->
+							ImageUrl PostImage" />
 
     <ImageView
         android:id="@+id/imgMultiImages"
@@ -118,7 +117,7 @@
         android:minLines="2"
         android:singleLine="false"
         android:textSize="@dimen/post_description_text_size"
-        local:MvxBind="Text Description; Click ShowPostDetailCommand" />
+        local:MvxBind="Text Description" />
 
     <TextView
         android:id="@+id/separator"
