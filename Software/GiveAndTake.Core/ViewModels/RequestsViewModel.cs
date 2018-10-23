@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -64,12 +62,20 @@ namespace GiveAndTake.Core.ViewModels
             if (_dataModel.ApiRequestsResponse.Requests.Any())
             {
                 RequestItemViewModels.Last().IsLastViewInList = false;
-                RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select((request) => new RequestItemViewModel(request)));
+                RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
                 RequestItemViewModels.Last().IsLastViewInList = true;
             }
         }
 
-        private async void OnRefresh()
+	    private RequestItemViewModel GenerateRequestItem(Request request)
+	    {
+		    var requestItem = new RequestItemViewModel(request, _dataModel);
+		    requestItem.ReloadRequestList += new Action(OnRefresh);
+
+			return requestItem;
+	    }
+
+	    private async void OnRefresh()
         {
             IsRefreshing = true;
             UpdateRequestViewModels();
@@ -77,15 +83,15 @@ namespace GiveAndTake.Core.ViewModels
             IsRefreshing = false;
         }
 
-        private void UpdateRequestViewModels()
+        public void UpdateRequestViewModels()
         {
-            _dataModel.ApiRequestsResponse = _managementService.GetRequestOfPost("", "");
-            NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
-            RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select((request) => new RequestItemViewModel(request)));
+			var result = _managementService.GetRequestOfPost("", "");
+	        NumberOfRequest = result.Pagination.Totals;
+			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(result.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
                 RequestItemViewModels.Last().IsLastViewInList = true;
             }
-        }
+		}
     }
 }

@@ -228,7 +228,6 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async Task ShowPostDetailView()
 	    {
-
 		    await NavigationService.Navigate<PostDetailViewModel, Post>(_post);
 	    }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.Services
@@ -18,5 +19,8 @@ namespace GiveAndTake.Core.Services
 	    void GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
         ApiRequestsResponse GetRequestOfPost(string postId, string filterParams);
+		//Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
+	    void ChangeStatusOfRequest(string requestId, string newStatus, string token);
+
     }
 }

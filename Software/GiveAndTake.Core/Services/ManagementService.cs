@@ -18,7 +18,48 @@ namespace GiveAndTake.Core.Services
             _apiHelper = new RestClient();
         }
 
-        public ApiRequestsResponse GetRequestOfPost(string postId, string filterParams)
+		public void ChangeStatusOfRequest(string requestId, string newStatus, string token)
+		{
+			Task.Run(async () =>
+			{
+				var requestStatus = new StatusObj
+				{
+					Status = newStatus,
+				};
+				var statusInString = JsonHelper.Serialize(requestStatus);
+				var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+				string parameters = $"/{requestId}";
+				var response = await _apiHelper.Put(AppConstants.ChangeStatusOfRequest + parameters, content, token);
+			});
+
+		}
+
+		//public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
+		//{
+		//    var requestStatus = new StatusObj
+		//    {
+		//        Status = newStatus,
+		//    };
+		//    var statusInString = JsonHelper.Serialize(requestStatus);
+		//    var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+		//    string parameters = $"/{requestId}";
+		//    var response = await _apiHelper.Put(AppConstants.ChangeStatusOfRequest + parameters, content, token);
+
+		//    //if (response.NetworkStatus != NetworkStatus.Success)
+		//    //{
+		//    //    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		//    //}
+
+		//    //if (!string.IsNullOrEmpty(response.ErrorMessage))
+		//    //{
+		//    //    throw new AppException.ApiException(response.ErrorMessage);
+		//    //}
+
+		//    var a = JsonHelper.Deserialize<bool>(response.RawContent);
+		// return a;
+		//}
+
+		public ApiRequestsResponse GetRequestOfPost(string postId, string filterParams)
         {
             return Task.Run(async () =>
             {
@@ -30,14 +71,12 @@ namespace GiveAndTake.Core.Services
                 var response = await _apiHelper.Get(url, AppConstants.Token);
                 if (response != null && response.NetworkStatus == NetworkStatus.Success)
                 {
-                    var a = JsonHelper.Deserialize<ApiRequestsResponse>(response.RawContent);
                     return JsonHelper.Deserialize<ApiRequestsResponse>(response.RawContent);
                 }
 
                 //Handle popup error cannot get data
                 Debug.WriteLine("Error cannot get data");
                 throw new Exception(response?.ErrorMessage);
-
             }).Result;
         }
 
@@ -136,7 +175,7 @@ namespace GiveAndTake.Core.Services
         {
 			Task.Run(async () =>
 			{
-				var postStatus = new PostStatus
+				var postStatus = new StatusObj
 				{
 					Status = newStatus,
 				};

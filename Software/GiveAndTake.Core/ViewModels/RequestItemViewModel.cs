@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.Popup;
+using MvvmCross;
+using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -12,7 +17,11 @@ namespace GiveAndTake.Core.ViewModels
     {
         #region Properties
 
+	    public Action ReloadRequestList { get; set; }
+
         private readonly Request _request;
+        private readonly IDataModel _dataModel;
+        private readonly IManagementService _managementService;
 
         private string _userName;
         public string UserName
@@ -65,17 +74,40 @@ namespace GiveAndTake.Core.ViewModels
             set => SetProperty(ref _isLastViewInList, value);
         }
 
+        public IMvxAsyncCommand RejectCommand { get; set; }
         public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
         #endregion
 
         #region Constructor
 
-        public RequestItemViewModel(Request request)
+        public RequestItemViewModel(Request request, IDataModel dataModel)
         {
+            _dataModel = dataModel;
+            _managementService = Mvx.Resolve<IManagementService>();
             _request = request;
             Init();
+            InitCommand();
         }
+
+        private void InitCommand()
+        {
+            RejectCommand = new MvxAsyncCommand(Reject);
+        }
+
+        private async Task Reject()
+        {
+            var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>("Bạn có chắc chắn từ chối yêu cầu?");
+            if (result)
+            {
+				_managementService.ChangeStatusOfRequest(_request.Id, "Rejected", _dataModel.LoginResponse.Token);
+				await Task.Delay(500);
+				if (ReloadRequestList != null)
+				{
+					ReloadRequestList.Invoke();
+				}
+			}
+		}
 
         private void Init()
         {
