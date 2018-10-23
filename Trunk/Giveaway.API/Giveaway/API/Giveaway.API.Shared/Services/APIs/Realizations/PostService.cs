@@ -92,9 +92,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
             if(isPostSaved)
             {
-                CreateImage(postRequest);
+				if(postRequest.Images.Count != 0) CreateImage(postRequest);
 
-                var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
+				var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
                 var postResponse = Mapper.Map<PostAppResponse>(postDb);
 
                 return postResponse;

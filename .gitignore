@@ -565,3 +565,5 @@ Trunk/Giveaway.CMS/node_modules
 
 # End of https://www.gitignore.io/api/visualstudiocode
 Software/GiveAndTake\.Droid/Resources/Resource\.Designer\.cs
+
+*.jpg
