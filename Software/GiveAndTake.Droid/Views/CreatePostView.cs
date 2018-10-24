@@ -115,6 +115,8 @@ namespace GiveAndTake.Droid.Views
 		{
 			base.OnDestroyView();
 			_choosePictureButton.Click -= ChoosePictureButton_Click;
+			//make sure the delete-confirmation is only shown in this view
+			((MasterView)Activity).BackPressedCommand = null;
 		}
 
 		private void ChoosePictureButton_Click(object sender, System.EventArgs e)

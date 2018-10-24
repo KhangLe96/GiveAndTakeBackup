@@ -56,8 +56,6 @@ namespace GiveAndTake.Droid.Views.Base
 			else
 			{
 				BackPressedCommand.Execute();
-				//to prevent calling the above function when click back-pressed on any view 
-				BackPressedCommand = null;
 			}
 		}
 
