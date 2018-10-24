@@ -107,6 +107,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
+				//Review ThanhVo add await 
 				_loadingOverlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 				_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
 				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;

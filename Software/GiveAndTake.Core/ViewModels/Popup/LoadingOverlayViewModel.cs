@@ -1,4 +1,5 @@
-﻿using System;
+﻿//Review ThanhVo Remove namespaces which are not used
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class LoadingOverlayViewModel : BaseViewModel<string>
 	{
+		//Review ThanhVo Don't name variable which releate to View concepts such as button, label, textview...
 		private string _tvLoadingIndicator;
 
 		public string TvLoadingIndicator
