@@ -139,6 +139,7 @@ namespace GiveAndTake.Core.ViewModels
 			CategoryName = post.Category.CategoryName;
 			AvatarUrl = post.User.AvatarUrl;
 			UserName = post.User.FullName ?? AppConstants.DefaultUserName;
+			//Review ThanhVo should use time age here also
 			CreatedTime = post.CreatedTime.ToString("dd.MM.yyyy");
 			Address = post.ProvinceCity.ProvinceCityName;
 			PostDescription = post.Description;
