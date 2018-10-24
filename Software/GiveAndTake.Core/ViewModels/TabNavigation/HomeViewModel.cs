@@ -15,19 +15,29 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 	{
 		#region Properties
 
-		public IMvxCommand ShowFilterCommand { get; set; }
+		public string SearchResultTitle => AppConstants.SearchResultNullTitle;
 
-		public IMvxCommand ShowShortPostCommand { get; set; }
+		public IMvxCommand ShowLocationFiltersCommand =>
+			_showLocationFiltersCommand ?? (_showLocationFiltersCommand = new MvxAsyncCommand(ShowLocationFiltersPopup));
 
-		public IMvxCommand ShowCategoriesCommand { get; set; }
+		public IMvxCommand ShowSortFiltersCommand =>
+			_showSortFiltersCommand ?? (_showSortFiltersCommand = new MvxAsyncCommand(ShowSortFiltersPopup));
 
-		public IMvxCommand CreatePostCommand { get; set; }
+		public IMvxCommand ShowCategoriesCommand =>
+			_showCategoriesCommand ?? (_showCategoriesCommand = new MvxAsyncCommand(ShowCategoriesPopup));
 
-		public IMvxCommand SearchCommand { get; private set; }
+		public IMvxCommand CreatePostCommand =>
+			_createPostCommand ?? (_createPostCommand = new MvxAsyncCommand(ShowNewPostView));
 
-		public IMvxCommand LoadMoreCommand { get; private set; }
+		public IMvxCommand SearchCommand =>
+			_searchCommand ?? (_searchCommand = new MvxAsyncCommand(UpdatePostViewModels));
 
-		public IMvxCommand RefreshCommand { get; private set; }
+		public IMvxCommand LoadMoreCommand =>
+			_loadMoreCommand ?? (_loadMoreCommand = new MvxAsyncCommand(OnLoadMore));
+
+		public IMvxCommand RefreshCommand =>
+			_refreshCommand ?? (_refreshCommand = new MvxAsyncCommand(OnRefresh));
+
 
 		public bool IsRefreshing
 		{
@@ -90,17 +100,23 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private Category _selectedCategory;
 		private ProvinceCity _selectedProvinceCity;
 		private SortFilter _selectedSortFilter;
-		#endregion
+		private IMvxCommand _showLocationFiltersCommand;
+		private IMvxCommand _showSortFiltersCommand;
+		private IMvxCommand _showCategoriesCommand;
+		private IMvxCommand _createPostCommand;
+		private IMvxCommand _searchCommand;
+		private IMvxCommand _loadMoreCommand;
+		private IMvxCommand _refreshCommand;
 
+		#endregion
 
 		public HomeViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			InitDataModels();
-			InitCommand();
+			Task.Run(async () => await InitDataModels());
 		}
 
-		private async void InitDataModels() //REVIEW: should not return void in async
+		private async Task InitDataModels() 
 		{
 			try
 			{
@@ -117,20 +133,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
 				{
-					InitDataModels();
+					await InitDataModels();
 				}
 			}
-		}
-
-		private void InitCommand()
-		{
-			ShowCategoriesCommand = new MvxCommand(ShowCategoriesPopup);
-			ShowShortPostCommand = new MvxCommand(ShowSortFiltersPopup);
-			ShowFilterCommand = new MvxCommand(ShowLocationFiltersPopup);
-			CreatePostCommand = new MvxCommand(ShowNewPostView);
-			SearchCommand = new MvxCommand(() => Task.Run(UpdatePostViewModels)); //REVIEW:Define as a method will be easier to maintain
-			LoadMoreCommand = new MvxCommand(OnLoadMore);
-			RefreshCommand = new MvxCommand(OnRefresh);
 		}
 
 		private async Task UpdatePostViewModels()
@@ -155,7 +160,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 
-		private async void OnLoadMore() //REVIEW: Asynchronous should not return void
+		private async Task OnLoadMore() 
 		{
 			try
 			{
@@ -173,12 +178,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
 				{
-					OnLoadMore();
+					await OnLoadMore();
 				}
 			}
 		}
 
-		private async void OnRefresh() //REVIEW: Asynchronous should not return void
+		private async Task OnRefresh()
 		{
 			IsRefreshing = true;
 			await UpdatePostViewModels();
@@ -192,7 +197,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			return new PostItemViewModel(post);
 		}
 		
-		private async void ShowCategoriesPopup() //REVIEW: Asynchronous should not return void
+		private async Task ShowCategoriesPopup() 
 		{
 			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
@@ -208,7 +213,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdatePostViewModels();
 		}
 
-		private async void ShowSortFiltersPopup() //REVIEW: Asynchronous should not return void
+		private async Task ShowSortFiltersPopup() 
 		{
 			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
@@ -224,7 +229,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdatePostViewModels();
 		}
 
-		private async void ShowLocationFiltersPopup() //REVIEW: Asynchronous should not return void
+		private async Task ShowLocationFiltersPopup()
 		{
 			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
@@ -240,13 +245,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdatePostViewModels();
 		}
 
-		private async void ShowNewPostView() //REVIEW: Asynchronous should not return void
+		private async Task ShowNewPostView() 
 		{
 			_dataModel.Categories.RemoveAt(0);
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
 
 			await UpdateCategories();
+
 			if (result)
 			{
 				await UpdatePostViewModels();
@@ -272,7 +278,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private string GetFilterParams()
 		{
-			var parameters = new List<string>{"limit=20"}; //REVIEW: Should limit was defined as a constant ?
+			var parameters = new List<string>();
 
 			if (!string.IsNullOrEmpty(CurrentQueryString))
 			{

@@ -50,5 +50,6 @@ namespace GiveAndTake.Core
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
 		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
+		public static string SearchResultNullTitle = "Không tìm thấy kết quả nào";
 	}
 }

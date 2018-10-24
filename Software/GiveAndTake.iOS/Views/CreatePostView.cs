@@ -226,6 +226,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitChoosePictureButton()
 		{
 			_btnChoosePicture = UIHelper.CreateImageButton(DimensionHelper.PictureButtonHeight, DimensionHelper.PictureButtonWidth, ImageHelper.ChoosePictureButton);
+			// REVIEW: subscribe in viewdidapoear and uinsubscribe in viewdiddisappear
 			_btnChoosePicture.TouchUpInside += HandleSelectImage;
 
 			View.Add(_btnChoosePicture);

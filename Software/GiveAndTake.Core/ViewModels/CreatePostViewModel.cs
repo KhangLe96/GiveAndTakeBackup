@@ -26,6 +26,7 @@ namespace GiveAndTake.Core.ViewModels
 		private List<PostImage> _postImages = new List<PostImage>();
 		public List<PostImage> PostImages
 		{
+			// REVIEW [KHOA]: _postImages is already initialized above
 			get => _postImages ?? new List<PostImage>();
 			set
 			{
@@ -41,6 +42,7 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
 															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
 
+		// REVIEW [KHOA]: use lazy initiation
 		public IMvxCommand ShowCategoriesCommand { get; set; }
 		public IMvxCommand ShowProvinceCityCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
@@ -89,13 +91,14 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _provinceCity, value);
 		}
 
-
 		public string SelectedImage
 		{
 			get => _selectedImage;
 			set => SetProperty(ref _selectedImage, value);
 		}
 
+
+		// REVIEW [KHOA]: get texts from locale instead of hard-codes
 		public string PostDescriptionPlaceHolder { get; set; } = "Mô tả (Nhãn hiệu, kiểu dáng, màu sắc, ... )";
 		public string PostTitlePlaceHolder { get; set; } = "Tiêu đề (Thương hiệu, thể loại, ...)";
 		public string BtnSubmitTitle { get; set; } = "Đăng";
@@ -164,8 +167,11 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
 			}
+
+			// REVIEW [KHOA]: if there is no post image -> no action for user -> they don't know what happen
 		}
 
+		// REVIEW [KHOA]: move to command up to command region
 		private MvxCommand _takePictureCommand;
 
 		public ICommand TakePictureCommand
@@ -251,6 +257,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void InitSelectedImage()
 		{
+			// REVIEW [KHOA]: use locale
 			SelectedImage = $"Đã chọn {PostImages.Count} hình";
 		}
 	}

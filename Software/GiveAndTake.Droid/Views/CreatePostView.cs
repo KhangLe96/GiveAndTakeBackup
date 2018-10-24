@@ -17,7 +17,7 @@ using System.IO;
 
 namespace GiveAndTake.Droid.Views
 {
-    [MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
+	[MvxFragmentPresentation(typeof(MasterViewModel), Resource.Id.content_frame, true)]
 	[Register(nameof(CreatePostView))]
 	public class CreatePostView : BaseFragment
 	{
@@ -35,30 +35,30 @@ namespace GiveAndTake.Droid.Views
 			InitChoosePicture();
 			InitSubmit();
 
-		    var title = _view.FindViewById<EditText>(Resource.Id.Title);
-		    title.FocusChange += OnEditTextFocusChange;
+			var title = _view.FindViewById<EditText>(Resource.Id.Title);
+			title.FocusChange += OnEditTextFocusChange;
 
-		    var postDescription = _view.FindViewById<EditText>(Resource.Id.PostDescription);
-		    postDescription.FocusChange += OnEditTextFocusChange;
+			var postDescription = _view.FindViewById<EditText>(Resource.Id.PostDescription);
+			postDescription.FocusChange += OnEditTextFocusChange;
 
-            var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
+			var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
 			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
 
-		    this.Activity.Window.SetSoftInputMode(SoftInput.AdjustResize);
+			this.Activity.Window.SetSoftInputMode(SoftInput.AdjustResize);
 
 			
 		}
 
-	    private void OnEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
-	    {
-	        var editText = sender as EditText;
-	        if (!editText.HasFocus)
-	        {
-	            KeyboardHelper.HideKeyboard(editText);
-	        }
-        }
+		private void OnEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+		{
+			var editText = sender as EditText;
+			if (!editText.HasFocus)
+			{
+				KeyboardHelper.HideKeyboard(editText);
+			}
+		}
 
-        private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
+		private void OnTextViewImageSelectedTextChanged(object sender, TextChangedEventArgs e)
 		{
 			var textView = sender as TextView;
 			if (!string.IsNullOrEmpty(textView?.Text))
@@ -114,15 +114,20 @@ namespace GiveAndTake.Droid.Views
 		public override void OnDestroyView()
 		{
 			base.OnDestroyView();
+
+			// REVIEW [KHOA]: unsubscribe all events
 			_choosePictureButton.Click -= ChoosePictureButton_Click;
 		}
 
+		// REVIEW [KHOA]: not a good name
 		private void ChoosePictureButton_Click(object sender, System.EventArgs e)
 		{
 			Intent intent = new Intent();
 			intent.SetType("image/*");
 			intent.PutExtra(Intent.ExtraAllowMultiple, true);
 			intent.SetAction(Intent.ActionGetContent);
+			// REVIEW [KHOA]: app has default Vietnamese language => not english words
+			// REVIEW [KHOA]: 9001 -> hard-coded
 			StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 9001);
 		}
 
@@ -157,6 +162,7 @@ namespace GiveAndTake.Droid.Views
 			}
 		}
 
+		// REVIEW [KHOA]: this function is only used in this class -> private or move to helper
 		public byte[] ConvertUriToByte(Android.Net.Uri uri)
 		{
 			Stream stream = Activity.ContentResolver.OpenInputStream(uri);
