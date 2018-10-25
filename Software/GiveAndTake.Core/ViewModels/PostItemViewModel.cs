@@ -216,12 +216,6 @@ namespace GiveAndTake.Core.ViewModels
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
             ShowPostDetailCommand = new MvxAsyncCommand(ShowPostDetailView);
 			ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
-            ShowRequestListCommand = new MvxAsyncCommand(ShowRequestListView);
-        }
-
-        private async Task ShowRequestListView()
-        {
-            await NavigationService.Navigate<RequestsViewModel>();
         }
 
         private async Task ShowMenuView()
@@ -268,7 +262,6 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public ICommand ShowPostDetailCommand { get; set; }
         public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
-        public ICommand ShowRequestListCommand { get; set; }
 
         #endregion
     }

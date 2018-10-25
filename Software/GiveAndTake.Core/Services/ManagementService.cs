@@ -42,14 +42,11 @@ namespace GiveAndTake.Core.Services
 		}
 
 		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)
-        {
+		{
+			var url = $"{AppConstants.GetRequestOfPost}/{postId}";
+			url = string.Join("?", url, filterParams);
 
-			var url = string.IsNullOrEmpty(filterParams)
-		        ? AppConstants.GetRequestOfPost
-		        : string.Join("?", AppConstants.GetRequestOfPost, filterParams);
-	        //string parameters = $"/{postId}";
-
-	        var response = await _apiHelper.Get(url, AppConstants.Token);
+			var response = await _apiHelper.Get(url, AppConstants.Token);
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 	        {

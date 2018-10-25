@@ -238,7 +238,7 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			if (_isMyPost)
 			{
-				NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+				NavigationService.Navigate<RequestsViewModel, string>(_post.PostId);
 			}
 			else
 			{

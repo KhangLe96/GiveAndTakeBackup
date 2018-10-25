@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class RequestsViewModel : BaseViewModel
+	public class RequestsViewModel : BaseViewModel<string>
     {
 	    public string Title => "Danh sách yêu cầu";
 
@@ -40,11 +40,11 @@ namespace GiveAndTake.Core.ViewModels
 	    private bool _isRefresh;
 		private IMvxCommand _refreshCommand;
 	    private IMvxCommand _loadMoreCommand;
+	    private string _postId;
 
-        public RequestsViewModel(IDataModel dataModel)
+	    public RequestsViewModel(IDataModel dataModel)
         {
             _dataModel = dataModel;
-	        InitRequestViewModels();
         }
 
 	    private async void InitRequestViewModels() => await UpdateRequestViewModels();
@@ -52,7 +52,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async Task OnLoadMore()
         {
-            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost("", $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
+            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
             if (_dataModel.ApiRequestsResponse.Requests.Any())
             {
                 RequestItemViewModels.Last().IsLastViewInList = false;
@@ -109,13 +109,19 @@ namespace GiveAndTake.Core.ViewModels
 
         public async Task UpdateRequestViewModels()
         {
-	        _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost("", "");
+	        _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");
 	        NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
                 RequestItemViewModels.Last().IsLastViewInList = true;
             }
+		}
+
+	    public override void Prepare(string postId)
+	    {
+		    _postId = postId;
+		    InitRequestViewModels();
 		}
     }
 }
