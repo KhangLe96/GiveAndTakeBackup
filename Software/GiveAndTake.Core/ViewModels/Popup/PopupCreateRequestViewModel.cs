@@ -10,10 +10,11 @@ using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
-	public class PopupCreateRequestViewModel : BaseViewModel<Post, bool>
+	public class PopupCreateRequestViewModel : BaseViewModel<Post, RequestStatus>
 	{
 		#region Properties
 
+		private Post _post;
 		private readonly IDataModel _dataModel;
 		private string _avatarUrl;
 		private string _userName;
@@ -70,6 +71,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public override void Prepare(Post post)
 		{
+			_post = post;
 			_postId = post.PostId;
 			_userId = post.User.Id;
 			AvatarUrl = post.User.AvatarUrl;
@@ -78,11 +80,11 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		private void InitCommand()
 		{
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, RequestStatus.Cancelled));
 			SubmitCommand = new MvxCommand(InitCreateNewRequest);
 		}
 
-		public void InitCreateNewRequest()
+		public async void InitCreateNewRequest()
 		{
 			var managementService = Mvx.Resolve<IManagementService>();
 			var request = new Request()
@@ -91,8 +93,8 @@ namespace GiveAndTake.Core.ViewModels.Popup
 				UserId = _userId,
 				RequestMessage = RequestDescription,
 			};
-			managementService.CreateRequest(request, _dataModel.LoginResponse.Token);
-			NavigationService.Close(this, true);
+			await managementService.CreateRequest(request, _dataModel.LoginResponse.Token);
+			await NavigationService.Close(this, RequestStatus.Submitted);
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_requestDescription);

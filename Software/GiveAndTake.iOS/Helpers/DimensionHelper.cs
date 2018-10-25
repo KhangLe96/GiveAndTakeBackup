@@ -93,6 +93,10 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PostDetailAvatarSize { get; set; }
 		public static nfloat PostDetailImageIndexHeight { get; set; }
 		public static nfloat PostDetailImageIndexWidth { get; set; }
+		public static nfloat PostDetailRequestTouchFieldHeight { get; set; }
+		public static nfloat PostDetailRequestTouchFieldWidth { get; set; }
+		public static nfloat PostDetailExtensionTouchFieldHeight { get; set; }
+		public static nfloat PostDetailExtensionTouchFieldWidth { get; set; }
 		public static nfloat PostImageMarginObject { get; set; }
 		public static nfloat PopupRequestTitleTextSize { get; set; }
 		public static nfloat PopupRequestGiverInformationViewWidth { get; set; }
@@ -207,6 +211,10 @@ namespace GiveAndTake.iOS.Helpers
 			PopupRequestDescriptionTextViewHeight = 220 * Rate;
 			PopupRequestButtonWidth =
 				PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
+			PostDetailRequestTouchFieldHeight = 52 * Rate;
+			PostDetailRequestTouchFieldWidth = 80 * Rate;
+			PostDetailExtensionTouchFieldHeight = 50 * Rate;
+			PostDetailExtensionTouchFieldWidth = 50 * Rate;
 		}
 	}
 }

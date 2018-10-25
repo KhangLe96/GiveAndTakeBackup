@@ -104,7 +104,6 @@
     <Compile Include="Views\CollectionViewSources\PhotoItemViewSource.cs" />
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
-    <Compile Include="Views\Popups\PopupCategoriesView.cs" />
     <Compile Include="Views\Popups\PopupCreateRequestView.cs" />
     <Compile Include="Views\Popups\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popups\PopupListView.cs" />
@@ -173,6 +172,7 @@
     <BundleResource Include="Resources\Images\location_logo.png" />
     <BundleResource Include="Resources\Images\navigateLeft.png" />
     <BundleResource Include="Resources\Images\navigateRight.png" />
+    <BundleResource Include="Resources\Images\request_on.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

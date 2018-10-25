@@ -54,7 +54,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			var gradient = new CAGradientLayer
 			{
 				Frame = _gradientView.Bounds,
-				Colors = new[] { UIColor.White.ColorWithAlpha(0).CGColor, UIColor.White.ColorWithAlpha(0.8f).CGColor }
+				Colors = new[] { UIColor.Clear.CGColor, UIColor.White.ColorWithAlpha(1f).CGColor }
 			};
 			_gradientView.Layer.InsertSublayer(gradient, 0);
 		}
