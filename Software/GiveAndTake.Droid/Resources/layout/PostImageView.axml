@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:local="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+	<android.support.v4.view.ViewPager
+		android:id="@+id/SliderViewPager"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/black" />
+
+	<ImageButton
+		android:id="@+id/navigateLeftButton"
+		android:layout_width="@dimen/post_detail_navigation_button_width"
+		android:layout_height="@dimen/post_detail_navigation_button_height"
+		android:layout_alignParentLeft="true"
+		android:layout_centerInParent="true"
+		android:layout_marginLeft="@dimen/default_margin"
+		android:background="@null"
+		android:scaleType="fitCenter"
+		android:src="@drawable/navigateLeft"
+		local:MvxBind="Click NavigateLeftCommand; Visibility Visibility(CanNavigateLeft)"/>
+
+	<ImageButton
+		android:id="@+id/navigateRightButton"
+		android:layout_width="@dimen/post_detail_navigation_button_width"
+		android:layout_height="@dimen/post_detail_navigation_button_height"
+		android:layout_alignParentRight="true"
+		android:layout_centerInParent="true"
+		android:layout_marginRight="@dimen/default_margin"
+		android:background="@null"
+		android:scaleType="fitCenter"
+		android:src="@drawable/navigateRight" 
+		local:MvxBind="Click NavigateRightCommand; Visibility Visibility(CanNavigateRight)"/>
+
+	<ImageView
+		android:id="@+id/delete_btn"
+		android:layout_width="@dimen/post_detail_navigation_button_width"
+		android:layout_height="@dimen/post_detail_navigation_button_width"
+		android:layout_alignParentRight="true"
+		android:layout_margin="@dimen/margin_normal"
+		android:background="@drawable/btn_delete_photo"
+		local:MvxBind="Click CloseCommand" />
+
+</RelativeLayout>

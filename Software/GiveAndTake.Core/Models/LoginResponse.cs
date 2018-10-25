@@ -16,7 +16,7 @@ namespace GiveAndTake.Core.Models
         public string TokenType { get; set; }
 
         [DataMember(Name = "expiresIn", EmitDefaultValue = false)]
-        public DateTimeOffset ExpiresIn { get; set; }
+        public DateTimeOffset? ExpiresIn { get; set; }
 
         [DataMember(Name = "refreshToken", EmitDefaultValue = false)]
         public string RefreshToken { get; set; }

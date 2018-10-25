@@ -17,7 +17,6 @@ namespace GiveAndTake.Droid.Views
     public class RequestsView : BaseFragment
     {
         protected override int LayoutId => Resource.Layout.RequestsView;
-        private View _view;
 
         public IMvxCommand LoadMoreCommand { get; set; }
 

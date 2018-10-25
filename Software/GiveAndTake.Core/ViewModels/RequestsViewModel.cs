@@ -1,64 +1,58 @@
-﻿using System;
-using GiveAndTake.Core.Models;
-using GiveAndTake.Core.Services;
+﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
-using MvvmCross;
+using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels
 {
-    public class RequestsViewModel : BaseViewModel
+	public class RequestsViewModel : BaseViewModel
     {
-        private readonly IDataModel _dataModel;
-        private readonly IManagementService _managementService = Mvx.Resolve<IManagementService>();
+	    public string Title => "Danh sách yêu cầu";
 
-        private int _numberOfRequest;
-        public int NumberOfRequest
-        {
-            get => _numberOfRequest;
-            set => SetProperty(ref _numberOfRequest, value);
-        }
+		public bool IsRefreshing
+	    {
+		    get => _isRefresh;
+		    set => SetProperty(ref _isRefresh, value);
+	    }
 
-        public string Title => "Danh sách yêu cầu";
+	    public int NumberOfRequest
+	    {
+		    get => _numberOfRequest;
+		    set => SetProperty(ref _numberOfRequest, value);
+	    }
 
-        private MvxObservableCollection<RequestItemViewModel> _requestItemViewModels;
-        public MvxObservableCollection<RequestItemViewModel> RequestItemViewModels
-        {
-            get => _requestItemViewModels;
-            set => SetProperty(ref _requestItemViewModels, value);
-        }
+	    public MvxObservableCollection<RequestItemViewModel> RequestItemViewModels
+	    {
+		    get => _requestItemViewModels;
+		    set => SetProperty(ref _requestItemViewModels, value);
+	    }
 
-        private bool _isRefresh;
-        public bool IsRefreshing
-        {
-            get => _isRefresh;
-            set => SetProperty(ref _isRefresh, value);
-        }
+	    public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
 
-        public ICommand LoadMoreCommand { get; private set; }
+	    public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
 
-        private MvxCommand _refreshCommand;
-        public ICommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
+		private readonly IDataModel _dataModel;
+	    private MvxObservableCollection<RequestItemViewModel> _requestItemViewModels;
+		private int _numberOfRequest;
+	    private bool _isRefresh;
+		private IMvxCommand _refreshCommand;
+	    private IMvxCommand _loadMoreCommand;
 
         public RequestsViewModel(IDataModel dataModel)
         {
             _dataModel = dataModel;
-            UpdateRequestViewModels();
-            InitCommand();
+	        InitRequestViewModels();
         }
 
-        private void InitCommand()
-        {
-            LoadMoreCommand = new MvxCommand(OnLoadMore);
-        }
+	    private async void InitRequestViewModels() => await UpdateRequestViewModels();
 
-        private void OnLoadMore()
+
+	    private async Task OnLoadMore()
         {
-            _dataModel.ApiRequestsResponse = _managementService.GetRequestOfPost("", $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
+            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost("", $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
             if (_dataModel.ApiRequestsResponse.Requests.Any())
             {
                 RequestItemViewModels.Last().IsLastViewInList = false;
@@ -69,25 +63,55 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private RequestItemViewModel GenerateRequestItem(Request request)
 	    {
-		    var requestItem = new RequestItemViewModel(request, _dataModel);
-		    requestItem.ReloadRequestList += new Action(OnRefresh);
+		    var requestItem = new RequestItemViewModel(request)
+		    {
+				OnClicked = OnItemClicked,
+				OnAccepted = OnRequestAccepted,
+				OnRejected = OnRequestRejected
+		    };
 
 			return requestItem;
+	    }
+
+	    private async void OnRequestRejected(Request request)
+	    {
+			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.RequestRejectingMessage);
+		    if (result == RequestStatus.Submitted)
+		    {
+			    await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
+		    }
+		}
+
+	    private void OnRequestAccepted(Request request)
+	    {
+
+	    }
+
+	    private async void OnItemClicked(Request request)
+	    {
+		    var popupResult = await NavigationService.Navigate<RequestDetailViewModel, Request, PopupRequestDetailResult>(request);
+		    switch (popupResult)
+		    {
+			    case PopupRequestDetailResult.Rejected:
+				    await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
+				    break;
+			    case PopupRequestDetailResult.Accepted:
+				    break;
+		    }
 	    }
 
 	    private async void OnRefresh()
         {
             IsRefreshing = true;
-            UpdateRequestViewModels();
-            await Task.Delay(1000);
+            await UpdateRequestViewModels();
             IsRefreshing = false;
         }
 
-        public void UpdateRequestViewModels()
+        public async Task UpdateRequestViewModels()
         {
-			var result = _managementService.GetRequestOfPost("", "");
-	        NumberOfRequest = result.Pagination.Totals;
-			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(result.Requests.Select(GenerateRequestItem));
+	        _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost("", "");
+	        NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
+			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
                 RequestItemViewModels.Last().IsLastViewInList = true;

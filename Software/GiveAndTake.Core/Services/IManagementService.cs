@@ -1,26 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using GiveAndTake.Core.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using GiveAndTake.Core.Models;
 
 namespace GiveAndTake.Core.Services
 {
-    public interface IManagementService
+	public interface IManagementService
     {
-        List<Category> GetCategories();
-	    List<ProvinceCity> GetProvinceCities();
-	    ApiPostsResponse GetPostList(string filterParams);
-        void GetPostDetail(string postId);
-        void GetPostOfUser(string userId);
-        void ChangeStatusOfPost(string postId, string newStatus);
-		void EditPost(EditPost post);
-		LoginResponse LoginFacebook(BaseUser baseUser);
-		bool CreatePost(CreatePost post, string token);
-		void UpdateCurrentUserProfile(User user);
-	    void GetUserProfile(string userId);
+	    Task<CategoryResponse> GetCategories();
+	    Task<ProvinceCitiesResponse> GetProvinceCities();
+	    Task<ApiPostsResponse> GetPostList(string filterParams);
+        Task<Post> GetPostDetail(string postId);
+        Task<ApiPostsResponse> GetPostOfUser(string userId);
+        Task ChangeStatusOfPost(string postId, string newStatus);
+		Task EditPost(EditPost post);
+	    Task<LoginResponse> LoginFacebook(BaseUser baseUser);
+		Task<bool> CreatePost(CreatePost post, string token);
+		Task<User> UpdateCurrentUserProfile(User user);
+	    Task<User> GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
-        ApiRequestsResponse GetRequestOfPost(string postId, string filterParams);
-		//Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
-	    void ChangeStatusOfRequest(string requestId, string newStatus, string token);
+	    bool CreateRequest(Request request, string token);
+
+        Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams);
+		Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
 
     }
 }

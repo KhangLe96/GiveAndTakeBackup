@@ -1,80 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
-using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
-	public abstract class PopupListViewModel : BaseViewModelResult<bool>
+	public class PopupListViewModel : BaseViewModel<PopupListParam, string>
 	{
 		protected readonly IDataModel DataModel;
-
+		public string SubmitButtonTitle { get; } = AppConstants.Done;
 		public IMvxAsyncCommand SubmitCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
-		public abstract string Title { get; }
-		protected abstract string SelectedItem { get; set; }
-		protected abstract List<string> PopupItems { get; set; }
+		public string Title { get; private set; }
 
-		private List<PopupItemViewModel> _popupItemViewModels;
 		public List<PopupItemViewModel> PopupItemViewModels
 		{
 			get => _popupItemViewModels;
-			set
-			{
-				_popupItemViewModels = value;
-				RaisePropertyChanged(() => PopupItemViewModels);
-			}
+			set => SetProperty(ref _popupItemViewModels, value);
 		}
 
-		protected PopupListViewModel(IDataModel dataModel)
+		private PopupItemViewModel _selectedPopupItem;
+		private List<PopupItemViewModel> _popupItemViewModels;
+
+		public override void Prepare(PopupListParam popupListParam)
 		{
-			DataModel = dataModel;
+			Title = popupListParam.Title;
+			PopupItemViewModels = InitPopupList(popupListParam.Items, popupListParam.SelectedItem);
 		}
 
 		public override Task Initialize()
 		{
-			PopupItemViewModels = InitPopupList();
-			SubmitCommand = new MvxAsyncCommand(OnCloseCommand);
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			SubmitCommand = new MvxAsyncCommand(() => NavigationService.Close(this, _selectedPopupItem?.ItemName));
+			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, null));
 			return base.Initialize();
 		}
 
-		protected virtual Task OnCloseCommand()
-		{
-			return NavigationService.Close(this, true);
-		}
-
-		private List<PopupItemViewModel> InitPopupList()
+		private List<PopupItemViewModel> InitPopupList(List<string> popupItems, string selectedItem)
 		{
 			var itemViewModels = new List<PopupItemViewModel>();
 
-			foreach (var itemName in PopupItems)
+			foreach (var itemName in popupItems)
 			{
 				var itemViewModel = new PopupItemViewModel(itemName)
 				{
-					IsLastViewInList = IsLast(itemName),
-					IsSelected = itemName == SelectedItem
+					IsSelected = itemName == selectedItem,
+					ItemSelected = OnItemSelected
 				};
-				itemViewModel.ItemSelected += OnItemSelected;
+
+
+				if (itemName == selectedItem)
+				{
+					_selectedPopupItem = itemViewModel;
+				}
+
 				itemViewModels.Add(itemViewModel);
+			}
+
+			if (itemViewModels.Any())
+			{
+				itemViewModels.Last().IsSeparatorLineShown = false;
 			}
 
 			return itemViewModels;
 		}
 
-		private bool IsLast(string name) => PopupItems.GetPosition(name) + 1 == PopupItems.Count;
-
-		protected void OnItemSelected(object sender, EventArgs e)
+		private void OnItemSelected(PopupItemViewModel selectedPopupItemViewModel)
 		{
-			var selectedItemViewModel = sender as PopupItemViewModel;
-			foreach (var viewModel in PopupItemViewModels)
-			{
-				viewModel.IsSelected = viewModel == selectedItemViewModel;
-			}
-			SelectedItem = selectedItemViewModel?.ItemName;
+			_selectedPopupItem.IsSelected = false;
+			_selectedPopupItem = selectedPopupItemViewModel;
 		}
 	}
 }

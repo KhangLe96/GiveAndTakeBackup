@@ -38,7 +38,7 @@
         android:scaleType="fitCenter"
         local:MvxBind="Click ShowCategoriesCommand; IsActivated IsCategoryFilterActivated" />
 
-	<SearchView
+	<Android.Support.V7.Widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/filter_height"
