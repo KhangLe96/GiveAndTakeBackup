@@ -23,8 +23,6 @@ namespace GiveAndTake.Droid.Views
 	{
 		protected override int LayoutId => Resource.Layout.CreatePostView;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
-		public IMvxCommand SubmitCommand { get; set; }
-		public IMvxCommand BackPressedCommand { get; set; }
 		private View _view;
 		
 		private ImageButton _choosePictureButton;
@@ -79,13 +77,6 @@ namespace GiveAndTake.Droid.Views
 			bindingSet.Bind(this)
 				.For(v => v.ImageCommand)
 				.To(vm => vm.ImageCommand);
-
-			bindingSet.Bind(this)
-				.For(v => v.SubmitCommand)
-				.To(vm => vm.SubmitCommand);
-			bindingSet.Bind(this)
-				.For(v => v.BackPressedCommand)
-				.To(vm => vm.BackPressedCommand);
 
 			bindingSet.Apply();
 		}

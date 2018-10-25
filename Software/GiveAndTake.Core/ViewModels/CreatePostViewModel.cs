@@ -35,8 +35,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private ICommand _submitCommand;
-		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
+		public ICommand SubmitCommand { get; set; }
 
 		private IMvxAsyncCommand _showPhotoCollectionCommand;
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
@@ -218,11 +217,21 @@ namespace GiveAndTake.Core.ViewModels
 			InitSelectedImage();
 		}
 
-		public async void InitSubmit()
+		public async void InitCreateNewPost()
 		{
 			try
 			{
-				InitCreateNewPost();
+				var managementService = Mvx.Resolve<IManagementService>();
+				var post = new CreatePost()
+				{
+					Title = PostTitle,
+					Description = PostDescription,
+					PostImages = _postImages,
+					PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
+					Address = _dataModel.SelectedProvinceCity.Id,   
+				};
+				await managementService.CreatePost(post, _dataModel.LoginResponse.Token);
+				await NavigationService.Close(this, true);
 			}
 			catch (AppException.ApiException)
 			{
@@ -231,6 +240,7 @@ namespace GiveAndTake.Core.ViewModels
 				{
 					InitSubmit();
 				}
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorConnectionMessage);
 			}
 		}
 

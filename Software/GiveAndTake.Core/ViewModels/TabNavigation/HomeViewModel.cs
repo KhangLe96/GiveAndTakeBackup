@@ -1,5 +1,4 @@
-﻿using System;
-using GiveAndTake.Core.Exceptions;
+﻿using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
