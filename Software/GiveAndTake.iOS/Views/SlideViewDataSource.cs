@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using CoreGraphics;
-using GiveAndTake.Core;
+﻿using CoreGraphics;
 using GiveAndTake.Core.Models;
 using GiveAndTake.iOS.Controls;
+using System;
+using System.Collections.Generic;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -30,7 +29,7 @@ namespace GiveAndTake.iOS.Views
 				Frame = _cellFrame
 			};
 
-			imageView.ImageUrl = _images[(int) index]?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
+			imageView.ImageUrl = _images[(int) index]?.ResizedImage;
 
 			return imageView;
 		}

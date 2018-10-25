@@ -3,10 +3,10 @@ using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
+using I18NPortable;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -14,23 +14,34 @@ namespace GiveAndTake.Core.ViewModels
     {
 		#region Properties
 
-		private string _categoryName;
-	    private string _address;
-	    private string _status;
-	    private List<Image> _postImages;
-	    private int _requestCount;
-	    private int _commentCount;
-	    private string _categoryBackgroundColor;
-	    private string _avatarUrl;
-	    private string _userName;
-	    private string _createdTime;
-	    private string _postTitle;
-	    private string _postDescription;
-		private bool _isMyPost;
-	    private int _postImageIndex;
-	    private bool _canNavigateLeft;
-	    private bool _canNavigateRight;
-	    private string _imageIndexIndicator;
+	    public IMvxCommand ShowGiverProfileCommand =>
+		    _showGiverProfileCommand ?? (_showGiverProfileCommand = new MvxCommand(() =>
+			    NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage)));
+		
+		public IMvxCommand ShowMenuPopupCommand =>
+			_showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxCommand(ShowMenuView));
+
+	    public IMvxCommand ShowPostCommentCommand =>
+		    _showPostCommentCommand ?? (_showPostCommentCommand = new MvxCommand(() =>
+			    NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage)));
+
+		public IMvxCommand ShowMyRequestListCommand =>
+			_showMyRequestListCommand ?? (_showMyRequestListCommand = new MvxCommand(ShowMyRequestList));
+
+		public IMvxCommand<int> ShowFullImageCommand =>
+			_showFullImageCommand ?? (_showFullImageCommand = new MvxCommand<int>(ShowFullImage));
+
+		public IMvxCommand NavigateLeftCommand =>
+			_navigateLeftCommand ?? (_navigateLeftCommand = new MvxCommand(() => PostImageIndex--));
+
+		public IMvxCommand NavigateRightCommand =>
+			_navigateRightCommand ?? (_navigateRightCommand = new MvxCommand(() => PostImageIndex++));
+
+		public IMvxCommand<int> UpdateImageIndexCommand =>
+			_updateImageIndexCommand ?? (_updateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index));
+
+		public IMvxCommand BackPressedCommand =>
+			_backPressedCommand ?? (_backPressedCommand = new MvxCommand(() => NavigationService.Close(this, true)));
 
 		public string CategoryName
 		{
@@ -148,6 +159,33 @@ namespace GiveAndTake.Core.ViewModels
 
 		private readonly IDataModel _dataModel;
 
+	    private IMvxCommand _showGiverProfileCommand;
+	    private IMvxCommand _showMenuPopupCommand;
+	    private IMvxCommand _showPostCommentCommand;
+	    private IMvxCommand _showMyRequestListCommand;
+	    private IMvxCommand _navigateLeftCommand;
+	    private IMvxCommand _navigateRightCommand;
+	    private IMvxCommand _backPressedCommand;
+	    private IMvxCommand<int> _showFullImageCommand;
+	    private IMvxCommand<int> _updateImageIndexCommand;
+		private string _categoryName;
+	    private string _address;
+	    private string _status;
+	    private string _categoryBackgroundColor;
+	    private string _avatarUrl;
+	    private string _userName;
+	    private string _createdTime;
+	    private string _postTitle;
+	    private string _postDescription;
+	    private string _imageIndexIndicator;
+	    private int _requestCount;
+	    private int _commentCount;
+	    private int _postImageIndex;
+	    private bool _canNavigateLeft;
+	    private bool _canNavigateRight;
+	    private bool _isMyPost;
+	    private List<Image> _postImages;
+
 	    #endregion
 
 		#region Constructor
@@ -155,23 +193,6 @@ namespace GiveAndTake.Core.ViewModels
 		public PostDetailViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			InitCommand();
-		}
-
-		private void InitCommand()
-		{
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
-			ShowMenuPopupCommand = new MvxCommand(ShowMenuView);
-			ShowPostCommentCommand = new MvxCommand(async () =>
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
-			ShowMyRequestListCommand = new MvxCommand(ShowMyRequestList);
-			ShowFullImageCommand = new MvxCommand<int>(ShowFullImage);
-			NavigateLeftCommand = new MvxCommand(() => PostImageIndex--);
-			NavigateRightCommand = new MvxCommand(() => PostImageIndex++);
-			UpdateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index);
-			ShowGiverProfileCommand = new MvxAsyncCommand(async () => 
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
-			BackPressedCommand = new MvxCommand(() => NavigationService.Close(this, true));
 		}
 
 		private void ShowFullImage(int position)
@@ -256,20 +277,5 @@ namespace GiveAndTake.Core.ViewModels
 		    ImageIndexIndicator = _postImageIndex + 1 + " / " + _postImages.Count;
 	    }
 		#endregion
-
-		#region Methods
-
-	    public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
-		public IMvxAsyncCommand CloseCommand { get; set; }
-		public IMvxCommand ShowMenuPopupCommand { get; set; }
-		public IMvxCommand ShowPostCommentCommand { get; set; }
-		public IMvxCommand ShowMyRequestListCommand { get; set; }
-		public IMvxCommand<int> ShowFullImageCommand { get; set; }
-		public IMvxCommand NavigateLeftCommand { get; set; }
-	    public IMvxCommand NavigateRightCommand { get; set; }
-	    public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
-	    public IMvxCommand BackPressedCommand { get; set; }
-
-	    #endregion
 	}
 }

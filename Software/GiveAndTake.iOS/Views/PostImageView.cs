@@ -1,13 +1,13 @@
-﻿using GiveAndTake.Core.Models;
+﻿using CoreGraphics;
+using GiveAndTake.Core.Models;
+using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
-using MvvmCross.Commands;
-using System.Collections.Generic;
-using CoreGraphics;
-using GiveAndTake.Core.ViewModels;
 using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
+using System.Collections.Generic;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -18,6 +18,7 @@ namespace GiveAndTake.iOS.Views
 	public class PostImageView : BaseView
 	{
 		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
+
 		public List<Image> PostImages
 		{
 			get => _postImages;
@@ -65,9 +66,7 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Height, 1, 0)
 			});
 
-
 			_carouselView = UIHelper.CreateSlideView(0, 0);
-
 			_imageView.AddSubview(_carouselView);
 
 			_imageView.AddConstraints(new[]
