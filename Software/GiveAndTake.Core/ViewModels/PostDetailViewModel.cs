@@ -1,5 +1,6 @@
 ﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -252,7 +253,7 @@ namespace GiveAndTake.Core.ViewModels
 			CategoryName = post.Category.CategoryName;
 			AvatarUrl = post.User.AvatarUrl;
 			UserName = post.User.FullName ?? AppConstants.DefaultUserName;
-			CreatedTime = post.CreatedTime.ToString("dd.MM.yyyy");
+			CreatedTime = TimeHelper.ToTimeAgo(post.CreatedTime);
 			Address = post.ProvinceCity.ProvinceCityName;
 			PostDescription = post.Description;
 			PostTitle = post.Title;

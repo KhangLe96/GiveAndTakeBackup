@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.Helpers;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -198,7 +199,7 @@ namespace GiveAndTake.Core.ViewModels
 		    CategoryName = _post.Category.CategoryName;
 		    AvatarUrl = _post.User.AvatarUrl;
 		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
-		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
+		    CreatedTime = TimeHelper.ToTimeAgo(_post.CreatedTime);
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    PostTitle = _post.Title;
 		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
