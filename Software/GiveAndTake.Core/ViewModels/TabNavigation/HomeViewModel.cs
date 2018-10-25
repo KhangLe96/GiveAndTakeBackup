@@ -110,8 +110,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-				if (result)
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				if (result == RequestStatus.Submitted)
 				{
 					InitDataModels();
 				}
@@ -143,15 +143,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-				if (result)
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				if (result == RequestStatus.Submitted)
 				{
 					UpdatePostViewModels();
 				}
 			}
 		}
 
-		private void OnLoadMore()
+		private async void OnLoadMore()
 		{
 			try
 			{
@@ -165,8 +165,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 			catch (AppException.ApiException)
 			{
-				var result = NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage).Result;
-				if (result)
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				if (result == RequestStatus.Submitted)
 				{
 					OnLoadMore();
 				}
@@ -223,8 +223,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 			catch (AppException.ApiException)
 			{
-				var popupResult = NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage).Result;
-				if (popupResult)
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				if (result == RequestStatus.Submitted)
 				{
 					UpdateCategories();
 				}
