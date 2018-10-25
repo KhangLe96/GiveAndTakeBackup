@@ -47,6 +47,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public RequestPostResponse Create(RequestPostRequest requestPost)
         {
+	        if (CheckWhetherUserRequested(requestPost.PostId, requestPost.UserId))
+	        {
+		        throw new BadRequestException(CommonConstant.Error.BadRequest);
+	        }
+
 			var request = Mapper.Map<Request>(requestPost);
 			request.Id = Guid.NewGuid();
 
@@ -93,7 +98,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             var post = _postService.Include(x => x.Requests).Find(postId);
             foreach (var request in post.Requests)
             {
-                if (request.UserId == userId)
+                if (request.UserId == userId && request.EntityStatus != EntityStatus.Deleted)
                 {
                     return Delete(request.Id);
                 }
@@ -104,8 +109,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public object CheckUserRequest(Guid postId, Guid userId)
         {
-            var requests = _requestService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == postId && x.UserId == userId);
-            if (requests.Any()) return new JsonObject("{'requested': 'true'}").Object ;
+            if (CheckWhetherUserRequested(postId, userId))
+	            return new JsonObject("{'requested': 'true'}").Object ;
 
             return new JsonObject("{'requested': 'false'}").Object;
         }
@@ -165,6 +170,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 .Select(x => Mapper.Map<RequestPostResponse>(x))
                 .ToList();
         }
+
+	    private bool CheckWhetherUserRequested(Guid postId, Guid userId)
+	    {
+		    var requests = _requestService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == postId && x.UserId == userId);
+		    if (requests.Any()) return true;
+
+		    return false;
+	    }
 
         #endregion
     }
