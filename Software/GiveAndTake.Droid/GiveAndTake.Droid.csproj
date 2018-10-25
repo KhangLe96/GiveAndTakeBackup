@@ -98,6 +98,7 @@
     <Compile Include="Views\TabNavigation\NotificationView.cs" />
     <Compile Include="Views\PostDetailView.cs" />
     <Compile Include="Views\TabNavigation\ProfileView.cs" />
+    <Compile Include="Views\TabNavigation\ScrollListener.cs" />
     <Compile Include="Views\UserProfileView.cs" />
     <Compile Include="Views\TabNavigation\TabNavigationView.cs" />
   </ItemGroup>
