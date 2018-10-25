@@ -157,8 +157,8 @@ namespace GiveAndTake.iOS.Helpers
 			LoginButtonWidth = 106 * Rate;
 			LoginButtonHeight = 33 * Rate;
 			LoginTitleTextSize = 18 * Rate;
-			PopupContentWidth = ResolutionHelper.Width - MarginNormal * 4;
-			PopupMessageButtonWidth = PopupContentWidth / 2 - MarginShort * 4;
+			PopupContentWidth = ResolutionHelper.Width - 48 * Rate;
+			PopupMessageButtonWidth = PopupContentWidth / 2 - 24 * Rate;
 			PopupCancelButtonBorder = 1 * Rate;
 			PopupContentRadius = 15 * Rate;
 			NewPostSize = 50 * Rate;
@@ -196,17 +196,13 @@ namespace GiveAndTake.iOS.Helpers
 			PostDetailImageIndexWidth = 50 * Rate;
 			PostImageMarginObject = 40 * Rate;
 			PopupRequestTitleTextSize = 20 * Rate;
-			//Review ThanhVo too much combination of size here. Try to make the view with constraint. Height of parent can be decided by height of childs.
-			//If you do like this if someone add new view or change the margin in the view, that dimention will not correct anymore
-			PopupRequestGiverInformationViewWidth = PopupContentWidth - 2 * PopupRequestSmallMargin;
-			PopupRequestGiverInformationViewHeight = 2 * PopupRequestSmallMargin + PopupRequestGiverAvartarSize;
+			PopupRequestGiverInformationViewWidth = PopupContentWidth - 10 * Rate;
+			PopupRequestGiverInformationViewHeight = 40 * Rate;
 			PopupRequestGiverAvartarSize = 30 * Rate;
 			PopupRequestSmallMargin = 5 * Rate;
-			PopupRequestHeight = PopupRequestDescriptionTextViewHeight + MarginBig + DefaultMargin * 4 +
-			                     PopupRequestGiverInformationViewHeight + 60 * Rate;
+			PopupRequestHeight = 385 * Rate;
 			PopupRequestDescriptionTextViewHeight = 220 * Rate;
-			PopupRequestButtonWidth =
-				PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
+			PopupRequestButtonWidth = PopupContentWidth / 2 - 15 * Rate ;
 		}
 	}
 }

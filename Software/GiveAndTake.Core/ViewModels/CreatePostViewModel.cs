@@ -34,8 +34,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private ICommand _submitCommand;
-		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
+		public ICommand SubmitCommand { get; set; }
 
 		private IMvxAsyncCommand _showPhotoCollectionCommand;
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
@@ -113,6 +112,7 @@ namespace GiveAndTake.Core.ViewModels
 			ShowCategoriesCommand = new MvxAsyncCommand(ShowCategories);
 			ShowProvinceCityCommand = new MvxAsyncCommand(ShowProvinceCities);
 			BackPressedCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			SubmitCommand = new MvxCommand(InitCreateNewPost);
 		}
 
 		private async Task ShowCategories()
@@ -188,7 +188,7 @@ namespace GiveAndTake.Core.ViewModels
 			InitSelectedImage();
 		}
 
-		public async void InitSubmit()
+		public async void InitCreateNewPost()
 		{
 			try
 			{
@@ -199,7 +199,7 @@ namespace GiveAndTake.Core.ViewModels
 					Description = PostDescription,
 					PostImages = _postImages,
 					PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
-					Address = _dataModel.SelectedProvinceCity.Id,   //Da Nang
+					Address = _dataModel.SelectedProvinceCity.Id,   
 				};
 				await managementService.CreatePost(post, _dataModel.LoginResponse.Token);
 				await NavigationService.Close(this, true);

@@ -40,8 +40,8 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (result == RequestStatus.Submitted)
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				if (result)
 				{
 					OnLoginSuccess(baseUser);
 				}

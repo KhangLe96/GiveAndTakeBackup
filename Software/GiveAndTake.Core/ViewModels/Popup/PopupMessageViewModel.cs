@@ -1,18 +1,19 @@
-﻿using GiveAndTake.Core.ViewModels.Base;
+﻿using System.Threading.Tasks;
+using GiveAndTake.Core.Models;
+using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
-using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
-	public class PopupMessageViewModel : BaseViewModel<string, RequestStatus>
+	public class PopupMessageViewModel : BaseViewModel<string, bool>
 	{
 		public IMvxAsyncCommand SubmitCommand { get; set; }
 		public IMvxAsyncCommand CancelCommand { get; set; }
 
-		public string SubmitButtonTitle { get; } = AppConstants.SubmitTitle;
-		public string CancelButtonTitle { get; } = AppConstants.CancelTitle;
+		public string SubmitButtonTitle { get; set; } = "Xác Nhận";
+		public string CancelButtonTitle { get; set; } = "Hủy";
 
-		private string _message ;
+		private string _message;
 		public string Message
 		{
 			get => _message;
@@ -25,9 +26,9 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			CancelCommand = new MvxAsyncCommand(OnCancel);
 		}
 
-		public Task OnSubmit() => NavigationService.Close(this, RequestStatus.Submitted);
+		public Task OnSubmit() => NavigationService.Close(this, true);
 
-		public Task OnCancel() => NavigationService.Close(this, RequestStatus.Cancelled);
+		public Task OnCancel() => NavigationService.Close(this, false);
 
 		public override void Prepare(string message)
 		{

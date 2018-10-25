@@ -22,7 +22,6 @@ namespace GiveAndTake.Droid.Views
 	{
 		protected override int LayoutId => Resource.Layout.CreatePostView;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
-		public IMvxCommand SubmitCommand { get; set; }
 		private View _view;
 
 		private ImageButton _choosePictureButton;
@@ -31,7 +30,6 @@ namespace GiveAndTake.Droid.Views
 		{
 			_view = view;
 			InitChoosePicture();
-			InitSubmit();
 
 		    var title = _view.FindViewById<EditText>(Resource.Id.Title);
 		    title.FocusChange += OnEditTextFocusChange;
@@ -77,21 +75,9 @@ namespace GiveAndTake.Droid.Views
 				.For(v => v.ImageCommand)
 				.To(vm => vm.ImageCommand);
 
-			bindingSet.Bind(this)
-				.For(v => v.SubmitCommand)
-				.To(vm => vm.SubmitCommand);
-
 			bindingSet.Apply();
 		}
 
-		private void InitSubmit()
-		{
-			Button submitButton = _view.FindViewById<Button>(Resource.Id.Submit);
-			submitButton.Click += delegate
-			{
-				SubmitCommand.Execute(null);
-			};
-		}
 
 		private void InitChoosePicture()
 		{
