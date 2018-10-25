@@ -31,7 +31,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_createPostCommand ?? (_createPostCommand = new MvxAsyncCommand(ShowNewPostView));
 
 		public IMvxCommand SearchCommand =>
-			_searchCommand ?? (_searchCommand = new MvxAsyncCommand(UpdatePostViewModels));
+			_searchCommand ?? (_searchCommand = new MvxAsyncCommand(OnSearching));
+
+		
 
 		public IMvxCommand LoadMoreCommand =>
 			_loadMoreCommand ?? (_loadMoreCommand = new MvxAsyncCommand(OnLoadMore));
@@ -79,7 +81,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 				if (string.IsNullOrEmpty(value))
 				{
-					Task.Run(UpdatePostViewModels);
+					Task.Run(OnSearching);
 				}
 			}
 		}
@@ -256,14 +258,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.Categories.RemoveAt(0);
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
-
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdateCategories();
-
 			if (result)
-			{
-				await UpdatePostViewModels();
+			{				
+				await UpdatePostViewModels();				
 			}
-
+			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 		}
 
 		private async Task UpdateCategories()
@@ -280,6 +281,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					await UpdateCategories();
 				}
 			}
+		}
+		private async Task OnSearching()
+		{
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await UpdatePostViewModels();
+			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 		}
 
 		public override void ViewDestroy(bool viewFinishing = true)
