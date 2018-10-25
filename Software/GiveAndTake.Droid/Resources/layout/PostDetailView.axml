@@ -49,17 +49,24 @@
 	    android:paddingRight="@dimen/margin_separator"
 	    android:layout_alignParentRight="true"
 	    android:layout_above="@+id/scrollView"
-	    android:layout_alignParentTop="true"
-		local:MvxBind="Click ShowMenuPopupCommand">
+	    android:layout_alignParentTop="true">
 		<ImageButton
 			android:layout_width="@dimen/post_detail_extension_button_width"
 			android:layout_height="@dimen/post_detail_extension_button_height"
 			android:layout_marginTop="@dimen/post_detail_extension_button_margin_top"
 			android:background="@null"
 			android:scaleType="fitXY"
-			android:src="@drawable/extention" 
-			local:MvxBind="Click ShowMenuPopupCommand"/>
+			android:src="@drawable/extention" />
 	</LinearLayout>
+	<View
+		android:layout_width="@dimen/post_detail_touch_field_size"
+		android:layout_height="@dimen/post_detail_navigation_touch_view_height"
+		android:src="@drawable/navigateLeft"
+		android:background="@null"
+		android:layout_alignParentRight="true"
+		android:layout_above="@+id/scrollView"
+		android:layout_alignParentTop="true"
+		local:MvxBind="Click ShowMenuPopupCommand"/>
 	<TextView
 		android:id="@+id/tvStatus"
 		android:layout_width="wrap_content"
@@ -119,6 +126,14 @@
 				android:layout_alignParentLeft="true"
 				android:src="@drawable/navigateLeft"
 				local:MvxBind="Click NavigateLeftCommand; Visibility Visibility(CanNavigateLeft)"/>
+			<View
+				android:layout_marginTop="@dimen/post_detail_navigation_touch_view_margin_top"
+				android:layout_width="@dimen/post_detail_touch_field_size"
+				android:layout_height="@dimen/post_detail_navigation_touch_view_height"
+				android:layout_alignParentLeft="true"
+				android:src="@drawable/navigateLeft"
+				android:background="@null"
+				local:MvxBind="Click NavigateLeftCommand; Visibility Visibility(CanNavigateLeft)"/>
 			<ImageButton
 				android:id="@+id/navigateRightButton"
 				android:layout_width="@dimen/post_detail_navigation_button_width"
@@ -129,6 +144,14 @@
 				android:layout_marginRight="@dimen/default_margin"
 				android:layout_alignParentRight="true"
 				android:src="@drawable/navigateRight"
+				local:MvxBind="Click NavigateRightCommand; Visibility Visibility(CanNavigateRight)"/>
+			<View
+				android:layout_marginTop="@dimen/post_detail_navigation_touch_view_margin_top"
+				android:layout_width="@dimen/post_detail_touch_field_size"
+				android:layout_height="@dimen/post_detail_navigation_touch_view_height"
+				android:layout_alignParentRight="true"
+				android:src="@drawable/navigateLeft"
+				android:background="@null"
 				local:MvxBind="Click NavigateRightCommand; Visibility Visibility(CanNavigateRight)"/>
 			<TextView
 				android:layout_alignParentRight="true"
@@ -150,9 +173,7 @@
 				android:layout_marginRight="@dimen/post_detail_small_margin"
 				android:id="@+id/requestImageButton"
 				android:background="@null"
-				android:scaleType="fitXY"
-				android:src="@drawable/request_off" 
-				local:MvxBind="Click ShowMyRequestListCommand"/>
+				android:scaleType="fitXY"/>
 			<TextView
 				android:layout_below="@+id/SliderViewPager"
 				android:layout_toLeftOf="@+id/requestImageButton"
@@ -174,7 +195,21 @@
 				android:layout_marginRight="@dimen/default_margin"
 				android:background="@null"
 				android:scaleType="fitCenter"
-				android:src="@drawable/comment" 
+				android:src="@drawable/comment" />
+			<View
+				android:id="@+id/RequestTouchView"
+				android:layout_alignParentRight="true"
+				android:layout_below="@+id/SliderViewPager"
+				android:layout_width="@dimen/post_detail_request_touch_field_size"
+				android:layout_height="@dimen/post_detail_touch_field_size"
+				android:background="@null"
+				local:MvxBind="Click ShowMyRequestListCommand"/>
+			<View
+				android:layout_below="@+id/SliderViewPager"
+				android:layout_toLeftOf="@+id/RequestTouchView"
+				android:layout_width="@dimen/post_detail_request_touch_field_size"
+				android:layout_height="@dimen/post_detail_touch_field_size"
+				android:background="@null"
 				local:MvxBind="Click ShowPostCommentCommand"/>
 			<RelativeLayout
 				android:layout_below="@+id/commentImageButton"

@@ -21,5 +21,7 @@ namespace GiveAndTake.Core.Services
 	    List<SortFilter> GetShortFilters();
         Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams);
 		Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
+	    Task<UserRequest> CheckUserRequest(string postId, string token);
+	    Task<bool> CancelUserRequest(string postId, string token);
     }
 }

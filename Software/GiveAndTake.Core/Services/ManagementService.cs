@@ -171,17 +171,6 @@ namespace GiveAndTake.Core.Services
 			{
 				throw new AppException.ApiException(response.ErrorMessage);
 			}
-			//Task.Run(async () =>
-			//{
-			//	var postStatus = new StatusObj
-			//	{
-			//		Status = newStatus,
-			//	};
-			//	var statusInString = JsonHelper.Serialize(postStatus);
-			//	var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
-			//	string parameters = $"/{postId}";
-			//	var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
-			//});
 		}
 
 		public async Task EditPost(EditPost post)
@@ -241,25 +230,6 @@ namespace GiveAndTake.Core.Services
 			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
-	    public async Task<bool> CreateRequest(Request request, string token)
-	    {	    
-		    var requestInformationInString = JsonHelper.Serialize(request);
-		    var content = new StringContent(requestInformationInString, Encoding.UTF8, "application/json");
-		    var response = await _apiHelper.Post(AppConstants.CreateRequest, content, token);
-
-		    if (response.NetworkStatus != NetworkStatus.Success)
-		    {
-			    throw new AppException.ApiException(response.NetworkStatus.ToString());
-		    }
-
-		    if (!string.IsNullOrEmpty(response.ErrorMessage))
-		    {
-			    throw new AppException.ApiException(response.ErrorMessage);
-		    }
-
-			return JsonHelper.Deserialize<bool>(response.RawContent);
-		}
-
 		public async Task<User> UpdateCurrentUserProfile(User user)
         {
 			var userInformationInString = JsonHelper.Serialize(user);
@@ -300,5 +270,60 @@ namespace GiveAndTake.Core.Services
 			new SortFilter {FilterName = "Mới nhất (Mặc định)", FilterTag = "desc"},
 			new SortFilter {FilterName = "Cũ nhất", FilterTag = "asc"}
 	    };
-    }
+
+	    public async Task<bool> CreateRequest(Request request, string token)
+	    {
+		    var requestInformationInString = JsonHelper.Serialize(request);
+		    var content = new StringContent(requestInformationInString, Encoding.UTF8, "application/json");
+		    var response = await _apiHelper.Post(AppConstants.CreateRequest, content, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<bool>(response.RawContent);
+	    }
+
+	    public async Task<UserRequest> CheckUserRequest(string postId, string token)
+	    {
+		    string parameters = $"/{postId}";
+		    var response = await _apiHelper.Get(AppConstants.CheckUserRequest + parameters, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<UserRequest>(response.RawContent);
+	    }
+
+	    public async Task<bool> CancelUserRequest(string postId, string token)
+	    {
+		    var parameters = $"/{postId}";
+		    var response = await _apiHelper.Delete(AppConstants.CancelUserRequest + parameters, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<bool>(response.RawContent);
+	    }
+	}
 }

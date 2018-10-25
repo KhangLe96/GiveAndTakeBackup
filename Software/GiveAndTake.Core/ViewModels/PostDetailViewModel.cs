@@ -8,6 +8,8 @@ using I18NPortable;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Services;
+using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -27,7 +29,7 @@ namespace GiveAndTake.Core.ViewModels
 			    NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage)));
 
 		public IMvxCommand ShowMyRequestListCommand =>
-			_showMyRequestListCommand ?? (_showMyRequestListCommand = new MvxCommand(ShowMyRequestList));
+			_showMyRequestListCommand ?? (_showMyRequestListCommand = new MvxAsyncCommand(ShowMyRequestList));
 
 		public IMvxCommand<int> ShowFullImageCommand =>
 			_showFullImageCommand ?? (_showFullImageCommand = new MvxCommand<int>(ShowFullImage));
@@ -146,6 +148,12 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _imageIndexIndicator, value);
 	    }
 
+	    public bool IsRequested
+	    {
+		    get => _isRequested;
+		    set => SetProperty(ref _isRequested, value);
+	    }
+
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
 	    private static readonly List<string> MyPostOptions = new List<string>
@@ -187,6 +195,8 @@ namespace GiveAndTake.Core.ViewModels
 	    private bool _isMyPost;
 	    private List<Image> _postImages;
 	    private Post _post;
+	    private bool _isRequested;
+	    private string _postId;
 
 	    #endregion
 
@@ -234,22 +244,42 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private void ShowMyRequestList()
+	    private async void CheckUserRequest()
+	    {
+		    _userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
+		    IsRequested = _userRequestResponse.IsRequested;
+	    }
+
+		private async Task ShowMyRequestList()
 		{
 			if (_isMyPost)
 			{
-				NavigationService.Navigate<RequestsViewModel, string>(_post.PostId);
+				await NavigationService.Navigate<RequestsViewModel, string>(_post.PostId);
 			}
 			else
 			{
-				NavigationService.Navigate<PopupCreateRequestViewModel, Post>(_post);
+				if (IsRequested)
+				{
+					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");
+					if (popupResult != RequestStatus.Submitted) return;
+					var managementService = Mvx.Resolve<IManagementService>();
+					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+					UpdateDataModel();
+				}
+				else
+				{
+					var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
+					if (result == RequestStatus.Submitted)
+					{
+						UpdateDataModel();
+					}
+				}
 			}
 		}
 
-
 		public override void Prepare(Post post)
 		{
-			_post = post;
+			_postId = post.PostId;
 			CategoryName = post.Category.CategoryName;
 			AvatarUrl = post.User.AvatarUrl;
 			UserName = post.User.FullName ?? AppConstants.DefaultUserName;
@@ -264,6 +294,32 @@ namespace GiveAndTake.Core.ViewModels
 			CategoryBackgroundColor = post.Category.BackgroundColor;
 			_isMyPost = post.IsMyPost;
 			PostImageIndex = 0;
+			_post = post;
+
+			CheckUserRequest();
+		}
+
+	    private async void UpdateDataModel()
+	    {
+		    var managementService = Mvx.Resolve<IManagementService>();
+		    _dataModel.CurrentPost = await managementService.GetPostDetail(_postId);
+		    CategoryName = _dataModel.CurrentPost.Category.CategoryName;
+		    AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
+		    UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
+		    CreatedTime = _dataModel.CurrentPost.CreatedTime.ToString("dd.MM.yyyy");
+		    Address = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
+		    PostDescription = _dataModel.CurrentPost.Description;
+		    PostTitle = _dataModel.CurrentPost.Title;
+		    PostImages = _dataModel.CurrentPost.Images;
+		    RequestCount = _dataModel.CurrentPost.RequestCount;
+		    CommentCount = _dataModel.CurrentPost.CommentCount;
+		    Status = _dataModel.CurrentPost.IsMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
+		    CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
+		    _isMyPost = _dataModel.CurrentPost.IsMyPost;
+		    PostImageIndex = 0;
+		    _post = _dataModel.CurrentPost;
+
+		    CheckUserRequest();
 		}
 
 	    public override Task Initialize()
@@ -281,7 +337,8 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private void UpdateImageIndexIndicator()
 	    {
-		    ImageIndexIndicator = _postImageIndex + 1 + " / " + _postImages.Count;
+		    var totalImage = _postImages.Count == 0 ? 1 : PostImages.Count;
+		    ImageIndexIndicator = _postImageIndex + 1 + " / " + totalImage;
 	    }
 		#endregion
 	}

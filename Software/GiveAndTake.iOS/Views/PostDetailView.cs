@@ -61,6 +61,17 @@ namespace GiveAndTake.iOS.Views
 		}
 
 		private string _status;
+		public bool IsRequested
+		{
+			get => _isRequested;
+			set
+			{
+				_isRequested = value;
+				InitSetRequestIcon();
+			}
+		}
+
+		private bool _isRequested;
 		private HeaderBar _headerBar;
 		private UIButton _btnCategory;
 		private UIButton _btnExtension;
@@ -86,6 +97,11 @@ namespace GiveAndTake.iOS.Views
 		private UIView _postInformationView;
 		private UIView _imageView;
 		private UIView _pageIndexView;
+		private UIView _extensionTouchView;
+		private UIView _requestTouchView;
+		private UIView _commentTouchView;
+		private UIView _leftNavigationTouchView;
+		private UIView _rightNavigationTouchView;
 		private List<Image> _postImages;
 		private UIView _extensionView;
 
@@ -145,11 +161,21 @@ namespace GiveAndTake.iOS.Views
 				.To(vm => vm.CanNavigateRight)
 				.WithConversion("InvertBool");
 
-			bindingSet.Bind(_backNavigationButton.Tap())
+			bindingSet.Bind(_leftNavigationTouchView)
+				.For("Visibility")
+				.To(vm => vm.CanNavigateLeft)
+				.WithConversion("InvertBool");
+
+			bindingSet.Bind(_rightNavigationTouchView)
+				.For("Visibility")
+				.To(vm => vm.CanNavigateRight)
+				.WithConversion("InvertBool");
+
+			bindingSet.Bind(_leftNavigationTouchView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.NavigateLeftCommand);
 
-			bindingSet.Bind(_nextNavigationButton.Tap())
+			bindingSet.Bind(_rightNavigationTouchView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.NavigateRightCommand);
 
@@ -159,14 +185,14 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_lbRequestCount)
 				.To(vm => vm.RequestCount);
 
-			bindingSet.Bind(_imgRequest.Tap())
+			bindingSet.Bind(_requestTouchView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowMyRequestListCommand);
 
 			bindingSet.Bind(_lbCommentCount)
 				.To(vm => vm.CommentCount);
 
-			bindingSet.Bind(_imgComment.Tap())
+			bindingSet.Bind(_commentTouchView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowPostCommentCommand);
 
@@ -193,6 +219,10 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(this)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.IsRequested)
+				.To(vm => vm.IsRequested);
 
 			bindingSet.Apply();
 		}
@@ -259,7 +289,18 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_btnExtension, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginShort)
 			});
-	
+
+			_extensionTouchView = UIHelper.CreateView(DimensionHelper.PostDetailExtensionTouchFieldHeight,
+				DimensionHelper.PostDetailExtensionTouchFieldWidth, null);
+			View.AddSubview(_extensionTouchView);
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_extensionTouchView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_extensionTouchView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Right, 1, 0)
+			});
+
 			_lbPostStatus = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDetailStatusTextSize, FontType.Bold);
 			View.AddSubview(_lbPostStatus);
 			View.AddConstraints(new[]
@@ -344,6 +385,17 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginNormal)
 			});
 
+			_leftNavigationTouchView = UIHelper.CreateView(DimensionHelper.PostDetailExtensionTouchFieldHeight,
+				DimensionHelper.PostDetailExtensionTouchFieldWidth, null);
+			_contentView.AddSubview(_leftNavigationTouchView);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_leftNavigationTouchView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.CenterY, 1, 0),
+				NSLayoutConstraint.Create(_leftNavigationTouchView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Left, 1, 0)
+			});
+
 			_nextNavigationButton = UIHelper.CreateImageButton(DimensionHelper.NavigationHeight,
 				DimensionHelper.NavigationWidth, ImageHelper.NextNavigationButton);
 			_contentView.AddSubview(_nextNavigationButton);
@@ -353,6 +405,17 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.CenterY, 1, 0),
 				NSLayoutConstraint.Create(_nextNavigationButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _imageView,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginNormal)
+			});
+
+			_rightNavigationTouchView = UIHelper.CreateView(DimensionHelper.PostDetailExtensionTouchFieldHeight,
+				DimensionHelper.PostDetailExtensionTouchFieldWidth, null);
+			_contentView.AddSubview(_rightNavigationTouchView);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_rightNavigationTouchView, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.CenterY, 1, 0),
+				NSLayoutConstraint.Create(_rightNavigationTouchView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Right, 1, 0)
 			});
 
 			_pageIndexView = UIHelper.CreateView(DimensionHelper.PostDetailImageIndexHeight, DimensionHelper.PostDetailImageIndexWidth, UIColor.Black.ColorWithAlpha((float)0.5), 5);
@@ -394,7 +457,18 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_imgRequest, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _lbRequestCount,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.PostDetailSmallMargin)
 			});
-		
+
+			_requestTouchView = UIHelper.CreateView(DimensionHelper.PostDetailRequestTouchFieldHeight,
+				DimensionHelper.PostDetailRequestTouchFieldWidth, null);
+			_contentView.AddSubview(_requestTouchView);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_requestTouchView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_requestTouchView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.Right, 1, 0)
+			});
+
 			_lbCommentCount = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.PostDetailBigTextSize, FontType.Light);
 			_contentView.AddSubview(_lbCommentCount);
 			_contentView.AddConstraints(new[]
@@ -414,7 +488,19 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _lbCommentCount,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.DefaultMargin)
 			});
-		
+
+			_commentTouchView = UIHelper.CreateView(DimensionHelper.PostDetailRequestTouchFieldHeight,
+				DimensionHelper.PostDetailRequestTouchFieldWidth, null);
+			_contentView.AddSubview(_commentTouchView);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_commentTouchView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_commentTouchView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _requestTouchView,
+					NSLayoutAttribute.Left, 1, 0)
+			});
+
+
 			_postInformationView = UIHelper.CreateView(0, DimensionHelper.PostDetailContentViewWidth, ColorHelper.LightGray,
 				DimensionHelper.RoundCorner);
 			_postInformationView.Layer.BorderColor = ColorHelper.Gray.CGColor;
@@ -500,6 +586,12 @@ namespace GiveAndTake.iOS.Views
 		private void UpdatePostStatus()
 		{
 			_lbPostStatus.AttributedText = UIHelper.CreateAttributedString(_status, _status == AppConstants.GivingStatus ? ColorHelper.Green : ColorHelper.DarkRed, false);
+		}
+
+
+		private void InitSetRequestIcon()
+		{
+			_imgRequest.Image = UIImage.FromBundle(IsRequested ? ImageHelper.RequestOn : ImageHelper.RequestOff);
 		}
 
 		#endregion

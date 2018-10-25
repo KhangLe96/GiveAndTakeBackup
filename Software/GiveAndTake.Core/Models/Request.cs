@@ -33,4 +33,11 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "response")]
         public ResponseRequest Response { get; set; }
     }
+
+	[DataContract]
+	public class UserRequest
+	{
+		[DataMember(Name = "requested")]
+		public bool IsRequested { get; set; }
+	}
 }
