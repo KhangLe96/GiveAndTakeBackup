@@ -197,6 +197,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private Post _post;
 	    private bool _isRequested;
 	    private string _postId;
+	    private UserRequest _userRequestResponse;
 
 	    #endregion
 
