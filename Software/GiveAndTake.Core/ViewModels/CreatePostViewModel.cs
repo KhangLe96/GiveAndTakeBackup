@@ -44,7 +44,6 @@ namespace GiveAndTake.Core.ViewModels
 		// REVIEW [KHOA]: use lazy initiation
 		public IMvxCommand ShowCategoriesCommand { get; set; }
 		public IMvxCommand ShowProvinceCityCommand { get; set; }
-		public IMvxAsyncCommand CloseCommand { get; set; }
 		public IMvxCommand BackPressedCommand { get; set; }
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
@@ -117,16 +116,17 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
 			ShowProvinceCityCommand = new MvxCommand(ShowLocationFiltersPopup);
-			BackPressedCommand = new MvxCommand(BackPressed);
+			BackPressedCommand = new MvxAsyncCommand(BackPressed);
 			ShowCategoriesCommand = new MvxCommand(ShowCategoriesPopup);
+			SubmitCommand = new MvxAsyncCommand(OnCreatePost);
 		}
 
-		private async void BackPressed()
+		private async Task BackPressed()
 		{
 			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.DeleteConfirmationMessage);
 			if (result == RequestStatus.Submitted)
 			{
-				NavigationService.Close(this, false);
+				await NavigationService.Close(this, false);
 			}
 		}
 
@@ -217,46 +217,26 @@ namespace GiveAndTake.Core.ViewModels
 			InitSelectedImage();
 		}
 
-		public async void InitCreateNewPost()
+		public async Task OnCreatePost()
 		{
 			try
 			{
 				var managementService = Mvx.Resolve<IManagementService>();
-				var post = new CreatePost()
+				var post = new CreatePost
 				{
 					Title = PostTitle,
 					Description = PostDescription,
 					PostImages = _postImages,
-					PostCategory = (_dataModel.SelectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _dataModel.SelectedCategory.Id,
-					Address = _dataModel.SelectedProvinceCity.Id,   
+					PostCategory = _selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
+					Address = _selectedProvinceCity.Id
 				};
 				await managementService.CreatePost(post, _dataModel.LoginResponse.Token);
 				await NavigationService.Close(this, true);
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (result == RequestStatus.Submitted)
-				{
-					InitSubmit();
-				}
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorConnectionMessage);
 			}
-		}
-
-		public void InitCreateNewPost()
-		{
-			var managementService = Mvx.Resolve<IManagementService>();
-			var post = new CreatePost()
-			{
-				Title = PostTitle,
-				Description = PostDescription,
-				PostImages = _postImages,
-				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
-				Address = _selectedProvinceCity.Id,   //Da Nang
-			};
-			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
-			NavigationService.Close(this,true);
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)

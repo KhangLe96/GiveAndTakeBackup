@@ -2,7 +2,6 @@
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
-using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
-    public class HomeViewModel : BaseViewModel
+	public class HomeViewModel : BaseViewModel
 	{
 		#region Properties
 
@@ -164,7 +163,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}").Result;
+				_dataModel.ApiPostsResponse = await ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
 					PostViewModels.Last().IsSeparatorLineShown = true;
@@ -173,7 +172,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				}
 			
 			}
-			catch (AggregateException ex) when (ex.InnerException is AppException.ApiException)
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
