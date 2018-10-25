@@ -102,6 +102,7 @@
     <Compile Include="Views\CollectionViewSources\PhotoItemViewSource.cs" />
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
+    <Compile Include="Views\Popups\LoadingOverlayView.cs" />
     <Compile Include="Views\Popups\PopupCreateRequestView.cs" />
     <Compile Include="Views\Popups\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popups\PopupListView.cs" />
