@@ -2,6 +2,7 @@
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using System;
+using Foundation;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -387,6 +388,20 @@ namespace GiveAndTake.iOS.Helpers
 			AddWidthHeight(height, width, view);
 
 			return view;
+		}
+
+		public static NSAttributedString CreateAttributedString(string text, UIColor color, bool underlineOrNot)
+		{
+			if (underlineOrNot)
+			{
+				var attrStr = new NSAttributedString(text, foregroundColor: color, underlineStyle: NSUnderlineStyle.Single);
+				return attrStr;
+			}
+			else
+			{
+				var attrStr = new NSAttributedString(text, foregroundColor: color);
+				return attrStr;
+			}
 		}
 	}
 }

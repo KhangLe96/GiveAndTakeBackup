@@ -33,7 +33,6 @@ namespace GiveAndTake.Droid.Views
 		{
 			_view = view;
 			InitChoosePicture();
-			InitSubmit();
 
 			var title = _view.FindViewById<EditText>(Resource.Id.Title);
 			title.FocusChange += OnEditTextFocusChange;
@@ -91,14 +90,6 @@ namespace GiveAndTake.Droid.Views
 			bindingSet.Apply();
 		}
 
-		private void InitSubmit()
-		{
-			Button submitButton = _view.FindViewById<Button>(Resource.Id.Submit);
-			submitButton.Click += delegate
-			{
-				SubmitCommand.Execute(null);
-			};
-		}
 
 		private void InitChoosePicture()
 		{

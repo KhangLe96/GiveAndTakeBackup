@@ -50,6 +50,17 @@ namespace GiveAndTake.iOS.Views
 			}
 		}
 
+		public string Status
+		{
+			get => _status;
+			set
+			{
+				_status = value;
+				UpdatePostStatus();
+			}
+		}
+
+		private string _status;
 		private HeaderBar _headerBar;
 		private UIButton _btnCategory;
 		private UIButton _btnExtension;
@@ -100,10 +111,9 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_lbPostAddress)
 				.To(vm => vm.Address);
 
-			bindingSet.Bind(_lbPostStatus)
-				.For(v => v.AttributedText)
-				.To(vm => vm.Status)
-				.WithConversion("StringToAttributedString", _lbPostStatus);
+			bindingSet.Bind(this)
+				.For(v => v.Status)
+				.To(vm => vm.Status);
 
 			bindingSet.Bind(_extensionView.Tap())
 				.For(v => v.Command)
@@ -128,8 +138,6 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_backNavigationButton)
 				.For("Visibility")
 				.To(vm => vm.CanNavigateLeft)
-				//Review ThanhVo Instead of using converter, you can define value which map with Visibility directly or try do like this .To(vm => !vm.CanNavigateLeft)
-				//Check all places which use this converter
 				.WithConversion("InvertBool");
 
 			bindingSet.Bind(_nextNavigationButton)
@@ -488,6 +496,12 @@ namespace GiveAndTake.iOS.Views
 			base.ViewDidAppear(animated);
 			_scrollView.ContentSize = _contentView.Frame.Size;
 		}
+
+		private void UpdatePostStatus()
+		{
+			_lbPostStatus.AttributedText = UIHelper.CreateAttributedString(_status, _status == AppConstants.GivingStatus ? ColorHelper.Green : ColorHelper.DarkRed, false);
+		}
+
 		#endregion
 	}
 }

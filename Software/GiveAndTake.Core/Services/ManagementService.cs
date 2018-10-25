@@ -246,6 +246,25 @@ namespace GiveAndTake.Core.Services
 			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
+	    public async Task<bool> CreateRequest(Request request, string token)
+	    {	    
+		    var requestInformationInString = JsonHelper.Serialize(request);
+		    var content = new StringContent(requestInformationInString, Encoding.UTF8, "application/json");
+		    var response = await _apiHelper.Post(AppConstants.CreateRequest, content, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+			return JsonHelper.Deserialize<bool>(response.RawContent);
+		}
+
 		public async Task<User> UpdateCurrentUserProfile(User user)
         {
 			var userInformationInString = JsonHelper.Serialize(user);
@@ -286,34 +305,5 @@ namespace GiveAndTake.Core.Services
 			new SortFilter {FilterName = "Mới nhất (Mặc định)", FilterTag = "desc"},
 			new SortFilter {FilterName = "Cũ nhất", FilterTag = "asc"}
 	    };
-
-	    public bool CreateRequest(Request request, string token)
-	    {
-		    return Task.Run(async () =>
-		    {
-			    var requestInformationInString = JsonHelper.Serialize(request);
-			    var content = new StringContent(requestInformationInString, Encoding.UTF8, "application/json");
-			    var response = await _apiHelper.Post(AppConstants.CreateRequest, content, token);
-
-			    return response != null && response.NetworkStatus == NetworkStatus.Success;
-
-		    }).Result;
-	    }
-
-		//public void ReportPost(string postId);
-
-		//public void GetRequestOfPost(string postId);
-
-		//public void GetRequestOfUser(string userId);
-
-		//public void GetNotification(string userId);
-
-		//public void GetCommentList(string postId);
-
-		//public void Comment(string postId);
-
-		//public void EditComment(string commentId);
-
-		//public void DeleteComment(string commentId;
-	}
+    }
 }
