@@ -196,6 +196,8 @@ namespace GiveAndTake.iOS.Helpers
 			PostDetailImageIndexWidth = 50 * Rate;
 			PostImageMarginObject = 40 * Rate;
 			PopupRequestTitleTextSize = 20 * Rate;
+			//Review ThanhVo too much combination of size here. Try to make the view with constraint. Height of parent can be decided by height of childs.
+			//If you do like this if someone add new view or change the margin in the view, that dimention will not correct anymore
 			PopupRequestGiverInformationViewWidth = PopupContentWidth - 2 * PopupRequestSmallMargin;
 			PopupRequestGiverInformationViewHeight = 2 * PopupRequestSmallMargin + PopupRequestGiverAvartarSize;
 			PopupRequestGiverAvartarSize = 30 * Rate;

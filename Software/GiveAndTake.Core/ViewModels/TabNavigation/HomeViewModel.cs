@@ -1,16 +1,18 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
+using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
-	public class HomeViewModel : BaseViewModel
+    public class HomeViewModel : BaseViewModel
 	{
 		#region Properties
 
@@ -67,7 +69,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 				if (string.IsNullOrEmpty(value))
 				{
-					UpdatePostViewModels();
+					Task.Run(UpdatePostViewModels);
 				}
 			}
 		}
@@ -86,8 +88,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private string _currentQueryString;
 		private readonly IDataModel _dataModel;
 		private MvxObservableCollection<PostItemViewModel> _postViewModels;
-
+		private Category _selectedCategory;
+		private ProvinceCity _selectedProvinceCity;
+		private SortFilter _selectedSortFilter;
 		#endregion
+
 
 		public HomeViewModel(IDataModel dataModel)
 		{
@@ -100,15 +105,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.Categories = _dataModel.Categories ?? ManagementService.GetCategories();
-				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? ManagementService.GetProvinceCities();
+				_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
+				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
 				_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
-				_dataModel.SelectedCategory = _dataModel.SelectedCategory ?? _dataModel.Categories.First();
-				_dataModel.SelectedProvinceCity = _dataModel.SelectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
-				_dataModel.SelectedSortFilter = _dataModel.SelectedSortFilter ?? _dataModel.SortFilters.First();
-				UpdatePostViewModels();
+				_selectedCategory = _selectedCategory ?? _dataModel.Categories.First();
+				_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
+				_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();
+				await UpdatePostViewModels();
 			}
-			catch (Exception)
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
@@ -120,37 +125,33 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private void InitCommand()
 		{
-			ShowCategoriesCommand = new MvxCommand(ShowViewResult<PopupCategoriesViewModel>);
-			ShowShortPostCommand = new MvxCommand(ShowViewResult<PopupShortFilterViewModel>);
-			ShowFilterCommand = new MvxCommand(ShowViewResult<PopupLocationFilterViewModel>);
+			ShowCategoriesCommand = new MvxCommand(ShowCategoriesPopup);
+			ShowShortPostCommand = new MvxCommand(ShowSortFiltersPopup);
+			ShowFilterCommand = new MvxCommand(ShowLocationFiltersPopup);
 			CreatePostCommand = new MvxCommand(ShowNewPostView);
-			SearchCommand = new MvxCommand(() => Task.Run(() => UpdatePostViewModels()));
+			SearchCommand = new MvxCommand(() => Task.Run(UpdatePostViewModels));
 			LoadMoreCommand = new MvxCommand(OnLoadMore);
 			RefreshCommand = new MvxCommand(OnRefresh);
 		}
 
-		private async void UpdatePostViewModels()
+		private async Task UpdatePostViewModels()
 		{
 			try
 			{
-				var t = DateTimeOffset.Now;
-
-				_dataModel.ApiPostsResponse = ManagementService.GetPostList(GetFilterParams());
+				_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams());
 				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 				if (PostViewModels.Any())
 				{
-					PostViewModels.Last().IsLastViewInList = true;
+					PostViewModels.Last().IsSeparatorLineShown = false;
 				}
 				IsSearchResultNull = PostViewModels.Any();
-
-				Console.WriteLine($"UpdatePostViewModels lasted {(DateTimeOffset.Now - t).Milliseconds}");
 			}
-			catch (Exception )
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
 				{
-					UpdatePostViewModels();
+					await UpdatePostViewModels();
 				}
 			}
 		}
@@ -159,15 +160,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
+				_dataModel.ApiPostsResponse = ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}").Result;
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
-					PostViewModels.Last().IsLastViewInList = false;
+					PostViewModels.Last().IsSeparatorLineShown = true;
 					PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
-					PostViewModels.Last().IsLastViewInList = true;
+					PostViewModels.Last().IsSeparatorLineShown = false;
 				}
+			
 			}
-			catch (Exception)
+			catch (AggregateException ex) when (ex.InnerException is AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
@@ -177,12 +179,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 
-		private void OnRefresh()
+		private async void OnRefresh()
 		{
 			IsRefreshing = true;
-			Task.Run(() => UpdatePostViewModels())
-				.ContinueWith(task => Task.Delay(1000))
-				.ContinueWith(task => { IsRefreshing = false; });
+			await UpdatePostViewModels();
+			await UpdateCategories();
+			IsRefreshing = false;
 		}
 
 		private PostItemViewModel GeneratePostViewModels(Post post)
@@ -190,38 +192,83 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
 			return new PostItemViewModel(post);
 		}
-
-		private async void ShowViewResult<T>() where T : BaseViewModelResult<bool>
+		
+		private async void ShowCategoriesPopup()
 		{
-			var result = await NavigationService.Navigate<T, bool>();
-			if (!result) return;
-			await Task.Run(() =>
+			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
-				UpdatePostViewModels();
-				IsCategoryFilterActivated = _dataModel.SelectedCategory != _dataModel.Categories.First();
-				IsLocationFilterActivated = _dataModel.SelectedProvinceCity.ProvinceCityName != AppConstants.DefaultLocationFilter;
-				IsSortFilterActivated = _dataModel.SelectedSortFilter.FilterTag != _dataModel.SortFilters.First().FilterTag;
+				Title = AppConstants.PopupCategoriesTitle,
+				Items = _dataModel.Categories.Select(c => c.CategoryName).ToList(),
+				SelectedItem = _selectedCategory.CategoryName
 			});
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			_selectedCategory = _dataModel.Categories.First(c => c.CategoryName == result);
+			IsCategoryFilterActivated = _selectedCategory != _dataModel.Categories.First();
+			await UpdatePostViewModels();
+		}
+
+		private async void ShowSortFiltersPopup()
+		{
+			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
+			{
+				Title = AppConstants.PopupSortFiltersTitle,
+				Items = _dataModel.SortFilters.Select(s => s.FilterName).ToList(),
+				SelectedItem = _selectedSortFilter.FilterName
+			});
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			_selectedSortFilter = _dataModel.SortFilters.First(s => s.FilterName == result);
+			IsSortFilterActivated = _selectedSortFilter.FilterTag != _dataModel.SortFilters.First().FilterTag;
+			await UpdatePostViewModels();
+		}
+
+		private async void ShowLocationFiltersPopup()
+		{
+			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
+			{
+				Title = AppConstants.PopupLocationFiltersTitle,
+				Items = _dataModel.ProvinceCities.Select(c => c.ProvinceCityName).ToList(),
+				SelectedItem = _selectedProvinceCity.ProvinceCityName
+			});
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			_selectedProvinceCity = _dataModel.ProvinceCities.First(c => c.ProvinceCityName == result);
+			IsLocationFilterActivated = _selectedProvinceCity.ProvinceCityName != AppConstants.DefaultLocationFilter;
+			await UpdatePostViewModels();
 		}
 
 		private async void ShowNewPostView()
 		{
-			var categoryFilter = _dataModel.SelectedCategory;
-			var locationFilter = _dataModel.SelectedProvinceCity;
 			_dataModel.Categories.RemoveAt(0);
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
 
-			await Task.Run(() =>
+			await UpdateCategories();
+			if (result)
 			{
-				_dataModel.Categories = ManagementService.GetCategories();
-				_dataModel.SelectedCategory = categoryFilter;
-				_dataModel.SelectedProvinceCity = locationFilter;
-				if (result)
+				await UpdatePostViewModels();
+			}
+
+		}
+
+		private async Task UpdateCategories()
+		{
+			try
+			{
+				_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
+			}
+			catch (AppException.ApiException)
+			{
+				var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				if (popupResult == RequestStatus.Submitted)
 				{
-					UpdatePostViewModels();
+					await UpdateCategories();
 				}
-			});
+			}
 		}
 
 		private string GetFilterParams()
@@ -233,19 +280,19 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				parameters.Add($"keyword={CurrentQueryString}");
 			}
 
-			if (_dataModel.SelectedSortFilter != null)
+			if (_selectedSortFilter != null)
 			{
-				parameters.Add($"order={_dataModel.SelectedSortFilter.FilterTag}");
+				parameters.Add($"order={_selectedSortFilter.FilterTag}");
 			}
 
-			if (_dataModel.SelectedCategory?.Id != _dataModel.Categories.First().Id)
+			if (_selectedCategory?.Id != _dataModel.Categories.First().Id)
 			{
-				parameters.Add($"categoryId={_dataModel.SelectedCategory?.Id}");
+				parameters.Add($"categoryId={_selectedCategory?.Id}");
 			}
 
-			if (_dataModel.SelectedProvinceCity != null)
+			if (_selectedProvinceCity != null)
 			{
-				parameters.Add($"provinceCityId={_dataModel.SelectedProvinceCity.Id}");
+				parameters.Add($"provinceCityId={_selectedProvinceCity.Id}");
 			}
 
 			return string.Join("&", parameters);

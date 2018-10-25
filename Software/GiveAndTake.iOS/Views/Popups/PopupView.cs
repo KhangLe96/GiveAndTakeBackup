@@ -22,6 +22,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			OverlayView = UIHelper.CreateView(0, 0, UIColor.Clear);
 
 			View.Add(OverlayView);
+
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(OverlayView, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0),
@@ -32,7 +33,15 @@ namespace GiveAndTake.iOS.Views.Popups
 
 			ContentView = UIHelper.CreateView(0, 0, UIColor.White);
 			ContentView.AddGestureRecognizer(new UITapGestureRecognizer { CancelsTouchesInView = true });
+
 			View.Add(ContentView);
+
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(ContentView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(ContentView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, 0),
+				NSLayoutConstraint.Create(ContentView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, 0)
+			});
 
 			var swipeGesture = new UISwipeGestureRecognizer(() => CloseCommand?.Execute(null))
 			{
@@ -61,25 +70,24 @@ namespace GiveAndTake.iOS.Views.Popups
 
 		public override void ViewWillAppear(bool animated)
 		{
-			base.ViewWillAppear(animated);
 			UIView.Animate(1, 0, UIViewAnimationOptions.TransitionCrossDissolve,
 				() =>
 				{
 					OverlayView.BackgroundColor = UIColor.Black.ColorWithAlpha(0.7f);
 				},
 				() => { });
+			base.ViewWillAppear(animated);
 		}
 
 		public override void ViewWillDisappear(bool animated)
 		{
-			base.ViewWillDisappear(animated);
-
 			UIView.Animate(0.1, 0, UIViewAnimationOptions.TransitionCrossDissolve,
 				() =>
 				{
 					OverlayView.BackgroundColor = UIColor.Clear;
 				},
 				() => { });
+			base.ViewWillDisappear(animated);
 		}
 	}
 }

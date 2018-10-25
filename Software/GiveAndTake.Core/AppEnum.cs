@@ -23,9 +23,22 @@
 		Exception
 	}
 
+	public enum PopupListType
+	{
+		FilterType,
+		MenuType
+	}
+
 	public enum RequestStatus
 	{
 		Submitted,
+		Cancelled
+	}
+
+	public enum PopupRequestDetailResult
+	{
+		Accepted,
+		Rejected,
 		Cancelled
 	}
 }

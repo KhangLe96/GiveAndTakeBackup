@@ -132,9 +132,10 @@
 
 
 			</LinearLayout>
+				
 
 			<TextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/tvPostTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_short"
@@ -145,7 +146,7 @@
                 android:minLines="2"
                 android:singleLine="false"
                 android:textSize="@dimen/post_description_text_size"
-                local:MvxBind="Text Description; Click ShowPostDetailCommand" />
+                local:MvxBind="Text PostTitle; Click ShowPostDetailCommand" />
 
 			<LinearLayout
                 android:id="@+id/linearlayout"
@@ -169,7 +170,8 @@
                         android:layout_height="@dimen/button_request_height"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/request_off" />
+                        android:src="@drawable/request_off" 
+						local:MvxBind="Click ShowRequestListCommand" />
 
 					<TextView
                         android:id="@+id/tvRequestCount"
@@ -253,5 +255,5 @@
         android:layout_marginLeft="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"
         android:background="@color/post_line_color"
-        local:MvxBind="Visibility Visibility(!IsLastViewInList)" />
+		local:MvxBind="Visibility Visibility(IsSeparatorLineShown)" />
 </LinearLayout>

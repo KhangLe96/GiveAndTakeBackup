@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:local="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center">
+	<ImageView
+		android:layout_width="@dimen/popup_line_width"
+		android:layout_height="@dimen/popup_line_height"
+		android:src="@drawable/popup_line"
+		android:layout_marginTop="@dimen/margin_normal"
+		android:layout_marginBottom="@dimen/margin_short"/>
+
+	<giveandtake.droid.controls.CustomRecyclerView
+		android:id="@+id/rvItems"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="@dimen/margin_short"
+		local:MvxBind="ItemsSource PopupItemViewModels"
+		local:MvxItemTemplate="@layout/popupitemtemplate" />
+
+</LinearLayout>

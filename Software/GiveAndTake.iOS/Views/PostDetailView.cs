@@ -76,6 +76,7 @@ namespace GiveAndTake.iOS.Views
 		private UIView _imageView;
 		private UIView _pageIndexView;
 		private List<Image> _postImages;
+		private UIView _extensionView;
 
 		protected override void InitView()
 		{
@@ -104,7 +105,7 @@ namespace GiveAndTake.iOS.Views
 				.To(vm => vm.Status)
 				.WithConversion("StringToAttributedString", _lbPostStatus);
 
-			bindingSet.Bind(_btnExtension.Tap())
+			bindingSet.Bind(_extensionView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowMenuPopupCommand);
 
@@ -127,6 +128,8 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_backNavigationButton)
 				.For("Visibility")
 				.To(vm => vm.CanNavigateLeft)
+				//Review ThanhVo Instead of using converter, you can define value which map with Visibility directly or try do like this .To(vm => !vm.CanNavigateLeft)
+				//Check all places which use this converter
 				.WithConversion("InvertBool");
 
 			bindingSet.Bind(_nextNavigationButton)
@@ -237,7 +240,7 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_lbPostAddress, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgLocation,
 					NSLayoutAttribute.Right, 1, DimensionHelper.MarginShort)
 			});
-	
+
 			_btnExtension = UIHelper.CreateImageButton(DimensionHelper.ExtensionButtonHeight,
 				DimensionHelper.ExtensionButtonWidth, ImageHelper.Extension);
 			View.AddSubview(_btnExtension);
@@ -257,6 +260,20 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
 				NSLayoutConstraint.Create(_lbPostStatus, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnExtension,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.DefaultMargin)
+			});
+
+			_extensionView = UIHelper.CreateView(0, 0);
+			View.AddSubview(_extensionView);
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_extensionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_extensionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Right, 1, 0),
+				NSLayoutConstraint.Create(_extensionView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _btnCategory,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_extensionView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _lbPostStatus,
+					NSLayoutAttribute.Right, 1, 0)
 			});
 		}
 

@@ -4,6 +4,7 @@ using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,15 +50,15 @@ namespace GiveAndTake.Core.ViewModels
             }
         }
 
-        private string _description;
+        private string _postTitle;
 
-        public string Description
+        public string PostTitle
         {
-            get => _description;
+            get => _postTitle;
             set
             {
-                _description = value;
-                RaisePropertyChanged(() => Description);
+                _postTitle = value;
+                RaisePropertyChanged(() => PostTitle);
             }
         }
 
@@ -145,12 +146,12 @@ namespace GiveAndTake.Core.ViewModels
             }
         }
 
-	    private bool _isLastViewInList;
+	    private bool _isSeparatorLineShown;
 
-	    public bool IsLastViewInList
+	    public bool IsSeparatorLineShown
 	    {
-		    get => _isLastViewInList;
-		    set => SetProperty(ref _isLastViewInList, value);
+		    get => _isSeparatorLineShown;
+		    set => SetProperty(ref _isSeparatorLineShown, value);
 	    }
 
         private string _backgroundColor;
@@ -171,11 +172,21 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public double DownsampleWidth => 200d;
 
+	    private static readonly List<string> MyPostOptions = new List<string>
+	    {
+		    AppConstants.ChangePostStatus,
+		    AppConstants.ModifyPost,
+		    AppConstants.ViewPostRequests,
+		    AppConstants.DeletePost
+	    };
+
+	    private static readonly List<string> OtherPostOptions = new List<string> { AppConstants.ReportPost };
+
 		#endregion
 
 		#region Constructor
 
-		public PostItemViewModel(Post post, bool isLast = false) 
+		public PostItemViewModel(Post post) 
 		{
 			_post = post;
 			Init();
@@ -189,13 +200,13 @@ namespace GiveAndTake.Core.ViewModels
 		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
 		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
 		    Address = _post.ProvinceCity.ProvinceCityName;
-		    Description = _post.Description;
+		    PostTitle = _post.Title;
 		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;
 		    CommentCount = _post.CommentCount;
-		    IsLastViewInList = false;
+		    IsSeparatorLineShown = true;
 	        BackgroundColor = _post.Category.BackgroundColor;
 	    }
 
@@ -204,23 +215,47 @@ namespace GiveAndTake.Core.ViewModels
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
             ShowPostDetailCommand = new MvxAsyncCommand(ShowPostDetailView);
 			ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
+            ShowRequestListCommand = new MvxAsyncCommand(ShowRequestListView);
         }
 
-	    private async Task ShowMenuView()
+        private async Task ShowRequestListView()
+        {
+            await NavigationService.Navigate<RequestsViewModel>();
+        }
+
+        private async Task ShowMenuView()
 	    {
-		    if (_post.IsMyPost)
-		    {
-			    await NavigationService.Navigate<PopupPostOptionViewModel>();
-		    }
-		    else
-		    {
-				await NavigationService.Navigate<PopupReportViewModel>();
+			var postOptions = _post.IsMyPost ? AppConstants.MyPostOptions : AppConstants.OtherPostOptions;
+
+			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			switch (result)
+			{
+				case AppConstants.ChangePostStatus:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.ModifyPost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.ViewPostRequests:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.DeletePost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+				case AppConstants.ReportPost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
 			}
-	    }
+		}
 
 	    private async Task ShowPostDetailView()
 	    {
-
 		    await NavigationService.Navigate<PostDetailViewModel, Post>(_post);
 	    }
 
@@ -232,21 +267,7 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public ICommand ShowPostDetailCommand { get; set; }
         public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
-
-        #endregion
-
-        #region Utils
-
-        private int ConvertHexToDec(string hex)
-        {
-            string color = hex.TrimStart('#');
-            string R = color.Substring(2, 2);
-            string G = color.Substring(4, 2);
-            string B = color.Substring(6, 2);
-
-            int decValue = int.Parse(B + G + R, System.Globalization.NumberStyles.HexNumber);
-            return decValue;
-        }
+        public ICommand ShowRequestListCommand { get; set; }
 
         #endregion
     }

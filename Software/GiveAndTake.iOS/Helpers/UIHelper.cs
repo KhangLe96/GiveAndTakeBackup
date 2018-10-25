@@ -9,6 +9,15 @@ namespace GiveAndTake.iOS.Helpers
 {
 	public static class UIHelper
 	{
+		public static UIImage ConvertViewToImage(UIView view)
+		{
+			UIGraphics.BeginImageContext(view.Bounds.Size);
+			view.Layer.RenderInContext(UIGraphics.GetCurrentContext());
+			var image = UIGraphics.GetImageFromCurrentImageContext();
+			UIGraphics.EndImageContext();
+			return image;
+		}
+
 		public static PopupItemLabel CreateLabel(UIColor textColor, nfloat fontSize, FontType fontType = FontType.Regular)
 		{
 			var label = new PopupItemLabel

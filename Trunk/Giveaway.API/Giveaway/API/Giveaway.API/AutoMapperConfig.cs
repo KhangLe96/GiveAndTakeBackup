@@ -28,6 +28,7 @@ namespace Giveaway.API
 
             cfg.CreateMap<Data.Models.Database.User, Giveaway.API.Shared.Models.DTO.User>();
             cfg.CreateMap<Data.Models.Database.User, UserPostResponse>();
+            cfg.CreateMap<Data.Models.Database.User, UserRequestResponse>();
             cfg.CreateMap<Data.Models.Database.User, UserReportResponse>()
                 .ForMember(
                     destination => destination.Status,

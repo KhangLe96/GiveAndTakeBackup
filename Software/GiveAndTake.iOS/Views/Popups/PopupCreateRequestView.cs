@@ -55,6 +55,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				.For(v => v.Placeholder)
 				.To(vm => vm.PopupInputInformationPlaceHolder);
 
+			//Review ThanhVo I wonder how the RequestDescription can have string value when user type in the textview if no binding here
 			if (string.IsNullOrEmpty(_requestDescriptionTextView.Text))
 			{
 				bindingSet.Bind(_requestDescriptionTextView)
@@ -77,11 +78,14 @@ namespace GiveAndTake.iOS.Views.Popups
 			bindingSet.Bind(_btnSubmit)
 				.For("Enabled")
 				.To(vm => vm.IsSubmitBtnEnabled)
+				//Review ThanhVo It quite strange to use RevertBool converter here because the value is not changed ot convert to another value
 				.WithConversion("RevertBool");
 
 			bindingSet.Bind(_btnSubmit)
 				.For(v => v.BackgroundColor)
 				.To(vm => vm.IsSubmitBtnEnabled)
+				//Review ThanhVo Don't abuse converter. Instead of using converter, you can create custom control which handle background of button base on Enable status
+				//Or just only one control which has behaviour like this, you can handle it in that screen
 				.WithConversion("BoolToColor");
 
 			bindingSet.Bind(_btnCancel.Tap())

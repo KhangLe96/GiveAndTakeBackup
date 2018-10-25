@@ -1,8 +1,8 @@
-﻿using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
-using System;
 using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels
@@ -34,11 +34,11 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			try
 			{
-				_dataModel.LoginResponse = ManagementService.LoginFacebook(baseUser);
+				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}
-			catch (Exception)
+			catch (AppException.ApiException)
 			{
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)

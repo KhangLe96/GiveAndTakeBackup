@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Giveaway.Data.EF.Extensions;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -20,16 +21,18 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     public class RequestService : IRequestService
     {
         private readonly DbService.IRequestService _requestService;
+        private readonly DbService.IPostService _postService;
 
-        public RequestService(DbService.IRequestService requestService)
+        public RequestService(DbService.IRequestService requestService, DbService.IPostService postService)
         {
             _requestService = requestService;
+            _postService = postService;
         }
 
-        public PagingQueryResponse<RequestPostResponse> GetRequesttForPaging(IDictionary<string, string> @params)
+        public PagingQueryResponse<RequestPostResponse> GetRequestForPaging(string postId, IDictionary<string, string> @params)
         {
             var request = @params.ToObject<PagingQueryRequestPostRequest>();
-            var reports = GetPagedRequests(request, out var total);
+            var reports = GetPagedRequests(postId, request, out var total);
             return new PagingQueryResponse<RequestPostResponse>
             {
                 Data = reports,
@@ -48,11 +51,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             request.Id = Guid.NewGuid();
 
             _requestService.Create(request, out var isPostSaved);
-            if(isPostSaved == false)
+            if (isPostSaved == false)
             {
                 throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
             }
-            
+
             var requestDb = _requestService.Include(x => x.Post).Include(x => x.Response).FirstAsync(x => x.Id == request.Id).Result;
             var postResponse = Mapper.Map<RequestPostResponse>(requestDb);
 
@@ -85,6 +88,28 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return updated;
         }
 
+        public bool DeleteCurrentUserRequest(Guid postId, Guid userId)
+        {
+            var post = _postService.Include(x => x.Requests).Find(postId);
+            foreach (var request in post.Requests)
+            {
+                if (request.UserId == userId)
+                {
+                    return Delete(request.Id);
+                }
+            }
+
+            return false;
+        }
+
+        public object CheckUserRequest(Guid postId, Guid userId)
+        {
+            var requests = _requestService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == postId && x.UserId == userId);
+            if (requests.Any()) return new JsonObject("{'requested': 'true'}").Object ;
+
+            return new JsonObject("{'requested': 'false'}").Object;
+        }
+
         #region Utils
 
         private void ChangeStatus(StatusRequest statusRequest, Request request)
@@ -105,12 +130,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 throw new BadRequestException(CommonConstant.Error.BadRequest);
         }
 
-        private List<RequestPostResponse> GetPagedRequests(PagingQueryRequestPostRequest request, out int total)
+        private List<RequestPostResponse> GetPagedRequests(string postId, PagingQueryRequestPostRequest request, out int total)
         {
-            var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Where(x => x.EntityStatus != EntityStatus.Deleted);
+            var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Include(x => x.User).Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (requests == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
+            }
+
+            if (!string.IsNullOrEmpty(postId))
+            {
+                try
+                {
+                    Guid id = Guid.Parse(postId);
+                    requests = requests.Where(x => x.PostId == id);
+                }
+                catch
+                {
+                    throw new BadRequestException(CommonConstant.Error.NotFound);
+                }
             }
 
             if (!string.IsNullOrEmpty(request.RequestStatus.ToString()))
@@ -118,6 +156,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 requests = requests.Where(x => x.RequestStatus == request.RequestStatus);
             }
 
+            requests = requests.OrderByDescending(x => x.CreatedTime);
             total = requests.Count();
 
             return requests

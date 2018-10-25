@@ -78,4 +78,6 @@
 	<dimen name="popup_request_Title_Text_Size">20dp</dimen>
 	<dimen name="popup_request_Default_Margin">10dp</dimen>
 	<dimen name="popup_request_Small_Margin">5dp</dimen>
+	<dimen name="btn_normal_size">30dp</dimen>
+	<dimen name="post_small_size">45dp</dimen>
 </resources>
