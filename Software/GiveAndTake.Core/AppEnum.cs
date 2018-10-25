@@ -34,4 +34,11 @@
 		Submitted,
 		Cancelled
 	}
+
+	public enum PopupRequestDetailResult
+	{
+		Accepted,
+		Rejected,
+		Cancelled
+	}
 }

@@ -25,6 +25,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public IMvxCommand SearchCommand { get; set; }
 	    public IMvxCommand LoadMoreCommand { get; set; }
 	    protected override int LayoutId => Resource.Layout.HomeView;
+
 	    private SearchView _searchView;
 	    private ImageView _clearButton;
 
@@ -53,16 +54,16 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    base.CreateBinding();
 		    var bindingSet = this.CreateBindingSet<HomeView, HomeViewModel>();
 
-		    bindingSet.Bind(this)
-			    .For(v => v.SearchCommand)
-			    .To(vm => vm.SearchCommand);
+            bindingSet.Bind(this)
+                .For(v => v.SearchCommand)
+                .To(vm => vm.SearchCommand);
 
-		    bindingSet.Bind(this)
-			    .For(v => v.LoadMoreCommand)
-			    .To(vm => vm.LoadMoreCommand);
+            bindingSet.Bind(this)
+                .For(v => v.LoadMoreCommand)
+                .To(vm => vm.LoadMoreCommand);
 
-			bindingSet.Apply();
-	    }
+            bindingSet.Apply();
+        }
 
 	    public override void OnPause()
 	    {

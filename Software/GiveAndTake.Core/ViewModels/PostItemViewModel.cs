@@ -4,6 +4,7 @@ using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -214,9 +215,15 @@ namespace GiveAndTake.Core.ViewModels
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
             ShowPostDetailCommand = new MvxAsyncCommand(ShowPostDetailView);
 			ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
+            ShowRequestListCommand = new MvxAsyncCommand(ShowRequestListView);
         }
 
-	    private async Task ShowMenuView()
+        private async Task ShowRequestListView()
+        {
+            await NavigationService.Navigate<RequestsViewModel>();
+        }
+
+        private async Task ShowMenuView()
 	    {
 			var postOptions = _post.IsMyPost ? AppConstants.MyPostOptions : AppConstants.OtherPostOptions;
 
@@ -260,6 +267,7 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public ICommand ShowPostDetailCommand { get; set; }
         public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
+        public ICommand ShowRequestListCommand { get; set; }
 
         #endregion
     }

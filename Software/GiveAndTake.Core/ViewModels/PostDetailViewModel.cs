@@ -185,6 +185,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private bool _canNavigateRight;
 	    private bool _isMyPost;
 	    private List<Image> _postImages;
+	    private Post _post;
 
 	    #endregion
 
@@ -238,11 +239,16 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
 			}
+			else
+			{
+				NavigationService.Navigate<PopupCreateRequestViewModel, Post>(_post);
+			}
 		}
 
 
 		public override void Prepare(Post post)
 		{
+			_post = post;
 			CategoryName = post.Category.CategoryName;
 			AvatarUrl = post.User.AvatarUrl;
 			UserName = post.User.FullName ?? AppConstants.DefaultUserName;

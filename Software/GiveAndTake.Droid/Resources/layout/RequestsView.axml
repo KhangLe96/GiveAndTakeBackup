@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:background="@color/white">
+	<LinearLayout
+	    android:id="@+id/lnRequestNumber"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:orientation="horizontal"
+		android:background="@color/colorPrimary">
+		<TextView
+			android:textColor="@color/white"
+			android:text="Danh sách yêu cầu"
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:textSize="17dp"
+			android:layout_marginLeft="18dp"
+			android:gravity="center_vertical"
+			local:MvxBind="Text Title"
+			/>
+		<TextView
+	        android:id="@+id/btnRequestNumber"
+	        android:layout_width="wrap_content"
+	        android:layout_height="24dp"
+	        android:layout_marginLeft="10dp"
+		    android:paddingLeft="10dp"
+		    android:paddingRight="10dp"
+	        android:background="@drawable/request_number_bg"
+	        android:textColor="@color/colorPrimary"
+			android:textSize="15dp"
+			local:MvxBind="Text NumberOfRequest"
+		  />
+	</LinearLayout>
+
+    <MvxSwipeRefreshLayout
+        android:id="@+id/refreshRequest"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lnRequestNumber"
+        android:layout_marginLeft="@dimen/margin_short"
+        android:layout_marginRight="@dimen/margin_short"
+        local:MvxBind="Refreshing IsRefreshing; RefreshCommand RefreshCommand"
+        >
+
+        <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+            android:id="@+id/rvRequests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            local:MvxBind="ItemsSource RequestItemViewModels"
+            local:MvxItemTemplate="@layout/requesttemplate" />
+
+    </MvxSwipeRefreshLayout>
+</RelativeLayout>
