@@ -43,7 +43,7 @@ namespace GiveAndTake.Core.Services
 			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
-		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)
+	    public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)
         {
 
 			var url = string.IsNullOrEmpty(filterParams)
@@ -315,5 +315,22 @@ namespace GiveAndTake.Core.Services
 		//public void EditComment(string commentId);
 
 		//public void DeleteComment(string commentId;
+
+	    public async Task CreateResponse(RequestResponse requestResponse, string token)
+	    {
+		    var responseInformationInString = JsonHelper.Serialize(requestResponse);
+		    var content = new StringContent(responseInformationInString, Encoding.UTF8, "application/json");
+		    var response = await _apiHelper.Post(AppConstants.CreateResponse, content, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+		}
 	}
 }

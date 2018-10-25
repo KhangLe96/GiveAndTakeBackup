@@ -23,5 +23,6 @@ namespace GiveAndTake.Core.Services
         Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams);
 		Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
 
+	    Task CreateResponse(RequestResponse requestResponse, string token);
     }
 }
