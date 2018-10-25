@@ -35,7 +35,8 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		public ICommand SubmitCommand { get; set; }
+		private IMvxCommand _submitCommand;
+		public IMvxCommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxAsyncCommand(OnCreatePost));
 
 		private IMvxAsyncCommand _showPhotoCollectionCommand;
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
