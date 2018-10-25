@@ -17,5 +17,5 @@
 		android:text="loading"
 		android:layout_marginTop="8dp"
 		android:textColor="@color/white"
-		local:MvxBind="Text TvLoadingIndicator"/>
+		local:MvxBind="Text LoadingIndicatorTitle"/>
 </LinearLayout>

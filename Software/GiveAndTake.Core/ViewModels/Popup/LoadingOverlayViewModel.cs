@@ -9,18 +9,16 @@ namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class LoadingOverlayViewModel : BaseViewModel<string>
 	{
-		//Review ThanhVo Don't name variable which releate to View concepts such as button, label, textview...
-		private string _tvLoadingIndicator;
-
-		public string TvLoadingIndicator
+		private string _loadingIndicatorTitle;
+		public string LoadingIndicatorTitle
 		{
-			get => _tvLoadingIndicator;
-			set => SetProperty(ref _tvLoadingIndicator, value);
+			get => _loadingIndicatorTitle;
+			set => SetProperty(ref _loadingIndicatorTitle, value);
 		}
 		
 		public override void Prepare(string parameter)
 		{
-			TvLoadingIndicator = parameter;
+			LoadingIndicatorTitle = parameter;
 		}
 
 	}
