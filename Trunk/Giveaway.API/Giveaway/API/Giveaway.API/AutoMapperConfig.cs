@@ -4,6 +4,7 @@ using Giveaway.API.Shared.Models.DTO;
 using Giveaway.API.Shared.Requests.Image;
 using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Requests.Request;
+using Giveaway.API.Shared.Requests.Response;
 using Giveaway.API.Shared.Requests.Warning;
 using Giveaway.API.Shared.Responses.Category;
 using Giveaway.API.Shared.Responses.Image;
@@ -118,11 +119,12 @@ namespace Giveaway.API
                 );
             cfg.CreateMap<RequestPostRequest, Request>();
 
-            #endregion
+			#endregion
 
-            #region Request
+			#region Response
 
-            cfg.CreateMap<Response, ResponseRequestResponse>();
+			cfg.CreateMap<ResponseRequest, Response>();
+			cfg.CreateMap<Response, ResponseRequestResponse>();
 
             #endregion
 

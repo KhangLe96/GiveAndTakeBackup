@@ -10,7 +10,7 @@ namespace Giveaway.API.Shared.Services.APIs
     public interface IRequestService
     {
         PagingQueryResponse<RequestPostResponse> GetRequestForPaging(string postId, IDictionary<string, string> @params);
-        RequestPostResponse Create(RequestPostRequest request);
+        RequestPostResponse Create(RequestPostRequest requestPost);
         bool UpdateStatus(Guid requestId, StatusRequest request);
         bool Delete(Guid requestId);
         object CheckUserRequest(Guid postId, Guid userId);

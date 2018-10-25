@@ -45,21 +45,21 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public RequestPostResponse Create(RequestPostRequest requestRepost)
+        public RequestPostResponse Create(RequestPostRequest requestPost)
         {
-            var request = Mapper.Map<Request>(requestRepost);
-            request.Id = Guid.NewGuid();
+			var request = Mapper.Map<Request>(requestPost);
+			request.Id = Guid.NewGuid();
 
-            _requestService.Create(request, out var isPostSaved);
-            if (isPostSaved == false)
-            {
-                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-            }
+			_requestService.Create(request, out var isPostSaved);
+			if (isPostSaved == false)
+			{
+				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+			}
 
-            var requestDb = _requestService.Include(x => x.Post).Include(x => x.Response).FirstAsync(x => x.Id == request.Id).Result;
-            var postResponse = Mapper.Map<RequestPostResponse>(requestDb);
+			var requestDb = _requestService.Include(x => x.Post).Include(x => x.Responses).FirstAsync(x => x.Id == request.Id).Result;
+			var postResponse = Mapper.Map<RequestPostResponse>(requestDb);
 
-            return postResponse;
+			return postResponse;
         }
 
         public bool UpdateStatus(Guid requestId, StatusRequest statusRequest)
@@ -132,7 +132,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<RequestPostResponse> GetPagedRequests(string postId, PagingQueryRequestPostRequest request, out int total)
         {
-            var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Include(x => x.User).Where(x => x.EntityStatus != EntityStatus.Deleted);
+            var requests = _requestService.Include(x => x.Post).Include(x => x.Responses).Include(x => x.User).Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (requests == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
