@@ -60,6 +60,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 				Colors = new[]
 				{
+					//REVIEW : Don't need to set ColorWithAlpha(0). ColorWithAlpha(0) is UIColor.Transparent
 					UIColor.White.ColorWithAlpha(TopColorAlpha).CGColor,
 					UIColor.White.ColorWithAlpha(BottomColorAlpha).CGColor
 				}
