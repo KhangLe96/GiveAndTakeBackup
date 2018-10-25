@@ -73,6 +73,7 @@
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\Popup\LoadingOverlayView.cs" />
     <Compile Include="Views\Popup\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popup\PopupListView.cs" />
     <Compile Include="Views\Popup\PopupCreateRequestView.cs" />
@@ -632,6 +633,11 @@
   <ItemGroup>
     <AndroidResource Include="Resources\layout\RequestDetailView.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\LoadingOverlayView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

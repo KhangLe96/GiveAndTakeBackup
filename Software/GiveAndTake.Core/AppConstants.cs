@@ -60,5 +60,6 @@ namespace GiveAndTake.Core
 		public static string PopupRequestDetailTitle = "Chi tiết yêu cầu";
 		public static string ButtonRejectTitle = "Từ chối";
 		public static string ButtonAcceptTitle = "Chấp nhận";
+		public static string LoadingDataOverlayTitle= "Đang tải dữ liệu";
 	}
 }

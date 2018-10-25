@@ -118,7 +118,6 @@ namespace GiveAndTake.Core.ViewModels
 			ShowProvinceCityCommand = new MvxCommand(ShowLocationFiltersPopup);
 			BackPressedCommand = new MvxAsyncCommand(BackPressed);
 			ShowCategoriesCommand = new MvxCommand(ShowCategoriesPopup);
-			SubmitCommand = new MvxAsyncCommand(OnCreatePost);
 		}
 
 		private async Task BackPressed()

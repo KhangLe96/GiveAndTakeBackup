@@ -7,6 +7,8 @@ using MvvmCross.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Services;
+using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -119,13 +121,18 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
-				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
-				_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
-				_selectedCategory = _selectedCategory ?? _dataModel.Categories.First();
-				_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
-				_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();
-				await UpdatePostViewModels();
+				if (_dataModel.ApiPostsResponse == null)
+				{
+					await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+					_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
+					_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
+					_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
+					_selectedCategory = _selectedCategory ?? _dataModel.Categories.First();
+					_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
+					_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();				
+					await UpdatePostViewModels();
+					await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+				}				
 			}
 			catch (AppException.ApiException)
 			{
@@ -134,7 +141,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				{
 					await InitDataModels();
 				}
-			}
+			}			
 		}
 
 		private async Task UpdatePostViewModels()
@@ -274,6 +281,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				}
 			}
 		}
+
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			_dataModel.ApiPostsResponse = null;
+		}
+
 
 		private string GetFilterParams()
 		{

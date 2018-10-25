@@ -105,6 +105,8 @@ namespace GiveAndTake.Droid.Views
 
 			// REVIEW [KHOA]: unsubscribe all events
 			_choosePictureButton.Click -= ChoosePictureButton_Click;
+			//make sure the delete-confirmation is only shown in this view
+			((MasterView)Activity).BackPressedCommand = null;
 		}
 
 		// REVIEW [KHOA]: not a good name

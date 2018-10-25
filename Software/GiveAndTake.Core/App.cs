@@ -39,6 +39,7 @@ namespace GiveAndTake.Core
 			Mvx.LazyConstructAndRegisterSingleton<IDataModel, DataModel>();
 			var dataModel = new DataModel();
 			Mvx.RegisterSingleton(dataModel);
+			Mvx.RegisterSingleton<ILoadingOverlayService>(new LoadingOverlayService());
 		}
 
 		protected void RegisterServices()
