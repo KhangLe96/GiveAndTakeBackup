@@ -221,6 +221,7 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			try
 			{
+				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UploadDataOverLayTitle);
 				var managementService = Mvx.Resolve<IManagementService>();
 				var post = new CreatePost
 				{
@@ -232,6 +233,7 @@ namespace GiveAndTake.Core.ViewModels
 				};
 				await managementService.CreatePost(post, _dataModel.LoginResponse.Token);
 				await NavigationService.Close(this, true);
+				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 			}
 			catch (AppException.ApiException)
 			{
