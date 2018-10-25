@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+		local:MvxBind="Click ShowPostDetailCommand">
 
 		<RelativeLayout
             android:layout_width="@dimen/image_post_size"
@@ -22,8 +23,8 @@
                 local:MvxBind="LoadingPlaceholderImagePath 'res:default_post';
 							ErrorPlaceholderImagePath 'res:default_post';
 							Transformations PostTransformations;
-							ImageUrl PostImage;
-							Click ShowPostDetailCommand" />
+							ImageUrl PostImage" />
+
 
 			<ImageView
                 android:id="@+id/imgMultiImages"
@@ -146,7 +147,7 @@
                 android:minLines="2"
                 android:singleLine="false"
                 android:textSize="@dimen/post_description_text_size"
-                local:MvxBind="Text PostTitle; Click ShowPostDetailCommand" />
+                local:MvxBind="Text PostTitle" />
 
 			<LinearLayout
                 android:id="@+id/linearlayout"
