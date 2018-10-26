@@ -26,27 +26,30 @@ namespace GiveAndTake.Droid.Views
 		public IMvxCommand SubmitCommand { get; set; }
 		public IMvxCommand BackPressedCommand { get; set; }
 		private View _view;
-		
+
+		private const int ChoosePictureCode = 9001;
 		private ImageButton _choosePictureButton;
+		private Button _submitButton;
+		private EditText _title;
+		private EditText _postDescription;
+		private TextView _tvImageSelected;
 
 		protected override void InitView(View view)
 		{
 			_view = view;
 			InitChoosePicture();
-			InitSubmit();
 
-			var title = _view.FindViewById<EditText>(Resource.Id.Title);
-			title.FocusChange += OnEditTextFocusChange;
+			_title = _view.FindViewById<EditText>(Resource.Id.Title);
+			_title.FocusChange += OnEditTextFocusChange;
 
-			var postDescription = _view.FindViewById<EditText>(Resource.Id.PostDescription);
-			postDescription.FocusChange += OnEditTextFocusChange;
+			_postDescription = _view.FindViewById<EditText>(Resource.Id.PostDescription);
+			_postDescription.FocusChange += OnEditTextFocusChange;
 
-			var tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
-			tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
+			_tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
+			_tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
 
-			this.Activity.Window.SetSoftInputMode(SoftInput.AdjustResize);
+			Activity.Window.SetSoftInputMode(SoftInput.AdjustResize);
 
-			
 		}
 
 		private void OnEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
@@ -82,28 +85,16 @@ namespace GiveAndTake.Droid.Views
 				.To(vm => vm.ImageCommand);
 
 			bindingSet.Bind(this)
-				.For(v => v.SubmitCommand)
-				.To(vm => vm.SubmitCommand);
-			bindingSet.Bind(this)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
 			bindingSet.Apply();
 		}
 
-		private void InitSubmit()
-		{
-			Button submitButton = _view.FindViewById<Button>(Resource.Id.Submit);
-			submitButton.Click += delegate
-			{
-				SubmitCommand.Execute(null);
-			};
-		}
-
 		private void InitChoosePicture()
 		{
 			_choosePictureButton = _view.FindViewById<ImageButton>(Resource.Id.ChoosePicture);
-			_choosePictureButton.Click += ChoosePictureButton_Click;
+			_choosePictureButton.Click += ChoosePicture;
 		}
 
 		protected override void HandleActivityCommandFromFragment()
@@ -114,28 +105,26 @@ namespace GiveAndTake.Droid.Views
 		public override void OnDestroyView()
 		{
 			base.OnDestroyView();
-
-			// REVIEW [KHOA]: unsubscribe all events
-			_choosePictureButton.Click -= ChoosePictureButton_Click;
+			_choosePictureButton.Click -= ChoosePicture;
+			_title.FocusChange -= OnEditTextFocusChange;
+			_postDescription.FocusChange -= OnEditTextFocusChange;
+			_tvImageSelected.TextChanged -= OnTextViewImageSelectedTextChanged;
 		}
 
-		// REVIEW [KHOA]: not a good name
-		private void ChoosePictureButton_Click(object sender, System.EventArgs e)
+		private void ChoosePicture(object sender, System.EventArgs e)
 		{
 			Intent intent = new Intent();
-			intent.SetType("image/*");
+			intent.SetType("ảnh/*");
 			intent.PutExtra(Intent.ExtraAllowMultiple, true);
 			intent.SetAction(Intent.ActionGetContent);
-			// REVIEW [KHOA]: app has default Vietnamese language => not english words
-			// REVIEW [KHOA]: 9001 -> hard-coded
-			StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), 9001);
+			StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), ChoosePictureCode);
 		}
 
 		public override void OnActivityResult(int requestCode, int resultCode, Intent data)
 		{
 			List<byte[]> image = new List<byte[]>();
 			base.OnActivityResult(requestCode, resultCode, data);
-			if (requestCode == 9001)
+			if (requestCode == ChoosePictureCode)
 			{
 				if (data?.ClipData != null)
 				{
@@ -162,8 +151,7 @@ namespace GiveAndTake.Droid.Views
 			}
 		}
 
-		// REVIEW [KHOA]: this function is only used in this class -> private or move to helper
-		public byte[] ConvertUriToByte(Android.Net.Uri uri)
+		private byte[] ConvertUriToByte(Android.Net.Uri uri)
 		{
 			Stream stream = Activity.ContentResolver.OpenInputStream(uri);
 			byte[] byteArray;

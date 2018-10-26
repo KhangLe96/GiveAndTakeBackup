@@ -113,7 +113,7 @@
 			android:textColor="@color/colorSecondary"
 			android:layout_below="@+id/PostDescription"
 			android:fontFamily="@font/sanfranciscodisplay_light"
-			local:MvxBind="Text SelectedImage; Click ShowPhotoCollectionCommand"/>
+			local:MvxBind="Text SelectedImage; Click ShowPhotoCollectionCommand; Enabled EnableSelectedImage"/>
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -144,7 +144,7 @@
 				android:background="@drawable/submit_button_bg"
 				android:textColor="@color/white" 
 				android:fontFamily="@font/sanfranciscodisplay_light"
-				local:MvxBind="Text BtnSubmitTitle"/>
+				local:MvxBind="Text BtnSubmitTitle; Click SubmitCommand"/>
 		</LinearLayout>
 	</RelativeLayout>
 </ScrollView>

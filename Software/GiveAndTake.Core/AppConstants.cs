@@ -51,5 +51,9 @@ namespace GiveAndTake.Core
 		public static string Done = "Xong";
 		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
 		public static string SearchResultNullTitle = "Không tìm thấy kết quả nào";
+		public const string CreatePostDescriptionPlaceHolder = "Mô tả (Nhãn hiệu, kiểu dáng, màu sắc, ... )";
+		public const string CreatePostTitlePlaceHolder = "Tiêu đề (Thương hiệu, thể loại, ...)";
+		public const string CreatePostBtnSubmitTitle = "Đăng";
+		public const string CreatePostSelectedImageWarning = "Bạn hãy chọn một ảnh bất kỳ để vào xem những ảnh đã chọn";
 	}
 }
