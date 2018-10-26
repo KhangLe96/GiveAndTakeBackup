@@ -9,6 +9,6 @@ namespace GiveAndTake.Core.Services
 	public interface ILoadingOverlayService
 	{
 		Task ShowOverlay(string loadingText);
-		Task CloseOverlay();
+		Task CloseOverlay(int milliseconds = 0);
 	}
 }

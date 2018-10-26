@@ -249,7 +249,8 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    _userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
 		    IsRequested = _userRequestResponse.IsRequested;
-	    }
+		    await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+		}
 
 		private async Task ShowMyRequestList()
 		{
@@ -261,25 +262,31 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				if (IsRequested)
 				{
+					
 					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");
-					if (popupResult != RequestStatus.Submitted) return;
+					await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+					if (popupResult != RequestStatus.Submitted) return;					
 					var managementService = Mvx.Resolve<IManagementService>();
 					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
-					UpdateDataModel();
+					await UpdateDataModel();
+					
 				}
 				else
 				{
 					var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
 					if (result == RequestStatus.Submitted)
 					{
-						UpdateDataModel();
+						await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+						await UpdateDataModel();
+
 					}
 				}
 			}
 		}
 
-		public override void Prepare(Post post)
+		public override async void Prepare(Post post)
 		{
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			_postId = post.PostId;
 			CategoryName = post.Category.CategoryName;
 			AvatarUrl = post.User.AvatarUrl;
@@ -300,7 +307,7 @@ namespace GiveAndTake.Core.ViewModels
 			CheckUserRequest();
 		}
 
-	    private async void UpdateDataModel()
+	    private async Task UpdateDataModel()
 	    {
 		    var managementService = Mvx.Resolve<IManagementService>();
 		    _dataModel.CurrentPost = await managementService.GetPostDetail(_postId);

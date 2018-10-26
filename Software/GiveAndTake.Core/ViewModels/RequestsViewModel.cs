@@ -5,6 +5,8 @@ using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Services;
+using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -109,13 +111,15 @@ namespace GiveAndTake.Core.ViewModels
 
         public async Task UpdateRequestViewModels()
         {
-	        _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");
-	        NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");	       
+			NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
                 RequestItemViewModels.Last().IsLastViewInList = true;
             }
+	        await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 		}
 
 	    public override void Prepare(string postId)

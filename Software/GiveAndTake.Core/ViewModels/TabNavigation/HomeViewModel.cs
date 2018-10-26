@@ -116,7 +116,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public HomeViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			Task.Run(async () => await InitDataModels());
+			//Task.Run(async () => await InitDataModels());
+			InitDataModels();
 		}
 
 		private async Task InitDataModels() 

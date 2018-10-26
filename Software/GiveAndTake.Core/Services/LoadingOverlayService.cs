@@ -19,9 +19,10 @@ namespace GiveAndTake.Core.Services
 		{
 			await NavigationService.Navigate<LoadingOverlayViewModel, string>(loadingText);
 		}
-		public async Task CloseOverlay()
+		public async Task CloseOverlay(int milliseconds = 0)
 		{
 			await NavigationService.Close(_loadingOverlayViewModel);
+			await Task.Delay(milliseconds);
 		}
 	}
 }
