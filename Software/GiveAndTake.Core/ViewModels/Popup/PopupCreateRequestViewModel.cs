@@ -14,6 +14,9 @@ namespace GiveAndTake.Core.ViewModels.Popup
 	{
 		#region Properties
 
+		private IMvxCommand _closeCommand;
+		private ICommand _submitCommand;
+
 		private Post _post;
 		private readonly IDataModel _dataModel;
 		private string _avatarUrl;
@@ -66,7 +69,6 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		public PopupCreateRequestViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			InitCommand();
 		}
 
 		public override void Prepare(Post post)
@@ -78,16 +80,13 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			UserName = post.User.FullName ?? AppConstants.DefaultUserName;
 		}
 
-		private void InitCommand()
-		{
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, RequestStatus.Cancelled));
-			SubmitCommand = new MvxCommand(InitCreateNewRequest);
-		}
+		public IMvxCommand CloseCommand =>
+			_closeCommand ?? (_closeCommand = new MvxAsyncCommand(() => NavigationService.Close(this, RequestStatus.Cancelled)));
+		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitCreateNewRequest));
+
 
 		public async void InitCreateNewRequest()
 		{
-			// REVIEW [KHOA]: not need to resolve managementService here because the parent has it already
-			var managementService = Mvx.Resolve<IManagementService>();
 			var request = new Request()
 			{
 				PostId = _postId,
@@ -95,20 +94,15 @@ namespace GiveAndTake.Core.ViewModels.Popup
 				RequestMessage = RequestDescription,
 			};
 
-			// REVIEW [KHOA]: CreateRequest return bool -> if there is something wrong -> return false -> not submitted
-			await managementService.CreateRequest(request, _dataModel.LoginResponse.Token);
+			var result = await ManagementService.CreateRequest(request, _dataModel.LoginResponse.Token);
+			if (result)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
+			}
 			await NavigationService.Close(this, RequestStatus.Submitted);
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_requestDescription);
-
-		#endregion
-
-		// REVIEW [KHOA]: it's not method region
-		#region Methods
-		// REVIEW [KHOA]: use lazy initiation
-		public IMvxAsyncCommand CloseCommand { get; set; }
-		public ICommand SubmitCommand { get; set; }
 
 		#endregion
 	}

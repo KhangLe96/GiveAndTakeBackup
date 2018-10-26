@@ -6,9 +6,7 @@ using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GiveAndTake.Core.Services;
 using I18NPortable;
-using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -37,6 +35,16 @@ namespace GiveAndTake.Core.ViewModels
 	    private bool _canNavigateLeft;
 	    private bool _canNavigateRight;
 	    private bool _isRequested;
+
+	    private IMvxCommand _showGiverProfileCommand;
+	    private IMvxCommand _showMenuPopupCommand;
+	    private IMvxCommand _showPostCommentCommand;
+	    private IMvxCommand _showMyRequestListCommand;
+	    private IMvxCommand _navigateLeftCommand;
+	    private IMvxCommand _navigateRightCommand;
+	    private IMvxCommand _backPressedCommand;
+	    private IMvxCommand<int> _showFullImageCommand;
+	    private IMvxCommand<int> _updateImageIndexCommand;
 
 		public string CategoryName
 		{
@@ -146,6 +154,35 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _isRequested, value);
 	    }
 
+	    public IMvxCommand ShowGiverProfileCommand =>
+		    _showGiverProfileCommand ?? (_showGiverProfileCommand = new MvxCommand(() =>
+			    NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage)));
+
+	    public IMvxCommand ShowMenuPopupCommand =>
+		    _showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxCommand(ShowMenuView));
+
+	    public IMvxCommand ShowPostCommentCommand =>
+		    _showPostCommentCommand ?? (_showPostCommentCommand = new MvxCommand(() =>
+			    NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage)));
+
+	    public IMvxCommand ShowMyRequestListCommand =>
+		    _showMyRequestListCommand ?? (_showMyRequestListCommand = new MvxAsyncCommand(ShowMyRequestList));
+
+	    public IMvxCommand<int> ShowFullImageCommand =>
+		    _showFullImageCommand ?? (_showFullImageCommand = new MvxCommand<int>(ShowFullImage));
+
+	    public IMvxCommand NavigateLeftCommand =>
+		    _navigateLeftCommand ?? (_navigateLeftCommand = new MvxCommand(() => PostImageIndex--));
+
+	    public IMvxCommand NavigateRightCommand =>
+		    _navigateRightCommand ?? (_navigateRightCommand = new MvxCommand(() => PostImageIndex++));
+
+	    public IMvxCommand<int> UpdateImageIndexCommand =>
+		    _updateImageIndexCommand ?? (_updateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index));
+
+	    public IMvxCommand BackPressedCommand =>
+		    _backPressedCommand ?? (_backPressedCommand = new MvxCommand(() => NavigationService.Close(this, true)));
+
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
 	    private static readonly List<string> MyPostOptions = new List<string>
@@ -167,24 +204,9 @@ namespace GiveAndTake.Core.ViewModels
 		public PostDetailViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			InitCommand();
 		}
 
-		private void InitCommand()
-		{
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
-			ShowMenuPopupCommand = new MvxCommand(ShowMenuView);
-			ShowPostCommentCommand = new MvxCommand(async () =>
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
-			ShowMyRequestListCommand = new MvxAsyncCommand(ShowMyRequestList);
-			ShowFullImageCommand = new MvxCommand<int>(ShowFullImage);
-			NavigateLeftCommand = new MvxCommand(() => PostImageIndex--);
-			NavigateRightCommand = new MvxCommand(() => PostImageIndex++);
-			UpdateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index);
-			ShowGiverProfileCommand = new MvxAsyncCommand(async () => 
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
-			BackPressedCommand = new MvxCommand(() => NavigationService.Close(this, true));
-		}
+		
 
 		private void ShowFullImage(int position)
 		{
@@ -225,9 +247,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async void CheckUserRequest()
 		{ 
-			// REVIEW[KHOA]: managementService already has in parent
-			var managementService = Mvx.Resolve<IManagementService>();
-		    _userRequestResponse = await managementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
+		    _userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
 		    IsRequested = _userRequestResponse.IsRequested;
 	    }
 
@@ -242,11 +262,11 @@ namespace GiveAndTake.Core.ViewModels
 				if (IsRequested)
 				{
 					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");
-					// REVIEW[KHOA]: use {} even there is only one command
-					if (popupResult != RequestStatus.Submitted) return;
-					// REVIEW[KHOA]: managementService already has in parent
-					var managementService = Mvx.Resolve<IManagementService>();
-					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+					if (popupResult != RequestStatus.Submitted)
+					{
+						return;
+					}
+					await ManagementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
 					UpdateDataModel();
 				}
 				else
@@ -284,9 +304,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async void UpdateDataModel()
 	    {
-		    // REVIEW[KHOA]: managementService already has in parent
-		    var managementService = Mvx.Resolve<IManagementService>();
-		    _dataModel.CurrentPost = await managementService.GetPostDetail(_postId);
+		    _dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
 		    CategoryName = _dataModel.CurrentPost.Category.CategoryName;
 		    AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
 		    UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
@@ -321,26 +339,14 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private void UpdateImageIndexIndicator()
 	    {
-		    // REVIEW [KHOA]: why postImage count = 0 -> total iamge = 1
+			//In case of post have no Image. There is a PlaceHolder Image cover the field of the Image Slide. Then ImageIndexIndicator must display 1/1
 			var totalImage = _postImages.Count == 0 ? 1 : PostImages.Count;
 		    ImageIndexIndicator = _postImageIndex + 1 + " / " + totalImage;
 	    }
 		#endregion
 
-	    // REVIEW [KHOA]: it's not method region and move properties to top
 		#region Methods
 
-		// REVIEW [KHOA]: use lazy initiation
-		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
-		public IMvxAsyncCommand CloseCommand { get; set; }
-		public IMvxCommand ShowMenuPopupCommand { get; set; }
-		public IMvxCommand ShowPostCommentCommand { get; set; }
-		public IMvxCommand ShowMyRequestListCommand { get; set; }
-		public IMvxCommand<int> ShowFullImageCommand { get; set; }
-		public IMvxCommand NavigateLeftCommand { get; set; }
-	    public IMvxCommand NavigateRightCommand { get; set; }
-	    public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
-	    public IMvxCommand BackPressedCommand { get; set; }
 
 	    #endregion
 	}
