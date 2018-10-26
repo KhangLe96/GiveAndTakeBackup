@@ -281,6 +281,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, out int total)
         {
+			//REVIEW: Please find a reason why this query has an internal error. After that prevent, dont' use try catch to hidden error.
 			IEnumerable<Post> posts;
 			try
 			{
@@ -302,6 +303,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			}
 			else
 			{
+				//REVIEW: Please find a reason why this query has an internal error. After that prevent, dont' use try catch to hidden error.
 				try
 				{
 					Guid id = Guid.Parse(userId);

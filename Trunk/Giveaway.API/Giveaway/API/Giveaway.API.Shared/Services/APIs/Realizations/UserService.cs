@@ -17,6 +17,7 @@ using System.Net;
 using static Giveaway.Data.EF.Const;
 using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
+// REVIEW: Remove unused namespace
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {

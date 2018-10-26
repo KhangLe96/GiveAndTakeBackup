@@ -61,6 +61,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 			}
 
+			// REVIEW: User FirstAsync with async await or use FirstOrDefault, should don't Result.
 			var requestDb = _requestService.Include(x => x.Post).Include(x => x.Responses).FirstAsync(x => x.Id == request.Id).Result;
 			var postResponse = Mapper.Map<RequestPostResponse>(requestDb);
 
