@@ -31,8 +31,8 @@
 
 	public enum RequestStatus
 	{
-		Submitted,
-		Cancelled
+		Cancelled,
+		Submitted
 	}
 
 	public enum PopupRequestDetailResult
