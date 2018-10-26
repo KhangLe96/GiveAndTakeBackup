@@ -24,7 +24,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
     {
 	    public IMvxCommand SearchCommand { get; set; }
 	    public IMvxCommand LoadMoreCommand { get; set; }
-	    protected override int LayoutId => Resource.Layout.HomeView;
+	    public IMvxCommand CloseSearchBarCommand { get; set; }
+		protected override int LayoutId => Resource.Layout.HomeView;
 
 	    private SearchView _searchView;
 	    private ImageView _clearButton;
@@ -62,7 +63,11 @@ namespace GiveAndTake.Droid.Views.TabNavigation
                 .For(v => v.LoadMoreCommand)
                 .To(vm => vm.LoadMoreCommand);
 
-            bindingSet.Apply();
+		    bindingSet.Bind(this)
+			    .For(v => v.CloseSearchBarCommand)
+			    .To(vm => vm.CloseSearchBarCommand);
+
+			bindingSet.Apply();
         }
 
 	    public override void OnPause()
@@ -84,6 +89,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    _searchView.SetQuery("", false);
 		    _searchView.ClearFocus();
 		    _clearButton.Visibility = ViewStates.Gone;
+		    CloseSearchBarCommand.Execute();
 	    }
 
 	    private void OnSearchViewClicked(object sender, EventArgs args)

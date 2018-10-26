@@ -10,7 +10,7 @@ using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class RequestsViewModel : BaseViewModel<string>
+	public class RequestsViewModel : BaseViewModel<string, bool>
 	{
 		public string Title => "Danh sách yêu cầu";
 

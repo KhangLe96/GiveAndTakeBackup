@@ -245,30 +245,13 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-	    private async void CheckUserRequest()
-	    {
-		    _userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
-		    IsRequested = _userRequestResponse.IsRequested;
-		    if (_isMyPost)
-		    {
-			    IsRequested = RequestCount != 0;
-		    }
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
-		}
-
-	    private void CheckPostRequest()
-	    {
-		    if (_isMyPost)
-		    {
-			    IsRequested = RequestCount != 0;
-		    }
-	    }
-
 		private async Task ShowMyRequestList()
 		{
 			if (_isMyPost)
 			{
-				await NavigationService.Navigate<RequestsViewModel, string>(_post.PostId);
+				var result = await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
+				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+				await UpdateDataModel();
 			}
 			else
 			{
@@ -301,46 +284,37 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			_postId = post.PostId;
-			CategoryName = post.Category.CategoryName;
-			AvatarUrl = post.User.AvatarUrl;
-			UserName = post.User.FullName ?? AppConstants.DefaultUserName;
-			CreatedTime = TimeHelper.ToTimeAgo(post.CreatedTime);
-			Address = post.ProvinceCity.ProvinceCityName;
-			PostDescription = post.Description;
-			PostTitle = post.Title;
 			PostImages = post.Images;
-			RequestCount = post.RequestCount;
-			CommentCount = post.CommentCount;
-			Status = post.IsMyPost ? post.PostStatus.Translate() : " ";
-			CategoryBackgroundColor = post.Category.BackgroundColor;
 			_isMyPost = post.IsMyPost;
-			PostImageIndex = 0;
-			_post = post;
 
-			CheckUserRequest();
+			await UpdateDataModel();
 		}
 
 	    private async Task UpdateDataModel()
 	    {
-		    var managementService = Mvx.Resolve<IManagementService>();
-		    _dataModel.CurrentPost = await managementService.GetPostDetail(_postId);
-		    CategoryName = _dataModel.CurrentPost.Category.CategoryName;
+		    _dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
+		    _userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
+		    IsRequested = _userRequestResponse.IsRequested;
+		    RequestCount = _dataModel.CurrentPost.RequestCount;
+			if (_isMyPost)
+		    {
+			    IsRequested = RequestCount != 0;
+		    }
+			CategoryName = _dataModel.CurrentPost.Category.CategoryName;
 		    AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
 		    UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
-		    CreatedTime = _dataModel.CurrentPost.CreatedTime.ToString("dd.MM.yyyy");
-		    Address = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
+		    CreatedTime = TimeHelper.ToTimeAgo(_dataModel.CurrentPost.CreatedTime);
+			Address = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
 		    PostDescription = _dataModel.CurrentPost.Description;
 		    PostTitle = _dataModel.CurrentPost.Title;
 		    PostImages = _dataModel.CurrentPost.Images;
-		    RequestCount = _dataModel.CurrentPost.RequestCount;
 		    CommentCount = _dataModel.CurrentPost.CommentCount;
-		    Status = _dataModel.CurrentPost.IsMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
+		    Status = _isMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
 		    CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
-		    _isMyPost = _dataModel.CurrentPost.IsMyPost;
 		    PostImageIndex = 0;
 		    _post = _dataModel.CurrentPost;
 
-		    CheckUserRequest();
+		    await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 		}
 
 	    public override Task Initialize()
@@ -361,6 +335,7 @@ namespace GiveAndTake.Core.ViewModels
 		    var totalImage = _postImages.Count == 0 ? 1 : PostImages.Count;
 		    ImageIndexIndicator = _postImageIndex + 1 + " / " + totalImage;
 	    }
+	
 		#endregion
 	}
 }
