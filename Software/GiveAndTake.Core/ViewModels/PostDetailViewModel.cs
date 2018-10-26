@@ -224,8 +224,9 @@ namespace GiveAndTake.Core.ViewModels
 		}
 
 	    private async void CheckUserRequest()
-	    {
-		    var managementService = Mvx.Resolve<IManagementService>();
+		{ 
+			// REVIEW[KHOA]: managementService already has in parent
+			var managementService = Mvx.Resolve<IManagementService>();
 		    _userRequestResponse = await managementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
 		    IsRequested = _userRequestResponse.IsRequested;
 	    }
@@ -241,7 +242,9 @@ namespace GiveAndTake.Core.ViewModels
 				if (IsRequested)
 				{
 					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");
+					// REVIEW[KHOA]: use {} even there is only one command
 					if (popupResult != RequestStatus.Submitted) return;
+					// REVIEW[KHOA]: managementService already has in parent
 					var managementService = Mvx.Resolve<IManagementService>();
 					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
 					UpdateDataModel();
@@ -281,6 +284,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async void UpdateDataModel()
 	    {
+		    // REVIEW[KHOA]: managementService already has in parent
 		    var managementService = Mvx.Resolve<IManagementService>();
 		    _dataModel.CurrentPost = await managementService.GetPostDetail(_postId);
 		    CategoryName = _dataModel.CurrentPost.Category.CategoryName;
@@ -317,14 +321,17 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private void UpdateImageIndexIndicator()
 	    {
-		    var totalImage = _postImages.Count == 0 ? 1 : PostImages.Count;
+		    // REVIEW [KHOA]: why postImage count = 0 -> total iamge = 1
+			var totalImage = _postImages.Count == 0 ? 1 : PostImages.Count;
 		    ImageIndexIndicator = _postImageIndex + 1 + " / " + totalImage;
 	    }
 		#endregion
 
+	    // REVIEW [KHOA]: it's not method region and move properties to top
 		#region Methods
 
-	    public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
+		// REVIEW [KHOA]: use lazy initiation
+		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
 		public IMvxCommand ShowMenuPopupCommand { get; set; }
 		public IMvxCommand ShowPostCommentCommand { get; set; }

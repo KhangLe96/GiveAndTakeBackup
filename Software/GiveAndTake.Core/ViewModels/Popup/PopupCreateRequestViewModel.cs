@@ -86,6 +86,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public async void InitCreateNewRequest()
 		{
+			// REVIEW [KHOA]: not need to resolve managementService here because the parent has it already
 			var managementService = Mvx.Resolve<IManagementService>();
 			var request = new Request()
 			{
@@ -93,6 +94,8 @@ namespace GiveAndTake.Core.ViewModels.Popup
 				UserId = _userId,
 				RequestMessage = RequestDescription,
 			};
+
+			// REVIEW [KHOA]: CreateRequest return bool -> if there is something wrong -> return false -> not submitted
 			await managementService.CreateRequest(request, _dataModel.LoginResponse.Token);
 			await NavigationService.Close(this, RequestStatus.Submitted);
 		}
@@ -101,8 +104,9 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		#endregion
 
+		// REVIEW [KHOA]: it's not method region
 		#region Methods
-
+		// REVIEW [KHOA]: use lazy initiation
 		public IMvxAsyncCommand CloseCommand { get; set; }
 		public ICommand SubmitCommand { get; set; }
 

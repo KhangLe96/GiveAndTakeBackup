@@ -46,6 +46,7 @@ namespace GiveAndTake.Droid.Views
 			set
 			{
 				_status = value;
+				// REVIEW[KHOA]: hard-coded color
 				_tvStatus.SetTextColor(_status == AppConstants.GivingStatus ? Color.ParseColor("#2CB273") : Color.DarkRed);
 			}
 		}
@@ -88,6 +89,7 @@ namespace GiveAndTake.Droid.Views
 
 			_imageViewer.SetClipToPadding(false);
 
+			// REVIEW[KHOA]: unsubscribe event when view is destroyed
 			_imageViewer.PageSelected += (sender, args) => UpdateImageIndexCommand?.Execute(_imageViewer.CurrentItem);
 
 		}
