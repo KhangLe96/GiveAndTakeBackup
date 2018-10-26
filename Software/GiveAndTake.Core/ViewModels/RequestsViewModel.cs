@@ -84,10 +84,14 @@ namespace GiveAndTake.Core.ViewModels
 		    }
 		}
 
-	    private void OnRequestAccepted(Request request)
+	    private async void OnRequestAccepted(Request request)
 	    {
-
-	    }
+		    var result = await NavigationService.Navigate<PopupResponseViewModel, Request, RequestStatus>(request);
+		    if (result == RequestStatus.Submitted)
+		    {
+			    await UpdateRequestViewModels();
+		    }
+		}
 
 	    private async void OnItemClicked(Request request)
 	    {
@@ -95,9 +99,10 @@ namespace GiveAndTake.Core.ViewModels
 		    switch (popupResult)
 		    {
 			    case PopupRequestDetailResult.Rejected:
-				    await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
-				    break;
+				    OnRequestRejected(request);
+					break;
 			    case PopupRequestDetailResult.Accepted:
+				    OnRequestAccepted(request);
 				    break;
 		    }
 	    }
