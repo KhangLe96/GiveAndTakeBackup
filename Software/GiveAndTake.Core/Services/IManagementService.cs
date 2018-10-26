@@ -23,5 +23,6 @@ namespace GiveAndTake.Core.Services
 		Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
 	    Task<UserRequest> CheckUserRequest(string postId, string token);
 	    Task<bool> CancelUserRequest(string postId, string token);
+	    Task CreateResponse(RequestResponse requestResponse, string token);
     }
 }

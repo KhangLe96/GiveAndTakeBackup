@@ -325,5 +325,22 @@ namespace GiveAndTake.Core.Services
 
 		    return JsonHelper.Deserialize<bool>(response.RawContent);
 	    }
+
+	    public async Task CreateResponse(RequestResponse requestResponse, string token)
+	    {
+		    var responseInformationInString = JsonHelper.Serialize(requestResponse);
+		    var content = new StringContent(responseInformationInString, Encoding.UTF8, "application/json");
+		    var response = await _apiHelper.Post(AppConstants.CreateResponse, content, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+		}
 	}
 }
