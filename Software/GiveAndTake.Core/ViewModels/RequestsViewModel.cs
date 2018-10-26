@@ -53,9 +53,6 @@ namespace GiveAndTake.Core.ViewModels
 		{			
 			await UpdateRequestViewModelOverLay();			
 		}
-		
-		
-
 
 		private async Task OnLoadMore()
         {
@@ -76,7 +73,6 @@ namespace GiveAndTake.Core.ViewModels
 				OnAccepted = OnRequestAccepted,
 				OnRejected = OnRequestRejected
 		    };
-
 			return requestItem;
 	    }
 

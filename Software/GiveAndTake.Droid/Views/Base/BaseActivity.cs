@@ -1,9 +1,10 @@
 ﻿using Android.App;
+using Android.Content.PM;
 using MvvmCross.Droid.Support.V7.AppCompat;
 
 namespace GiveAndTake.Droid.Views.Base
 {
-    [Activity]
+    [Activity(Label = "BaseActivity", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public abstract class BaseActivity : MvxAppCompatActivity
     {
         protected abstract int LayoutId { get; }
