@@ -11,48 +11,53 @@ using MvvmCross;
 namespace GiveAndTake.Core.ViewModels
 {
 	public class RequestsViewModel : BaseViewModel<string>
-    {
-	    public string Title => "Danh sách yêu cầu";
+	{
+		public string Title => "Danh sách yêu cầu";
 
 		public bool IsRefreshing
-	    {
-		    get => _isRefresh;
-		    set => SetProperty(ref _isRefresh, value);
-	    }
+		{
+			get => _isRefresh;
+			set => SetProperty(ref _isRefresh, value);
+		}
 
-	    public int NumberOfRequest
-	    {
-		    get => _numberOfRequest;
-		    set => SetProperty(ref _numberOfRequest, value);
-	    }
+		public int NumberOfRequest
+		{
+			get => _numberOfRequest;
+			set => SetProperty(ref _numberOfRequest, value);
+		}
 
-	    public MvxObservableCollection<RequestItemViewModel> RequestItemViewModels
-	    {
-		    get => _requestItemViewModels;
-		    set => SetProperty(ref _requestItemViewModels, value);
-	    }
+		public MvxObservableCollection<RequestItemViewModel> RequestItemViewModels
+		{
+			get => _requestItemViewModels;
+			set => SetProperty(ref _requestItemViewModels, value);
+		}
 
-	    public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
+		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
 
-	    public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
+		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
 
 		private readonly IDataModel _dataModel;
-	    private MvxObservableCollection<RequestItemViewModel> _requestItemViewModels;
+		private MvxObservableCollection<RequestItemViewModel> _requestItemViewModels;
 		private int _numberOfRequest;
-	    private bool _isRefresh;
+		private bool _isRefresh;
 		private IMvxCommand _refreshCommand;
-	    private IMvxCommand _loadMoreCommand;
-	    private string _postId;
+		private IMvxCommand _loadMoreCommand;
+		private string _postId;
 
-	    public RequestsViewModel(IDataModel dataModel)
-        {
-            _dataModel = dataModel;
-        }
+		public RequestsViewModel(IDataModel dataModel)
+		{
+			_dataModel = dataModel;
+		}
 
-	    private async void InitRequestViewModels() => await UpdateRequestViewModels();
+		private async void InitRequestViewModels()
+		{			
+			await UpdateRequestViewModelOverLay();			
+		}
+		
+		
 
 
-	    private async Task OnLoadMore()
+		private async Task OnLoadMore()
         {
             _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
             if (_dataModel.ApiRequestsResponse.Requests.Any())
@@ -80,8 +85,9 @@ namespace GiveAndTake.Core.ViewModels
 			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.RequestRejectingMessage);
 		    if (result == RequestStatus.Submitted)
 		    {
-			    await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
-		    }
+				await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
+			    await UpdateRequestViewModelOverLay();
+			}
 		}
 
 	    private async void OnRequestAccepted(Request request)
@@ -89,8 +95,8 @@ namespace GiveAndTake.Core.ViewModels
 		    var result = await NavigationService.Navigate<PopupResponseViewModel, Request, RequestStatus>(request);
 		    if (result == RequestStatus.Submitted)
 		    {
-			    await UpdateRequestViewModels();
-		    }
+				await UpdateRequestViewModelOverLay();
+			}
 		}
 
 	    private async void OnItemClicked(Request request)
@@ -116,15 +122,13 @@ namespace GiveAndTake.Core.ViewModels
 
         public async Task UpdateRequestViewModels()
         {
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");	       
 			NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
                 RequestItemViewModels.Last().IsLastViewInList = true;
-            }
-	        await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+            }	        
 		}
 
 	    public override void Prepare(string postId)
@@ -132,5 +136,12 @@ namespace GiveAndTake.Core.ViewModels
 		    _postId = postId;
 		    InitRequestViewModels();
 		}
-    }
+
+		public async Task UpdateRequestViewModelOverLay()
+		{
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await UpdateRequestViewModels();
+			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+		}
+	}
 }

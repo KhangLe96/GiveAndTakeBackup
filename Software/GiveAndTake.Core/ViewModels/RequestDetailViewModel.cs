@@ -77,6 +77,6 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void HandleOnAccepted() => NavigationService.Close(this, PopupRequestDetailResult.Accepted);
 
-		private void HandleOnClosed() => NavigationService.Close(this);
+		private void HandleOnClosed() => NavigationService.Close(this,PopupRequestDetailResult.Cancelled);
 	}
 }

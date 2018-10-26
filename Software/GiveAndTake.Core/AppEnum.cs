@@ -37,8 +37,8 @@
 
 	public enum PopupRequestDetailResult
 	{
+		Cancelled,
 		Accepted,
-		Rejected,
-		Cancelled
+		Rejected
 	}
 }
