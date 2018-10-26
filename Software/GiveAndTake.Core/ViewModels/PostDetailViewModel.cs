@@ -261,11 +261,13 @@ namespace GiveAndTake.Core.ViewModels
 			else
 			{
 				if (IsRequested)
-				{
-					
-					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");
+				{					
+					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");	
+					if (popupResult != RequestStatus.Submitted)
+					{
+						return;
+					}
 					await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
-					if (popupResult != RequestStatus.Submitted) return;					
 					var managementService = Mvx.Resolve<IManagementService>();
 					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
 					await UpdateDataModel();
@@ -278,7 +280,6 @@ namespace GiveAndTake.Core.ViewModels
 					{
 						await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
 						await UpdateDataModel();
-
 					}
 				}
 			}
