@@ -249,8 +249,20 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    _userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
 		    IsRequested = _userRequestResponse.IsRequested;
-		    await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+		    if (_isMyPost)
+		    {
+			    IsRequested = RequestCount != 0;
+		    }
+			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 		}
+
+	    private void CheckPostRequest()
+	    {
+		    if (_isMyPost)
+		    {
+			    IsRequested = RequestCount != 0;
+		    }
+	    }
 
 		private async Task ShowMyRequestList()
 		{
