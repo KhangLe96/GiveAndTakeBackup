@@ -18,6 +18,7 @@ namespace GiveAndTake.Core.Services
             _apiHelper = new RestClient();
         }
 
+	    //Review ThanhVo Update handling internet connection from its branch
 		public void ChangeStatusOfRequest(string requestId, string newStatus, string token)
 		{
 			Task.Run(async () =>
@@ -29,11 +30,13 @@ namespace GiveAndTake.Core.Services
 				var statusInString = JsonHelper.Serialize(requestStatus);
 				var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
 				string parameters = $"/{requestId}";
+				//Review ThanhVo how we know the result that status is updated successfully or not
 				var response = await _apiHelper.Put(AppConstants.ChangeStatusOfRequest + parameters, content, token);
 			});
 
 		}
 
+		//Review ThanhVo Remove if unused
 		//public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
 		//{
 		//    var requestStatus = new StatusObj
@@ -61,9 +64,11 @@ namespace GiveAndTake.Core.Services
 
 		public ApiRequestsResponse GetRequestOfPost(string postId, string filterParams)
         {
+			//Review ThanhVo Update handling internet connection from its branch
             return Task.Run(async () =>
             {
                 var url = string.IsNullOrEmpty(filterParams)
+				//Review ThanhVo What the api return when filterParam is null
                     ? AppConstants.GetRequestOfPost
                     : string.Join("?", AppConstants.GetRequestOfPost, filterParams);
                 //string parameters = $"/{postId}";

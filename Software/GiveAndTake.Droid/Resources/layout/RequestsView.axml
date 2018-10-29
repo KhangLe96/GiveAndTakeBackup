@@ -10,6 +10,7 @@
 		android:layout_height="50dp"
 		android:orientation="horizontal"
 		android:background="@color/colorPrimary">
+		<!--Review ThanhVo check all width, height, margin, ...in all xaml file of this task, should declare and use value from dimens-->
 		<TextView
 			android:textColor="@color/white"
 			android:text="Danh sách yêu cầu"

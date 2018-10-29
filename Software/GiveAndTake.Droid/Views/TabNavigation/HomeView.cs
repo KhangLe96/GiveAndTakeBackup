@@ -14,6 +14,7 @@ using SearchView = Android.Widget.SearchView;
 
 namespace GiveAndTake.Droid.Views.TabNavigation
 {
+	//Review ThanhVo use Tab instead of space
     [MvxTabLayoutPresentation(TabLayoutResourceId = Resource.Id.tabLayout,
         Title = "Home",
         ViewPagerResourceId = Resource.Id.viewPager,

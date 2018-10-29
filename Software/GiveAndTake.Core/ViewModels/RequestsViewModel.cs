@@ -58,6 +58,7 @@ namespace GiveAndTake.Core.ViewModels
 
         private void OnLoadMore()
         {
+			//Review ThanhVo What is 20 here? Should define it as constant, so the reader can know its meaning
             _dataModel.ApiRequestsResponse = _managementService.GetRequestOfPost("", $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
             if (_dataModel.ApiRequestsResponse.Requests.Any())
             {
@@ -70,7 +71,8 @@ namespace GiveAndTake.Core.ViewModels
 	    private RequestItemViewModel GenerateRequestItem(Request request)
 	    {
 		    var requestItem = new RequestItemViewModel(request, _dataModel);
-		    requestItem.ReloadRequestList += new Action(OnRefresh);
+			//Review ThanhVo register action like this requestItem.ReloadRequestList = OnRefresh;
+			requestItem.ReloadRequestList += new Action(OnRefresh);
 
 			return requestItem;
 	    }
@@ -85,6 +87,7 @@ namespace GiveAndTake.Core.ViewModels
 
         public void UpdateRequestViewModels()
         {
+			//Review ThanhVo At least, you have to pass post Id for request, because you only load request of this post, not all
 			var result = _managementService.GetRequestOfPost("", "");
 	        NumberOfRequest = result.Pagination.Totals;
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(result.Requests.Select(GenerateRequestItem));

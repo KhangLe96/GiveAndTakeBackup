@@ -30,6 +30,7 @@ namespace GiveAndTake.Core.ViewModels
             set
             {
                 _userName = value;
+				//Review ThanhVo Check all properties, why you use RaisePropertyChange insstead of SetProperty?
                 RaisePropertyChanged(() => UserName);
             }
         }
@@ -67,6 +68,8 @@ namespace GiveAndTake.Core.ViewModels
             }
         }
 
+		//Review ThanhVo Should not bring any thing from View to ViewModel.
+		//If you don't want to show the last line in the last item of the list, you can define IsShowSeparator property
         private bool _isLastViewInList;
         public bool IsLastViewInList
         {
@@ -97,10 +100,14 @@ namespace GiveAndTake.Core.ViewModels
 
         private async Task Reject()
         {
+			//Revie ThanhVo The message should be declare as constant in this view model. 
             var result = await NavigationService.Navigate<PopupMessageViewModel, string, bool>("Bạn có chắc chắn từ chối yêu cầu?");
             if (result)
             {
+				//Review ThanhVo "Rejected" can be reused? Think about do you can reused it in another task or future.
+				//like where request is rejected ? Maybe in the delete the post which contains request
 				_managementService.ChangeStatusOfRequest(_request.Id, "Rejected", _dataModel.LoginResponse.Token);
+				//Review ThanhVo why use task delay
 				await Task.Delay(500);
 				if (ReloadRequestList != null)
 				{
@@ -113,6 +120,7 @@ namespace GiveAndTake.Core.ViewModels
         {
             AvatarUrl = _request.User.AvatarUrl;
             UserName = _request.User.FullName ?? AppConstants.DefaultUserName;
+			//Review ThanhVo Check the time helper from 245 branch to use it
             CreatedTime = _request.CreatedTime.ToString("dd.MM.yyyy");
             RequestMessage = _request.RequestMessage;
         }
