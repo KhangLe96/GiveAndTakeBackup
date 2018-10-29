@@ -21,21 +21,24 @@ namespace GiveAndTake.Droid.Views.Base
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
-			base.CreateBinding();
 			var bindingSet = this.CreateBindingSet<MasterView, MasterViewModel>();
+
 			bindingSet.Bind(this)
 				.For(v => v.ShowInitialViewModelsCommand)
 				.To(vm => vm.ShowInitialViewModelsCommand);
+
 			bindingSet.Apply();
 		}
 
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
+
 			if (bundle == null)
 			{
 				ShowInitialViewModelsCommand.Execute();
 			}
+
 		}
 	}
 }

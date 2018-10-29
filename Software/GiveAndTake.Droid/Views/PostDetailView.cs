@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Android.Provider;
+﻿using Android.Graphics;
 using Android.Runtime;
 using Android.Support.V4.View;
 using Android.Views;
 using Android.Widget;
+using GiveAndTake.Core;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Base;
@@ -14,6 +12,7 @@ using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using System.Collections.Generic;
 
 namespace GiveAndTake.Droid.Views
 {
@@ -21,93 +20,62 @@ namespace GiveAndTake.Droid.Views
 	[Register(nameof(PostDetailView))]
 	public class PostDetailView : BaseFragment
 	{
-		private List<Image> _imagesPost;
-		public List<Image> ImagesPost
+
+		#region Properties
+
+		public IMvxCommand<int> ShowFullImageCommand { get; set; }
+		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
+		protected override int LayoutId => Resource.Layout.PostDetailView;
+
+		public List<Image> PostImages
 		{
-			get => _imagesPost;
+			get => _postImages;
 			set
 			{
-				_imagesPost = value;
-				UpdateImageView();
+				_postImages = value;
+				_imageViewer.Adapter = new ImageSliderAdapter(Context, PostImages)
+				{
+					HandleItemSelected = () => ShowFullImageCommand?.Execute(_postImageIndex)
+				};
+			}
+		}
+
+		public string Status
+		{
+			get => _status;
+			set
+			{
+				_status = value;
+				_tvStatus.SetTextColor(_status == AppConstants.GivingStatus ? Color.ParseColor("#2CB273") : Color.DarkRed);
+			}
+		}
+
+		public int PostImageIndex
+		{
+			get => _postImageIndex;
+			set
+			{
+				_postImageIndex = value;
+				_imageViewer.SetCurrentItem(value, true);
 			}
 		}
 
 		private ViewPager _imageViewer;
-		//REVIEW : rename _currentImage to something like ImageIndex. CurrentImage seems an image name, not int
-		private int _currentImage;
-		private ImageButton _navigateLeftButton;
-		private ImageButton _navigateRightButton;
-		//REVIEW : Rename. Why a TextView named ...Image ?
-		private TextView _displayCurrentImage;
+		private TextView _tvStatus;
+		private string _status;
+		private List<Image> _postImages;
+		private int _postImageIndex;
 
-		private View _view;
-
-		protected override int LayoutId => Resource.Layout.PostDetailView;
+		#endregion
 
 		protected override void InitView(View view)
 		{
-			_view = view;
-
-			InitNavigateLeft();
-			InitNavigateRight();
-
-			_navigateLeftButton = _view.FindViewById<ImageButton>(Resource.Id.navigateLeftButton);
-			_navigateRightButton = _view.FindViewById<ImageButton>(Resource.Id.navigateRightButton);
-			_displayCurrentImage = _view.FindViewById<TextView>(Resource.Id.CurrentImage);
-
-			var viewPager = _view.FindViewById<ViewPager>(Resource.Id.SliderViewPager);
-			viewPager.SetClipToPadding(false);
-
+			_tvStatus = view.FindViewById<TextView>(Resource.Id.tvStatus);
 			_imageViewer = view.FindViewById<ViewPager>(Resource.Id.SliderViewPager);
-			ImagesPost = new List<Image>();
-			_currentImage = _imageViewer.CurrentItem;
-			_imageViewer.PageSelected += _imageViewer_PageSelected;
-		}
 
-		private void InitNavigationButton()
-		{
-			_currentImage = _imageViewer.CurrentItem;
-			var displayCurrentImage = (_currentImage + 1).ToString();		
-			if (ImagesPost.Count == 0 || ImagesPost.Count == 1)
-			{
-				_displayCurrentImage.Text = displayCurrentImage + "/ 1 ";
-				_navigateLeftButton.Enabled = false;
-				_navigateRightButton.Enabled = false;
-				_navigateLeftButton.Visibility = ViewStates.Invisible;
-				_navigateRightButton.Visibility = ViewStates.Invisible;
-			}
-			else
-			{
-				var displayTotalImages = ImagesPost.Count.ToString();
-				_displayCurrentImage.Text = displayCurrentImage + "/" + displayTotalImages;
-				if (_currentImage == 0)
-				{
-					_navigateLeftButton.Enabled = false;
-					_navigateRightButton.Enabled = true;
-					_navigateLeftButton.Visibility = ViewStates.Invisible;
-					_navigateRightButton.Visibility = ViewStates.Visible;
-				}
-				else if (_currentImage == ImagesPost.Count - 1)
-				{
-					_navigateLeftButton.Enabled = true;
-					_navigateRightButton.Enabled = false;
-					_navigateLeftButton.Visibility = ViewStates.Visible;
-					_navigateRightButton.Visibility = ViewStates.Invisible;
-				}
-				else
-				{
-					_navigateLeftButton.Enabled = true;
-					_navigateRightButton.Enabled = true;
-					_navigateLeftButton.Visibility = ViewStates.Visible;
-					_navigateRightButton.Visibility = ViewStates.Visible;
-				}
-			}
-		}
+			_imageViewer.SetClipToPadding(false);
 
-		private void _imageViewer_PageSelected(object sender, ViewPager.PageSelectedEventArgs e)
-		{
-			//REVIEW : Rename the method to ImageViewerOnPageSelected
-			InitNavigationButton();
+			_imageViewer.PageSelected += (sender, args) => UpdateImageIndexCommand?.Execute(_imageViewer.CurrentItem);
 		}
 
 		protected override void CreateBinding()
@@ -115,36 +83,28 @@ namespace GiveAndTake.Droid.Views
 			base.CreateBinding();
 
 			var bindingSet = this.CreateBindingSet<PostDetailView, PostDetailViewModel>();
-			//REVIEW : Try to name variables in View and VM at same.
+
 			bindingSet.Bind(this)
-				.For(v => v.ImagesPost)
-				.To(vm => vm.PostImage);
+				.For(v => v.PostImages)
+				.To(vm => vm.PostImages);
+
+			bindingSet.Bind(this)
+				.For(v => v.Status)
+				.To(vm => vm.Status);
+
+			bindingSet.Bind(this)
+				.For(v => v.PostImageIndex)
+				.To(vm => vm.PostImageIndex);
+
+			bindingSet.Bind(this)
+				.For(v => v.ShowFullImageCommand)
+				.To(vm => vm.ShowFullImageCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.UpdateImageIndexCommand)
+				.To(vm => vm.UpdateImageIndexCommand);
 
 			bindingSet.Apply();
-		}
-
-		private void InitNavigateLeft()
-		{
-			var navigateLeftButton = _view.FindViewById<ImageButton>(Resource.Id.navigateLeftButton);
-			navigateLeftButton.Click += delegate
-			{
-				_imageViewer.SetCurrentItem(_currentImage - 1, true);
-			};
-		}
-
-		private void InitNavigateRight()
-		{
-			var navigateRightButton = _view.FindViewById<ImageButton>(Resource.Id.navigateRightButton);
-			navigateRightButton.Click += delegate
-			{
-				_imageViewer.SetCurrentItem(_currentImage + 1, true);
-			};
-		}
-
-		private void UpdateImageView()
-		{
-			_imageViewer.Adapter = new ImageSliderAdapter(this.Context, ImagesPost);
-			InitNavigationButton();
 		}
 	}
 }

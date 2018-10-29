@@ -9,14 +9,14 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 namespace GiveAndTake.Droid.Views.Popup
 {
 	[MvxDialogFragmentPresentation]
-	[Register(nameof(PopupLocationFilter))]
-	public class PopupLocationFilter : MvxBottomSheetDialogFragment<PopupLocationFilterViewModel>
+	[Register(nameof(PopupExtensionOptionView))]
+	public class PopupExtensionOptionView : MvxBottomSheetDialogFragment<PopupExtensionOptionViewModel>
 	{
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
 
-			var view = this.BindingInflate(Resource.Layout.PopupView, null);
+			var view = this.BindingInflate(Resource.Layout.PopupExtensionOptionView, null);
 
 			return view;
 		}

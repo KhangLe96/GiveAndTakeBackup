@@ -1,9 +1,8 @@
 ﻿using Giveaway.API.Shared.Responses.Response;
+using Giveaway.API.Shared.Responses.User;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Giveaway.API.Shared.Responses.Request
 {
@@ -34,9 +33,9 @@ namespace Giveaway.API.Shared.Responses.Request
         [JsonProperty(PropertyName = "updatedTime")]
         public DateTimeOffset UpdatedTime { get; set; }
 
-        [DataMember(Name = "userId")]
-        [JsonProperty(PropertyName = "userId")]
-        public Guid? UserId { get; set; }
+        [DataMember(Name = "user")]
+        [JsonProperty(PropertyName = "user")]
+        public UserRequestResponse User { get; set; }
 
         [DataMember(Name = "postId")]
         [JsonProperty(PropertyName = "postId")]

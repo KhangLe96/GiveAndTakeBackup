@@ -15,5 +15,5 @@
 		android:layout_height="@dimen/divider"
 		android:layout_margin="@dimen/margin_short"
 		android:background="@color/divider"
-		local:MvxBind="Visibility Visibility(!IsLastViewInList)"/>
+		local:MvxBind="Visibility Visibility(IsSeparatorLineShown)"/>
 </LinearLayout>

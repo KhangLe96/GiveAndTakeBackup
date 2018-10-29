@@ -1,10 +1,8 @@
-﻿using GiveAndTake.Core.Models;
-using GiveAndTake.Core.Services;
+﻿using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
-using GiveAndTake.Core.ViewModels.TabNavigation;
-using MvvmCross;
+using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
-using System;
 using System.Windows.Input;
 
 namespace GiveAndTake.Core.ViewModels
@@ -32,19 +30,21 @@ namespace GiveAndTake.Core.ViewModels
 			_dataModel = dataModel;
 		}
 
-		private void OnLoginSuccess(BaseUser baseUser)
+		private async void OnLoginSuccess(BaseUser baseUser)
 		{
 			try
 			{
-				var managementService = Mvx.Resolve<IManagementService>();
-				_dataModel.LoginResponse = managementService.LoginFacebook(baseUser);
-				_dataModel.CurrentUser = baseUser;
-				NavigationService.Close(this);
-				NavigationService.Navigate<MasterViewModel>();
+				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
+				await NavigationService.Close(this);
+				await NavigationService.Navigate<MasterViewModel>();
 			}
-			catch (Exception)
+			catch (AppException.ApiException)
 			{
-				// login error, finish current screen and back to main screen
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				if (result == RequestStatus.Submitted)
+				{
+					OnLoginSuccess(baseUser);
+				}
 			}
 		}
 	}

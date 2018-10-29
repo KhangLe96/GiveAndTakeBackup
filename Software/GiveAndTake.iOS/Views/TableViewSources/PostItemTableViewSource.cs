@@ -4,7 +4,6 @@ using GiveAndTake.iOS.Views.TableViewCells;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using System;
-using System.Linq;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewSources
@@ -42,8 +41,7 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 				{
 					_isLoading = true;
 					Console.WriteLine($"LoadMoreEvent{cells[cells.Length - 1].Row} >= {ItemsSource.Count() - 3}");
-					LoadMoreEvent?.Invoke();
-					_isLoading = false;
+					LoadMoreEvent?.BeginInvoke(result => _isLoading = false, null);
 				}
 			}
 		}

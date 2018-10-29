@@ -14,11 +14,15 @@ namespace GiveAndTake.iOS.Helpers
 		public static UIColor Gray => ToUIColor("cccccc");
 		public static UIColor LightBlue => ToUIColor("3fb8ea");
 		public static UIColor SeparatorColor => ToUIColor("cccccc");
+		public static UIColor PhotoCollectionViewBackground => ToUIColor("F4F5F4");
 		public static UIColor PopupSeparator => ToUIColor("E0EFF7");
 		public static UIColor DefaultEditTextFieldColor => ToUIColor("f3f3f3");
 	    public static UIColor GreyLineColor => ToUIColor("f2f2f2");
+		public static UIColor Green => ToUIColor("2CB273");
+		public static UIColor DarkRed => ToUIColor("8B0000");
+		public static UIColor DarkGray => ToUIColor("666666");
 
-        public static UIColor ToUIColor(string hexString)
+		public static UIColor ToUIColor(string hexString)
 		{
 			if (string.IsNullOrWhiteSpace(hexString))
 			{

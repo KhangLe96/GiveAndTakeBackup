@@ -5,6 +5,7 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Controls;
@@ -24,10 +25,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		private CustomCircleImageView _ccimProfile;
 		private TabLayout _tabLayout;
 		private static readonly Dictionary<string, int> TabTitleIconsDictionary = new Dictionary<string, int>(){
-			{"Home",Resource.Drawable.tab_navigation_icon_home},
-			{"Notification",Resource.Drawable.tab_navigation_icon_notification},
-			{"Conversation",Resource.Drawable.tab_navigation_icon_conversation},
-			{"Profile",Resource.Drawable.tab_navigation_icon_profile},
+			{AppConstants.HomeTab,Resource.Drawable.tab_navigation_icon_home},
+			{AppConstants.NotificationTab,Resource.Drawable.tab_navigation_icon_notification},
+			{AppConstants.ConversationTab,Resource.Drawable.tab_navigation_icon_conversation},
+			{AppConstants.ProfileTab,Resource.Drawable.tab_navigation_icon_profile},
 		};
 
 		#endregion
@@ -35,8 +36,11 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		#region Properties
 
 		public string AvatarUrl { get; set; }
+
 		protected override int LayoutId => Resource.Layout.TabNavigation;
+
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
+		public IMvxCommand ShowErrorCommand { get; set; }
 
 		#endregion
 
@@ -45,11 +49,21 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
+
 			var bindingSet = this.CreateBindingSet<TabNavigationView, TabNavigationViewModel>();
+
 			bindingSet.Bind(this)
 				.For(v => v.ShowInitialViewModelsCommand)
 				.To(vm => vm.ShowInitialViewModelsCommand);
-			bindingSet.Bind(this).For(v => v.AvatarUrl).To(vm => vm.AvatarUrl);
+
+			bindingSet.Bind(this)
+				.For(v => v.AvatarUrl)
+				.To(vm => vm.AvatarUrl);
+
+			bindingSet.Bind(this)
+				.For(v => v.ShowErrorCommand)
+				.To(vm => vm.ShowErrorCommand);
+
 			bindingSet.Apply();
 		}
 
@@ -81,13 +95,21 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 						(int)DimensionHelper.FromDimensionId(Resource.Dimension.image_avatar_size)),
 			};
 
+			if (_tabLayout.TabCount != TabTitleIconsDictionary.Count)
+			{
+				ShowErrorCommand.Execute(null);
+				return;
+			}
+
 			for (var index = 0; index < _tabLayout.TabCount; index++)
 			{
 				var tab = _tabLayout.GetTabAt(index);
 				tab.SetIcon(TabTitleIconsDictionary[tab.Text]);
 				tab.SetText("");
 			}
-			_tabLayout.GetTabAt(3).SetCustomView(_ccimProfile);
+
+			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
+
 			_tabLayout.TabSelected += OnTabSelected;
 		}
 
@@ -97,7 +119,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		private void OnTabSelected(object sender, TabLayout.TabSelectedEventArgs e)
 		{
-			if (e.Tab.Position == 3)
+			if (e.Tab.Position == _tabLayout.TabCount - 1)
 			{
 				_ccimProfile.Transformations = new List<ITransformation>
 				{
@@ -113,7 +135,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 					new CircleTransformation()
 				};
 			}
-			_tabLayout.GetTabAt(3).SetCustomView(_ccimProfile);
+			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
 		}
 
 		#endregion

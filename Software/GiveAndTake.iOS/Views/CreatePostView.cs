@@ -31,22 +31,10 @@ namespace GiveAndTake.iOS.Views
 		private UILabel _selectedImageTextView;
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
-		public IMvxAsyncCommand CloseCommand { get; set; }
+		public IMvxCommand BackPressedCommand { get; set; }
 
 		protected override void InitView()
 		{
-			ResolutionHelper.InitStaticVariable();
-			DimensionHelper.InitStaticVariable();
-			ImageHelper.InitStaticVariable();
-
-			var bindingSet = this.CreateBindingSet<CreatePostView, CreatePostViewModel>();
-
-			bindingSet.Bind(this)
-				.For(v => v.CloseCommand)
-				.To(vm => vm.CloseCommand);
-
-			bindingSet.Apply();
-
 			InitHeaderBar();
 			InitChooseProvinceCityButton();
 			InitChooseCategoryButton();
@@ -57,8 +45,6 @@ namespace GiveAndTake.iOS.Views
 			InitSelectedImageTextView();
 			InitCancelButton();
 			InitSubmitButton();
-
-			CreateBinding();
 		}
 
 		protected override void CreateBinding()
@@ -94,7 +80,7 @@ namespace GiveAndTake.iOS.Views
 
 			bindingSet.Bind(_btnCancel.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.CloseCommand);
+				.To(vm => vm.BackPressedCommand);
 
 			bindingSet.Bind(this)
 				.For(v => v.ImageCommand)
@@ -112,13 +98,14 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_selectedImageTextView)
 				.For(v => v.AttributedText)
 				.To(vm => vm.SelectedImage)
-				.WithConversion("SelectedImage", _selectedImageTextView);
+				.WithConversion("StringToAttributedString", _selectedImageTextView);
 
 			bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowPhotoCollectionCommand);
 
-			if (_postDescriptionTextView.Text == null)
+			//Review ThanhVo I wonder how the PostDescription can have string value when user type in the textview if no binding here
+			if (string.IsNullOrEmpty(_postDescriptionTextView.Text))
 			{
 				bindingSet.Bind(_postDescriptionTextView)
 					.For(v => v.Text)
@@ -133,6 +120,10 @@ namespace GiveAndTake.iOS.Views
 				.For("Title")
 				.To(vm => vm.BtnSubmitTitle);
 
+			bindingSet.Bind(this)
+				.For(v => v.BackPressedCommand)
+				.To(vm => vm.BackPressedCommand);
+
 			bindingSet.Apply();
 		}
 
@@ -140,7 +131,8 @@ namespace GiveAndTake.iOS.Views
 		{
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
 				UIColor.White, true);
-			_headerBar.BackPressedCommand = CloseCommand;
+			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
+
 			View.Add(_headerBar);
 
 			View.AddConstraints(new[]
@@ -155,7 +147,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitChooseProvinceCityButton()
 		{
 			_chooseProvinceCityButton = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
-				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, null, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
+				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
 
 			_chooseProvinceCityButton.Layer.BorderColor = ColorHelper.Gray.CGColor;
 			_chooseProvinceCityButton.Layer.BorderWidth = 1;
@@ -176,7 +168,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitChooseCategoryButton()
 		{
 			_chooseCategoryButton = UIHelper.CreateButton(DimensionHelper.DropDownButtonHeight, DimensionHelper.DropDownButtonWidth,
-				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, null, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
+				ColorHelper.DefaultEditTextFieldColor, UIColor.Black, DimensionHelper.MediumTextSize, DimensionHelper.DropDownButtonHeight / 2, FontType.Light);
 
 			_chooseCategoryButton.Layer.BorderColor = ColorHelper.Gray.CGColor;
 			_chooseCategoryButton.Layer.BorderWidth = 1;

@@ -1,18 +1,17 @@
 ﻿using GiveAndTake.iOS.Helpers;
-using MvvmCross.Commands;
+using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.CustomControls
 {
 	public class HeaderBar : UIView
 	{
+		public Action OnBackPressed { get; set; }
+
 		private UIImageView _logoImage;
 		private UIView _separateLine;
 		private UIButton _backButton;
 		private UIView _touchField;
-		
-
-		public IMvxAsyncCommand BackPressedCommand { get; set; }
 
 		public HeaderBar(bool isShowBackButton)
 		{
@@ -63,7 +62,7 @@ namespace GiveAndTake.iOS.CustomControls
 
 			_touchField.AddGestureRecognizer(new UITapGestureRecognizer(() =>
 			{
-				BackPressedCommand?.Execute();
+				OnBackPressed?.Invoke();
 			}));
 
 			AddSubview(_backButton);
