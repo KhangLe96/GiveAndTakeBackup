@@ -13,16 +13,23 @@ namespace GiveAndTake.Core.Services
 	public class LoadingOverlayService : ILoadingOverlayService
 	{
 		public IMvxNavigationService NavigationService =>  Mvx.Resolve<IMvxNavigationService>();
-		private readonly LoadingOverlayViewModel _loadingOverlayViewModel = new LoadingOverlayViewModel();
+		public LoadingOverlayViewModel LoadingOverlayViewModel { get; set; }
 
 		public async Task ShowOverlay(string loadingText)
 		{
+			if (LoadingOverlayViewModel != null)
+			{
+				await CloseOverlay();
+			}
+
 			await NavigationService.Navigate<LoadingOverlayViewModel, string>(loadingText);
 		}
 		public async Task CloseOverlay(int milliseconds = 0)
 		{
-			await NavigationService.Close(_loadingOverlayViewModel);
-			await Task.Delay(milliseconds);
+			if (LoadingOverlayViewModel == null) return;
+			await Task.Delay(500);
+			await NavigationService.Close(LoadingOverlayViewModel);
+			LoadingOverlayViewModel = null;
 		}
 	}
 }
