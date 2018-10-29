@@ -4,8 +4,8 @@ using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Request;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Request;
-using Giveaway.Data.EF;
 using Giveaway.Data.EF.Exceptions;
+using Giveaway.Data.EF.Extensions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using Giveaway.Util.Constants;
@@ -13,12 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Giveaway.Data.EF.Extensions;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-    public class RequestService : IRequestService
+	public class RequestService : IRequestService
     {
         private readonly DbService.IRequestService _requestService;
         private readonly DbService.IPostService _postService;
@@ -61,8 +60,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 			}
 
-			// REVIEW: User FirstAsync with async await or use FirstOrDefault, should don't Result.
-			var requestDb = _requestService.Include(x => x.Post).Include(x => x.Responses).FirstAsync(x => x.Id == request.Id).Result;
+			var requestDb = _requestService.Include(x => x.Post).Include(x => x.Responses).FirstOrDefault(x => x.Id == request.Id);
 			var postResponse = Mapper.Map<RequestPostResponse>(requestDb);
 
 			return postResponse;

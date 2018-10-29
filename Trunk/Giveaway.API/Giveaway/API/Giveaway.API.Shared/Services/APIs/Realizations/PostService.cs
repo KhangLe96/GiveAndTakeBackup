@@ -58,25 +58,29 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             try
             {
                 var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity)
-                    .Include(x => x.User).Include(x => x.Requests).Include(x => x.Comments).FirstAsync(x => x.Id == postId).Result;
+                    .Include(x => x.User).Include(x => x.Requests).Include(x => x.Comments).FirstOrDefault(x => x.Id == postId);
 	            //just get requests that have not deleted yet
-				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted).ToList();
+				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
 
 				var postResponse = Mapper.Map<T>(post);
 
 	            if (typeof(T) == typeof(PostAppResponse) && !string.IsNullOrEmpty(userId))
 	            {
-		            Guid id = Guid.Parse(userId);
-		            var postAppResponse = postResponse as PostAppResponse;
-
-					var requests = _requestService.FirstOrDefault(x =>
-			            x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
-		            if (requests != null)
+		            if (Guid.TryParse(userId, out var id))
 		            {
-			            postAppResponse.IsCurrentUserRequested = true;
-		            }
+			            var postAppResponse = postResponse as PostAppResponse;
 
-		            return postAppResponse as T;
+			            var requests = _requestService.FirstOrDefault(x =>
+				            x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+			            if (requests != null)
+			            {
+				            postAppResponse.IsCurrentUserRequested = true;
+			            }
+
+			            return postAppResponse as T;
+					}
+
+		            throw new BadRequestException(CommonConstant.Error.InvalidInput);
 	            }
 
 				return postResponse;
@@ -104,10 +108,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
                 return postResponse;
             }
-            else
-            {
-                throw new InternalServerErrorException("Internal Error");
-            }
+
+	        throw new InternalServerErrorException("Internal Error");
         }
 
         public PostAppResponse Update(Guid id, PostRequest postRequest)
@@ -186,15 +188,21 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		{
 			if (typeof(T) == typeof(PostAppResponse) && !string.IsNullOrEmpty(userId))
 			{
-				Guid id = Guid.Parse(userId);
-				foreach (PostAppResponse post in posts as List<PostAppResponse>)
+				if (Guid.TryParse(userId, out var id))
 				{
-					var requests = _requestService.FirstOrDefault(x =>
-						x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
-					if (requests != null)
+					foreach (PostAppResponse post in posts as List<PostAppResponse>)
 					{
-						post.IsCurrentUserRequested = true;
+						var requests = _requestService.FirstOrDefault(x =>
+							x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+						if (requests != null)
+						{
+							post.IsCurrentUserRequested = true;
+						}
 					}
+				}
+				else
+				{
+					throw new BadRequestException(CommonConstant.Error.InvalidInput);
 				}
 			}
 		}
@@ -281,21 +289,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, out int total)
         {
-			//REVIEW: Please find a reason why this query has an internal error. After that prevent, dont' use try catch to hidden error.
 			IEnumerable<Post> posts;
-			try
-			{
-				posts = _postService.Include(x => x.Category)
-					.Include(x => x.Images)
-					.Include(x => x.ProvinceCity)
-					.Include(x => x.User)
-					.Include(x => x.Comments)
-					.Include(x => x.Requests);
-			}
-			catch
-			{
-				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-			}
+
+			posts = _postService.Include(x => x.Category)
+				.Include(x => x.Images)
+				.Include(x => x.ProvinceCity)
+				.Include(x => x.User)
+				.Include(x => x.Comments)
+				.Include(x => x.Requests);
+
 
 			if (string.IsNullOrEmpty(userId))
 			{
@@ -303,15 +305,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			}
 			else
 			{
-				//REVIEW: Please find a reason why this query has an internal error. After that prevent, dont' use try catch to hidden error.
-				try
+				if (Guid.TryParse(userId, out var id))
 				{
-					Guid id = Guid.Parse(userId);
 					posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id);
 				}
-				catch
+				else
 				{
-					throw new BadRequestException(CommonConstant.Error.NotFound);
+					throw new BadRequestException(CommonConstant.Error.InvalidInput);
 				}
 			}
 
@@ -323,7 +323,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 	        posts = posts.ToList();
 			foreach (var post in posts)
 			{
-				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted).ToList();
+				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
 			}
 
 			total = posts.Count();

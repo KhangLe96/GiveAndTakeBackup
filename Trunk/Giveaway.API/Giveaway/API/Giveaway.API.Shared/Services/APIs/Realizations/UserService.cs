@@ -14,15 +14,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using static Giveaway.Data.EF.Const;
 using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
-// REVIEW: Remove unused namespace
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-    /// <inheritdoc />
-    public class UserService : IUserService
+	/// <inheritdoc />
+	public class UserService : IUserService
 	{
 		#region Properties
 

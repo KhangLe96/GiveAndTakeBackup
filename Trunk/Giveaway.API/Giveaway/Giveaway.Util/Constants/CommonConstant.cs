@@ -8,7 +8,7 @@
             public const string NotFound = "Not Found";
             public const string InternalServerError = "Internal Server Error";
             public static string BlockedUser = "UserHasBeenBlocked";
-
-        }
+	        public static string InvalidInput = "Invalid Input";
+		}
     }
 }
