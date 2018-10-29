@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.Helpers;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -198,7 +199,7 @@ namespace GiveAndTake.Core.ViewModels
 		    CategoryName = _post.Category.CategoryName;
 		    AvatarUrl = _post.User.AvatarUrl;
 		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
-		    CreatedTime = _post.CreatedTime.ToString("dd.MM.yyyy");
+		    CreatedTime = TimeHelper.ToTimeAgo(_post.CreatedTime);
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    PostTitle = _post.Title;
 		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
@@ -215,12 +216,6 @@ namespace GiveAndTake.Core.ViewModels
             ShowGiverProfileCommand = new MvxAsyncCommand(async () => await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage));
             ShowPostDetailCommand = new MvxAsyncCommand(ShowPostDetailView);
 			ShowMenuPopupCommand = new MvxAsyncCommand(ShowMenuView);
-            ShowRequestListCommand = new MvxAsyncCommand(ShowRequestListView);
-        }
-
-        private async Task ShowRequestListView()
-        {
-            await NavigationService.Navigate<RequestsViewModel>();
         }
 
         private async Task ShowMenuView()
@@ -267,7 +262,6 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowGiverProfileCommand { get; set; }
         public ICommand ShowPostDetailCommand { get; set; }
         public IMvxAsyncCommand ShowMenuPopupCommand { get; set; }
-        public ICommand ShowRequestListCommand { get; set; }
 
         #endregion
     }

@@ -19,21 +19,28 @@ using System.Linq;
 using DbService = Giveaway.Service.Services;
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-    public class PostService<T> : IPostService<T> where T : PostBaseResponse
+	public class PostService<T> : IPostService<T> where T : PostBaseResponse
     {
         private readonly DbService.IPostService _postService;
         private readonly DbService.IImageService _imageService;
+	    private readonly DbService.IRequestService _requestService;
 
-        public PostService(DbService.IPostService postService, DbService.IImageService imageService)
+		public PostService(DbService.IPostService postService, DbService.IImageService imageService, DbService.IRequestService requestService)
         {
             _postService = postService;
             _imageService = imageService;
+	        _requestService = requestService;
         }
 
-        public PagingQueryResponse<T> GetPostForPaging(string userId, IDictionary<string, string> @params, string platform)
+        public PagingQueryResponse<T> GetPostForPaging(IDictionary<string, string> @params, string userId, bool isListOfSingleUser)
         {
-            var request = @params.ToObject<PagingQueryPostRequest>();
-            var posts = GetPagedPosts(userId, request, platform, out var total);
+			var request = @params.ToObject<PagingQueryPostRequest>();
+
+	        int total = 0;
+			var posts = isListOfSingleUser ? GetPagedPosts(userId, request, out total) : GetPagedPosts(null, request, out total); 
+
+			CheckIfCurrentUserRequested(userId, posts);
+	        
             return new PagingQueryResponse<T>
             {
                 Data = posts,
@@ -46,15 +53,33 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public T GetDetail(Guid postId)
-        {
+        public T GetDetail(Guid postId, string userId)
+		{
             try
             {
                 var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity)
                     .Include(x => x.User).Include(x => x.Requests).Include(x => x.Comments).FirstAsync(x => x.Id == postId).Result;
-                var postResponse = Mapper.Map<T>(post);
+	            //just get requests that have not deleted yet
+				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted).ToList();
 
-                return postResponse;
+				var postResponse = Mapper.Map<T>(post);
+
+	            if (typeof(T) == typeof(PostAppResponse) && !string.IsNullOrEmpty(userId))
+	            {
+		            Guid id = Guid.Parse(userId);
+		            var postAppResponse = postResponse as PostAppResponse;
+
+					var requests = _requestService.FirstOrDefault(x =>
+			            x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+		            if (requests != null)
+		            {
+			            postAppResponse.IsCurrentUserRequested = true;
+		            }
+
+		            return postAppResponse as T;
+	            }
+
+				return postResponse;
             }
             catch
             {
@@ -72,9 +97,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
             if(isPostSaved)
             {
-                CreateImage(postRequest);
+				if(postRequest.Images.Count != 0) CreateImage(postRequest);
 
-                var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
+				var postDb = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity).FirstAsync(x => x.Id == post.Id).Result;
                 var postResponse = Mapper.Map<PostAppResponse>(postDb);
 
                 return postResponse;
@@ -155,9 +180,26 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return updated;
         }
 
-        #region Utils
+		#region Utils
 
-        private void CreateImage(PostRequest post)
+		private void CheckIfCurrentUserRequested(string userId, List<T> posts)
+		{
+			if (typeof(T) == typeof(PostAppResponse) && !string.IsNullOrEmpty(userId))
+			{
+				Guid id = Guid.Parse(userId);
+				foreach (PostAppResponse post in posts as List<PostAppResponse>)
+				{
+					var requests = _requestService.FirstOrDefault(x =>
+						x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+					if (requests != null)
+					{
+						post.IsCurrentUserRequested = true;
+					}
+				}
+			}
+		}
+
+		private void CreateImage(PostRequest post)
         {
             var imageBase64Requests = InitImageBase64Requests(post);
             var imagesDTO = ConvertFromBase64(imageBase64Requests);
@@ -237,52 +279,59 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, string platform, out int total)
+        private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, out int total)
         {
-            IEnumerable<Post> posts;
-            try
-            {
-                posts = _postService.Include(x => x.Category)
+			IEnumerable<Post> posts;
+			try
+			{
+				posts = _postService.Include(x => x.Category)
 					.Include(x => x.Images)
 					.Include(x => x.ProvinceCity)
 					.Include(x => x.User)
-					.Include(x => x.Requests)
-					.Include(x => x.Comments);
-            }
-            catch
-            {
-                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-            }
+					.Include(x => x.Comments)
+					.Include(x => x.Requests);
+			}
+			catch
+			{
+				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+			}
 
-            if (string.IsNullOrEmpty(userId))
-            {
-                    posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.Category.EntityStatus == EntityStatus.Activated);
-            }
-            else
-            {
-                try
-                {
-                    Guid id = Guid.Parse(userId);
-                    posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id);
-                }
-                catch
-                {
-                    throw new BadRequestException(CommonConstant.Error.NotFound);
-                }
-            }
+			if (string.IsNullOrEmpty(userId))
+			{
+				posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.Category.EntityStatus == EntityStatus.Activated);
+			}
+			else
+			{
+				try
+				{
+					Guid id = Guid.Parse(userId);
+					posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id);
+				}
+				catch
+				{
+					throw new BadRequestException(CommonConstant.Error.NotFound);
+				}
+			}
 
-            //filter post by properties
-            posts = FilterPost(request, posts);
-            posts = SortPosts(request, posts);
+			//filter post by properties
+			posts = FilterPost(request, posts);
+			posts = SortPosts(request, posts);
 
-            total = posts.Count();
+			//just get requests that have not deleted yet
+	        posts = posts.ToList();
+			foreach (var post in posts)
+			{
+				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted).ToList();
+			}
 
-            return posts
-                .Skip(request.Limit * (request.Page - 1))
-                .Take(request.Limit)
-                .Select(post => Mapper.Map<T>(post))
-                .ToList();
-        }
+			total = posts.Count();
+
+			return posts
+				.Skip(request.Limit * (request.Page - 1))
+				.Take(request.Limit)
+				.Select(post => Mapper.Map<T>(post))
+				.ToList();
+		}
 
         private IEnumerable<Post> SortPosts(PagingQueryPostRequest request, IEnumerable<Post> posts)
         {

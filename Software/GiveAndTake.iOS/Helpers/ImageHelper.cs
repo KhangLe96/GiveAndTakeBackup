@@ -18,6 +18,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string LoginLogo { get; private set; }
 		public static string Multiphoto { get; private set; }
 		public static string RequestOff { get; private set; }
+		public static string RequestOn { get; private set; }
 		public static string Splashscreen { get; private set; }
 		public static string TopLogo { get; private set; }
 		public static string AvtOff { get; private set; }
@@ -58,6 +59,7 @@ namespace GiveAndTake.iOS.Helpers
 			LoginLogo = Path.Combine(BasePath, "login_logo");
 			Multiphoto = Path.Combine(BasePath, "multiphoto");
 			RequestOff = Path.Combine(BasePath, "request_off");
+			RequestOn = Path.Combine(BasePath, "request_on");
 			Splashscreen = Path.Combine(BasePath, "splashscreen");
 			TopLogo = Path.Combine(BasePath, "Top_logo");
 			AvtOff = Path.Combine(BasePath, "avt_off");

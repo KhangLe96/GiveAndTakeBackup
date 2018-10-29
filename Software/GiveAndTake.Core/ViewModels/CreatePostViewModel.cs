@@ -26,6 +26,7 @@ namespace GiveAndTake.Core.ViewModels
 		private List<PostImage> _postImages = new List<PostImage>();
 		public List<PostImage> PostImages
 		{
+			// REVIEW [KHOA]: _postImages is already initialized above
 			get => _postImages ?? new List<PostImage>();
 			set
 			{
@@ -34,16 +35,16 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private ICommand _submitCommand;
-		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
+		private IMvxCommand _submitCommand;
+		public IMvxCommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxAsyncCommand(OnCreatePost));
 
 		private IMvxAsyncCommand _showPhotoCollectionCommand;
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
 															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
 
+		// REVIEW [KHOA]: use lazy initiation
 		public IMvxCommand ShowCategoriesCommand { get; set; }
 		public IMvxCommand ShowProvinceCityCommand { get; set; }
-		public IMvxAsyncCommand CloseCommand { get; set; }
 		public IMvxCommand BackPressedCommand { get; set; }
 
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
@@ -89,13 +90,14 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _provinceCity, value);
 		}
 
-
 		public string SelectedImage
 		{
 			get => _selectedImage;
 			set => SetProperty(ref _selectedImage, value);
 		}
 
+
+		// REVIEW [KHOA]: get texts from locale instead of hard-codes
 		public string PostDescriptionPlaceHolder { get; set; } = "Mô tả (Nhãn hiệu, kiểu dáng, màu sắc, ... )";
 		public string PostTitlePlaceHolder { get; set; } = "Tiêu đề (Thương hiệu, thể loại, ...)";
 		public string BtnSubmitTitle { get; set; } = "Đăng";
@@ -114,10 +116,18 @@ namespace GiveAndTake.Core.ViewModels
 		private void InitCommand()
 		{
 			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
-			ShowCategoriesCommand = new MvxCommand(ShowCategoriesPopup);
 			ShowProvinceCityCommand = new MvxCommand(ShowLocationFiltersPopup);
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
-			BackPressedCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			BackPressedCommand = new MvxAsyncCommand(BackPressed);
+			ShowCategoriesCommand = new MvxCommand(ShowCategoriesPopup);
+		}
+
+		private async Task BackPressed()
+		{
+			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.DeleteConfirmationMessage);
+			if (result == RequestStatus.Submitted)
+			{
+				await NavigationService.Close(this, false);
+			}
 		}
 
 		private async void ShowCategoriesPopup()
@@ -156,8 +166,11 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
 			}
+
+			// REVIEW [KHOA]: if there is no post image -> no action for user -> they don't know what happen
 		}
 
+		// REVIEW [KHOA]: move to command up to command region
 		private MvxCommand _takePictureCommand;
 
 		public ICommand TakePictureCommand
@@ -204,35 +217,28 @@ namespace GiveAndTake.Core.ViewModels
 			InitSelectedImage();
 		}
 
-		public async void InitSubmit()
+		public async Task OnCreatePost()
 		{
 			try
 			{
-				InitCreateNewPost();
+				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UploadDataOverLayTitle);
+				var managementService = Mvx.Resolve<IManagementService>();
+				var post = new CreatePost
+				{
+					Title = PostTitle,
+					Description = PostDescription,
+					PostImages = _postImages,
+					PostCategory = _selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
+					Address = _selectedProvinceCity.Id
+				};
+				await managementService.CreatePost(post, _dataModel.LoginResponse.Token);
+				await NavigationService.Close(this, true);
+				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (result == RequestStatus.Submitted)
-				{
-					InitSubmit();
-				}
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorConnectionMessage);
 			}
-		}
-
-		public void InitCreateNewPost()
-		{
-			var managementService = Mvx.Resolve<IManagementService>();
-			var post = new CreatePost()
-			{
-				Title = PostTitle,
-				Description = PostDescription,
-				PostImages = _postImages,
-				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
-				Address = _selectedProvinceCity.Id,   //Da Nang
-			};
-			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
-			NavigationService.Close(this,true);
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)
@@ -243,6 +249,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void InitSelectedImage()
 		{
+			// REVIEW [KHOA]: use locale
 			SelectedImage = $"Đã chọn {PostImages.Count} hình";
 		}
 	}

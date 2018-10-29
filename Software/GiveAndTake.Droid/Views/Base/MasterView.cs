@@ -1,21 +1,29 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
+using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using GiveAndTake.Core.ViewModels.Base;
+
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
+using MvvmCross.Platforms.Android.Binding.BindingContext;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views.Base
 {
 	[MvxActivityPresentation]
-	[Activity(Label = "View for HomeViewModel", WindowSoftInputMode = SoftInput.AdjustPan)]
+	[Activity(Label = "View for HomeViewModel", WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = ScreenOrientation.Portrait)]
 	public class MasterView : BaseActivity
 	{
 		protected override int LayoutId => Resource.Layout.MasterView;
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
+
+		public IMvxCommand BackPressedCommand { get; set; }
+
+		
 		protected override void InitView()
-		{
+		{		
 		}
 
 		protected override void CreateBinding()
@@ -40,5 +48,18 @@ namespace GiveAndTake.Droid.Views.Base
 			}
 
 		}
+		public override void OnBackPressed()
+		{
+			if (BackPressedCommand == null)
+			{
+				base.OnBackPressed();
+			}
+			else
+			{
+				BackPressedCommand.Execute();
+			}
+		}
+
+
 	}
 }

@@ -10,7 +10,7 @@ namespace GiveAndTake.Core.ViewModels
 {
 	public class RequestDetailViewModel : BaseViewModel<Request, PopupRequestDetailResult>
 	{
-		public string Title => AppConstants.PopupRequestDetailTitle;
+		public string PopupTitle => AppConstants.PopupRequestDetailTitle;
 
 		public string BtnRejectTitle => AppConstants.ButtonRejectTitle;
 
@@ -77,6 +77,6 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void HandleOnAccepted() => NavigationService.Close(this, PopupRequestDetailResult.Accepted);
 
-		private void HandleOnClosed() => NavigationService.Close(this);
+		private void HandleOnClosed() => NavigationService.Close(this,PopupRequestDetailResult.Cancelled);
 	}
 }

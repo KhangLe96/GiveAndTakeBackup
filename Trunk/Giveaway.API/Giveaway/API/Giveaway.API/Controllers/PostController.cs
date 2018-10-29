@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
 namespace Giveaway.API.Controllers
 {
@@ -35,7 +36,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PagingQueryResponse<PostCmsResponse> GetListPostCMS([FromHeader]IDictionary<string, string> @params)
         {
-            return _postCmsService.GetPostForPaging(null, @params, WebConstant.Platform.CMS);
+            return _postCmsService.GetPostForPaging(@params, null, false);
         }
 
         /// <summary>
@@ -47,10 +48,12 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PagingQueryResponse<PostAppResponse> GetListPostApp([FromHeader]IDictionary<string, string> @params)
         {
-            return _postService.GetPostForPaging(null, @params, WebConstant.Platform.App);
+	        var userId = GetUserId();
+
+	        return _postService.GetPostForPaging(@params, userId, false);
         }
 
-        /// <summary>
+	    /// <summary>
         /// Get list post of an User with userId and params object that includes: page, limit, keyword, provinceCityId, categoryId, title
         /// </summary>
         /// <param name="userId"></param>
@@ -61,7 +64,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PagingQueryResponse<PostAppResponse> GetListPostOfSingleUser(string userId, [FromHeader]IDictionary<string, string> @params)
         {
-            return _postService.GetPostForPaging(userId, @params, null);
+            return _postService.GetPostForPaging(@params, userId, true);
         }
 
         /// <summary>
@@ -73,7 +76,8 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PostAppResponse GetDetailApp(Guid postId)
         {
-            return _postService.GetDetail(postId);
+	        var userId = GetUserId();
+			return _postService.GetDetail(postId, userId);
         }
 
         /// <summary>
@@ -85,7 +89,7 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public PostCmsResponse GetDetailCms(Guid postId)
         {
-            return _postCmsService.GetDetail(postId);
+            return _postCmsService.GetDetail(postId, null);
         }
 
         /// <summary>
@@ -144,5 +148,17 @@ namespace Giveaway.API.Controllers
         {
             return _postService.ChangePostStatusApp(postId, request);
         }
-    }
+
+		#region Utils
+
+		private string GetUserId()
+		{
+			string userId = "";
+			if (User.Identity.IsAuthenticated)
+				userId = User.GetUserId().ToString();
+			return userId;
+		}
+
+		#endregion
+	}
 }

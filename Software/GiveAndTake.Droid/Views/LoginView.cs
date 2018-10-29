@@ -9,7 +9,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
-using Android.OS;
+using Android.Content.PM;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Object = Java.Lang.Object;
@@ -18,7 +18,7 @@ using Result = Android.App.Result;
 namespace GiveAndTake.Droid.Views
 {
 	[MvxActivityPresentation]
-    [Activity(Label = "GiveAndTake.Droid.Views")]
+    [Activity(Label = "GiveAndTake.Droid.Views", ScreenOrientation = ScreenOrientation.Portrait)]
 
     public class LoginView : BaseActivity
     {
@@ -53,11 +53,11 @@ namespace GiveAndTake.Droid.Views
 	    {
 		    base.OnViewModelSet();
 
-		    accessToken = AccessToken.CurrentAccessToken;
+			accessToken = AccessToken.CurrentAccessToken;
 		    bool isLoggedIn = accessToken != null && !accessToken.IsExpired;
 		    if (isLoggedIn)
 		    {
-			    HandleSuccessfulLogin();
+				HandleSuccessfulLogin();
 		    }
 		}
 

@@ -17,6 +17,8 @@ namespace GiveAndTake.Core
 		public const string LoginFacebook = "user/login/facebook";
 		public const string CreatePost = "post/app/create";
 		public const string CreateRequest = "request/create";
+		public const string CheckUserRequest = "request/checkUserRequest";
+		public const string CancelUserRequest = "request/deleteCurrentUserRequest";
 		public const string GetUserProfile = "user";
 		public const string Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiOWM4NzIxMGEtM2E2ZC00MGM5LTgwMmItOGRkZWVhN2RlMDU3IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkFkbWluIEFkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIlVzZXIiLCJBZG1pbiJdLCJuYmYiOjE1MzY2MzM4MTYsImV4cCI6MTUzOTIyNTgxNiwiaXNzIjoiR2l2ZWF3YXkiLCJhdWQiOiJFdmVyeW9uZSJ9.2Jz4t5mnrhXSbr93gtVtSjDdI9nXB412-uwN40xd-aU";
 		public const string DefaultUserName = "username";
@@ -53,10 +55,16 @@ namespace GiveAndTake.Core
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
+		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
+		public static string SearchResultNullTitle = "Không tìm thấy kết quả nào";
 		public static string SelectedImage = "Đã chọn 0 hình";
 		public static string RequestRejectingMessage = "Bạn có chắc chắn từ chối yêu cầu?";
 		public static string PopupRequestDetailTitle = "Chi tiết yêu cầu";
 		public static string ButtonRejectTitle = "Từ chối";
 		public static string ButtonAcceptTitle = "Chấp nhận";
+		public static string LoadingDataOverlayTitle= "Đang tải dữ liệu";
+		public static string UploadDataOverLayTitle = "Đang đăng bài";
+		public static string CreateResponse = "response/create";
+		public static string UpdateOverLayTitle = "Đang cập nhật";
 	}
 }

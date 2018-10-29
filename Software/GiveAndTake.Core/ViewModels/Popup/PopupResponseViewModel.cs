@@ -1,33 +1,25 @@
-﻿using System.Collections.Generic;
-using System.Windows.Input;
-using FFImageLoading.Transformations;
+﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
-using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
-using MvvmCross;
 using MvvmCross.Commands;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
-	public class PopupCreateRequestViewModel : BaseViewModel<Post, RequestStatus>
+	public class PopupResponseViewModel : BaseViewModel<Request, RequestStatus>
 	{
 		#region Properties
-
-		private Post _post;
-		private readonly IDataModel _dataModel;
-		private string _avatarUrl;
-		private string _userName;
-		private string _requestDescription;
-		private string _postId;
-		private string _userId;
-		private bool _isSubmitBtnEnabled;
-
 		public string PopupTitle { get; set; } = "Thông tin trao đổi";
 		public string SendTo { get; set; } = "Gửi đến:";
 		public string PopupInputInformationPlaceHolder { get; set; } = "Thông tin trao đổi ...";
 		public string BtnSubmitTitle { get; set; } = "Gửi";
 		public string BtnCancelTitle { get; set; } = "Hủy";
+
+		public IMvxCommand CloseCommand => _closeCommand ?? (_closeCommand = new MvxAsyncCommand(OnClose));
+
+		public IMvxCommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxAsyncCommand(OnSubmit));
 
 		public string AvatarUrl
 		{
@@ -48,7 +40,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			{
 				SetProperty(ref _requestDescription, value);
 				UpdateSubmitBtn();
-			} 
+			}
 		}
 
 		public bool IsSubmitBtnEnabled
@@ -59,52 +51,45 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
+		private Request _request;
+		private readonly IDataModel _dataModel;
+		private string _avatarUrl;
+		private string _userName;
+		private string _requestDescription;
+		private bool _isSubmitBtnEnabled;
+		private IMvxCommand _closeCommand;
+		private IMvxCommand _submitCommand;
+
 		#endregion
 
 		#region Constructor
 
-		public PopupCreateRequestViewModel(IDataModel dataModel)
+		public PopupResponseViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
-			InitCommand();
 		}
 
-		public override void Prepare(Post post)
+		public override void Prepare(Request request)
 		{
-			_post = post;
-			_postId = post.PostId;
-			_userId = post.User.Id;
-			AvatarUrl = post.User.AvatarUrl;
-			UserName = post.User.FullName ?? AppConstants.DefaultUserName;
+			_request = request;
+			AvatarUrl = request.User.AvatarUrl;
+			UserName = request.User.FullName ?? AppConstants.DefaultUserName;
 		}
 
-		private void InitCommand()
+		public async Task OnSubmit()
 		{
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, RequestStatus.Cancelled));
-			SubmitCommand = new MvxCommand(InitCreateNewRequest);
-		}
-
-		public async void InitCreateNewRequest()
-		{
-			var managementService = Mvx.Resolve<IManagementService>();
-			var request = new Request()
+			var response = new RequestResponse
 			{
-				PostId = _postId,
-				UserId = _userId,
-				RequestMessage = RequestDescription,
+				RequestId = _request.Id,
+				ResponseMessage = RequestDescription
 			};
-			await managementService.CreateRequest(request, _dataModel.LoginResponse.Token);
+			await ManagementService.CreateResponse(response, _dataModel.LoginResponse.Token);
 			await NavigationService.Close(this, RequestStatus.Submitted);
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_requestDescription);
 
-		#endregion
-
-		#region Methods
-
-		public IMvxAsyncCommand CloseCommand { get; set; }
-		public ICommand SubmitCommand { get; set; }
+		private async Task OnClose() => await NavigationService.Close(this, RequestStatus.Cancelled);
 
 		#endregion
 	}

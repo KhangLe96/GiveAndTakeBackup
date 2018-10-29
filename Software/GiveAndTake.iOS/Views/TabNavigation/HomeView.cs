@@ -19,6 +19,14 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		WrapInNavigationController = true)]
 	public class HomeView : BaseView
 	{
+		public IMvxCommand LoadMoreCommand { get; set; }
+
+		public IMvxCommand SearchCommand { get; set; }
+
+		private const int TopColorAlpha = 0;
+		private const int VerticalSublayer = 0;
+		private const float BottomColorAlpha = 0.8f;
+
 		private UIButton _btnFilter;
 		private UIButton _btnSort;
 		private UIButton _btnCategory;
@@ -31,18 +39,13 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private PopupItemLabel _searchResult;
 		private UIView _gradientView;
 
-		public IMvxCommand LoadMoreCommand { get; set; }
-		public IMvxCommand SearchCommand { get; set; }
-
-		public override void ViewDidLoad()
-		{
-			base.ViewDidLoad();
-			var g = new UITapGestureRecognizer(() => View.EndEditing(true)) {CancelsTouchesInView = false};
-			View.AddGestureRecognizer(g);
-		}
-
 		protected override void InitView()
 		{
+			View.AddGestureRecognizer(new UITapGestureRecognizer(HideKeyboard)
+			{
+				CancelsTouchesInView = false
+			});
+
 			InitFilterBar();
             InitPostsTableView();
 			InitNewPostButton();
@@ -51,12 +54,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		public override void ViewDidAppear(bool animated)
 		{
 			base.ViewDidAppear(animated);
-			var gradient = new CAGradientLayer
+			var whiteGradient = new CAGradientLayer
 			{
 				Frame = _gradientView.Bounds,
-				Colors = new[] { UIColor.White.ColorWithAlpha(0).CGColor, UIColor.White.ColorWithAlpha(0.8f).CGColor }
+
+				Colors = new[]
+				{
+					UIColor.White.ColorWithAlpha(TopColorAlpha).CGColor,
+					UIColor.White.ColorWithAlpha(BottomColorAlpha).CGColor
+				}
 			};
-			_gradientView.Layer.InsertSublayer(gradient, 0);
+			_gradientView.Layer.InsertSublayer(whiteGradient, VerticalSublayer);
 		}
 
 		private void InitFilterBar()
@@ -94,6 +102,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 
 			_searchBar = UIHelper.CreateSearchBar(DimensionHelper.FilterSize, DimensionHelper.FilterSize);
+			_searchBar.SearchButtonClicked += OnSearchSubmit;
 			View.Add(_searchBar);
 
 			View.AddConstraints(new[]
@@ -105,8 +114,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_searchBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort)
 			});
-
-			_searchBar.SearchButtonClicked += OnSearchSubmit;
+			
 
 			_separatorLine = UIHelper.CreateView(DimensionHelper.MenuSeparatorLineHeight, DimensionHelper.HeaderBarLogoWidth, ColorHelper.GreyLineColor);
 			View.Add(_separatorLine);
@@ -117,6 +125,12 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_separatorLine, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _searchBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort)
 			});
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			_searchBar.SearchButtonClicked -= OnSearchSubmit;
+			base.Dispose(disposing);
 		}
 
 		private void InitPostsTableView()
@@ -141,7 +155,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 
 			_searchResult = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.BigTextSize);
-			_searchResult.Text = "Không tìm thấy kết quả nào";
 			View.Add(_searchResult);
 			View.AddConstraints(new[]
 			{
@@ -185,7 +198,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 
 			set.Bind(_postTableViewSource)
-				.To(vm => vm.PostViewModels);
+				.To(vm => vm.PostItemViewModelCollection);
 
 			set.Bind(_searchBar)
 				.For(v => v.Text)
@@ -213,11 +226,11 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 			set.Bind(_btnFilter.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.ShowFilterCommand);
+				.To(vm => vm.ShowLocationFiltersCommand);
 
 			set.Bind(_btnSort.Tap())
 				.For(v => v.Command)
-				.To(vm => vm.ShowShortPostCommand);
+				.To(vm => vm.ShowSortFiltersCommand);
 
 			set.Bind(_newPostButton.Tap())
 				.For(v => v.Command)
@@ -236,11 +249,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.To(vm => vm.IsSortFilterActivated);
 
 			set.Bind(_searchResult)
+				.For(v => v.Text)
+				.To(vm => vm.SearchResultTitle);
+
+			set.Bind(_searchResult)
 				.For("Visibility")
 				.To(vm => vm.IsSearchResultNull);
 
 			set.Apply();
 		}
+
+		private void HideKeyboard() => View.EndEditing(true);
 
 		private void OnSearchSubmit(object sender, EventArgs e)
 		{

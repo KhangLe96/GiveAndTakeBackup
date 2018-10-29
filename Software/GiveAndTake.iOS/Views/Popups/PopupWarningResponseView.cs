@@ -55,7 +55,6 @@ namespace GiveAndTake.iOS.Views.Popups
 				ColorHelper.Blue,
 				UIColor.White,
 				DimensionHelper.SmallTextSize,
-				null,
 				DimensionHelper.PopupButtonHeight / 2);
 
 			_contentView.Add(_closeButton);

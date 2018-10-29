@@ -50,6 +50,16 @@ namespace GiveAndTake.Droid.Views
 			}
 		}
 
+		public bool IsRequested
+		{
+			get => _isRequested;
+			set
+			{
+				_isRequested = value;
+				InitSetRequestIcon();
+			}
+		}
+
 		public int PostImageIndex
 		{
 			get => _postImageIndex;
@@ -60,11 +70,13 @@ namespace GiveAndTake.Droid.Views
 			}
 		}
 
+		private ImageButton _requestButton;
 		private ViewPager _imageViewer;
 		private TextView _tvStatus;
 		private string _status;
 		private List<Image> _postImages;
 		private int _postImageIndex;
+		private bool _isRequested;
 
 		#endregion
 
@@ -72,10 +84,19 @@ namespace GiveAndTake.Droid.Views
 		{
 			_tvStatus = view.FindViewById<TextView>(Resource.Id.tvStatus);
 			_imageViewer = view.FindViewById<ViewPager>(Resource.Id.SliderViewPager);
+			_requestButton = view.FindViewById<ImageButton>(Resource.Id.requestImageButton);
 
 			_imageViewer.SetClipToPadding(false);
 
 			_imageViewer.PageSelected += (sender, args) => UpdateImageIndexCommand?.Execute(_imageViewer.CurrentItem);
+
+		}
+
+		private void InitSetRequestIcon()
+		{
+			_requestButton.SetBackgroundResource(IsRequested
+				? Resource.Drawable.request_on
+				: Resource.Drawable.request_off);
 		}
 
 		protected override void CreateBinding()
@@ -103,6 +124,10 @@ namespace GiveAndTake.Droid.Views
 			bindingSet.Bind(this)
 				.For(v => v.UpdateImageIndexCommand)
 				.To(vm => vm.UpdateImageIndexCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.IsRequested)
+				.To(vm => vm.IsRequested);
 
 			bindingSet.Apply();
 		}

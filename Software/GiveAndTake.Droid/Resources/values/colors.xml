@@ -18,4 +18,6 @@
 	<color name="gray">#cccccc</color>
 	<color name="dark_gray">#666666</color>
 	<color name="collection_view_background">#F4F5F4</color>
+	<color name="loading_indicator">#3AB9EB</color>
+	<color name="loading_indicator_Overlay">#0D000000</color>
 </resources>

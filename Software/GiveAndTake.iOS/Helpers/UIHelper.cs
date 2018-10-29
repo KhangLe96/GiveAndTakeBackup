@@ -2,6 +2,7 @@
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using System;
+using Foundation;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -68,16 +69,6 @@ namespace GiveAndTake.iOS.Helpers
 			AddWidthHeight(height, width, view);
 
 			return view;
-		}
-
-		public static UIPageControl CreatePageControl(nfloat height, nfloat width, UIColor backgroundColor)
-		{
-			var pageControl = new UIPageControl { TranslatesAutoresizingMaskIntoConstraints = false };
-
-			pageControl.BackgroundColor = backgroundColor;
-			AddWidthHeight(height, width, pageControl);
-
-			return pageControl;
 		}
 
 		public static UIView CreateView(nfloat height, nfloat width, UIColor backgroundColor)
@@ -363,16 +354,6 @@ namespace GiveAndTake.iOS.Helpers
 			return line;
 		}
 
-		public static iCarousel CreateSlideView(UIView view) => new iCarousel
-		{
-			Bounds = view.Bounds,
-			ContentMode = UIViewContentMode.Center,
-			Frame = view.Frame,
-			Type = iCarouselType.Linear,
-			CenterItemWhenSelected = true,
-
-		};
-
 		public static iCarousel CreateSlideView(nfloat height, nfloat width)
 		{
 			var view = new iCarousel
@@ -382,11 +363,25 @@ namespace GiveAndTake.iOS.Helpers
 				CenterItemWhenSelected = true,
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				PagingEnabled = true
-		};
+			};
 
 			AddWidthHeight(height, width, view);
 
 			return view;
+		}
+
+		public static NSAttributedString CreateAttributedString(string text, UIColor color, bool underlineOrNot)
+		{
+			if (underlineOrNot)
+			{
+				var attrStr = new NSAttributedString(text, foregroundColor: color, underlineStyle: NSUnderlineStyle.Single);
+				return attrStr;
+			}
+			else
+			{
+				var attrStr = new NSAttributedString(text, foregroundColor: color);
+				return attrStr;
+			}
 		}
 	}
 }

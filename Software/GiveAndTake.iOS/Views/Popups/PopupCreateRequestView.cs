@@ -3,6 +3,7 @@ using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
+using MvvmCross.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
@@ -52,16 +53,12 @@ namespace GiveAndTake.iOS.Views.Popups
 				.To(vm => vm.AvatarUrl);
 
 			bindingSet.Bind(_requestDescriptionTextView)
+				.For(v => v.Text)
+				.To(vm => vm.RequestDescription);
+
+			bindingSet.Bind(_requestDescriptionTextView)
 				.For(v => v.Placeholder)
 				.To(vm => vm.PopupInputInformationPlaceHolder);
-
-			//Review ThanhVo I wonder how the RequestDescription can have string value when user type in the textview if no binding here
-			if (string.IsNullOrEmpty(_requestDescriptionTextView.Text))
-			{
-				bindingSet.Bind(_requestDescriptionTextView)
-					.For(v => v.Text)
-					.To(vm => vm.RequestDescription);
-			}
 
 			bindingSet.Bind(_btnCancel)
 				.For("Title")
@@ -77,16 +74,7 @@ namespace GiveAndTake.iOS.Views.Popups
 
 			bindingSet.Bind(_btnSubmit)
 				.For("Enabled")
-				.To(vm => vm.IsSubmitBtnEnabled)
-				//Review ThanhVo It quite strange to use RevertBool converter here because the value is not changed ot convert to another value
-				.WithConversion("RevertBool");
-
-			bindingSet.Bind(_btnSubmit)
-				.For(v => v.BackgroundColor)
-				.To(vm => vm.IsSubmitBtnEnabled)
-				//Review ThanhVo Don't abuse converter. Instead of using converter, you can create custom control which handle background of button base on Enable status
-				//Or just only one control which has behaviour like this, you can handle it in that screen
-				.WithConversion("BoolToColor");
+				.To(vm => vm.IsSubmitBtnEnabled);
 
 			bindingSet.Bind(_btnCancel.Tap())
 				.For(v => v.Command)
