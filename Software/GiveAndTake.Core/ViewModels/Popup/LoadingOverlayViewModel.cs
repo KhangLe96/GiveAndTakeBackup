@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 
 namespace GiveAndTake.Core.ViewModels.Popup
@@ -14,6 +15,11 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		{
 			get => _loadingIndicatorTitle;
 			set => SetProperty(ref _loadingIndicatorTitle, value);
+		}
+
+		public LoadingOverlayViewModel(ILoadingOverlayService loadingOverlayService)
+		{
+			loadingOverlayService.LoadingOverlayViewModel = this;
 		}
 		
 		public override void Prepare(string parameter)
