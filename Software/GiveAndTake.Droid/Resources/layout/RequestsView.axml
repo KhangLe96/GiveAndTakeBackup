@@ -10,27 +10,26 @@
 		android:layout_height="50dp"
 		android:orientation="horizontal"
 		android:background="@color/colorPrimary">
-		<!--Review ThanhVo check all width, height, margin, ...in all xaml file of this task, should declare and use value from dimens-->
 		<TextView
 			android:textColor="@color/white"
 			android:text="Danh sách yêu cầu"
 			android:layout_height="match_parent"
 			android:layout_width="wrap_content"
-			android:textSize="17dp"
-			android:layout_marginLeft="18dp"
+			android:textSize="@dimen/request_list_title_text_size"
+			android:layout_marginLeft="@dimen/request_list_title_margin_left"
 			android:gravity="center_vertical"
 			local:MvxBind="Text Title"
 			/>
 		<TextView
 	        android:id="@+id/btnRequestNumber"
 	        android:layout_width="wrap_content"
-	        android:layout_height="24dp"
-	        android:layout_marginLeft="10dp"
-		    android:paddingLeft="10dp"
-		    android:paddingRight="10dp"
+	        android:layout_height="@dimen/request_number_button_height"
+	        android:layout_marginLeft="@dimen/request_number_button_margin_left"
+		    android:paddingLeft="@dimen/request_number_button_padding_left"
+		    android:paddingRight="@dimen/request_number_button_padding_right"
 	        android:background="@drawable/request_number_bg"
 	        android:textColor="@color/colorPrimary"
-			android:textSize="15dp"
+			android:textSize="@dimen/request_number_button_text_size"
 			local:MvxBind="Text NumberOfRequest"
 		  />
 	</LinearLayout>

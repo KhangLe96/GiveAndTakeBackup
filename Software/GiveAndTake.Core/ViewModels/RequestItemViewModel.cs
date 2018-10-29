@@ -1,5 +1,6 @@
 ﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
@@ -30,47 +31,31 @@ namespace GiveAndTake.Core.ViewModels
 		public string UserName
 	    {
 		    get => _userName;
-		    set
-		    {
-			    _userName = value;
-			    RaisePropertyChanged(() => UserName);
-		    }
-	    }
+			set => SetProperty(ref _userName, value);
+		}
 
 	    public string AvatarUrl
 	    {
 		    get => _avatarUrl;
-		    set
-		    {
-			    _avatarUrl = value;
-			    RaisePropertyChanged(() => AvatarUrl);
-		    }
+		    set => SetProperty(ref _avatarUrl, value);
 	    }
 
 	    public string RequestMessage
 	    {
 		    get => _requestMessage;
-		    set
-		    {
-			    _requestMessage = value;
-			    RaisePropertyChanged(() => RequestMessage);
-		    }
+		    set => SetProperty(ref _requestMessage, value);
 	    }
 
 	    public string CreatedTime
 	    {
 		    get => _createdTime;
-		    set
-		    {
-			    _createdTime = value;
-			    RaisePropertyChanged(() => CreatedTime);
-		    }
+		    set => SetProperty(ref _createdTime, value);
 	    }
 
-	    public bool IsLastViewInList
-	    {
-		    get => _isLastViewInList;
-		    set => SetProperty(ref _isLastViewInList, value);
+	    public bool IsShowSeparator
+		{
+		    get => _isShowSeparator;
+		    set => SetProperty(ref _isShowSeparator, value);
 	    }
 
 	    private readonly Request _request;
@@ -81,7 +66,7 @@ namespace GiveAndTake.Core.ViewModels
         private string _avatarUrl;
         private string _createdTime;
         private string _requestMessage;
-        private bool _isLastViewInList;
+        private bool _isShowSeparator;
 	
         #endregion
 
@@ -92,7 +77,7 @@ namespace GiveAndTake.Core.ViewModels
 	        _request = request;
 	        AvatarUrl = request.User.AvatarUrl;
 	        UserName = request.User.FullName ?? AppConstants.DefaultUserName;
-	        CreatedTime = request.CreatedTime.ToString("dd.MM.yyyy");
+	        CreatedTime = TimeHelper.ToTimeAgo(request.CreatedTime);
 	        RequestMessage = request.RequestMessage;
 		}
 

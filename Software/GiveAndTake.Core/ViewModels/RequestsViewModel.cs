@@ -56,12 +56,12 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task OnLoadMore()
         {
-            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
+            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
             if (_dataModel.ApiRequestsResponse.Requests.Any())
             {
-                RequestItemViewModels.Last().IsLastViewInList = false;
+                RequestItemViewModels.Last().IsShowSeparator = false;
                 RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
-                RequestItemViewModels.Last().IsLastViewInList = true;
+                RequestItemViewModels.Last().IsShowSeparator = true;
             }
         }
 
@@ -123,7 +123,7 @@ namespace GiveAndTake.Core.ViewModels
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
-                RequestItemViewModels.Last().IsLastViewInList = true;
+                RequestItemViewModels.Last().IsShowSeparator = true;
             }	        
 		}
 
