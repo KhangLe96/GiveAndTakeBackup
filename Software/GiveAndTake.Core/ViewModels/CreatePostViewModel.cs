@@ -41,6 +41,7 @@ namespace GiveAndTake.Core.ViewModels
 		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
 															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
 
+		//REVIEW [KHOA]: use lazy initialization
 		public IMvxCommand ShowCategoriesCommand { get; set; }
 		public IMvxCommand ShowProvinceCityCommand { get; set; }
 		public IMvxAsyncCommand CloseCommand { get; set; }
@@ -129,7 +130,10 @@ namespace GiveAndTake.Core.ViewModels
 				SelectedItem = _selectedCategory.CategoryName
 			});
 
-			if (string.IsNullOrEmpty(result)) return;
+			if (string.IsNullOrEmpty(result))
+			{
+				return;
+			}
 
 			_selectedCategory = _dataModel.Categories.First(c => c.CategoryName == result);
 			Category = result;
@@ -144,7 +148,10 @@ namespace GiveAndTake.Core.ViewModels
 				SelectedItem = _selectedProvinceCity.ProvinceCityName
 			});
 
-			if (string.IsNullOrEmpty(result)) return;
+			if (string.IsNullOrEmpty(result))
+			{
+				return;
+			}
 
 			_selectedProvinceCity = _dataModel.ProvinceCities.First(c => c.ProvinceCityName == result);
 			ProvinceCity = result;
@@ -212,6 +219,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			catch (AppException.ApiException)
 			{
+
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
 				{
@@ -222,6 +230,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public void InitCreateNewPost()
 		{
+			// REVIEW [KHOA]: use managementservice from parent
 			var managementService = Mvx.Resolve<IManagementService>();
 			var post = new CreatePost()
 			{
@@ -231,10 +240,13 @@ namespace GiveAndTake.Core.ViewModels
 				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
 				Address = _selectedProvinceCity.Id,   //Da Nang
 			};
+
+			// REVIEW [KHOA]: create post returns boolean but there is no handler
 			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
 			NavigationService.Close(this,true);
 		}
 
+		// REVIEW [KHOA]: better to move to helper
 		public string ConvertToBase64String(byte[] imageByte)
 		{
 			string result = Convert.ToBase64String(imageByte);

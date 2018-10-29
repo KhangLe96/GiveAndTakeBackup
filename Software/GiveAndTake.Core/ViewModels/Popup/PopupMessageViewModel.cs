@@ -6,6 +6,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class PopupMessageViewModel : BaseViewModel<string, RequestStatus>
 	{
+		// REVIEW [KHOA]: use lazy
 		public IMvxAsyncCommand SubmitCommand { get; set; }
 		public IMvxAsyncCommand CancelCommand { get; set; }
 
