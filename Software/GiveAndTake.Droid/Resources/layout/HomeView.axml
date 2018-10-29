@@ -3,18 +3,17 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-	<giveandtake.droid.controls.CustomImageView
+    
+    <giveandtake.droid.controls.CustomImageView
         android:id="@+id/btnFilter"
         android:layout_width="@dimen/filter_height"
         android:layout_height="@dimen/filter_height"
-        android:layout_alignParentLeft="false"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_short"
         android:layout_marginTop="@dimen/margin_short"
         android:background="@drawable/location_button"
         android:scaleType="fitCenter"
-        local:MvxBind="Click ShowFilterCommand; IsActivated IsLocationFilterActivated" />
+        local:MvxBind="Click ShowLocationFiltersCommand; IsActivated IsLocationFilterActivated" />
 
 	<giveandtake.droid.controls.CustomImageView
         android:id="@+id/btnSort"
@@ -25,7 +24,7 @@
         android:layout_toLeftOf="@id/btnFilter"
         android:background="@drawable/sort_button"
         android:scaleType="fitCenter"
-        local:MvxBind="Click ShowShortPostCommand; IsActivated IsSortFilterActivated" />
+        local:MvxBind="Click ShowSortFiltersCommand; IsActivated IsSortFilterActivated" />
 
 	<giveandtake.droid.controls.CustomImageView
         android:id="@+id/btnCategory"
@@ -59,7 +58,7 @@
         android:layout_below="@id/btnFilter"
         android:layout_marginTop="@dimen/margin_short"
         android:background="@color/grey_line_color" />
-
+    
 	<TextView
         android:id="@+id/tvSearchResult"
         android:layout_width="match_parent"
@@ -68,9 +67,8 @@
         android:layout_marginLeft="@dimen/margin_short"
         android:layout_marginRight="@dimen/margin_short"
         android:gravity="center"
-        android:text="Không tìm thấy kết quả nào"
         android:textSize="@dimen/MediumTextSize"
-        local:MvxBind="Visibility Visibility(!IsSearchResultNull)" />
+        local:MvxBind="Text SearchResultTitle; Visibility Visibility(!IsSearchResultNull)" />
 
 	<MvxSwipeRefreshLayout
         android:id="@+id/refreshlayout"
@@ -86,14 +84,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
-            local:MvxBind="ItemsSource PostViewModels"
+            local:MvxBind="ItemsSource PostItemViewModelCollection"
             local:MvxItemTemplate="@layout/posttemplate" />
 
 	</MvxSwipeRefreshLayout>
 
 	<View
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/white_gradient_height"
         android:background="@drawable/list_bg"
         android:layout_alignParentBottom="true"/>
 

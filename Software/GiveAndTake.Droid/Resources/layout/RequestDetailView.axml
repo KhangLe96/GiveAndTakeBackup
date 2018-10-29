@@ -17,7 +17,7 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="@dimen/popup_request_Title_Text_Size"
-        local:MvxBind="Text PopupTitle" />
+        local:MvxBind="Text PopupTitle"/>
 
 	<ImageButton
         android:layout_width="@dimen/btn_normal_size"

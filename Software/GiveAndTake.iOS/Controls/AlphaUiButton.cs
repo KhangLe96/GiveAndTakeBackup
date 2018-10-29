@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using GiveAndTake.iOS.Helpers;
 using UIKit;
 
 namespace GiveAndTake.iOS.Controls
@@ -51,8 +52,7 @@ namespace GiveAndTake.iOS.Controls
 			set
 			{
 				base.Enabled = value;
-
-				//Layer.Opacity = value ? 1 : AppConstants.DisabledAlphalValue;
+				BackgroundColor = !Enabled ? ColorHelper.DarkGray : ColorHelper.LightBlue;
 			}
 		}
 	}

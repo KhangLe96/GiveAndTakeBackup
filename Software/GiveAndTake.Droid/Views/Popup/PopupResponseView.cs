@@ -12,8 +12,8 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 namespace GiveAndTake.Droid.Views.Popup
 {
 	[MvxDialogFragmentPresentation]
-	[Register(nameof(PopupCreateRequestView))]
-	public class PopupCreateRequestView : MvxDialogFragment<PopupCreateRequestViewModel>
+	[Register(nameof(PopupResponseView))]
+	public class PopupResponseView : MvxDialogFragment<PopupResponseViewModel>
 	{
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{

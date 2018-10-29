@@ -13,5 +13,6 @@ namespace GiveAndTake.Core.Models
 	    ApiRequestsResponse ApiRequestsResponse { get; set; }
 		List<Image> PostImages { get; set; }
 		int PostImageIndex { get; set; }
+		Post CurrentPost { get; set; }
 	}
 }
