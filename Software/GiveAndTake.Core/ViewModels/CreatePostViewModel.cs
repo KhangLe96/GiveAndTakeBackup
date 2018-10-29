@@ -1,9 +1,7 @@
 ﻿using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
-using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
-using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Plugin.PictureChooser;
 using System;
@@ -19,38 +17,17 @@ namespace GiveAndTake.Core.ViewModels
 	public class CreatePostViewModel : BaseViewModelResult<bool>
 	{
 		private readonly IDataModel _dataModel;
-
-		public string ProjectName => AppConstants.AppTitle;
-		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
-
-		private List<PostImage> _postImages = new List<PostImage>();
-		public List<PostImage> PostImages
-		{
-			get => _postImages ?? new List<PostImage>();
-			set
-			{
-				_postImages = value;
-				InitSelectedImage();
-			}
-		}
-
-		private ICommand _submitCommand;
-		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
-
-		private IMvxAsyncCommand _showPhotoCollectionCommand;
-		public IMvxAsyncCommand ShowPhotoCollectionCommand => _showPhotoCollectionCommand ??
-															  (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
-
-		//REVIEW [KHOA]: use lazy initialization
-		public IMvxCommand ShowCategoriesCommand { get; set; }
-		public IMvxCommand ShowProvinceCityCommand { get; set; }
-		public IMvxAsyncCommand CloseCommand { get; set; }
-		public IMvxCommand BackPressedCommand { get; set; }
-
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
 
-		private readonly DebouncerHelper _debouncer;
+		private MvxCommand _takePictureCommand;
+		private ICommand _submitCommand;
+		private IMvxAsyncCommand _showPhotoCollectionCommand;
+		private IMvxCommand _showCategoriesCommand;
+		private IMvxCommand _showProvinceCityCommand;
+		private IMvxCommand _backPressedCommand;
+		private IMvxCommand<List<byte[]>> _imageCommand;
 
+		private readonly DebouncerHelper _debouncer;
 		private string _postDescription;
 		private string _postTitle;
 		private string _category = AppConstants.DefaultCategoryCreatePostName;
@@ -59,11 +36,25 @@ namespace GiveAndTake.Core.ViewModels
 		private string _selectedImage;
 		private Category _selectedCategory;
 		private ProvinceCity _selectedProvinceCity;
+		private List<PostImage> _postImages = new List<PostImage>();
+		private bool _enableSelectedImage;
+
+		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
+		public IMvxAsyncCommand ShowPhotoCollectionCommand =>
+			_showPhotoCollectionCommand ?? (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
+		public IMvxCommand ShowCategoriesCommand =>
+			_showCategoriesCommand ?? (_showCategoriesCommand = new MvxCommand(ShowCategoriesPopup));
+		public IMvxCommand ShowProvinceCityCommand =>
+			_showProvinceCityCommand ?? (_showProvinceCityCommand = new MvxCommand(ShowLocationFiltersPopup));
+		public IMvxCommand BackPressedCommand =>
+			_backPressedCommand ?? (_backPressedCommand = new MvxCommand(BackPressed));
+		public IMvxCommand<List<byte[]>> ImageCommand =>
+			_imageCommand ?? (_imageCommand = new MvxCommand<List<byte[]>>(InitNewImage));
 
 		public string PostDescription
 		{
 			get => _postDescription;
-			set => SetProperty(ref _postDescription, value );
+			set => SetProperty(ref _postDescription, value);
 		}
 
 		public string PostTitle
@@ -90,11 +81,27 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _provinceCity, value);
 		}
 
-
 		public string SelectedImage
 		{
 			get => _selectedImage;
 			set => SetProperty(ref _selectedImage, value);
+		}
+
+		public bool EnableSelectedImage
+		{
+			get => _enableSelectedImage;
+			set => SetProperty(ref _enableSelectedImage, value);
+		}
+
+		public List<PostImage> PostImages
+		{
+			get => _postImages;
+			set
+			{
+				_postImages = value;
+				EnableSelectedImage = (_postImages.Count != 0);
+				InitSelectedImage();
+			}
 		}
 
 		public string PostDescriptionPlaceHolder { get; set; } = "Mô tả (Nhãn hiệu, kiểu dáng, màu sắc, ... )";
@@ -109,16 +116,15 @@ namespace GiveAndTake.Core.ViewModels
 			_pictureChooserTask = pictureChooserTask;
 			_selectedCategory = _dataModel.Categories.FirstOrDefault(category => category.CategoryName == AppConstants.DefaultCategoryCreatePostName);
 			_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
-			InitCommand();
 		}
 
-		private void InitCommand()
+		private async void BackPressed()
 		{
-			ImageCommand = new MvxCommand<List<byte[]>>(InitNewImage);
-			ShowCategoriesCommand = new MvxCommand(ShowCategoriesPopup);
-			ShowProvinceCityCommand = new MvxCommand(ShowLocationFiltersPopup);
-			CloseCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
-			BackPressedCommand = new MvxAsyncCommand(() => NavigationService.Close(this, false));
+			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.DeleteConfirmationMessage);
+			if (result == RequestStatus.Submitted)
+			{
+				await NavigationService.Close(this, false);
+			}
 		}
 
 		private async void ShowCategoriesPopup()
@@ -159,13 +165,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task ShowPhotoCollection()
 		{
-			if (PostImages.Any())
-			{
-				PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
-			}
+			PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
 		}
-
-		private MvxCommand _takePictureCommand;
 
 		public ICommand TakePictureCommand
 		{
@@ -203,11 +204,12 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				var image = new PostImage()
 				{
-					ImageData = ConvertToBase64String(img),
+					ImageData = JsonHelper.ConvertToBase64String(img),
 				};
 				PostImages.Add(image);
 			}
 
+			EnableSelectedImage = (_postImages.Count != 0);
 			InitSelectedImage();
 		}
 
@@ -219,7 +221,6 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			catch (AppException.ApiException)
 			{
-
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
 				{
@@ -228,29 +229,22 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		public void InitCreateNewPost()
+		public async void InitCreateNewPost()
 		{
-			// REVIEW [KHOA]: use managementservice from parent
-			var managementService = Mvx.Resolve<IManagementService>();
 			var post = new CreatePost()
 			{
 				Title = PostTitle,
 				Description = PostDescription,
 				PostImages = _postImages,
 				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
-				Address = _selectedProvinceCity.Id,   //Da Nang
+				Address = _selectedProvinceCity.Id,
 			};
-
-			// REVIEW [KHOA]: create post returns boolean but there is no handler
-			managementService.CreatePost(post, _dataModel.LoginResponse.Token);
-			NavigationService.Close(this,true);
-		}
-
-		// REVIEW [KHOA]: better to move to helper
-		public string ConvertToBase64String(byte[] imageByte)
-		{
-			string result = Convert.ToBase64String(imageByte);
-			return result;
+			var result = await ManagementService.CreatePost(post, _dataModel.LoginResponse.Token);
+			if (!result)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
+			}
+			await NavigationService.Close(this, true);
 		}
 
 		private void InitSelectedImage()
