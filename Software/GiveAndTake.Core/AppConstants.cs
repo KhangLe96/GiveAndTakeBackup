@@ -66,5 +66,7 @@ namespace GiveAndTake.Core
 		public static string UploadDataOverLayTitle = "Đang đăng bài";
 		public static string CreateResponse = "response/create";
 		public static string UpdateOverLayTitle = "Đang cập nhật";
+		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
+		public static int NumOfFragmentViewPager = 3;
 	}
 }

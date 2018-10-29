@@ -43,10 +43,11 @@ namespace GiveAndTake.Core.ViewModels
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
 		private string _postId;
-
-		public RequestsViewModel(IDataModel dataModel)
+		private readonly ILoadingOverlayService _overlay;
+		public RequestsViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
+			_overlay = loadingOverlayService;
 		}
 
 		private async void InitRequestViewModels()
@@ -135,9 +136,9 @@ namespace GiveAndTake.Core.ViewModels
 
 		public async Task UpdateRequestViewModelOverLay()
 		{
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdateRequestViewModels();
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			await _overlay.CloseOverlay();
 		}
 	}
 }

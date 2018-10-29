@@ -19,7 +19,7 @@ namespace GiveAndTake.Core.ViewModels
 	public class CreatePostViewModel : BaseViewModelResult<bool>
 	{
 		private readonly IDataModel _dataModel;
-
+		private readonly ILoadingOverlayService _overlay;
 		public string ProjectName => AppConstants.AppTitle;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 
@@ -103,10 +103,11 @@ namespace GiveAndTake.Core.ViewModels
 		public string BtnSubmitTitle { get; set; } = "Đăng";
 		public string BtnCancelTitle { get; set; } = "Hủy";
 
-		public CreatePostViewModel(IMvxPictureChooserTask pictureChooserTask, IDataModel dataModel)
+		public CreatePostViewModel(IMvxPictureChooserTask pictureChooserTask, IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_debouncer = new DebouncerHelper();
 			_dataModel = dataModel;
+			_overlay = loadingOverlayService;
 			_pictureChooserTask = pictureChooserTask;
 			_selectedCategory = _dataModel.Categories.FirstOrDefault(category => category.CategoryName == AppConstants.DefaultCategoryCreatePostName);
 			_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
@@ -221,7 +222,7 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			try
 			{
-				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UploadDataOverLayTitle);
+				await _overlay.ShowOverlay(AppConstants.UploadDataOverLayTitle);
 				var managementService = Mvx.Resolve<IManagementService>();
 				var post = new CreatePost
 				{

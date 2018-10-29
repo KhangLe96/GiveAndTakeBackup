@@ -198,14 +198,15 @@ namespace GiveAndTake.Core.ViewModels
 	    private bool _isRequested;
 	    private string _postId;
 	    private UserRequest _userRequestResponse;
-
-	    #endregion
+	    private readonly ILoadingOverlayService _overlay;
+		#endregion
 
 		#region Constructor
 
-		public PostDetailViewModel(IDataModel dataModel)
+		public PostDetailViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
+			_overlay = loadingOverlayService;
 		}
 
 		private void ShowFullImage(int position)
@@ -250,7 +251,7 @@ namespace GiveAndTake.Core.ViewModels
 			if (_isMyPost)
 			{
 				var result = await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
-				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+				await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
 				await UpdateDataModel();
 			}
 			else
@@ -262,7 +263,7 @@ namespace GiveAndTake.Core.ViewModels
 					{
 						return;
 					}
-					await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+					await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
 					var managementService = Mvx.Resolve<IManagementService>();
 					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
 					await UpdateDataModel();
@@ -273,7 +274,7 @@ namespace GiveAndTake.Core.ViewModels
 					var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
 					if (result == RequestStatus.Submitted)
 					{
-						await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+						await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
 						await UpdateDataModel();
 					}
 				}
@@ -282,7 +283,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public override async void Prepare(Post post)
 		{
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			_postId = post.PostId;
 			PostImages = post.Images;
 			_isMyPost = post.IsMyPost;

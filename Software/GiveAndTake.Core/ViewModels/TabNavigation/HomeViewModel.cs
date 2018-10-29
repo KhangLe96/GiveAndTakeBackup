@@ -104,12 +104,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _searchCommand;
 		private IMvxCommand _loadMoreCommand;
 		private IMvxCommand _refreshCommand;
-
+		private readonly ILoadingOverlayService _overlay;
 		#endregion
 
-		public HomeViewModel(IDataModel dataModel)
+		public HomeViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
+			_overlay = loadingOverlayService;
 			InitDataModels();
 		}
 
@@ -119,7 +120,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			{
 				if (_dataModel.ApiPostsResponse == null)
 				{
-					await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 					_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
 					_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
 					_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
@@ -127,8 +128,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
 					_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();				
 					await UpdatePostViewModels();
-					await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
-				}				
+					await _overlay.CloseOverlay();
+				}			
 			}
 			catch (AppException.ApiException)
 			{
@@ -252,7 +253,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.Categories.RemoveAt(0);
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdateCategories();
 			if (result)
 			{				
@@ -278,9 +279,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		}
 		private async Task OnSearching()
 		{
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdatePostViewModels();
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			await _overlay.CloseOverlay();
 		}
 
 		public override void ViewDestroy(bool viewFinishing = true)
