@@ -213,7 +213,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			_selectedCategory = _dataModel.Categories.First(c => c.CategoryName == result);
 			IsCategoryFilterActivated = _selectedCategory != _dataModel.Categories.First();
-			await UpdatePostViewModels();
+			await UpdatePostViewModelWithOverlay();
 		}
 
 		private async Task ShowSortFiltersPopup() 
@@ -229,7 +229,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			_selectedSortFilter = _dataModel.SortFilters.First(s => s.FilterName == result);
 			IsSortFilterActivated = _selectedSortFilter.FilterTag != _dataModel.SortFilters.First().FilterTag;
-			await UpdatePostViewModels();
+			await UpdatePostViewModelWithOverlay();
 		}
 
 		private async Task ShowLocationFiltersPopup()
@@ -245,7 +245,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			_selectedProvinceCity = _dataModel.ProvinceCities.First(c => c.ProvinceCityName == result);
 			IsLocationFilterActivated = _selectedProvinceCity.ProvinceCityName != AppConstants.DefaultLocationFilter;
-			await UpdatePostViewModels();
+			await UpdatePostViewModelWithOverlay();
 		}
 
 		private async Task ShowNewPostView() 
@@ -278,6 +278,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 		private async Task OnSearching()
+		{
+			await UpdatePostViewModelWithOverlay();
+		}
+		private async Task UpdatePostViewModelWithOverlay()
 		{
 			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdatePostViewModels();
