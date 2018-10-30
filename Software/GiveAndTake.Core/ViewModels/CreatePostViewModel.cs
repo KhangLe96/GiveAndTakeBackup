@@ -59,17 +59,26 @@ namespace GiveAndTake.Core.ViewModels
 		private string _selectedImage;
 		private Category _selectedCategory;
 		private ProvinceCity _selectedProvinceCity;
+		private bool _isSubmitBtnEnabled;
 
 		public string PostDescription
 		{
 			get => _postDescription;
-			set => SetProperty(ref _postDescription, value );
+			set
+			{
+				SetProperty(ref _postDescription, value);
+				UpdateSubmitBtn();
+			}
 		}
 
 		public string PostTitle
 		{
 			get => _postTitle;
-			set => SetProperty(ref _postTitle, value);
+			set
+			{
+				SetProperty(ref _postTitle, value);
+				UpdateSubmitBtn();
+			}
 		}
 
 		public byte[] Bytes
@@ -94,6 +103,12 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			get => _selectedImage;
 			set => SetProperty(ref _selectedImage, value);
+		}
+
+		public bool IsSubmitBtnEnabled
+		{
+			get => _isSubmitBtnEnabled;
+			set => SetProperty(ref _isSubmitBtnEnabled, value);
 		}
 
 
@@ -253,5 +268,7 @@ namespace GiveAndTake.Core.ViewModels
 			// REVIEW [KHOA]: use locale
 			SelectedImage = $"Đã chọn {PostImages.Count} hình";
 		}
+
+		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_postTitle) && !string.IsNullOrEmpty(_postDescription);
 	}
 }

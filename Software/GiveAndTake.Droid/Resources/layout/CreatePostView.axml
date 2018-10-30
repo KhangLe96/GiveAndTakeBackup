@@ -144,7 +144,7 @@
 				android:background="@drawable/submit_button_bg"
 				android:textColor="@color/white" 
 				android:fontFamily="@font/sanfranciscodisplay_light"
-				local:MvxBind="Text BtnSubmitTitle; Click SubmitCommand"/>
+				local:MvxBind="Text BtnSubmitTitle; Click SubmitCommand; Enabled IsSubmitBtnEnabled"/>
 		</LinearLayout>
 	</RelativeLayout>
 </ScrollView>

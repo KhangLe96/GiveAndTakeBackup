@@ -68,5 +68,6 @@ namespace GiveAndTake.Core
 		public static string UpdateOverLayTitle = "Đang cập nhật";
 		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
 		public static int NumOfFragmentViewPager = 3;
+		public static string ProcessingDataOverLayTitle = "Đang xử lý";
 	}
 }

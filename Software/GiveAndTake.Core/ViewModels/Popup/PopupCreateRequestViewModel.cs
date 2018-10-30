@@ -22,6 +22,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		private string _postId;
 		private string _userId;
 		private bool _isSubmitBtnEnabled;
+		private readonly ILoadingOverlayService _overlay;
 
 		public string PopupTitle { get; set; } = "Thông tin trao đổi";
 		public string SendTo { get; set; } = "Gửi đến:";
@@ -63,9 +64,10 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		#region Constructor
 
-		public PopupCreateRequestViewModel(IDataModel dataModel)
+		public PopupCreateRequestViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
+			_overlay = loadingOverlayService;
 			InitCommand();
 		}
 
@@ -86,6 +88,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public async void InitCreateNewRequest()
 		{
+			await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
 			var managementService = Mvx.Resolve<IManagementService>();
 			var request = new Request()
 			{
@@ -95,6 +98,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			};
 			await managementService.CreateRequest(request, _dataModel.LoginResponse.Token);
 			await NavigationService.Close(this, RequestStatus.Submitted);
+			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_requestDescription);
