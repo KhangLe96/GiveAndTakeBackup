@@ -289,33 +289,26 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, out int total)
         {
-			IEnumerable<Post> posts;
+	        IEnumerable<Post> posts = _postService.Include(x => x.Category)
+		        .Include(x => x.Images)
+		        .Include(x => x.ProvinceCity)
+		        .Include(x => x.User)
+		        .Include(x => x.Comments)
+		        .Include(x => x.Requests)
+		        .Where(x => x.Category.EntityStatus == EntityStatus.Activated);
 
-			posts = _postService.Include(x => x.Category)
-				.Include(x => x.Images)
-				.Include(x => x.ProvinceCity)
-				.Include(x => x.User)
-				.Include(x => x.Comments)
-				.Include(x => x.Requests);
-
-
-			if (string.IsNullOrEmpty(userId))
-			{
-				posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.Category.EntityStatus == EntityStatus.Activated);
+	        if (typeof(T) == typeof(PostAppResponse))
+	        {
+				// Get post list for app
+				posts = GetPostListForApp(userId, posts);
 			}
-			else
-			{
-				if (Guid.TryParse(userId, out var id))
-				{
-					posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id);
-				}
-				else
-				{
-					throw new BadRequestException(CommonConstant.Error.InvalidInput);
-				}
+	        else
+	        {
+		        // Get post list for cms
+				posts = posts.Where(x => x.EntityStatus != EntityStatus.Deleted);
 			}
 
-			//filter post by properties
+			//filter posts by properties
 			posts = FilterPost(request, posts);
 			posts = SortPosts(request, posts);
 
@@ -331,11 +324,29 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			return posts
 				.Skip(request.Limit * (request.Page - 1))
 				.Take(request.Limit)
-				.Select(post => Mapper.Map<T>(post))
+				.Select(Mapper.Map<T>)
 				.ToList();
 		}
 
-        private IEnumerable<Post> SortPosts(PagingQueryPostRequest request, IEnumerable<Post> posts)
+	    private IEnumerable<Post> GetPostListForApp(string userId, IEnumerable<Post> posts)
+	    {
+			posts = posts.Where(x => x.EntityStatus == EntityStatus.Activated);
+		    if (!string.IsNullOrEmpty(userId))
+		    {
+			    if (Guid.TryParse(userId, out var id))
+			    {
+				    posts = posts.Where(x => x.UserId == id);
+			    }
+			    else
+			    {
+				    throw new BadRequestException(CommonConstant.Error.InvalidInput);
+			    }
+			}
+				
+		    return posts;
+	    }
+
+	    private IEnumerable<Post> SortPosts(PagingQueryPostRequest request, IEnumerable<Post> posts)
         {
             if (!string.IsNullOrEmpty(request.Order) && request.Order == AppConstant.ASC)
             {
