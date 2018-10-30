@@ -13,6 +13,7 @@ namespace GiveAndTake.Core.ViewModels
     {
         #region Properties
 
+		//Review ThanhVo OnReject like handler method name => name of action should be RejectAction
 	    public Action<Request> OnRejected { get; set; }
 
 	    public Action<Request> OnAccepted { get; set; }
@@ -81,6 +82,7 @@ namespace GiveAndTake.Core.ViewModels
 	        RequestMessage = request.RequestMessage;
 		}
 
+		//Review ThanhVo Make the method with {} to easy extend in the future
 	    private void HandleOnRejected() => OnRejected?.Invoke(_request);
 
 	    private void HandleOnAccepted() => OnAccepted?.Invoke(_request);

@@ -123,6 +123,7 @@ namespace GiveAndTake.Core.ViewModels
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
+				//Review ThanhVo Do you want to show separator at last item. But the name shoud be IsSeperatorShown
                 RequestItemViewModels.Last().IsShowSeparator = true;
             }	        
 		}

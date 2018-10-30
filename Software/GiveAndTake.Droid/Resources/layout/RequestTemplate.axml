@@ -16,6 +16,7 @@
 							ErrorPlaceholderImagePath 'res:default_avatar'; 
 							Transformations AvatarTransformations; 
 							ImageUrl AvatarUrl;"/>
+	<!---Review ThanhVo check all text below, remove text value-->
     <TextView
         android:id="@+id/tvTakerFullName"
         android:layout_width="wrap_content"
@@ -39,6 +40,7 @@
         android:text="10.10.2018"
         local:MvxBind="Text CreatedTime"
         />
+	<!--Review ThanhVo  android:text="Chấp nhận" should use Binding, check the other button below. Text should bind from view model-->
 	<Button
 	    android:id="@+id/btnAcceptance"
 	    android:layout_width="wrap_content"
@@ -81,6 +83,7 @@
 		android:text="Khang Le"
         local:MvxBind="Text RequestMessage"
         />
+	<!--Review ThanhVo Visibility = Show, the value should bind direct value-->
 	<TextView
         android:id="@+id/requestSeparator"
         android:layout_width="match_parent"
