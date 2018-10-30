@@ -72,7 +72,26 @@ namespace GiveAndTake.Core.Services
 
 		}
 
-        public async Task<Post> GetPostDetail(string postId)
+	    public async Task<ApiPostsResponse> GetMyPostList(string id, string filterParams, string token)
+	    {
+		    var url = $"{AppConstants.GetMyPostList}/{id}?{filterParams}";
+		    var response = await _apiHelper.Get(url, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+
+	    }
+
+		public async Task<Post> GetPostDetail(string postId)
         {
 			var parameters = $"/{postId}";
 	        var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);

@@ -2,6 +2,8 @@
 using Android.Graphics;
 using Android.Util;
 using Android.Widget;
+using GiveAndTake.Core;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Droid.Helpers;
 
 namespace GiveAndTake.Droid.Controls
@@ -27,6 +29,15 @@ namespace GiveAndTake.Droid.Controls
 		public bool IsSelected
 		{
 			set => SetTextColor( value ? Color.Black : ColorHelper.Default);
+		}
+
+		public string Status
+		{
+			set
+			{
+				Text = value;
+				SetTextColor(value == AppConstants.GivingStatus ? ColorHelper.Green : Color.DarkRed);
+			}
 		}
 	}
 }

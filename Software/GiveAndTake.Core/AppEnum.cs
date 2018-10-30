@@ -34,4 +34,17 @@
 		Submitted,
 		Cancelled
 	}
+
+	public enum PopupRequestDetailResult
+	{
+		Accepted,
+		Rejected,
+		Cancelled
+	}
+
+	public enum ListViewItemType
+	{
+		MyPosts,
+		MyRequests
+	}
 }

@@ -10,6 +10,7 @@ namespace GiveAndTake.Core
 		public const int ApiTimeout = 30; // seconds
 		public const string GetCategories = "categories/app/list";
 		public const string GetPostList = "post/app/list";
+		public const string GetMyPostList = "post/app/listPostOfUser";
 		public const string GetPostDetail = "post/app/detail";
 		public const string GetPostOfUser = "post/app/listPostOfUser";
 		public const string ChangeStatusOfPost = "post/app/status";
@@ -49,6 +50,24 @@ namespace GiveAndTake.Core
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
+		public static string SelectedImage = "Đã chọn 0 hình";
+		public static string RequestRejectingMessage = "Bạn có chắc chắn từ chối yêu cầu?";
+		public static string PopupRequestDetailTitle = "Chi tiết yêu cầu";
+		public static string ButtonRejectTitle = "Từ chối";
+		public static string ButtonAcceptTitle = "Chấp nhận";
+		public static string CreateResponse = "response/create";
+
+		public static string RequestApprovalTitle = "Thông tin trao đổi";
+		public static string RequestReceiver= "Gửi đến: ";
+		public static string InformationPlaceHolder = "Thông tin trao đổi ...";
+		public static string ButtonSendTitle = "Gửi";
+
+		public static string RankTitle = "Xếp hạng";
+		public static string SentTitle = "Đã cho";
+		public static string MyPostsTitle = "Bài đăng của tôi";
+		public static string MyRequestsTitle = "Yêu cầu đã gửi";
+		public static string Member = "Thành viên";
+		public static string Times = "Lần";
 		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
 		public static string SearchResultNullTitle = "Không tìm thấy kết quả nào";
 		public const string CreatePostDescriptionPlaceHolder = "Mô tả (Nhãn hiệu, kiểu dáng, màu sắc, ... )";

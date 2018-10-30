@@ -17,4 +17,6 @@
 	<color name="post_line_color">#7dbef4</color>
 	<color name="gray">#cccccc</color>
 	<color name="collection_view_background">#F4F5F4</color>
+	<color name="text_normal_color">#EEF2F5</color>
+	<color name="button_off">#F2F2F2</color>
 </resources>
