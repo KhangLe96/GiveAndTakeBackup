@@ -4,14 +4,12 @@ using Giveaway.API.Shared.Requests.ProvinceCity;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.ProviceCity;
 using Giveaway.Data.Enums;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-    public class ProvinceCityService : IProvinceCityService
+	public class ProvinceCityService : IProvinceCityService
     {
         private readonly Service.Services.IProvinceCityService _proviceCityService;
 

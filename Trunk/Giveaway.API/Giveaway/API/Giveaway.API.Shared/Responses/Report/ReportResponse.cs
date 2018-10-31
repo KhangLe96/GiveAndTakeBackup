@@ -2,13 +2,11 @@
 using Giveaway.API.Shared.Responses.User;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Giveaway.API.Shared.Responses.Report
 {
-    public class ReportResponse
+	public class ReportResponse
     {
         [DataMember(Name = "id")]
         [JsonProperty(PropertyName = "id")]

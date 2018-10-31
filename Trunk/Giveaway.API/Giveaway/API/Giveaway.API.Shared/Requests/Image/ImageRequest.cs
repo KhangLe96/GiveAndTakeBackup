@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Requests.Image
 {
-    public class ImageRequest
+	public class ImageRequest
     {
         [DataMember(Name = "image")]
         public string Image { get; set; }

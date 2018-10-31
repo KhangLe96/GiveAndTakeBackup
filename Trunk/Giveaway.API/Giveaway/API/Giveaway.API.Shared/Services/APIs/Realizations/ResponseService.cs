@@ -1,12 +1,11 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Response;
-using Giveaway.API.Shared.Responses.Request;
 using Giveaway.API.Shared.Responses.Response;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Models.Database;
 using Giveaway.Util.Constants;
+using System;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations

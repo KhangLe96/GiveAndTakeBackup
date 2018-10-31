@@ -1,7 +1,6 @@
+using Newtonsoft.Json;
 using System;
 using System.Runtime.Serialization;
-using Giveaway.Data.Enums;
-using Newtonsoft.Json;
 
 namespace Giveaway.API.Shared.Responses.User
 {

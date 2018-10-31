@@ -1,7 +1,6 @@
+using Giveaway.API.Shared.Responses.User;
 using System;
 using System.Runtime.Serialization;
-using Giveaway.API.Shared.Responses.User;
-using Newtonsoft.Json;
 
 namespace Giveaway.API.Shared.Responses
 {

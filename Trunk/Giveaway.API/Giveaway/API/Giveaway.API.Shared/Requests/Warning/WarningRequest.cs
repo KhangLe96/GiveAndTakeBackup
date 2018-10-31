@@ -1,13 +1,10 @@
-﻿using Giveaway.API.Shared.Requests.User;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Giveaway.API.Shared.Requests.Warning
 {
-    [DataContract]
+	[DataContract]
     public class WarningRequest
     {
         [DataMember(Name = "message", EmitDefaultValue = false)]

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
+﻿using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Requests.Post
 {
-    [DataContract]
+	[DataContract]
     public class PagingQueryPostRequest : BasePagingQueryRequest
     {
         [DataMember(Name = "title")]

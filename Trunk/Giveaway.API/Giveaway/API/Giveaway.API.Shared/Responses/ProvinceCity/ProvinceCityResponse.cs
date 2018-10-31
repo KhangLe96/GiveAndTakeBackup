@@ -1,12 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Giveaway.API.Shared.Responses.ProviceCity
 {
-    public class ProvinceCityResponse
+	public class ProvinceCityResponse
     {
         [DataMember(Name = "id")]
         [JsonProperty(PropertyName = "id")]

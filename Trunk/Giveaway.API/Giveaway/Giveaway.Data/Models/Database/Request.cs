@@ -1,6 +1,5 @@
 ﻿using Giveaway.Data.Enums;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Giveaway.Data.Models.Database
 {
-    [Table("Request")]
+	[Table("Request")]
     public class Request : BaseEntity
     {
         public Guid? PostId { get; set; }

@@ -1,11 +1,10 @@
-﻿using Giveaway.API.Shared.Responses.Request;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Responses.Response
 {
-    [DataContract]
+	[DataContract]
     public class ResponseRequestResponse
     {
         [DataMember(Name = "id")]

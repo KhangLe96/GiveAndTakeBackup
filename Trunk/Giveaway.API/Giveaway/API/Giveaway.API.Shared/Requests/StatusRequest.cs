@@ -1,10 +1,8 @@
-﻿using System;
-using System.Runtime.Serialization;
-using Giveaway.Data.Enums;
+﻿using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Requests
 {
-    [DataContract]
+	[DataContract]
     public class StatusRequest
     {
         [DataMember(Name = "status")]

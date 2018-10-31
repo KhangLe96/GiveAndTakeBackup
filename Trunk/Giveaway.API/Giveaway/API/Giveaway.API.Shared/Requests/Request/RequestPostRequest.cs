@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Giveaway.API.Shared.Requests.Request
 {
-    public class RequestPostRequest
+	public class RequestPostRequest
     {
         [DataMember(Name = "requestMessage")]
         [JsonProperty(PropertyName = "requestMessage")]

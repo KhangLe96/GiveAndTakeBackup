@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Giveaway.Data.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Giveaway.Data.Enums;
 
 namespace Giveaway.Data.Models.Database
 {
@@ -13,7 +11,7 @@ namespace Giveaway.Data.Models.Database
 		[Required]
 		public string Message { get; set; }
 		[Required]
-		public Guid DestinationUserid { get; set; }
+		public Guid DestinationUserId { get; set; }
 		[Required]
 		public Guid SourceUserId { get; set; }
 		public Guid RelevantId { get; set; }

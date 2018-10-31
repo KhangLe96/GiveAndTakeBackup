@@ -1,15 +1,9 @@
-﻿using Giveaway.API.Shared.Responses.Post;
-using Giveaway.Data.Enums;
-using Giveaway.Data.Models.Database;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Responses.Post
 {
-    [DataContract]
+	[DataContract]
     public class PostAppResponse : PostBaseResponse
     {
         [DataMember(Name = "commentCount", EmitDefaultValue = false)]

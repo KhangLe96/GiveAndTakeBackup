@@ -1,13 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
-using Giveaway.Data.Enums;
+﻿using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Requests.User
 {
-    [DataContract]
+	[DataContract]
     public class PagingQueryUserRequest : BasePagingQueryRequest
     {
         [DataMember(Name = "name")]

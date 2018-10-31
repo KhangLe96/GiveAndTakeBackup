@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Giveaway.API.Shared.Responses
 {
-    [DataContract]
+	[DataContract]
     public class PagingQueryResponse<T>
     {
         [DataMember(Name = "results")]

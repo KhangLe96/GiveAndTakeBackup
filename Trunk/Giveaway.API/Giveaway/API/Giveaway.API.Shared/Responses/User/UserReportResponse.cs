@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Giveaway.API.Shared.Responses.User
 {
-    public class UserReportResponse
+	public class UserReportResponse
     {
         [DataMember(Name = "id")]
         [JsonProperty(PropertyName = "id")]

@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Giveaway.API.Shared.Extensions;
+﻿using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Helpers;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Responses;
@@ -12,18 +7,22 @@ using Giveaway.Data.EF;
 using Giveaway.Data.EF.DTOs.Requests;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
-using Giveaway.Data.Models;
 using Giveaway.Data.Models.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using BadRequestException = Giveaway.API.Shared.Exceptions.BadRequestException;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
-    /// <inheritdoc />
-    public class AuthService : IAuthService
+	/// <inheritdoc />
+	public class AuthService : IAuthService
     {
         #region Private Fields
 
