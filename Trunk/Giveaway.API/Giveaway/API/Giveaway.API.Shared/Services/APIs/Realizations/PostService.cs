@@ -53,7 +53,52 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public T GetDetail(Guid postId, string userId)
+	    public PagingQueryResponse<PostAppResponse> GetListRequestedPostOfUser(IDictionary<string, string> @params, string userId)
+	    {
+		    var request = @params.ToObject<PagingQueryPostRequest>();
+
+		    if (Guid.TryParse(userId, out var id))
+		    {
+				var posts = _postService.Include(x => x.Category)
+					.Include(x => x.Images)
+					.Include(x => x.ProvinceCity)
+					.Include(x => x.User)
+					.Include(x => x.Comments)
+					.Include(x => x.Requests)
+					.Where(x => x.Category.EntityStatus == EntityStatus.Activated);
+
+			    IEnumerable<Post> requestedPosts = new List<Post>();
+				
+				foreach (var post in posts)
+				{
+					if (post.Requests.Any(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id))
+					{
+						requestedPosts = requestedPosts.Concat(new List<Post>(){post});
+					}
+				}
+
+				//filter posts by properties
+			    requestedPosts = FilterPost(request, requestedPosts);
+			    requestedPosts = SortPosts(request, requestedPosts);
+
+			    var result = requestedPosts.Skip(request.Limit * (request.Page - 1)).Take(request.Limit).Select(Mapper.Map<PostAppResponse>).ToList();
+
+				return new PagingQueryResponse<PostAppResponse>
+			    {
+				    Data = result,
+				    PageInformation = new PageInformation
+				    {
+					    Total = requestedPosts.Count(),
+					    Page = request.Page,
+					    Limit = request.Limit
+				    }
+			    };
+			}
+
+		    throw new BadRequestException(CommonConstant.Error.InvalidInput);
+	    }
+
+		public T GetDetail(Guid postId, string userId)
 		{
             try
             {

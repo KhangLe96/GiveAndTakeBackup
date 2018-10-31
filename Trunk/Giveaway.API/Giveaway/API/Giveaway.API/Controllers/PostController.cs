@@ -1,5 +1,4 @@
-﻿using Giveaway.API.Shared.Constants;
-using Giveaway.API.Shared.Extensions;
+﻿using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Responses;
@@ -9,12 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
 namespace Giveaway.API.Controllers
 {
-    /// <inheritdoc />
-    [Produces("application/json")]
+	/// <inheritdoc />
+	[Produces("application/json")]
     [Route("api/v1/Post")]
     public class PostController : BaseController
     {
@@ -49,7 +47,6 @@ namespace Giveaway.API.Controllers
         public PagingQueryResponse<PostAppResponse> GetListPostApp([FromHeader]IDictionary<string, string> @params)
         {
 	        var userId = GetUserId();
-
 	        return _postService.GetPostForPaging(@params, userId, false);
         }
 
@@ -67,12 +64,26 @@ namespace Giveaway.API.Controllers
             return _postService.GetPostForPaging(@params, userId, true);
         }
 
-        /// <summary>
-        /// Get detail of a post by id 
-        /// </summary>
-        /// <param name="postId"></param>
-        /// <returns></returns>
-        [HttpGet("app/detail/{postId}")]
+		/// <summary>
+		/// Get all posts that the user requested
+		/// </summary>
+		/// <param name="params"></param>
+		/// <returns></returns>
+		[Authorize]
+	    [HttpGet("app/listRequestedPostOfUser")]
+	    [Produces("application/json")]
+		public PagingQueryResponse<PostAppResponse> GetListRequestedPostOfUser([FromHeader]IDictionary<string, string> @params)
+	    {
+		    var userId = GetUserId();
+			return _postService.GetListRequestedPostOfUser(@params, userId);
+	    }
+
+		/// <summary>
+		/// Get detail of a post by id 
+		/// </summary>
+		/// <param name="postId"></param>
+		/// <returns></returns>
+		[HttpGet("app/detail/{postId}")]
         [Produces("application/json")]
         public PostAppResponse GetDetailApp(Guid postId)
         {
