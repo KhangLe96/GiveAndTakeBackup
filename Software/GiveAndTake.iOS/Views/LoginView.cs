@@ -13,15 +13,17 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Views
 {
-    [MvxRootPresentation]
+	[MvxRootPresentation]
     public class LoginView : BaseView
     {
         private UIImageView _logoImage;
         private UIButton _customedLoginFacebookButton;
+		// REVIEW [KHOA]: never used
         private UIButton _customedLoginGoogleButton;
         private UIImageView _contentView;
         private PopupItemLabel _loginTitle;
-        public MvxCommand<BaseUser> LoginCommand { get; set; }
+	
+		public MvxCommand<BaseUser> LoginCommand { get; set; }
 
         protected override void InitView()
         {
@@ -34,8 +36,8 @@ namespace GiveAndTake.iOS.Views
             base.ViewDidLoad();
 
             Profile.Notifications.ObserveDidChange((sender, e) => {
-
-                if (e.NewProfile == null)
+	            // REVIEW [KHOA]: use {} even there is 1 line of code
+				if (e.NewProfile == null)
                     return;
                 
                 var facebookProfile = e.NewProfile;
@@ -114,7 +116,8 @@ namespace GiveAndTake.iOS.Views
 
         private void HandleLoginResult(LoginManagerLoginResult result, NSError error)
         {
-            if (error != null)
+	        // REVIEW [KHOA]: combine conditions
+			if (error != null)
             {
                 // handle error
                 return;
@@ -149,6 +152,6 @@ namespace GiveAndTake.iOS.Views
             return userProfile;
         }
 
-        private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
+		private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
     }
 }
