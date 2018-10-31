@@ -18,6 +18,7 @@ namespace Giveaway.Data.EF.DataContext
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<WarningMessage> WarningMessages { get; set; }
+		public DbSet<Notification> Notifications { get; set; }
 
         private readonly IConfigurationRoot _configRoot;
 
