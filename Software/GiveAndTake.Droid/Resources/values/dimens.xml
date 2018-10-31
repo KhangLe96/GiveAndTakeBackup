@@ -90,9 +90,7 @@
 	<dimen name="request_list_title_text_size">17dp</dimen>
 	<dimen name="request_list_title_margin_left">18dp</dimen>
 	<dimen name="request_number_button_height">24dp</dimen>
-	<!--Review ThanhVo the value is repeat. So you can define some like small_margin, medium_margin, big_margin,... Those value can be reuse for padding or margin-->
-	<dimen name="request_number_button_margin_left">10dp</dimen>
-	<dimen name="request_number_button_padding_left">10dp</dimen>
-	<dimen name="request_number_button_padding_right">10dp</dimen>
+	<dimen name="medium_margin">10dp</dimen>
+	<dimen name="medium_padding">10dp</dimen>
 	<dimen name="request_number_button_text_size">15dp</dimen>
 </resources>

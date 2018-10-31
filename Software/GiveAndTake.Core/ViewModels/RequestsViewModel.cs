@@ -59,9 +59,9 @@ namespace GiveAndTake.Core.ViewModels
             _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
             if (_dataModel.ApiRequestsResponse.Requests.Any())
             {
-                RequestItemViewModels.Last().IsShowSeparator = false;
+                RequestItemViewModels.Last().IsSeperatorShown = true;
                 RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
-                RequestItemViewModels.Last().IsShowSeparator = true;
+                RequestItemViewModels.Last().IsSeperatorShown = false;
             }
         }
 
@@ -69,9 +69,9 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    var requestItem = new RequestItemViewModel(request)
 		    {
-				OnClicked = OnItemClicked,
-				OnAccepted = OnRequestAccepted,
-				OnRejected = OnRequestRejected
+				ClickAction = OnItemClicked,
+				AcceptAction = OnRequestAccepted,
+				RejectAction = OnRequestRejected
 		    };
 			return requestItem;
 	    }
@@ -123,8 +123,7 @@ namespace GiveAndTake.Core.ViewModels
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
-				//Review ThanhVo Do you want to show separator at last item. But the name shoud be IsSeperatorShown
-                RequestItemViewModels.Last().IsShowSeparator = true;
+                RequestItemViewModels.Last().IsSeperatorShown = false;
             }	        
 		}
 

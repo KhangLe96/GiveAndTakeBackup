@@ -13,12 +13,11 @@ namespace GiveAndTake.Core.ViewModels
     {
         #region Properties
 
-		//Review ThanhVo OnReject like handler method name => name of action should be RejectAction
-	    public Action<Request> OnRejected { get; set; }
+	    public Action<Request> RejectAction { get; set; }
 
-	    public Action<Request> OnAccepted { get; set; }
+	    public Action<Request> AcceptAction { get; set; }
 
-	    public Action<Request> OnClicked { get; set; }
+	    public Action<Request> ClickAction { get; set; }
 
 	    public IMvxCommand RejectCommand => _rejectCommand ?? (_rejectCommand = new MvxCommand(HandleOnRejected));
 
@@ -28,6 +27,9 @@ namespace GiveAndTake.Core.ViewModels
 
 
 	    public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
+
+	    public string Acceptance => "Chấp nhận";
+	    public string Rejection => "Từ chối";
 
 		public string UserName
 	    {
@@ -53,10 +55,10 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _createdTime, value);
 	    }
 
-	    public bool IsShowSeparator
+	    public bool IsSeperatorShown
 		{
-		    get => _isShowSeparator;
-		    set => SetProperty(ref _isShowSeparator, value);
+		    get => _isSeperatorShown;
+		    set => SetProperty(ref _isSeperatorShown, value);
 	    }
 
 	    private readonly Request _request;
@@ -67,7 +69,7 @@ namespace GiveAndTake.Core.ViewModels
         private string _avatarUrl;
         private string _createdTime;
         private string _requestMessage;
-        private bool _isShowSeparator;
+        private bool _isSeperatorShown = true;
 	
         #endregion
 
@@ -82,13 +84,21 @@ namespace GiveAndTake.Core.ViewModels
 	        RequestMessage = request.RequestMessage;
 		}
 
-		//Review ThanhVo Make the method with {} to easy extend in the future
-	    private void HandleOnRejected() => OnRejected?.Invoke(_request);
+	    private void HandleOnRejected()
+	    {
+		    RejectAction?.Invoke(_request);
+		} 
 
-	    private void HandleOnAccepted() => OnAccepted?.Invoke(_request);
+	    private void HandleOnAccepted()
+	    {
+		    AcceptAction?.Invoke(_request);
+	    }
 
-	    private void HandleOnClicked() => OnClicked?.Invoke(_request);
+		private void HandleOnClicked()
+		{
+			ClickAction?.Invoke(_request);
+		}
 
-	    #endregion
-    }
+		#endregion
+	}
 }
