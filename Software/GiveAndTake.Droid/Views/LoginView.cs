@@ -9,7 +9,6 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
-using Android.OS;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Object = Java.Lang.Object;
@@ -23,8 +22,8 @@ namespace GiveAndTake.Droid.Views
     public class LoginView : BaseActivity
     {
         private ICallbackManager _callbackManager;
-
-        private AccessTokenTracker accessTokenTracker;
+	    // REVIEW [KHOA]: name convention?
+		private AccessTokenTracker accessTokenTracker;
         public static AccessToken accessToken;
 
         public IMvxCommand<BaseUser> LoginCommand { get; set; }
@@ -79,8 +78,8 @@ namespace GiveAndTake.Droid.Views
             };
 
             LoginManager.Instance.RegisterCallback(_callbackManager, loginCallback);
-
-            FindViewById<ImageButton>(Resource.Id.btnFb).Click += delegate
+	        // REVIEW [KHOA]: unsubscribe event
+			FindViewById<ImageButton>(Resource.Id.btnFb).Click += delegate
             {
                 LoginManager.Instance.LogInWithReadPermissions(this, new[] { "public_profile" , "email" });
             };
@@ -108,7 +107,8 @@ namespace GiveAndTake.Droid.Views
 		    SocialAccountId = Profile.CurrentProfile.Id
 	    });
 
-	    private void OnCancelLogin() { }
+	    // REVIEW [KHOA]: remove these methods if you don't implement
+		private void OnCancelLogin() { }
 
         private void OnLoginError(FacebookException loginException) { }
 
