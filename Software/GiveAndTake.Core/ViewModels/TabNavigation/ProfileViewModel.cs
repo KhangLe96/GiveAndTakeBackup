@@ -105,7 +105,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiMyPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, null, _dataModel.LoginResponse.Token);
-				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyPostsResponse.Posts.Select(GeneratePostViewModels));
 				if (PostViewModels.Any())
 				{
 					PostViewModels.Last().IsSeparatorLineShown = false;

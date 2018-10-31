@@ -48,27 +48,16 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:orientation="vertical">
 
-			<RelativeLayout
+			<LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-				<giveandtake.droid.controls.CustomTextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/default_margin"
-                    android:fontFamily="@font/sanfranciscodisplay_light"
-                    android:text="Giving"
-                    android:textSize="@dimen/post_detail_status_text_size"
-                    local:MvxBind="Status Status" />
 
 				<giveandtake.droid.controls.CustomCardView
                     android:id="@+id/btnCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/button_category_height"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@id/tvStatus"
                     local:MvxBind="CardBackgroundColorCustom BackgroundColor"
                     local:cardCornerRadius="12dp">
 
@@ -80,7 +69,18 @@
                         android:textSize="@dimen/category_text_size"
                         local:MvxBind="Text CategoryName" />
 				</giveandtake.droid.controls.CustomCardView>
-			</RelativeLayout>
+
+				<giveandtake.droid.controls.CustomTextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:fontFamily="@font/sanfranciscodisplay_light"
+                    android:gravity="right"
+                    android:textSize="@dimen/post_detail_status_text_size"
+                    local:MvxBind="Status Status" />
+
+			</LinearLayout>
 
 
 			<LinearLayout
