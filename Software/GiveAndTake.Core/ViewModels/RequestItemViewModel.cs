@@ -1,5 +1,6 @@
 ﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
@@ -12,11 +13,11 @@ namespace GiveAndTake.Core.ViewModels
     {
         #region Properties
 
-	    public Action<Request> OnRejected { get; set; }
+	    public Action<Request> RejectAction { get; set; }
 
-	    public Action<Request> OnAccepted { get; set; }
+	    public Action<Request> AcceptAction { get; set; }
 
-	    public Action<Request> OnClicked { get; set; }
+	    public Action<Request> ClickAction { get; set; }
 
 	    public IMvxCommand RejectCommand => _rejectCommand ?? (_rejectCommand = new MvxCommand(HandleOnRejected));
 
@@ -27,50 +28,37 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
+	    public string Acceptance => "Chấp nhận";
+	    public string Rejection => "Từ chối";
+
 		public string UserName
 	    {
 		    get => _userName;
-		    set
-		    {
-			    _userName = value;
-			    RaisePropertyChanged(() => UserName);
-		    }
-	    }
+			set => SetProperty(ref _userName, value);
+		}
 
 	    public string AvatarUrl
 	    {
 		    get => _avatarUrl;
-		    set
-		    {
-			    _avatarUrl = value;
-			    RaisePropertyChanged(() => AvatarUrl);
-		    }
+		    set => SetProperty(ref _avatarUrl, value);
 	    }
 
 	    public string RequestMessage
 	    {
 		    get => _requestMessage;
-		    set
-		    {
-			    _requestMessage = value;
-			    RaisePropertyChanged(() => RequestMessage);
-		    }
+		    set => SetProperty(ref _requestMessage, value);
 	    }
 
 	    public string CreatedTime
 	    {
 		    get => _createdTime;
-		    set
-		    {
-			    _createdTime = value;
-			    RaisePropertyChanged(() => CreatedTime);
-		    }
+		    set => SetProperty(ref _createdTime, value);
 	    }
 
-	    public bool IsLastViewInList
-	    {
-		    get => _isLastViewInList;
-		    set => SetProperty(ref _isLastViewInList, value);
+	    public bool IsSeperatorShown
+		{
+		    get => _isSeperatorShown;
+		    set => SetProperty(ref _isSeperatorShown, value);
 	    }
 
 	    private readonly Request _request;
@@ -81,7 +69,7 @@ namespace GiveAndTake.Core.ViewModels
         private string _avatarUrl;
         private string _createdTime;
         private string _requestMessage;
-        private bool _isLastViewInList;
+        private bool _isSeperatorShown = true;
 	
         #endregion
 
@@ -92,16 +80,25 @@ namespace GiveAndTake.Core.ViewModels
 	        _request = request;
 	        AvatarUrl = request.User.AvatarUrl;
 	        UserName = request.User.FullName ?? AppConstants.DefaultUserName;
-	        CreatedTime = request.CreatedTime.ToString("dd.MM.yyyy");
+	        CreatedTime = TimeHelper.ToTimeAgo(request.CreatedTime);
 	        RequestMessage = request.RequestMessage;
 		}
 
-	    private void HandleOnRejected() => OnRejected?.Invoke(_request);
+	    private void HandleOnRejected()
+	    {
+		    RejectAction?.Invoke(_request);
+		} 
 
-	    private void HandleOnAccepted() => OnAccepted?.Invoke(_request);
+	    private void HandleOnAccepted()
+	    {
+		    AcceptAction?.Invoke(_request);
+	    }
 
-	    private void HandleOnClicked() => OnClicked?.Invoke(_request);
+		private void HandleOnClicked()
+		{
+			ClickAction?.Invoke(_request);
+		}
 
-	    #endregion
-    }
+		#endregion
+	}
 }

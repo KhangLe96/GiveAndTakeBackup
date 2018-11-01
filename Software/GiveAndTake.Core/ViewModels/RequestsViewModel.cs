@@ -57,12 +57,12 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task OnLoadMore()
         {
-            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
+            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
             if (_dataModel.ApiRequestsResponse.Requests.Any())
             {
-                RequestItemViewModels.Last().IsLastViewInList = false;
+                RequestItemViewModels.Last().IsSeperatorShown = true;
                 RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
-                RequestItemViewModels.Last().IsLastViewInList = true;
+                RequestItemViewModels.Last().IsSeperatorShown = false;
             }
         }
 
@@ -70,9 +70,9 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    var requestItem = new RequestItemViewModel(request)
 		    {
-				OnClicked = OnItemClicked,
-				OnAccepted = OnRequestAccepted,
-				OnRejected = OnRequestRejected
+				ClickAction = OnItemClicked,
+				AcceptAction = OnRequestAccepted,
+				RejectAction = OnRequestRejected
 		    };
 			return requestItem;
 	    }
@@ -124,7 +124,7 @@ namespace GiveAndTake.Core.ViewModels
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
-                RequestItemViewModels.Last().IsLastViewInList = true;
+                RequestItemViewModels.Last().IsSeperatorShown = false;
             }	        
 		}
 

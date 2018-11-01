@@ -15,21 +15,21 @@
 			android:text="Danh sách yêu cầu"
 			android:layout_height="match_parent"
 			android:layout_width="wrap_content"
-			android:textSize="17dp"
-			android:layout_marginLeft="18dp"
+			android:textSize="@dimen/request_list_title_text_size"
+			android:layout_marginLeft="@dimen/medium_margin"
 			android:gravity="center_vertical"
 			local:MvxBind="Text Title"
 			/>
 		<TextView
 	        android:id="@+id/btnRequestNumber"
 	        android:layout_width="wrap_content"
-	        android:layout_height="24dp"
-	        android:layout_marginLeft="10dp"
-		    android:paddingLeft="10dp"
-		    android:paddingRight="10dp"
+	        android:layout_height="@dimen/request_number_button_height"
+	        android:layout_marginLeft="@dimen/medium_margin"
+		    android:paddingLeft="@dimen/medium_padding"
+		    android:paddingRight="@dimen/medium_padding"
 	        android:background="@drawable/request_number_bg"
 	        android:textColor="@color/colorPrimary"
-			android:textSize="15dp"
+			android:textSize="@dimen/request_number_button_text_size"
 			local:MvxBind="Text NumberOfRequest"
 		  />
 	</LinearLayout>

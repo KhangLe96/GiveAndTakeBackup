@@ -87,4 +87,10 @@
 	<dimen name="popup_request_Small_Margin">5dp</dimen>
 	<dimen name="btn_normal_size">30dp</dimen>
 	<dimen name="post_small_size">45dp</dimen>
+	<dimen name="request_list_title_text_size">17dp</dimen>
+	<dimen name="request_list_title_margin_left">18dp</dimen>
+	<dimen name="request_number_button_height">24dp</dimen>
+	<dimen name="medium_margin">10dp</dimen>
+	<dimen name="medium_padding">10dp</dimen>
+	<dimen name="request_number_button_text_size">15dp</dimen>
 </resources>
