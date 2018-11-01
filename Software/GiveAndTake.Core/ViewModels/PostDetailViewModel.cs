@@ -199,6 +199,7 @@ namespace GiveAndTake.Core.ViewModels
 		private string _postId;
 		private UserRequest _userRequestResponse;
 		private readonly ILoadingOverlayService _overlay;
+		private bool _isBackFromFullImage = false;
 		#endregion
 
 		#region Constructor
@@ -212,7 +213,11 @@ namespace GiveAndTake.Core.ViewModels
 		private void ShowFullImage(int position)
 		{
 			PostImageIndex = position;
-			NavigationService.Navigate<PostImageViewModel, bool>().ContinueWith(task => PostImageIndex = _dataModel.PostImageIndex);
+			NavigationService.Navigate<PostImageViewModel, bool>().ContinueWith(
+				task =>{
+					PostImageIndex = _dataModel.PostImageIndex;
+					_isBackFromFullImage = true;
+				});
 		}
 
 		private async void ShowMenuView()
@@ -289,7 +294,11 @@ namespace GiveAndTake.Core.ViewModels
 		public override async void ViewAppeared()
 		{
 			base.ViewAppeared();
-			await UpdateDataModelWithOverlay(AppConstants.LoadingDataOverlayTitle);
+			if (_isBackFromFullImage == false)
+			{ 
+				await UpdateDataModelWithOverlay(AppConstants.LoadingDataOverlayTitle);				
+			}
+			_isBackFromFullImage = false;
 		}
 
 		private async Task UpdateDataModel()
