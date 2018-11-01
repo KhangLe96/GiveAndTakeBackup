@@ -265,7 +265,7 @@ namespace GiveAndTake.Core.ViewModels
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
 			}
 			await NavigationService.Close(this, true);
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			await _overlay.CloseOverlay();
 		}
 
 		private void InitSelectedImage()

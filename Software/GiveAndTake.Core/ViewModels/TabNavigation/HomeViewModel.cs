@@ -259,7 +259,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			{				
 				await UpdatePostViewModels();				
 			}
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			await _overlay.CloseOverlay();
 		}
 
 		private async Task UpdateCategories()

@@ -251,8 +251,7 @@ namespace GiveAndTake.Core.ViewModels
 			if (_isMyPost)
 			{
 				await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
-				await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
-				await UpdateDataModel();
+				await UpdateDataModelWithOverlay(AppConstants.UpdateOverLayTitle);
 			}
 			else
 			{
@@ -267,32 +266,35 @@ namespace GiveAndTake.Core.ViewModels
 					var managementService = Mvx.Resolve<IManagementService>();
 					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
 					await UpdateDataModel();
-
+					await _overlay.CloseOverlay();
 				}
 				else
 				{
 					var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
 					if (result == RequestStatus.Submitted)
 					{
-						await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
-						await UpdateDataModel();
+						await UpdateDataModelWithOverlay(AppConstants.UpdateOverLayTitle);
 					}
 				}
 			}
 		}
 
-		public override async void Prepare(Post post)
-		{
-			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+		public override void Prepare(Post post)
+		{			
 			_postId = post.PostId;
 			PostImages = post.Images;
-			_isMyPost = post.IsMyPost;
+			_isMyPost = post.IsMyPost;			
+		}
 
-			await UpdateDataModel();
+		public override async void ViewCreated()
+		{
+			base.ViewCreated();
+			await UpdateDataModelWithOverlay(AppConstants.LoadingDataOverlayTitle);
 		}
 
 		private async Task UpdateDataModel()
 		{
+			
 			_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
 			_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
 			IsRequested = _userRequestResponse.IsRequested;
@@ -314,8 +316,6 @@ namespace GiveAndTake.Core.ViewModels
 			CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
 			PostImageIndex = 0;
 			_post = _dataModel.CurrentPost;
-
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 		}
 
 		public override Task Initialize()
@@ -335,6 +335,13 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			var totalImage = _postImages.Count == 0 ? 1 : PostImages.Count;
 			ImageIndexIndicator = _postImageIndex + 1 + " / " + totalImage;
+		}
+
+		private async Task UpdateDataModelWithOverlay(string overlayTitle)
+		{
+			await _overlay.ShowOverlay(overlayTitle);
+			await UpdateDataModel();
+			await _overlay.CloseOverlay();
 		}
 
 		#endregion

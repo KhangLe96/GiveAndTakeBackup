@@ -103,7 +103,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
 			}
 			await NavigationService.Close(this, RequestStatus.Submitted);
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			await _overlay.CloseOverlay();
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_requestDescription);
