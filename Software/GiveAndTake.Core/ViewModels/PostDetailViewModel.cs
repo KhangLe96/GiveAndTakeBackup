@@ -286,9 +286,9 @@ namespace GiveAndTake.Core.ViewModels
 			_isMyPost = post.IsMyPost;			
 		}
 
-		public override async void ViewCreated()
+		public override async void ViewAppeared()
 		{
-			base.ViewCreated();
+			base.ViewAppeared();
 			await UpdateDataModelWithOverlay(AppConstants.LoadingDataOverlayTitle);
 		}
 
