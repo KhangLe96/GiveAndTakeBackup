@@ -73,8 +73,14 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public override void OnPause()
 	    {
 		    base.OnPause();
-			KeyboardHelper.HideKeyboard(_searchView);
-	    }
+			KeyboardHelper.HideKeyboard(_searchView);		    
+		}
+
+	    public override void OnDestroyView()
+	    {
+		    base.OnDestroyView();
+		    _clearButton.Visibility = ViewStates.Gone;
+		}
 
 	    protected override void Dispose(bool disposing)
 	    {
