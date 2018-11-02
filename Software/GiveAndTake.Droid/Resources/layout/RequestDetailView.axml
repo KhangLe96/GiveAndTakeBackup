@@ -75,7 +75,8 @@
         local:MvxBind="LoadingPlaceholderImagePath 'res:default_post';
 							ErrorPlaceholderImagePath 'res:default_post';
 							Transformations PostTransformations;
-							ImageUrl PostUrl" />
+							ImageUrl PostUrl;
+							Click ShowPostDetailCommand" />
 
 	<TextView
         android:id="@+id/PopupRequestDescription"

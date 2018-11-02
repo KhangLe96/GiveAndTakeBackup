@@ -61,6 +61,10 @@ namespace GiveAndTake.iOS.Views.Popups
 				.For(v => v.ImageUrl)
 				.To(vm => vm.PostUrl);
 
+			bindingSet.Bind(_imagePost.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowPostDetailCommand);
+
 			bindingSet.Bind(_lbRequestMessage)
 				.For(v => v.Text)
 				.To(vm => vm.RequestMessage);

@@ -113,7 +113,10 @@ namespace GiveAndTake.Core.ViewModels
 			    case PopupRequestDetailResult.Accepted:
 				    OnRequestAccepted(request);
 				    break;
-		    }
+			    case PopupRequestDetailResult.ShowPostDetail:
+				    await NavigationService.Navigate<PostDetailViewModel, Post>(_post);
+				    break;
+			}
 	    }
 
 	    private async void OnRefresh()
