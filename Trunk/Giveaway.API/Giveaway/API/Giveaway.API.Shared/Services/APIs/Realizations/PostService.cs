@@ -82,6 +82,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			    requestedPosts = SortPosts(request, requestedPosts);
 
 			    var result = requestedPosts.Skip(request.Limit * (request.Page - 1)).Take(request.Limit).Select(Mapper.Map<PostAppResponse>).ToList();
+			    foreach (var post in result)
+			    {
+				    post.IsCurrentUserRequested = true;
+			    }
 
 				return new PagingQueryResponse<PostAppResponse>
 			    {
