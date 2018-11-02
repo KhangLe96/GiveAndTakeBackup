@@ -33,8 +33,10 @@ namespace GiveAndTake.Core.ViewModels
 		}
 
 		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
-
 		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
+
+		public IMvxCommand BackPressedCommand =>
+			_backPressedCommand = _backPressedCommand ?? new MvxAsyncCommand(() => NavigationService.Close(this, true));
 
 		private readonly IDataModel _dataModel;
 		private MvxObservableCollection<RequestItemViewModel> _requestItemViewModels;
@@ -42,8 +44,10 @@ namespace GiveAndTake.Core.ViewModels
 		private bool _isRefresh;
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
+		private IMvxCommand _backPressedCommand;
 		private string _postId;
 		private readonly ILoadingOverlayService _overlay;
+
 		public RequestsViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
@@ -136,7 +140,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public async Task UpdateRequestViewModelOverLay()
 		{
-			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			//await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdateRequestViewModels();
 			await _overlay.CloseOverlay();
 		}

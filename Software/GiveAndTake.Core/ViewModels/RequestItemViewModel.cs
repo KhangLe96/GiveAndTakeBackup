@@ -25,7 +25,6 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public IMvxCommand ClickCommand => _clickCommand ?? (_clickCommand = new MvxCommand(HandleOnClicked));
 
-
 	    public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
 	    public string Acceptance => "Chấp nhận";

@@ -283,7 +283,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public override async void Prepare(Post post)
 		{
-			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			//await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			_postId = post.PostId;
 			PostImages = post.Images;
 			_isMyPost = post.IsMyPost;
