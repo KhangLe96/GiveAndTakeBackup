@@ -288,7 +288,25 @@ namespace GiveAndTake.Core.ViewModels
 					var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
 					if (result == RequestStatus.Submitted)
 					{
-						await UpdateDataModelWithOverlay(AppConstants.UpdateOverLayTitle);
+						while (true)
+						{
+							try
+							{
+								await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
+								_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
+								_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
+								IsRequested = _userRequestResponse.IsRequested;
+								CommentCount = _dataModel.CurrentPost.CommentCount;
+								RequestCount = _dataModel.CurrentPost.RequestCount;
+								await _overlay.CloseOverlay();
+								break;
+							}
+							catch (AppException.ApiException)
+							{
+								await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+							}
+						}
+						
 					}
 				}
 			}
