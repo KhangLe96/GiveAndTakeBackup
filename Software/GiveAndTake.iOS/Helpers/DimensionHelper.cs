@@ -18,6 +18,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat MarginText { get; private set; }
 		public static nfloat AvatarMargin { get; private set; }
 		public static nfloat ImagePostSize { get; private set; }
+		public static nfloat ImagePostSmallSize { get; private set; }
 		public static nfloat ImageMultiSize { get; private set; }
 		public static nfloat ImageAvatarSize { get; private set; }
 		public static nfloat FilterSize { get; private set; }
@@ -130,6 +131,7 @@ namespace GiveAndTake.iOS.Helpers
 			MarginNormal = 12 * Rate;
 			AvatarMargin = 16 * Rate;
 			ImagePostSize = 120 * Rate;
+			ImagePostSmallSize = 50 * Rate;
 			ImageMultiSize = 20 * Rate;
 			ImageAvatarSize = 29 * Rate;
 			FilterSize = 40 * Rate;

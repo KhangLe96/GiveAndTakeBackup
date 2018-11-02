@@ -47,6 +47,10 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				.For(v => v.Text)
 				.To(vm => vm.RequestMessage);
 
+			set.Bind(_lbMessage.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ClickCommand);
+
 			set.Bind(_btnAccept)
 				.For("Title")
 				.To(vm => vm.Acceptance);

@@ -63,6 +63,7 @@ namespace Giveaway.API
                     map => map.MapFrom(source => source.Requests.Count)
                 );
             cfg.CreateMap<PostAppResponse, Post>();
+
             cfg.CreateMap<Post, PostCmsResponse>()
                 .ForMember(
                     destination => destination.EntityStatus,
@@ -73,14 +74,16 @@ namespace Giveaway.API
                     map => map.MapFrom(source => source.PostStatus.ToString())
                 );
             cfg.CreateMap<PostCmsResponse, Post>();
+
             cfg.CreateMap<Post, PostReportResponse>();
             cfg.CreateMap<PostRequest, Post>();
+	        cfg.CreateMap<Post, PostRequestResponse>();
 
-            #endregion
+			#endregion
 
-            #region Image
+			#region Image
 
-            cfg.CreateMap<Image, ImageResponse>();
+			cfg.CreateMap<Image, ImageResponse>();
             cfg.CreateMap<ImageRequest, Image>();
             cfg.CreateMap<ImageDTO, Image>();
 

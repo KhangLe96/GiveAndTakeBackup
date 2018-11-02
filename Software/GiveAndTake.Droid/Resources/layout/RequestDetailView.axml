@@ -72,10 +72,10 @@
         android:layout_below="@+id/PopupTitle"
         android:layout_marginRight="@dimen/popup_request_Default_Margin"
         android:layout_marginTop="@dimen/popup_request_Default_Margin"
-        local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar';
-							ErrorPlaceholderImagePath 'res:default_avatar';
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_post';
+							ErrorPlaceholderImagePath 'res:default_post';
 							Transformations PostTransformations;
-							ImageUrl AvatarUrl" />
+							ImageUrl PostUrl" />
 
 	<TextView
         android:id="@+id/PopupRequestDescription"

@@ -250,7 +250,7 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			if (_isMyPost)
 			{
-				var result = await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
+				var result = await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
 				await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
 				await UpdateDataModel();
 			}

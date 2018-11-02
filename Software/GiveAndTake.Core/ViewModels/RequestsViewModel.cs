@@ -10,7 +10,7 @@ using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class RequestsViewModel : BaseViewModel<string, bool>
+	public class RequestsViewModel : BaseViewModel<Post, bool>
 	{
 		public string Title => "Danh sách yêu cầu";
 
@@ -46,6 +46,7 @@ namespace GiveAndTake.Core.ViewModels
 		private IMvxCommand _loadMoreCommand;
 		private IMvxCommand _backPressedCommand;
 		private string _postId;
+		private Post _post;
 		private readonly ILoadingOverlayService _overlay;
 
 		public RequestsViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
@@ -102,6 +103,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async void OnItemClicked(Request request)
 	    {
+		    request.Post = _post;
 		    var popupResult = await NavigationService.Navigate<RequestDetailViewModel, Request, PopupRequestDetailResult>(request);
 		    switch (popupResult)
 		    {
@@ -132,9 +134,10 @@ namespace GiveAndTake.Core.ViewModels
             }	        
 		}
 
-	    public override void Prepare(string postId)
+	    public override void Prepare(Post post)
 	    {
-		    _postId = postId;
+		    _postId = post.PostId;
+		    _post = post;
 		    InitRequestViewModels();
 		}
 

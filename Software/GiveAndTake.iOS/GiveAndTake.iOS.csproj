@@ -112,6 +112,7 @@
     <Compile Include="Views\Popups\PopupWarningResponseView.cs" />
     <Compile Include="Views\Popups\PopupWarningView.cs" />
     <Compile Include="Views\PostImageView.cs" />
+    <Compile Include="Views\RequestDetailView.cs" />
     <Compile Include="Views\RequestsView.cs" />
     <Compile Include="Views\SlideViewDataSource.cs" />
     <Compile Include="Views\SlideViewDelegate.cs" />
@@ -176,6 +177,7 @@
     <BundleResource Include="Resources\Images\navigateLeft.png" />
     <BundleResource Include="Resources\Images\navigateRight.png" />
     <BundleResource Include="Resources\Images\request_on.png" />
+    <BundleResource Include="Resources\Images\btn_delete_request_detail.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

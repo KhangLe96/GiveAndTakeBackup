@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
@@ -38,6 +39,12 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _avatarUrl, value);
 		}
 
+		public string PostUrl
+		{
+			get => _postUrl;
+			set => SetProperty(ref _postUrl, value);
+		}
+
 		public string RequestMessage
 		{
 			get => _requestMessage;
@@ -56,6 +63,7 @@ namespace GiveAndTake.Core.ViewModels
 		private IMvxCommand _closeCommand;
 		private string _userName;
 		private string _avatarUrl;
+		private string _postUrl;
 		private string _createdTime;
 		private string _requestMessage;
 		
@@ -67,6 +75,7 @@ namespace GiveAndTake.Core.ViewModels
 		public override Task Initialize()
 		{
 			AvatarUrl = _request.User.AvatarUrl;
+			PostUrl = _request.Post.Images.ElementAt(0).ResizedImage;
 			UserName = _request.User.FullName ?? AppConstants.DefaultUserName;
 			CreatedTime = _request.CreatedTime.ToString("dd.MM.yyyy");
 			RequestMessage = _request.RequestMessage;
