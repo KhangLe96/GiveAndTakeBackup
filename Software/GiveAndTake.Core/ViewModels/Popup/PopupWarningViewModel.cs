@@ -3,7 +3,7 @@ using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
-	public class PopupWarningViewModel : BaseViewModel<string>
+	public class PopupWarningViewModel : BaseViewModel<string, bool>
 	{
 		public IMvxAsyncCommand CloseCommand { get; set; }
 

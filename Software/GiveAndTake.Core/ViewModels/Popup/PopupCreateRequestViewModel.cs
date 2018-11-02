@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
@@ -84,26 +86,35 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public IMvxCommand CloseCommand =>
 			_closeCommand ?? (_closeCommand = new MvxAsyncCommand(() => NavigationService.Close(this, RequestStatus.Cancelled)));
-		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitCreateNewRequest));
+		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxAsyncCommand(InitCreateNewRequest));
 
 
-		public async void InitCreateNewRequest()
+		public async Task InitCreateNewRequest()
 		{
-			await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
-			var request = new Request()
+			try
 			{
-				PostId = _postId,
-				UserId = _userId,
-				RequestMessage = RequestDescription,
-			};
+				await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
+				var request = new Request()
+				{
+					PostId = _postId,
+					UserId = _userId,
+					RequestMessage = RequestDescription,
+				};
 
-			var result = await ManagementService.CreateRequest(request, _dataModel.LoginResponse.Token);
-			if (result)
-			{
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
+				var result = await ManagementService.CreateRequest(request, _dataModel.LoginResponse.Token);
+				if (result)
+				{
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
+				}
+				await NavigationService.Close(this, RequestStatus.Submitted);
+				await _overlay.CloseOverlay();
 			}
-			await NavigationService.Close(this, RequestStatus.Submitted);
-			await _overlay.CloseOverlay();
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await InitCreateNewRequest();
+			}
+			
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_requestDescription);

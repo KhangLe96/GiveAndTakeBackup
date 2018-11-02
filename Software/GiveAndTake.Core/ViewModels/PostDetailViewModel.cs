@@ -8,6 +8,7 @@ using I18NPortable;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Services;
 using MvvmCross;
 
@@ -213,11 +214,9 @@ namespace GiveAndTake.Core.ViewModels
 		private void ShowFullImage(int position)
 		{
 			PostImageIndex = position;
-			NavigationService.Navigate<PostImageViewModel, bool>().ContinueWith(
-				task =>{
-					PostImageIndex = _dataModel.PostImageIndex;
-					_isBackFromFullImage = true;
-				});
+			NavigationService.Navigate<PostImageViewModel, bool>()
+				.ContinueWith(task => PostImageIndex = _dataModel.PostImageIndex);
+			_isBackFromFullImage = true;
 		}
 
 		private async void ShowMenuView()
@@ -269,7 +268,18 @@ namespace GiveAndTake.Core.ViewModels
 					}
 					await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
 					var managementService = Mvx.Resolve<IManagementService>();
-					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+					while (true)
+					{
+						try
+						{
+							await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+							break;
+						}
+						catch (AppException.ApiException)
+						{
+							await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+						}
+					}	
 					await UpdateDataModel();
 					await _overlay.CloseOverlay();
 				}
@@ -303,28 +313,35 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task UpdateDataModel()
 		{
-			
-			_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
-			_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
-			IsRequested = _userRequestResponse.IsRequested;
-			RequestCount = _dataModel.CurrentPost.RequestCount;
-			if (_isMyPost)
+			try
 			{
-				IsRequested = RequestCount != 0;
+				_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
+				_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);			
+				IsRequested = _userRequestResponse.IsRequested;
+				RequestCount = _dataModel.CurrentPost.RequestCount;
+				if (_isMyPost)
+				{
+					IsRequested = RequestCount != 0;
+				}
+				CategoryName = _dataModel.CurrentPost.Category.CategoryName;
+				AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
+				UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
+				CreatedTime = TimeHelper.ToTimeAgo(_dataModel.CurrentPost.CreatedTime);
+				Address = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
+				PostDescription = _dataModel.CurrentPost.Description;
+				PostTitle = _dataModel.CurrentPost.Title;
+				PostImages = _dataModel.CurrentPost.Images;
+				CommentCount = _dataModel.CurrentPost.CommentCount;
+				Status = _isMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
+				CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
+				PostImageIndex = 0;
+				_post = _dataModel.CurrentPost;
 			}
-			CategoryName = _dataModel.CurrentPost.Category.CategoryName;
-			AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
-			UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
-			CreatedTime = TimeHelper.ToTimeAgo(_dataModel.CurrentPost.CreatedTime);
-			Address = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
-			PostDescription = _dataModel.CurrentPost.Description;
-			PostTitle = _dataModel.CurrentPost.Title;
-			PostImages = _dataModel.CurrentPost.Images;
-			CommentCount = _dataModel.CurrentPost.CommentCount;
-			Status = _isMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
-			CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
-			PostImageIndex = 0;
-			_post = _dataModel.CurrentPost;
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await UpdateDataModel();
+			}
 		}
 
 		public override Task Initialize()

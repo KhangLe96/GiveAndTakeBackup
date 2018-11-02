@@ -20,7 +20,7 @@ namespace GiveAndTake.Droid.Views.Popup
 			base.OnCreateView(inflater, container, savedInstanceState);
 
 			var view = this.BindingInflate(Resource.Layout.PopupWarningView, null);
-
+			
 			return view;
 		}
 
@@ -29,6 +29,7 @@ namespace GiveAndTake.Droid.Views.Popup
 			base.OnStart();
 			Dialog.Window.SetLayout(DimensionHelper.ScreenWidth - (int)DimensionHelper.FromDimensionId(Resource.Dimension.margin_normal) * 4, ViewGroup.LayoutParams.WrapContent);
 			Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
+			Dialog.SetCanceledOnTouchOutside(false);
 		}
 	}
 }

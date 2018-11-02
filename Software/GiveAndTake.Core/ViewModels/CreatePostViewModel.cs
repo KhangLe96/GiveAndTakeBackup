@@ -43,7 +43,7 @@ namespace GiveAndTake.Core.ViewModels
 		private bool _enableSelectedImage;
 		private bool _isSubmitBtnEnabled;
 
-		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxCommand(InitSubmit));
+		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxAsyncCommand(InitSubmit));
 		public IMvxAsyncCommand ShowPhotoCollectionCommand =>
 			_showPhotoCollectionCommand ?? (_showPhotoCollectionCommand = new MvxAsyncCommand(ShowPhotoCollection));
 		public IMvxCommand ShowCategoriesCommand =>
@@ -232,40 +232,32 @@ namespace GiveAndTake.Core.ViewModels
 			InitSelectedImage();
 		}
 
-		public async void InitSubmit()
+		public async Task InitSubmit()
 		{
 			try
 			{
-				InitCreateNewPost();
+				await _overlay.ShowOverlay(AppConstants.UploadDataOverLayTitle);
+				var post = new CreatePost()
+				{
+					Title = PostTitle,
+					Description = PostDescription,
+					PostImages = _postImages,
+					PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
+					Address = _selectedProvinceCity.Id,
+				};
+				var result = await ManagementService.CreatePost(post, _dataModel.LoginResponse.Token);
+				if (result)
+				{
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
+				}
+				await NavigationService.Close(this, true);
+				await _overlay.CloseOverlay();
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (result == RequestStatus.Submitted)
-				{
-					InitSubmit();
-				}
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await InitSubmit();
 			}
-		}
-
-		public async void InitCreateNewPost()
-		{
-			await _overlay.ShowOverlay(AppConstants.UploadDataOverLayTitle);
-			var post = new CreatePost()
-			{
-				Title = PostTitle,
-				Description = PostDescription,
-				PostImages = _postImages,
-				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
-				Address = _selectedProvinceCity.Id,
-			};
-			var result = await ManagementService.CreatePost(post, _dataModel.LoginResponse.Token);
-			if (result)
-			{
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
-			}
-			await NavigationService.Close(this, true);
-			await _overlay.CloseOverlay();
 		}
 
 		private void InitSelectedImage()

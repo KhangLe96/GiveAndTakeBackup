@@ -5,6 +5,7 @@ using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Services;
 using MvvmCross;
 
@@ -57,13 +58,22 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task OnLoadMore()
         {
-            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
-            if (_dataModel.ApiRequestsResponse.Requests.Any())
-            {
-                RequestItemViewModels.Last().IsLastViewInList = false;
-                RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
-                RequestItemViewModels.Last().IsLastViewInList = true;
-            }
+	        try
+	        {
+				_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit=20&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
+		        if (_dataModel.ApiRequestsResponse.Requests.Any())
+		        {
+			        RequestItemViewModels.Last().IsLastViewInList = false;
+			        RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
+			        RequestItemViewModels.Last().IsLastViewInList = true;
+		        }
+			}
+	        catch (AppException.ApiException)
+	        {
+		        await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+		        await OnLoadMore();
+	        }
+			
         }
 
 	    private RequestItemViewModel GenerateRequestItem(Request request)
@@ -79,12 +89,21 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async void OnRequestRejected(Request request)
 	    {
-			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.RequestRejectingMessage);
-		    if (result == RequestStatus.Submitted)
-		    {
-				await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
-			    await UpdateRequestViewModelOverLay();
+			try
+			{
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.RequestRejectingMessage);
+				if (result == RequestStatus.Submitted)
+				{
+					await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
+					await UpdateRequestViewModelOverLay();
+				}
+			
 			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await OnLoadMore();
+			}	
 		}
 
 	    private async void OnRequestAccepted(Request request)
@@ -119,13 +138,21 @@ namespace GiveAndTake.Core.ViewModels
 
         public async Task UpdateRequestViewModels()
         {
-			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");	       
-			NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
-			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
-            if (RequestItemViewModels.Any())
-            {
-                RequestItemViewModels.Last().IsLastViewInList = true;
-            }	        
+	        try
+	        {
+		        _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");
+		        NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
+		        RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
+		        if (RequestItemViewModels.Any())
+		        {
+			        RequestItemViewModels.Last().IsLastViewInList = true;
+		        }
+			}
+	        catch (AppException.ApiException)
+	        {
+		        await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+		        await OnLoadMore();
+	        }        
 		}
 
 	    public override void Prepare(string postId)

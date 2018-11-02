@@ -19,7 +19,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public string SearchResultTitle => AppConstants.SearchResultNullTitle;
 
 		public IMvxCommand ShowLocationFiltersCommand =>
-			_showLocationFiltersCommand ?? (_showLocationFiltersCommand = new MvxAsyncCommand(ShowLocationFiltersPopup));
+			_showLocationFiltersCommand ??
+			(_showLocationFiltersCommand = new MvxAsyncCommand(ShowLocationFiltersPopup));
 
 		public IMvxCommand ShowSortFiltersCommand =>
 			_showSortFiltersCommand ?? (_showSortFiltersCommand = new MvxAsyncCommand(ShowSortFiltersPopup));
@@ -32,9 +33,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		public IMvxCommand SearchCommand =>
 			_searchCommand ?? (_searchCommand = new MvxAsyncCommand(OnSearching));
+
 		public IMvxCommand CloseSearchBarCommand =>
 			_searchCommand ?? (_searchCommand = new MvxAsyncCommand(InitDataModels));
-
 
 
 		public IMvxCommand LoadMoreCommand =>
@@ -77,7 +78,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public string CurrentQueryString
 		{
 			get => _currentQueryString;
-			set => SetProperty(ref _currentQueryString, value);		
+			set => SetProperty(ref _currentQueryString, value);
 		}
 
 		public MvxObservableCollection<PostItemViewModel> PostItemViewModelCollection
@@ -105,6 +106,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _loadMoreCommand;
 		private IMvxCommand _refreshCommand;
 		private readonly ILoadingOverlayService _overlay;
+
 		#endregion
 
 		public HomeViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
@@ -114,11 +116,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			InitDataModels();
 		}
 
-		private async Task InitDataModels() 
+		private async Task InitDataModels()
 		{
-			try
+			if (_dataModel.ApiPostsResponse == null)
 			{
-				if (_dataModel.ApiPostsResponse == null)
+				try
 				{
 					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 					_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
@@ -126,19 +128,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
 					_selectedCategory = _selectedCategory ?? _dataModel.Categories.First();
 					_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
-					_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();				
+					_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();
 					await UpdatePostViewModels();
 					await _overlay.CloseOverlay();
-				}			
-			}
-			catch (AppException.ApiException)
-			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (result == RequestStatus.Submitted)
-				{
-					await InitDataModels();
 				}
-			}			
+				catch (AppException.ApiException)
+				{
+					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+					await InitDataModels();
+				}				
+			}
 		}
 
 		private async Task UpdatePostViewModels()
@@ -151,19 +150,17 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				{
 					PostItemViewModelCollection.Last().IsSeparatorLineShown = false;
 				}
+
 				IsSearchResultNull = PostItemViewModelCollection.Any();
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (result == RequestStatus.Submitted)
-				{
-					await UpdatePostViewModels();
-				}
-			}
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await UpdatePostViewModels();
+			}		
 		}
 
-		private async Task OnLoadMore() 
+		private async Task OnLoadMore()
 		{
 			try
 			{
@@ -174,15 +171,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					PostItemViewModelCollection.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 					PostItemViewModelCollection.Last().IsSeparatorLineShown = false;
 				}
-			
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (result == RequestStatus.Submitted)
-				{
-					await OnLoadMore();
-				}
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await OnLoadMore();
 			}
 		}
 
@@ -199,8 +192,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
 			return new PostItemViewModel(post);
 		}
-		
-		private async Task ShowCategoriesPopup() 
+
+		private async Task ShowCategoriesPopup()
 		{
 			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
@@ -216,7 +209,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdatePostViewModelWithOverlay();
 		}
 
-		private async Task ShowSortFiltersPopup() 
+		private async Task ShowSortFiltersPopup()
 		{
 			var result = await NavigationService.Navigate<PopupListViewModel, PopupListParam, string>(new PopupListParam
 			{
@@ -248,7 +241,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdatePostViewModelWithOverlay();
 		}
 
-		private async Task ShowNewPostView() 
+		private async Task ShowNewPostView()
 		{
 			_dataModel.Categories.RemoveAt(0);
 
@@ -256,9 +249,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdateCategories();
 			if (result)
-			{				
-				await UpdatePostViewModels();				
+			{
+				await UpdatePostViewModels();
 			}
+
 			await _overlay.CloseOverlay();
 		}
 
@@ -270,17 +264,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 			catch (AppException.ApiException)
 			{
-				var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (popupResult == RequestStatus.Submitted)
-				{
-					await UpdateCategories();
-				}
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await UpdateCategories();
 			}
 		}
+
 		private async Task OnSearching()
 		{
 			await UpdatePostViewModelWithOverlay();
 		}
+
 		private async Task UpdatePostViewModelWithOverlay()
 		{
 			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);

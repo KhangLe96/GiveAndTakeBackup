@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Exceptions;
+﻿using System.Threading.Tasks;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -25,7 +26,7 @@ namespace GiveAndTake.Core.ViewModels
 		}
 
 		private ICommand _loginCommand;
-		public ICommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxCommand<BaseUser>(OnLoginSuccess));
+		public ICommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxAsyncCommand<BaseUser>(OnLoginSuccess));
 
         public LoginViewModel(IDataModel dataModel,ILoadingOverlayService loadingOverlayService)
 		{
@@ -33,7 +34,7 @@ namespace GiveAndTake.Core.ViewModels
 			_overlay = loadingOverlayService;
 		}
 
-		private async void OnLoginSuccess(BaseUser baseUser)
+		private async Task OnLoginSuccess(BaseUser baseUser)
 		{
 			try
 			{
@@ -44,11 +45,8 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
-				if (result == RequestStatus.Submitted)
-				{
-					OnLoginSuccess(baseUser);
-				}
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await OnLoginSuccess(baseUser);
 			}
 		}
 	}
