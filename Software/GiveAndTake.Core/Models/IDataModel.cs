@@ -9,6 +9,7 @@ namespace GiveAndTake.Core.Models
 		List<SortFilter> SortFilters { get; set; }
 		ApiPostsResponse ApiPostsResponse { get; set; }
 		ApiPostsResponse ApiMyPostsResponse { get; set; }
+		ApiPostsResponse ApiMyRequestedPostResponse { get; set; }
 		LoginResponse LoginResponse { get; set; }
 		BaseUser CurrentUser { get; set; }
 		List<Image> PostImages { get; set; }

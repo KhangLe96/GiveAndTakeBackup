@@ -19,5 +19,6 @@ namespace GiveAndTake.Core.Services
 		Task<User> UpdateCurrentUserProfile(User user);
 	    Task<User> GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
+	    Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token);
     }
 }

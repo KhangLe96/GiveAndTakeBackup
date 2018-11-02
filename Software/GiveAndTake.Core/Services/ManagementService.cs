@@ -91,6 +91,24 @@ namespace GiveAndTake.Core.Services
 
 	    }
 
+	    public async Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token)
+	    {
+			var url = $"{AppConstants.GetMyRequestedPosts}?{param}";
+		    var response = await _apiHelper.Get(url, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+		}
+
 		public async Task<Post> GetPostDetail(string postId)
         {
 			var parameters = $"/{postId}";
@@ -246,7 +264,7 @@ namespace GiveAndTake.Core.Services
 			new SortFilter {FilterName = "Cũ nhất", FilterTag = "asc"}
 	    };
 
-		//public void CreateRequest(string postId);
+	    //public void CreateRequest(string postId);
 
 		//public void ReportPost(string postId);
 

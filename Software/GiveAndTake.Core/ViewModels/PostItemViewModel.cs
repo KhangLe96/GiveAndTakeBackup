@@ -7,6 +7,7 @@ using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -99,8 +100,14 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _status, value);
 	    }
 
+	    public bool IsRequested
+	    {
+		    get => _isRequested;
+		    set => SetProperty(ref _isRequested, value);
+	    }
 
-	    public List<ITransformation> PostTransformations => 
+
+		public List<ITransformation> PostTransformations => 
 		    new List<ITransformation> { new CornersTransformation(5 , CornerTransformType.AllRounded) };
 
 	    public List<ITransformation> AvatarTransformations => 
@@ -142,12 +149,13 @@ namespace GiveAndTake.Core.ViewModels
 	    private int _commentCount;
 	    private bool _hasManyPostPhotos;
 	    private bool _isSeparatorLineShown;
+	    private bool _isRequested;
 	    private IMvxCommand _showGiverProfileCommand;
 	    private IMvxCommand _showPostDetailCommand;
 	    private IMvxCommand _showMenuPopupCommand;
 	    private readonly Post _post;
 
-		#endregion
+	    #endregion
 
 		#region Methods
 
@@ -172,7 +180,8 @@ namespace GiveAndTake.Core.ViewModels
 		    CommentCount = _post.CommentCount;
 		    IsSeparatorLineShown = true;
 	        BackgroundColor = _post.Category.BackgroundColor;
-		    Status = _post.PostStatus;
+		    Status = _post.PostStatus.Translate();
+		    IsRequested = _post.IsRequested;
 	    }
 
 	    

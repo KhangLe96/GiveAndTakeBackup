@@ -87,6 +87,46 @@
 
 	</RelativeLayout>
 
+	<MvxSwipeRefreshLayout
+		android:id="@+id/refreshlayout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@+id/profileView"
+		android:layout_marginLeft="@dimen/margin_short"
+		android:layout_marginRight="@dimen/margin_short"
+		local:MvxBind="Refreshing IsPostsRefreshing; RefreshCommand RefreshPostsCommand; Visibility Visibility(IsPostsList)">
+
+		<MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+			android:id="@+id/rvPosts"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="20dp"
+			android:scrollbars="vertical"
+			local:MvxBind="ItemsSource PostViewModels"
+			local:MvxItemTemplate="@layout/myposttemplate" />
+
+	</MvxSwipeRefreshLayout>
+
+	<MvxSwipeRefreshLayout
+		android:id="@+id/refreshlayout2"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@+id/profileView"
+		android:layout_marginLeft="@dimen/margin_short"
+		android:layout_marginRight="@dimen/margin_short"
+		local:MvxBind="Refreshing IsRequestedPostsRefreshing; RefreshCommand RefreshRequestedPostsCommand; Visibility Visibility(!IsPostsList)">
+
+		<MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+			android:id="@+id/rvRequestedPosts"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="20dp"
+			android:scrollbars="vertical"
+			local:MvxBind="ItemsSource RequestedPostViewModels"
+			local:MvxItemTemplate="@layout/posttemplate" />
+
+	</MvxSwipeRefreshLayout>
+
 	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -114,32 +154,5 @@
 			local:MvxBind="Text RightButtonTitle; Click ShowMyRequestsCommand; IsEnable (!IsPostsList)"/>
 
 	</LinearLayout>
-
-	<MvxSwipeRefreshLayout
-		android:id="@+id/refreshlayout"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_below="@+id/profileView"
-		android:layout_marginLeft="@dimen/margin_short"
-		android:layout_marginRight="@dimen/margin_short"
-		local:MvxBind="Refreshing IsRefreshing; RefreshCommand RefreshCommand; Visibility Visibility(IsPostsList)">
-
-		<MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
-			android:id="@+id/rvPosts"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingTop="20dp"
-			android:scrollbars="vertical"
-			local:MvxBind="ItemsSource PostViewModels"
-			local:MvxItemTemplate="@layout/myposttemplate" />
-
-	</MvxSwipeRefreshLayout>
-
-	<TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/profileView"
-        android:gravity="center"
-		local:MvxBind="Visibility Visibility(!IsPostsList)"/>
 
 </RelativeLayout>
