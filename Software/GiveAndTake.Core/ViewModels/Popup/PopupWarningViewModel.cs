@@ -3,6 +3,7 @@ using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
+	//Review ThanhVo why has bool result?
 	public class PopupWarningViewModel : BaseViewModel<string, bool>
 	{
 		public IMvxAsyncCommand CloseCommand { get; set; }

@@ -255,10 +255,12 @@ namespace GiveAndTake.Core.ViewModels
 			if (_isMyPost)
 			{
 				await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
+				//Review ThanhVo Why do we need to update datamodel in show request list
 				await UpdateDataModelWithOverlay(AppConstants.UpdateOverLayTitle);
 			}
 			else
 			{
+				//Review ThanhVo split this into small methods
 				if (IsRequested)
 				{
 					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");
@@ -268,6 +270,7 @@ namespace GiveAndTake.Core.ViewModels
 					}
 					await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
 					var managementService = Mvx.Resolve<IManagementService>();
+					//Review ThanhVo No need to put the loop here. If user does not turn on internet, he cannot run this action
 					while (true)
 					{
 						try
@@ -298,6 +301,7 @@ namespace GiveAndTake.Core.ViewModels
 								IsRequested = _userRequestResponse.IsRequested;
 								CommentCount = _dataModel.CurrentPost.CommentCount;
 								RequestCount = _dataModel.CurrentPost.RequestCount;
+								//Review ThanhVo Check all places which closing overlay, should move it to finally block
 								await _overlay.CloseOverlay();
 								break;
 							}
@@ -319,9 +323,11 @@ namespace GiveAndTake.Core.ViewModels
 			_isMyPost = post.IsMyPost;			
 		}
 
+		//Review ThanhVo Look late, should we load data early in ViewAppearing
 		public override async void ViewAppeared()
 		{
 			base.ViewAppeared();
+			//Review ThanhVo should be if(!_isBackFromFullImage)
 			if (_isBackFromFullImage == false)
 			{ 
 				await UpdateDataModelWithOverlay(AppConstants.LoadingDataOverlayTitle);				
@@ -329,6 +335,7 @@ namespace GiveAndTake.Core.ViewModels
 			_isBackFromFullImage = false;
 		}
 
+		//REview Thanh Vo This is not mean that updating view model, should be LoadDataFrom
 		private async Task UpdateDataModel()
 		{
 			try
@@ -357,7 +364,9 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			catch (AppException.ApiException)
 			{
+				//Review Thanh Vo, should take message from ApiException instead of use one message every place which it happens
 				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				//Review ThanhVo Should check the result before continue although popup message warning just has one button
 				await UpdateDataModel();
 			}
 		}

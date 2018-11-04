@@ -130,11 +130,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
 					_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();
 					await UpdatePostViewModels();
+					//Review ThanhVo
 					await _overlay.CloseOverlay();
 				}
 				catch (AppException.ApiException)
 				{
 					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+					//Review ThanhVo
 					await InitDataModels();
 				}				
 			}
@@ -156,6 +158,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			catch (AppException.ApiException)
 			{
 				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				//Review ThanhVo I think we should consider about this case. Recall it self is not good behaviour, just back to previous state,
+				//if user still want to continue, we just show the popup
 				await UpdatePostViewModels();
 			}		
 		}

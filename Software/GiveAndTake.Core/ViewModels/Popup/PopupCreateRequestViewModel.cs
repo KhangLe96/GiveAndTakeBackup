@@ -107,11 +107,13 @@ namespace GiveAndTake.Core.ViewModels.Popup
 					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
 				}
 				await NavigationService.Close(this, RequestStatus.Submitted);
+				//Review ThanhVo
 				await _overlay.CloseOverlay();
 			}
 			catch (AppException.ApiException)
 			{
 				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				//Review ThanhVo
 				await InitCreateNewRequest();
 			}
 			

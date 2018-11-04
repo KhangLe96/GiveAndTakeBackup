@@ -251,11 +251,16 @@ namespace GiveAndTake.Core.ViewModels
 					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
 				}
 				await NavigationService.Close(this, true);
+				//Review ThanhVo move it to finally because if api exception happen, overlay will not be closed
+				//Check all places and rework it
 				await _overlay.CloseOverlay();
 			}
 			catch (AppException.ApiException)
 			{
 				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				//Review ThanhVo Although warning popup just has only one button, but should check the result when doing next action.
+				//It will help maintain easier in future, may be warning popup has two button
+				//Check all places and rework this
 				await InitSubmit();
 			}
 		}
