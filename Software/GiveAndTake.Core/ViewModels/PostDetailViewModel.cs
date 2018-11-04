@@ -291,6 +291,7 @@ namespace GiveAndTake.Core.ViewModels
 					var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
 					if (result == RequestStatus.Submitted)
 					{
+						//Review ThanhVo As I review in 152+294 We just show the message and back to previous state instead of this loop
 						while (true)
 						{
 							try
