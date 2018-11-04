@@ -28,6 +28,7 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_overlayView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, View, NSLayoutAttribute.Width, 1, 0),
 				NSLayoutConstraint.Create(_overlayView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, View, NSLayoutAttribute.Height, 1, 0)
 			});
+			//Review ThanhVo use DimentionHelper
 			_loadingIndicator = new LoadingIndicator(36, ColorHelper.LoadingIndicatorLightBlue, 2);
 			_overlayView.Add(_loadingIndicator);			
 			_loadingIndicator.StartLoadingAnimation();
