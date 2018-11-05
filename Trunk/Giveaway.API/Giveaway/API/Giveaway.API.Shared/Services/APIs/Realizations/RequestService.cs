@@ -151,7 +151,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 }
                 catch
                 {
-                    throw new BadRequestException(CommonConstant.Error.NotFound);
+                    throw new BadRequestException(CommonConstant.Error.InvalidInput);
                 }
             }
 

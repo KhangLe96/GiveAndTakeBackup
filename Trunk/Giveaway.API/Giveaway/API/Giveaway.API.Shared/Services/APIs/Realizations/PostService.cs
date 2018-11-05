@@ -207,8 +207,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public bool ChangePostStatusApp(Guid postId, StatusRequest request)
         {
-            var post = _postService.Find(postId);
-            if (post == null)
+            var post = _postService.Include(x => x.Requests).FirstOrDefault(x => x.Id == postId);
+	        bool updated = false;
+
+			if (post == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
             }
@@ -216,15 +218,17 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             if (request.UserStatus == PostStatus.Giving.ToString())
             {
                 post.PostStatus = PostStatus.Giving;
-            }
+	            updated = _postService.Update(post);
+			}
             else if (request.UserStatus == PostStatus.Gived.ToString())
             {
                 post.PostStatus = PostStatus.Gived;
-            }
+	            updated = _postService.Update(post);
+	            RejectRequests(postId, updated);
+			}
             else
                 throw new BadRequestException(CommonConstant.Error.BadRequest);
 
-            bool updated = _postService.Update(post);
             if (updated == false)
                 throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
@@ -232,6 +236,23 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
 		#region Utils
+
+	    private void RejectRequests(Guid postId, bool updated)
+	    {
+		    if (updated)
+		    {
+			    var requests = _requestService.Where(x =>
+				    x.PostId == postId && x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending);
+			    foreach (var item in requests)
+			    {
+				    item.RequestStatus = RequestStatus.Rejected;
+			    }
+
+			    _requestService.UpdateMany(requests, out var isSaved);
+			    if (isSaved == false)
+				    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+		    }
+	    }
 
 		private void CheckIfCurrentUserRequested(string userId, List<T> posts)
 		{
