@@ -220,14 +220,17 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 post.PostStatus = PostStatus.Giving;
 	            updated = _postService.Update(post);
 			}
-            else if (request.UserStatus == PostStatus.Gived.ToString())
+            else if (request.UserStatus == PostStatus.Gave.ToString())
             {
-                post.PostStatus = PostStatus.Gived;
+                post.PostStatus = PostStatus.Gave;
 	            updated = _postService.Update(post);
-	            RejectRequests(postId, updated);
-			}
+	            if (updated)
+	            {
+		            RejectRequests(postId);
+	            }
+            }
             else
-                throw new BadRequestException(CommonConstant.Error.BadRequest);
+                throw new BadRequestException(CommonConstant.Error.InvalidInput);
 
             if (updated == false)
                 throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
@@ -237,12 +240,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		#region Utils
 
-	    private void RejectRequests(Guid postId, bool updated)
+	    private void RejectRequests(Guid postId)
 	    {
-		    if (updated)
+		    var requests = _requestService.Where(x =>
+			    x.PostId == postId && x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending);
+		    if (requests.Any())
 		    {
-			    var requests = _requestService.Where(x =>
-				    x.PostId == postId && x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending);
 			    foreach (var item in requests)
 			    {
 				    item.RequestStatus = RequestStatus.Rejected;
@@ -251,7 +254,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			    _requestService.UpdateMany(requests, out var isSaved);
 			    if (isSaved == false)
 				    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-		    }
+			}
 	    }
 
 		private void CheckIfCurrentUserRequested(string userId, List<T> posts)

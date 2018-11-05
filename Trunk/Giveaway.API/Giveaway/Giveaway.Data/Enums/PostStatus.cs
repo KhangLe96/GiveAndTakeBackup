@@ -3,6 +3,6 @@
     public enum PostStatus
     {
         Giving,
-        Gived
+        Gave
     }
 }
