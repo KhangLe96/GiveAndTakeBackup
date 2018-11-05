@@ -3,34 +3,32 @@ using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
-using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels
 {
 	public class LoginViewModel : BaseViewModel
 	{
-		private readonly IDataModel _dataModel;
+		public string LoginTitle => AppConstants.LoginTitle;
 
-		private User _user;
+		public IMvxCommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxAsyncCommand<BaseUser>(OnLoginSuccess));
+
 		public User User
 		{
 			get => _user;
-			set
-			{
-				_user = value;
-				RaisePropertyChanged(() => User);
-			}
+			set => SetProperty(ref _user, value);
 		}
 
-		private ICommand _loginCommand;
-		public ICommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxCommand<BaseUser>(OnLoginSuccess));
+		private readonly IDataModel _dataModel;
+		private User _user;
+		private IMvxCommand _loginCommand;
 
         public LoginViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
 		}
 
-		private async void OnLoginSuccess(BaseUser baseUser)
+		private async Task OnLoginSuccess(BaseUser baseUser)
 		{
 			try
 			{
@@ -43,7 +41,7 @@ namespace GiveAndTake.Core.ViewModels
 				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
 				{
-					OnLoginSuccess(baseUser);
+					await OnLoginSuccess(baseUser);
 				}
 			}
 		}

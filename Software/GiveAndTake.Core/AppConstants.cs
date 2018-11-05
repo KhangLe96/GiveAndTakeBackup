@@ -55,5 +55,6 @@ namespace GiveAndTake.Core
 		public const string CreatePostTitlePlaceHolder = "Tiêu đề (Thương hiệu, thể loại, ...)";
 		public const string CreatePostBtnSubmitTitle = "Đăng";
 		public const string CreatePostSelectedImageWarning = "Bạn hãy chọn một ảnh bất kỳ để vào xem những ảnh đã chọn";
+		public static string LoginTitle = "Đăng nhập với tài khoản";
 	}
 }

@@ -21,18 +21,27 @@ namespace GiveAndTake.Droid.Views
 
     public class LoginView : BaseActivity
     {
+	    private static AccessToken accessToken;
         private ICallbackManager _callbackManager;
-	    // REVIEW [KHOA]: name convention?
-		private AccessTokenTracker accessTokenTracker;
-        public static AccessToken accessToken;
+	    private ImageButton _btnFacebookLogin;
 
-        public IMvxCommand<BaseUser> LoginCommand { get; set; }
+	    public IMvxCommand<BaseUser> LoginCommand { get; set; }
 
         protected override int LayoutId => Resource.Layout.LoginView;
 
 	    protected override void InitView()
 	    {
-		    InitFacebookButton();
+		    _callbackManager = CallbackManagerFactory.Create();
+
+		    var loginCallback = new FacebookCallback<LoginResult>
+		    {
+			    HandleSuccess = OnLoginSuccess
+		    };
+
+		    LoginManager.Instance.RegisterCallback(_callbackManager, loginCallback);
+
+		    _btnFacebookLogin = FindViewById<ImageButton>(Resource.Id.btnFb);
+		    _btnFacebookLogin.Click += OnLoginButtonClicked;
 		}
 
 	    protected override void CreateBinding()
@@ -66,24 +75,14 @@ namespace GiveAndTake.Droid.Views
 			base.OnActivityResult(requestCode, resultCode, data);
         }
 
-        private void InitFacebookButton()
-        {
-	        _callbackManager = CallbackManagerFactory.Create();
+	    protected override void Dispose(bool disposing)
+	    {
+			_btnFacebookLogin.Click -= OnLoginButtonClicked;
+			base.Dispose(disposing);
+	    }
 
-			var loginCallback = new FacebookCallback<LoginResult>
-            {
-                HandleSuccess = OnLoginSuccess,
-                HandleCancel = OnCancelLogin,
-                HandleError = OnLoginError
-            };
-
-            LoginManager.Instance.RegisterCallback(_callbackManager, loginCallback);
-	        // REVIEW [KHOA]: unsubscribe event
-			FindViewById<ImageButton>(Resource.Id.btnFb).Click += delegate
-            {
-                LoginManager.Instance.LogInWithReadPermissions(this, new[] { "public_profile" , "email" });
-            };
-        }
+	    private void OnLoginButtonClicked(object sender, EventArgs e) => 
+		    LoginManager.Instance.LogInWithReadPermissions(this, new[] {"public_profile", "email"});
 
 	    private void OnLoginSuccess(LoginResult loginResult)
 	    {
@@ -106,11 +105,6 @@ namespace GiveAndTake.Droid.Views
 		    AvatarUrl = GetProfilePicture(Profile.CurrentProfile.Id),
 		    SocialAccountId = Profile.CurrentProfile.Id
 	    });
-
-	    // REVIEW [KHOA]: remove these methods if you don't implement
-		private void OnCancelLogin() { }
-
-        private void OnLoginError(FacebookException loginException) { }
 
 	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
 	}

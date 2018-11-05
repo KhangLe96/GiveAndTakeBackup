@@ -17,9 +17,7 @@ namespace GiveAndTake.iOS.Views
     public class LoginView : BaseView
     {
         private UIImageView _logoImage;
-        private UIButton _customedLoginFacebookButton;
-		// REVIEW [KHOA]: never used
-        private UIButton _customedLoginGoogleButton;
+        private UIButton _customLoginFacebookButton;
         private UIImageView _contentView;
         private PopupItemLabel _loginTitle;
 	
@@ -36,9 +34,10 @@ namespace GiveAndTake.iOS.Views
             base.ViewDidLoad();
 
             Profile.Notifications.ObserveDidChange((sender, e) => {
-	            // REVIEW [KHOA]: use {} even there is 1 line of code
 				if (e.NewProfile == null)
-                    return;
+				{
+					return;
+				}
                 
                 var facebookProfile = e.NewProfile;
                 LoginCommand?.Execute(GetUserProfile(facebookProfile));
@@ -54,6 +53,10 @@ namespace GiveAndTake.iOS.Views
             set.Bind(this)
                 .For(v => v.LoginCommand)
                 .To(vm => vm.LoginCommand);
+
+	        set.Bind(this)
+		        .For(v => v._loginTitle)
+		        .To(vm => vm.LoginTitle);
 
             set.Apply();
         }
@@ -78,12 +81,9 @@ namespace GiveAndTake.iOS.Views
         {
             _logoImage = UIHelper.CreateImageView(DimensionHelper.LoginLogoWidth, DimensionHelper.LoginLogoHeight, UIColor.White, ImageHelper.LoginLogo);
             _loginTitle = UIHelper.CreateLabel(ColorHelper.Blue, DimensionHelper.LoginTitleTextSize);
-            _customedLoginFacebookButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.FacebookButton);
-            _customedLoginGoogleButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.GoogleButton);
+            _customLoginFacebookButton = UIHelper.CreateImageButton(DimensionHelper.LoginButtonHeight, DimensionHelper.LoginButtonWidth, ImageHelper.FacebookButton);
 
-            _loginTitle.Text = "Đăng nhập với tài khoản";
-
-            _contentView.AddSubviews(_logoImage, _loginTitle, _customedLoginFacebookButton);
+            _contentView.AddSubviews(_logoImage, _loginTitle, _customLoginFacebookButton);
 
             _contentView.AddConstraints(new[]
             {
@@ -97,38 +97,24 @@ namespace GiveAndTake.iOS.Views
                 NSLayoutConstraint.Create(_logoImage, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
                     NSLayoutAttribute.CenterX, 1, 0),
 
-                NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView,
+                NSLayoutConstraint.Create(_customLoginFacebookButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView,
                     NSLayoutAttribute.CenterY, 1, DimensionHelper.MarginShort),
-                NSLayoutConstraint.Create(_customedLoginFacebookButton, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
+                NSLayoutConstraint.Create(_customLoginFacebookButton, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView,
                     NSLayoutAttribute.CenterX, 1, 0),
             });
 
-            _customedLoginFacebookButton.AddGestureRecognizer(new UITapGestureRecognizer(LoginToFacebook));
+            _customLoginFacebookButton.AddGestureRecognizer(new UITapGestureRecognizer(LoginToFacebook));
 
         }
 
         private void LoginToFacebook()
         {
-            // integrate with default login facebook button
             var manager = new LoginManager();
             manager.LogInWithReadPermissions(new[] { "public_profile", "email" }, this, HandleLoginResult);
         }
 
         private void HandleLoginResult(LoginManagerLoginResult result, NSError error)
         {
-	        // REVIEW [KHOA]: combine conditions
-			if (error != null)
-            {
-                // handle error
-                return;
-            }
-
-            if (result.IsCancelled)
-            {
-                // handle cancel
-                return;
-            }
-
             Profile.LoadCurrentProfile((facebookProfile, profileError) =>
             {
                 if (facebookProfile != null)
