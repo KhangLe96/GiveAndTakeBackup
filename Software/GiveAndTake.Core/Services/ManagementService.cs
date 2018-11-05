@@ -15,9 +15,53 @@ namespace GiveAndTake.Core.Services
         public ManagementService()
         {
             _apiHelper = new RestClient();
-        }
+		}
 
-        public async Task<CategoryResponse> GetCategories()
+	    public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
+		{
+			var requestStatus = new StatusObj
+			{
+				Status = newStatus,
+			};
+			var statusInString = JsonHelper.Serialize(requestStatus);
+			var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+			string parameters = $"/{requestId}";
+			var response = await _apiHelper.Put(AppConstants.ChangeStatusOfRequest + parameters, content, token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
+			{
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
+
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}
+
+			return JsonHelper.Deserialize<bool>(response.RawContent);
+		}
+
+		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)
+		{
+			var url = $"{AppConstants.GetRequestOfPost}/{postId}";
+			url = string.Join("?", url, filterParams);
+
+			var response = await _apiHelper.Get(url, AppConstants.Token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
+	        {
+		        throw new AppException.ApiException(response.NetworkStatus.ToString());
+	        }
+
+	        if (!string.IsNullOrEmpty(response.ErrorMessage))
+	        {
+		        throw new AppException.ApiException(response.ErrorMessage);
+	        }
+
+	        return JsonHelper.Deserialize<ApiRequestsResponse>(response.RawContent);
+		}
+
+	    public async Task<CategoryResponse> GetCategories()
         {
 			var response = await _apiHelper.Get(AppConstants.GetCategories);
 
@@ -109,24 +153,24 @@ namespace GiveAndTake.Core.Services
 
         public async Task ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
         {
-	        var postStatus = new PostStatus
-	        {
-		        Status = newStatus,
-	        };
-	        var statusInString = JsonHelper.Serialize(postStatus);
-	        var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
-	        string parameters = $"/{postId}";
-	        var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
+			var postStatus = new StatusObj
+			{
+				Status = newStatus
+			};
+			var statusInString = JsonHelper.Serialize(postStatus);
+			var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
+			string parameters = $"/{postId}";
+			var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
 
-	        if (response.NetworkStatus != NetworkStatus.Success)
-	        {
-		        throw new AppException.ApiException(response.NetworkStatus.ToString());
-	        }
+			if (response.NetworkStatus != NetworkStatus.Success)
+			{
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
 
-	        if (!string.IsNullOrEmpty(response.ErrorMessage))
-	        {
-		        throw new AppException.ApiException(response.ErrorMessage);
-	        }
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}
 		}
 
 		public async Task EditPost(EditPost post)
@@ -227,22 +271,76 @@ namespace GiveAndTake.Core.Services
 			new SortFilter {FilterName = "Cũ nhất", FilterTag = "asc"}
 	    };
 
-		//public void CreateRequest(string postId);
+	    public async Task<bool> CreateRequest(Request request, string token)
+	    {
+		    var requestInformationInString = JsonHelper.Serialize(request);
+		    var content = new StringContent(requestInformationInString, Encoding.UTF8, "application/json");
+		    var response = await _apiHelper.Post(AppConstants.CreateRequest, content, token);
 
-		//public void ReportPost(string postId);
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
 
-		//public void GetRequestOfPost(string postId);
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
 
-		//public void GetRequestOfUser(string userId);
+		    return JsonHelper.Deserialize<bool>(response.RawContent);
+	    }
 
-		//public void GetNotification(string userId);
+	    public async Task<UserRequest> CheckUserRequest(string postId, string token)
+	    {
+		    string parameters = $"/{postId}";
+		    var response = await _apiHelper.Get(AppConstants.CheckUserRequest + parameters, token);
 
-		//public void GetCommentList(string postId);
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
 
-		//public void Comment(string postId);
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
 
-		//public void EditComment(string commentId);
+		    return JsonHelper.Deserialize<UserRequest>(response.RawContent);
+	    }
 
-		//public void DeleteComment(string commentId;
-    }
+	    public async Task<bool> CancelUserRequest(string postId, string token)
+	    {
+		    var parameters = $"/{postId}";
+		    var response = await _apiHelper.Delete(AppConstants.CancelUserRequest + parameters, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<bool>(response.RawContent);
+	    }
+
+	    public async Task CreateResponse(RequestResponse requestResponse, string token)
+	    {
+		    var responseInformationInString = JsonHelper.Serialize(requestResponse);
+		    var content = new StringContent(responseInformationInString, Encoding.UTF8, "application/json");
+		    var response = await _apiHelper.Post(AppConstants.CreateResponse, content, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+		}
+	}
 }

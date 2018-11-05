@@ -81,7 +81,6 @@
     <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
-    <Compile Include="Converters\StringToAttributedStringValueConverter.cs" />
     <Compile Include="Converters\StringToUIColorValueConverter.cs" />
     <Compile Include="CustomControls\HeaderBar.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
@@ -103,6 +102,8 @@
     <Compile Include="Views\CollectionViewSources\PhotoItemViewSource.cs" />
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
+    <Compile Include="Views\Popups\LoadingOverlayView.cs" />
+    <Compile Include="Views\Popups\PopupCreateRequestView.cs" />
     <Compile Include="Views\Popups\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popups\PopupListView.cs" />
     <Compile Include="Views\Popups\PopupMessageView.cs" />
@@ -170,6 +171,7 @@
     <BundleResource Include="Resources\Images\location_logo.png" />
     <BundleResource Include="Resources\Images\navigateLeft.png" />
     <BundleResource Include="Resources\Images\navigateRight.png" />
+    <BundleResource Include="Resources\Images\request_on.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>

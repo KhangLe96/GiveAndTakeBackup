@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_bg"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_short">
+
+	<TextView
+        android:id="@+id/PopupTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/popup_request_Default_Margin"
+        android:fontFamily="@font/sanfranciscodisplay_regular"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/popup_request_Title_Text_Size"
+        local:MvxBind="Text PopupTitle"/>
+
+	<ImageButton
+        android:layout_width="@dimen/btn_normal_size"
+        android:layout_height="@dimen/btn_normal_size"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/btn_delete_photo"
+        android:tint="@color/gray" 
+		local:MvxBind="Click CloseCommand"/>
+
+	<giveandtake.droid.controls.CustomMvxCachedImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="@dimen/image_avatar_size"
+        android:layout_height="@dimen/image_avatar_size"
+        android:layout_below="@+id/PopupTitle"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/popup_request_Default_Margin"
+        android:layout_marginTop="@dimen/popup_request_Default_Margin"
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar';
+							ErrorPlaceholderImagePath 'res:default_avatar';
+							Transformations AvatarTransformations;
+							ImageUrl AvatarUrl" />
+
+	<TextView
+        android:id="@+id/tvUserFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/imgAvatar"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_toRightOf="@id/imgAvatar"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/MediumTextSize"
+        local:MvxBind="Text UserName" />
+
+	<TextView
+        android:id="@+id/tvRequestedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvUserFullName"
+        android:layout_below="@id/tvUserFullName"
+        android:textSize="@dimen/SmallTextSize"
+        local:MvxBind="Text CreatedTime" />
+
+	<giveandtake.droid.controls.CustomMvxCachedImageView
+        android:id="@+id/imgPostDelegate"
+        android:layout_width="@dimen/post_small_size"
+        android:layout_height="@dimen/post_small_size"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/PopupTitle"
+        android:layout_marginRight="@dimen/popup_request_Default_Margin"
+        android:layout_marginTop="@dimen/popup_request_Default_Margin"
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar';
+							ErrorPlaceholderImagePath 'res:default_avatar';
+							Transformations PostTransformations;
+							ImageUrl AvatarUrl" />
+
+	<TextView
+        android:id="@+id/PopupRequestDescription"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/popup_request_description_edit_text_height"
+        android:layout_below="@+id/imgPostDelegate"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:fontFamily="@font/sanfranciscodisplay_light"
+        android:gravity="top"
+        android:padding="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:textAllCaps="false"
+        android:textColorHint="@color/default_popup_text_color"
+        android:textSize="@dimen/MediumTextSize"
+        local:MvxBind="Text RequestMessage; Hint PopupInputInformationPlaceHolder" />
+
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/PopupRequestDescription"
+        android:layout_marginBottom="@dimen/default_margin">
+
+		<Button
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/createPost_button_height"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/basic_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_weight="1"
+            android:background="@drawable/cancel_button_bg"
+            android:fontFamily="@font/sanfranciscodisplay_light"
+            android:textAllCaps="false"
+            android:textColor="@drawable/cancel_button_text"
+            local:MvxBind="Text BtnRejectTitle; Click RejectCommand" />
+
+		<Button
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/createPost_button_height"
+            android:layout_marginLeft="@dimen/basic_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_weight="1"
+            android:background="@drawable/submit_button_bg"
+            android:fontFamily="@font/sanfranciscodisplay_light"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            local:MvxBind="Text BtnAcceptTitle; Click AcceptCommand" />
+	</LinearLayout>
+</RelativeLayout>

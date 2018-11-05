@@ -3,7 +3,7 @@
 namespace GiveAndTake.Core.Models
 {
 	[DataContract]
-	public class PostStatus
+	public class StatusObj
 	{
 		[DataMember(Name = "status")]
 		public string Status { get; set; }

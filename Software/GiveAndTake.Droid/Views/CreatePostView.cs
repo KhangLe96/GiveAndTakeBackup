@@ -23,8 +23,8 @@ namespace GiveAndTake.Droid.Views
 	{
 		protected override int LayoutId => Resource.Layout.CreatePostView;
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
-		public IMvxCommand SubmitCommand { get; set; }
 		public IMvxCommand BackPressedCommand { get; set; }
+
 		private View _view;
 
 		private const int ChoosePictureCode = 9001;

@@ -10,6 +10,7 @@ using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
 using CoreGraphics;
+using Foundation;
 using GiveAndTake.Core;
 using UIKit;
 
@@ -29,6 +30,17 @@ namespace GiveAndTake.iOS.Views
 		private UIButton _btnCancel;
 		private UIButton _btnSubmit;
 		private UILabel _selectedImageTextView;
+		private string _selectedImage;
+
+		public string SelectedImage
+		{
+			get => _selectedImage;
+			set
+			{
+				_selectedImage = value;
+				UpdateSelectedImageTextView();
+			}
+		}
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 		public IMvxCommand BackPressedCommand { get; set; }
@@ -91,25 +103,20 @@ namespace GiveAndTake.iOS.Views
 				.To(vm => vm.PostTitlePlaceHolder);
 
 			bindingSet.Bind(_postDescriptionTextView)
+				.For(v => v.Text)
+				.To(vm => vm.PostDescription);
+
+			bindingSet.Bind(_postDescriptionTextView)
 				.For(v => v.Placeholder)
 				.To(vm => vm.PostDescriptionPlaceHolder);
 
-
-			bindingSet.Bind(_selectedImageTextView)
-				.For(v => v.AttributedText)
-				.To(vm => vm.SelectedImage)
-				.WithConversion("StringToAttributedString", _selectedImageTextView);
+			bindingSet.Bind(this)
+				.For(v => v.SelectedImage)
+				.To(vm => vm.SelectedImage);
 
 			bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowPhotoCollectionCommand);
-
-			if (_postDescriptionTextView.Text == null)
-			{
-				bindingSet.Bind(_postDescriptionTextView)
-					.For(v => v.Text)
-					.To(vm => vm.PostDescription);
-			}
 
 			bindingSet.Bind(_btnCancel)
 				.For("Title")
