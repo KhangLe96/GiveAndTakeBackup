@@ -54,8 +54,7 @@ namespace GiveAndTake.iOS.Views
                 .For(v => v.LoginCommand)
                 .To(vm => vm.LoginCommand);
 
-	        set.Bind(this)
-		        .For(v => v._loginTitle)
+	        set.Bind(_loginTitle)
 		        .To(vm => vm.LoginTitle);
 
             set.Apply();

@@ -122,8 +122,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				
-				await UpdatePostViewModels();
 				if (_dataModel.ApiPostsResponse == null)
 				{
 					await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
@@ -133,7 +131,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();				
 					await UpdatePostViewModels();
 					await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
-				}				
+				}
 			}
 			catch (AppException.ApiException)
 			{
