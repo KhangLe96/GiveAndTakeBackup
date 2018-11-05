@@ -30,7 +30,7 @@ namespace GiveAndTake.Core
 			RegisterHelpers();
 
 			RegisterServices();
-
+			
 			RegisterAppStart<LoginViewModel>();
 		}
 
@@ -43,7 +43,7 @@ namespace GiveAndTake.Core
 
 		protected void RegisterServices()
 		{
-			Mvx.RegisterType<IManagementService, ManagementService>();
+			Mvx.LazyConstructAndRegisterSingleton<IManagementService, ManagementService>();
 		}
 	}
 }

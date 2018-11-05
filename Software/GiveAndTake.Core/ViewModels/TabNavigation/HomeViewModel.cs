@@ -113,18 +113,19 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public HomeViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
+		}
 
-			//REVIEW : InitDataModels could be run earlier ? Can we run it in Setup ?
-			Task.Run(async () => await InitDataModels());
+		public override async Task Initialize()
+		{
+			await base.Initialize();
+			await InitDataModels();
 		}
 
 		private async Task InitDataModels() 
 		{
 			try
 			{
-				_dataModel.Categories = _dataModel.Categories ?? (await ManagementService.GetCategories()).Categories;
-				_dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await ManagementService.GetProvinceCities()).ProvinceCities;
-				_dataModel.SortFilters = _dataModel.SortFilters ?? ManagementService.GetShortFilters();
+				await ManagementService.InitData();
 				_selectedCategory = _selectedCategory ?? _dataModel.Categories.First();
 				_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
 				_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();

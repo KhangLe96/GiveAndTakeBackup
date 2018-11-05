@@ -1,4 +1,4 @@
-﻿using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,5 +18,7 @@ namespace GiveAndTake.Core.Services
 		Task<User> UpdateCurrentUserProfile(User user);
 	    Task<User> GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
+	    Task InitData();
+
     }
 }
