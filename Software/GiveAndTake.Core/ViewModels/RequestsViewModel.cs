@@ -141,6 +141,7 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    _postId = post.PostId;
 		    _post = post;
+		    _post.IsMyPost = true;
 		    InitRequestViewModels();
 		}
 
