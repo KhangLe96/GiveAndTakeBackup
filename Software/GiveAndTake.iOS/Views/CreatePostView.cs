@@ -1,4 +1,6 @@
-﻿using GiveAndTake.Core.ViewModels;
+﻿using CoreGraphics;
+using GiveAndTake.Core;
+using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
@@ -9,9 +11,6 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
-using CoreGraphics;
-using Foundation;
-using GiveAndTake.Core;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
@@ -323,6 +322,21 @@ namespace GiveAndTake.iOS.Views
 		{
 			base.ViewDidAppear(animated);
 			_btnChoosePicture.TouchUpInside -= HandleSelectImage;
+		}
+
+		private void UpdateSelectedImageTextView()
+		{
+			if (_selectedImage == null || _selectedImage == AppConstants.SelectedImage)
+			{
+				_selectedImage = AppConstants.SelectedImage;
+				_selectedImageTextView.AttributedText =
+					UIHelper.CreateAttributedString(_selectedImage, ColorHelper.Gray, true);
+			}
+			else
+			{
+				_selectedImageTextView.AttributedText =
+					UIHelper.CreateAttributedString(_selectedImage, ColorHelper.DarkBlue, true);
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -24,5 +24,7 @@ namespace GiveAndTake.Core.Services
 	    Task<UserRequest> CheckUserRequest(string postId, string token);
 	    Task<bool> CancelUserRequest(string postId, string token);
 	    Task CreateResponse(RequestResponse requestResponse, string token);
+	    Task InitData();
+
     }
 }

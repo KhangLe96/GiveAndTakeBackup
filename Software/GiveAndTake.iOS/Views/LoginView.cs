@@ -21,7 +21,7 @@ namespace GiveAndTake.iOS.Views
         private UIImageView _contentView;
         private PopupItemLabel _loginTitle;
 	
-		public MvxCommand<BaseUser> LoginCommand { get; set; }
+		public IMvxCommand<BaseUser> LoginCommand { get; set; }
 
         protected override void InitView()
         {
@@ -54,8 +54,7 @@ namespace GiveAndTake.iOS.Views
                 .For(v => v.LoginCommand)
                 .To(vm => vm.LoginCommand);
 
-	        set.Bind(this)
-		        .For(v => v._loginTitle)
+	        set.Bind(_loginTitle)
 		        .To(vm => vm.LoginTitle);
 
             set.Apply();

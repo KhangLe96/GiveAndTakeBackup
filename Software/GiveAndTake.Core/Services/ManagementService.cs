@@ -11,10 +11,19 @@ namespace GiveAndTake.Core.Services
 	public class ManagementService : IManagementService
     {
 	    private readonly RestClient _apiHelper;
+	    private readonly IDataModel _dataModel;
 
-        public ManagementService()
+        public ManagementService(IDataModel dataModel)
         {
             _apiHelper = new RestClient();
+	        _dataModel = dataModel;
+        }
+
+	    public async Task InitData()
+	    {
+			_dataModel.Categories = _dataModel.Categories ?? (await GetCategories()).Categories;
+		    _dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await GetProvinceCities()).ProvinceCities;
+			_dataModel.SortFilters = _dataModel.SortFilters ?? GetShortFilters();
 		}
 
 	    public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
