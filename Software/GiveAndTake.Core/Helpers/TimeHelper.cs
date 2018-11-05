@@ -19,8 +19,7 @@ namespace GiveAndTake.Core.Helpers
 			}
 			if (timeSpan <= TimeSpan.FromHours(24))
 			{
-				//Review ThanhVo "Hom qua" is better
-				return timeSpan.Hours == 24 ? "1 ngày trước" : $"{timeSpan.Hours} giờ trước";
+				return timeSpan.Hours == 24 ? "Hôm qua" : $"{timeSpan.Hours} giờ trước";
 			}			
 			return dateTime.ToString("dd.MM.yyyy");
 		}
