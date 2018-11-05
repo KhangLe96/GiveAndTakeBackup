@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.App;
+using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using GiveAndTake.Core.ViewModels.Base;
@@ -12,7 +13,7 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 namespace GiveAndTake.Droid.Views.Base
 {
 	[MvxActivityPresentation]
-	[Activity(Label = "View for HomeViewModel", WindowSoftInputMode = SoftInput.AdjustPan)]
+	[Activity(Label = "View for HomeViewModel", WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = ScreenOrientation.Portrait)]
 	public class MasterView : BaseActivity
 	{
 		protected override int LayoutId => Resource.Layout.MasterView;

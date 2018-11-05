@@ -73,8 +73,10 @@
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\Popup\LoadingOverlayView.cs" />
     <Compile Include="Views\Popup\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popup\PopupListView.cs" />
+    <Compile Include="Views\Popup\PopupCreateRequestView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Setup.cs" />
@@ -86,8 +88,11 @@
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popup\PopupMessageView.cs" />
+    <Compile Include="Views\Popup\PopupResponseView.cs" />
     <Compile Include="Views\Popup\PopupWarningResponseView.cs" />
     <Compile Include="Views\Popup\PopupWarningView.cs" />
+    <Compile Include="Views\RequestDetailView.cs" />
+    <Compile Include="Views\RequestsView.cs" />
     <Compile Include="Views\PostImageView.cs" />
     <Compile Include="Views\TabNavigation\ConversationView.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />
@@ -521,11 +526,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\PopupPostOptionView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\PopupWarningView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -596,12 +596,52 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\layout\RequestsView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\request_number_bg.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\RequestTemplate.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\layout\PopupExtensionOptionView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\PostImageView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupCreateRequestRequestView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\submit_button_bg__disable_state.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\request_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\RequestDetailView.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\LoadingOverlayView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

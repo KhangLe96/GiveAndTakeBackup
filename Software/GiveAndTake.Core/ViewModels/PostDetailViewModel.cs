@@ -1,5 +1,6 @@
 ﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -7,6 +8,8 @@ using I18NPortable;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Services;
+using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -26,7 +29,7 @@ namespace GiveAndTake.Core.ViewModels
 			    NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage)));
 
 		public IMvxCommand ShowMyRequestListCommand =>
-			_showMyRequestListCommand ?? (_showMyRequestListCommand = new MvxCommand(ShowMyRequestList));
+			_showMyRequestListCommand ?? (_showMyRequestListCommand = new MvxAsyncCommand(ShowMyRequestList));
 
 		public IMvxCommand<int> ShowFullImageCommand =>
 			_showFullImageCommand ?? (_showFullImageCommand = new MvxCommand<int>(ShowFullImage));
@@ -145,6 +148,12 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _imageIndexIndicator, value);
 	    }
 
+	    public bool IsRequested
+	    {
+		    get => _isRequested;
+		    set => SetProperty(ref _isRequested, value);
+	    }
+
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
 	    private static readonly List<string> MyPostOptions = new List<string>
@@ -185,6 +194,10 @@ namespace GiveAndTake.Core.ViewModels
 	    private bool _canNavigateRight;
 	    private bool _isMyPost;
 	    private List<Image> _postImages;
+	    private Post _post;
+	    private bool _isRequested;
+	    private string _postId;
+	    private UserRequest _userRequestResponse;
 
 	    #endregion
 
@@ -232,31 +245,76 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private void ShowMyRequestList()
+		private async Task ShowMyRequestList()
 		{
 			if (_isMyPost)
 			{
-				NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+				var result = await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
+				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+				await UpdateDataModel();
+			}
+			else
+			{
+				if (IsRequested)
+				{					
+					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");	
+					if (popupResult != RequestStatus.Submitted)
+					{
+						return;
+					}
+					await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+					var managementService = Mvx.Resolve<IManagementService>();
+					await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+					await UpdateDataModel();
+					
+				}
+				else
+				{
+					var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
+					if (result == RequestStatus.Submitted)
+					{
+						await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.UpdateOverLayTitle);
+						await UpdateDataModel();
+					}
+				}
 			}
 		}
 
-
-		public override void Prepare(Post post)
+		public override async void Prepare(Post post)
 		{
-			CategoryName = post.Category.CategoryName;
-			AvatarUrl = post.User.AvatarUrl;
-			UserName = post.User.FullName ?? AppConstants.DefaultUserName;
-			CreatedTime = post.CreatedTime.ToString("dd.MM.yyyy");
-			Address = post.ProvinceCity.ProvinceCityName;
-			PostDescription = post.Description;
-			PostTitle = post.Title;
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			_postId = post.PostId;
 			PostImages = post.Images;
-			RequestCount = post.RequestCount;
-			CommentCount = post.CommentCount;
-			Status = post.IsMyPost ? post.PostStatus.Translate() : " ";
-			CategoryBackgroundColor = post.Category.BackgroundColor;
 			_isMyPost = post.IsMyPost;
-			PostImageIndex = 0;
+
+			await UpdateDataModel();
+		}
+
+	    private async Task UpdateDataModel()
+	    {
+		    _dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
+		    _userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
+		    IsRequested = _userRequestResponse.IsRequested;
+		    RequestCount = _dataModel.CurrentPost.RequestCount;
+			if (_isMyPost)
+		    {
+			    IsRequested = RequestCount != 0;
+		    }
+			CategoryName = _dataModel.CurrentPost.Category.CategoryName;
+		    AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
+		    UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
+		    CreatedTime = TimeHelper.ToTimeAgo(_dataModel.CurrentPost.CreatedTime);
+			Address = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
+		    PostDescription = _dataModel.CurrentPost.Description;
+		    PostTitle = _dataModel.CurrentPost.Title;
+		    PostImages = _dataModel.CurrentPost.Images;
+		    CommentCount = _dataModel.CurrentPost.CommentCount;
+		    Status = _isMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
+		    CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
+		    PostImageIndex = 0;
+		    _post = _dataModel.CurrentPost;
+
+		    await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 		}
 
 	    public override Task Initialize()
@@ -274,8 +332,10 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private void UpdateImageIndexIndicator()
 	    {
-		    ImageIndexIndicator = _postImageIndex + 1 + " / " + _postImages.Count;
+		    var totalImage = _postImages.Count == 0 ? 1 : PostImages.Count;
+		    ImageIndexIndicator = _postImageIndex + 1 + " / " + totalImage;
 	    }
+	
 		#endregion
 	}
 }

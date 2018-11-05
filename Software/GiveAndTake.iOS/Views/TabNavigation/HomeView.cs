@@ -199,7 +199,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 
 			set.Bind(_postTableViewSource)
-				.To(vm => vm.PostViewModels);
+				.To(vm => vm.PostItemViewModelCollection);
 
 			set.Bind(_searchBar)
 				.For(v => v.Text)

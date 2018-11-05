@@ -1,8 +1,9 @@
-﻿using CoreGraphics;
+﻿using System;
+using System.Collections.Generic;
+using CoreGraphics;
 using GiveAndTake.Core.Models;
 using GiveAndTake.iOS.Controls;
-using System;
-using System.Collections.Generic;
+using GiveAndTake.iOS.Helpers;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -19,7 +20,7 @@ namespace GiveAndTake.iOS.Views
 			_cellFrame = cellFrame;
 		}
 
-		public override nint NumberOfItemsInCarousel(iCarousel carousel) => _images.Count;
+		public override nint NumberOfItemsInCarousel(iCarousel carousel) => _images.Count == 0 ? 1 : _images.Count;
 
 		public override UIView ViewForItemAtIndex(iCarousel carousel, nint index, UIView view)
 		{
@@ -29,8 +30,8 @@ namespace GiveAndTake.iOS.Views
 				Frame = _cellFrame
 			};
 
-			imageView.ImageUrl = _images[(int) index]?.ResizedImage;
-
+			imageView.ImageUrl = _images.Count == 0 ? ImageHelper.DefaultPost : _images[(int)index]?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
+	
 			return imageView;
 		}
 	}

@@ -93,7 +93,19 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PostDetailAvatarSize { get; set; }
 		public static nfloat PostDetailImageIndexHeight { get; set; }
 		public static nfloat PostDetailImageIndexWidth { get; set; }
+		public static nfloat PostDetailRequestTouchFieldHeight { get; set; }
+		public static nfloat PostDetailRequestTouchFieldWidth { get; set; }
+		public static nfloat PostDetailExtensionTouchFieldHeight { get; set; }
+		public static nfloat PostDetailExtensionTouchFieldWidth { get; set; }
 		public static nfloat PostImageMarginObject { get; set; }
+		public static nfloat PopupRequestTitleTextSize { get; set; }
+		public static nfloat PopupRequestGiverInformationViewWidth { get; set; }
+		public static nfloat PopupRequestGiverInformationViewHeight { get; set; }
+		public static nfloat PopupRequestGiverAvartarSize { get; set; }
+		public static nfloat PopupRequestSmallMargin { get; set; }
+		public static nfloat PopupRequestHeight { get; set; }
+		public static nfloat PopupRequestDescriptionTextViewHeight { get; set; }
+		public static nfloat PopupRequestButtonWidth { get; set; }
 
 
 		public static void InitStaticVariable()
@@ -149,8 +161,8 @@ namespace GiveAndTake.iOS.Helpers
 			LoginButtonWidth = 106 * Rate;
 			LoginButtonHeight = 33 * Rate;
 			LoginTitleTextSize = 18 * Rate;
-			PopupContentWidth = ResolutionHelper.Width - MarginNormal * 4;
-			PopupMessageButtonWidth = PopupContentWidth / 2 - MarginShort * 4;
+			PopupContentWidth = ResolutionHelper.Width - 48 * Rate;
+			PopupMessageButtonWidth = PopupContentWidth / 2 - 24 * Rate;
 			PopupCancelButtonBorder = 1 * Rate;
 			PopupContentRadius = 15 * Rate;
 			NewPostSize = 50 * Rate;
@@ -187,6 +199,20 @@ namespace GiveAndTake.iOS.Helpers
 			PostDetailImageIndexHeight = 35 * Rate;
 			PostDetailImageIndexWidth = 50 * Rate;
 			PostImageMarginObject = 40 * Rate;
+			PopupRequestTitleTextSize = 20 * Rate;
+			PopupRequestGiverInformationViewWidth = PopupContentWidth - 10 * Rate;
+			PopupRequestGiverInformationViewHeight = 40 * Rate;
+			PopupRequestGiverAvartarSize = 30 * Rate;
+			PopupRequestSmallMargin = 5 * Rate;
+			PopupRequestHeight = 385 * Rate;
+			PopupRequestDescriptionTextViewHeight = 220 * Rate;
+			PopupRequestButtonWidth = PopupContentWidth / 2 - 15 * Rate ;
+			PopupRequestButtonWidth =
+				PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
+			PostDetailRequestTouchFieldHeight = 52 * Rate;
+			PostDetailRequestTouchFieldWidth = 80 * Rate;
+			PostDetailExtensionTouchFieldHeight = 50 * Rate;
+			PostDetailExtensionTouchFieldWidth = 50 * Rate;
 		}
 	}
 }

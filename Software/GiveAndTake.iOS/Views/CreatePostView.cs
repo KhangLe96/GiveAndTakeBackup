@@ -1,4 +1,6 @@
-﻿using GiveAndTake.Core.ViewModels;
+﻿using CoreGraphics;
+using GiveAndTake.Core;
+using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
@@ -9,8 +11,6 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
 using System.Collections.Generic;
-using CoreGraphics;
-using GiveAndTake.Core;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
@@ -29,6 +29,17 @@ namespace GiveAndTake.iOS.Views
 		private UIButton _btnCancel;
 		private UIButton _btnSubmit;
 		private UILabel _selectedImageTextView;
+		private string _selectedImage;
+
+		public string SelectedImage
+		{
+			get => _selectedImage;
+			set
+			{
+				_selectedImage = value;
+				UpdateSelectedImageTextView();
+			}
+		}
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
 		public IMvxCommand BackPressedCommand { get; set; }
@@ -91,25 +102,20 @@ namespace GiveAndTake.iOS.Views
 				.To(vm => vm.PostTitlePlaceHolder);
 
 			bindingSet.Bind(_postDescriptionTextView)
+				.For(v => v.Text)
+				.To(vm => vm.PostDescription);
+
+			bindingSet.Bind(_postDescriptionTextView)
 				.For(v => v.Placeholder)
 				.To(vm => vm.PostDescriptionPlaceHolder);
 
-
-			bindingSet.Bind(_selectedImageTextView)
-				.For(v => v.AttributedText)
-				.To(vm => vm.SelectedImage)
-				.WithConversion("StringToAttributedString", _selectedImageTextView);
+			bindingSet.Bind(this)
+				.For(v => v.SelectedImage)
+				.To(vm => vm.SelectedImage);
 
 			bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowPhotoCollectionCommand);
-
-			if (_postDescriptionTextView.Text == null)
-			{
-				bindingSet.Bind(_postDescriptionTextView)
-					.For(v => v.Text)
-					.To(vm => vm.PostDescription);
-			}
 
 			bindingSet.Bind(_btnCancel)
 				.For("Title")
@@ -316,6 +322,21 @@ namespace GiveAndTake.iOS.Views
 		{
 			base.ViewDidAppear(animated);
 			_btnChoosePicture.TouchUpInside -= HandleSelectImage;
+		}
+
+		private void UpdateSelectedImageTextView()
+		{
+			if (_selectedImage == null || _selectedImage == AppConstants.SelectedImage)
+			{
+				_selectedImage = AppConstants.SelectedImage;
+				_selectedImageTextView.AttributedText =
+					UIHelper.CreateAttributedString(_selectedImage, ColorHelper.Gray, true);
+			}
+			else
+			{
+				_selectedImageTextView.AttributedText =
+					UIHelper.CreateAttributedString(_selectedImage, ColorHelper.DarkBlue, true);
+			}
 		}
 	}
 }

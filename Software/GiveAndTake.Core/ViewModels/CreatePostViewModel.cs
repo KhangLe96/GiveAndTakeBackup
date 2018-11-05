@@ -27,7 +27,7 @@ namespace GiveAndTake.Core.ViewModels
 		private IMvxCommand _showCategoriesCommand;
 		private IMvxCommand _showProvinceCityCommand;
 		private IMvxCommand _backPressedCommand;
-		private IMvxCommand <List<byte[]>> _imageCommand;
+		private IMvxCommand<List<byte[]>> _imageCommand;
 
 		private readonly DebouncerHelper _debouncer;
 		private string _postDescription;
@@ -56,7 +56,7 @@ namespace GiveAndTake.Core.ViewModels
 		public string PostDescription
 		{
 			get => _postDescription;
-			set => SetProperty(ref _postDescription, value );
+			set => SetProperty(ref _postDescription, value);
 		}
 
 		public string PostTitle
@@ -233,10 +233,10 @@ namespace GiveAndTake.Core.ViewModels
 				Description = PostDescription,
 				PostImages = _postImages,
 				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
-				Address = _selectedProvinceCity.Id,   
+				Address = _selectedProvinceCity.Id,
 			};
 			ManagementService.CreatePost(post, _dataModel.LoginResponse.Token);
-			NavigationService.Close(this,true);
+			NavigationService.Close(this, true);
 		}
 
 		public string ConvertToBase64String(byte[] imageByte)
