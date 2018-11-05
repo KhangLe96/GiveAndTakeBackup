@@ -256,7 +256,6 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
 				//Review ThanhVo Why do we need to update datamodel in show request list
-				await UpdateDataModelWithOverlay(AppConstants.UpdateOverLayTitle);
 			}
 			else
 			{
