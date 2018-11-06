@@ -17,5 +17,7 @@ namespace Giveaway.Data.Models.Database
 		public Guid RelevantId { get; set; }
 		[Required]
 		public NotificationType Type { get; set; }
+		[Required]
+		public NotificationStatus Status { get; set; }
 	}
 }

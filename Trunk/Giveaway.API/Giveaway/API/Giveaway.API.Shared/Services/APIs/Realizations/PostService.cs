@@ -36,7 +36,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         {
 			var request = @params.ToObject<PagingQueryPostRequest>();
 
-	        int total = 0;
+	        int total;
 			var posts = isListOfSingleUser ? GetPagedPosts(userId, request, out total) : GetPagedPosts(null, request, out total); 
 
 			CheckIfCurrentUserRequested(userId, posts);
@@ -158,7 +158,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 return postResponse;
             }
 
-	        throw new InternalServerErrorException("Internal Error");
+	        throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
         }
 
         public PostAppResponse Update(Guid id, PostRequest postRequest)

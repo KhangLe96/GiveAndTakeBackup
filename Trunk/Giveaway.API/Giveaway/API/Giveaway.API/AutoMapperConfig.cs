@@ -2,12 +2,14 @@
 using AutoMapper.Configuration;
 using Giveaway.API.Shared.Models.DTO;
 using Giveaway.API.Shared.Requests.Image;
+using Giveaway.API.Shared.Requests.Notification;
 using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Requests.Request;
 using Giveaway.API.Shared.Requests.Response;
 using Giveaway.API.Shared.Requests.Warning;
 using Giveaway.API.Shared.Responses.Category;
 using Giveaway.API.Shared.Responses.Image;
+using Giveaway.API.Shared.Responses.Notification;
 using Giveaway.API.Shared.Responses.Post;
 using Giveaway.API.Shared.Responses.ProviceCity;
 using Giveaway.API.Shared.Responses.Report;
@@ -126,9 +128,16 @@ namespace Giveaway.API
 			cfg.CreateMap<ResponseRequest, Response>();
 			cfg.CreateMap<Response, ResponseRequestResponse>();
 
-            #endregion
+			#endregion
 
-            Mapper.Initialize(cfg);
+	        #region Notification
+
+	        cfg.CreateMap<Notification, NotificationResponse>();
+	        cfg.CreateMap<NotificationRequest, Notification>();
+
+			#endregion
+
+			Mapper.Initialize(cfg);
         }
     }
 }

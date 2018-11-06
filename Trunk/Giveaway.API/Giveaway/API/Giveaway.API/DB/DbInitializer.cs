@@ -24,9 +24,29 @@ namespace Giveaway.API.DB
             SeedReport(services);
             SeedWarning(services);
             SeedRequest(services);
+			SeedNotification(services);
         }
 
-        private static void SeedUser(IServiceProvider services)
+	    private static void SeedNotification(IServiceProvider services)
+	    {
+			var userService = services.GetService<IUserService>();
+		    var postService = services.GetService<IPostService>();
+		    var notificationService = services.GetService<INotificationService>();
+
+		    if (!postService.All().Any() || userService.All().Count() < 2 || notificationService.All().Any()) return;
+
+		    Guid destinationUserId = userService.All().Take(1).ToList().ElementAt(0).Id;
+			notificationService.Create(new Notification()
+		    {
+				Message = "Test1 thích bài đăng của bạn",
+			    DestinationUserId = destinationUserId,
+			    SourceUserId = userService.All().Take(2).ToList().ElementAt(1).Id,
+				RelevantId = postService.FirstOrDefault(x => x.UserId == destinationUserId).Id,
+				Type = NotificationType.Like
+			}, out _);
+		}
+
+	    private static void SeedUser(IServiceProvider services)
         {
             var userService = services.GetService<IUserService>();
             var roleService = services.GetService<IRoleService>();
