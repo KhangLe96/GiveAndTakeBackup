@@ -126,9 +126,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			_dataModel = dataModel;
 			AvatarUrl = _dataModel.LoginResponse.Profile.AvatarUrl;
-			UserName = _dataModel.LoginResponse.Profile.FullName;
+			UserName = _dataModel.LoginResponse.Profile.FullName.ToUpper();
 			RankType = AppConstants.Member;
-			SentCount = _dataModel.LoginResponse.Profile.SentCount + AppConstants.Times;
+			SentCount = _dataModel.LoginResponse.Profile.SentCount + " " + AppConstants.Times;
 			IsPostsList = true;
 		}
 

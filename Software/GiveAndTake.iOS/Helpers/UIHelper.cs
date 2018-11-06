@@ -2,6 +2,7 @@
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using System;
+using CoreAnimation;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -316,6 +317,32 @@ namespace GiveAndTake.iOS.Helpers
 			button.Layer.BorderWidth = borderWidth;
 			button.Layer.BorderColor = borderColor.CGColor;
 
+			return button;
+		}
+
+		public static CustomUIButton CreateButton(nfloat height, nfloat width, nfloat textSize, UIColor borderColor, nfloat borderWidth, UIColor normalStateColor, UIColor disableStateColor, FontType fontType = FontType.Regular)
+		{
+			var button = new CustomUIButton
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				Font = GetFont(fontType, textSize)
+			};
+
+			button.SetTitleColor(normalStateColor, UIControlState.Normal);
+			button.SetTitleColor(disableStateColor, UIControlState.Selected);
+			button.Layer.BorderWidth = borderWidth;
+			button.Layer.BorderColor = borderColor.CGColor;
+
+			AddWidthHeight(height, width, button);
+
+			return button;
+		}
+
+		public static CustomUIButton SetRoundedCorners(this CustomUIButton button, int cornerRadius, CACornerMask cornerMask)
+		{
+			button.Layer.CornerRadius = cornerRadius;
+			button.Layer.MaskedCorners = cornerMask;
+			button.Layer.MasksToBounds = true;
 			return button;
 		}
 

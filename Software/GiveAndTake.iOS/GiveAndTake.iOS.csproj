@@ -78,6 +78,7 @@
     <Compile Include="Controls\AlphaUiButton.cs" />
     <Compile Include="Controls\CustomTextField.cs" />
     <Compile Include="Controls\CustomTextView.cs" />
+    <Compile Include="Controls\CustomUIButton.cs" />
     <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
@@ -170,6 +171,7 @@
     <BundleResource Include="Resources\Images\location_logo.png" />
     <BundleResource Include="Resources\Images\navigateLeft.png" />
     <BundleResource Include="Resources\Images\navigateRight.png" />
+    <BundleResource Include="Resources\Images\setting.png" />
     <None Include="Info.plist">
       <SubType>Designer</SubType>
     </None>
