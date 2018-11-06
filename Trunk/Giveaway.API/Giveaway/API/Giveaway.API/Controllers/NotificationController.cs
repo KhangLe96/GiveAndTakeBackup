@@ -5,6 +5,7 @@ using Giveaway.API.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Giveaway.API.Shared.Services.APIs;
 
 namespace Giveaway.API.Controllers
 {

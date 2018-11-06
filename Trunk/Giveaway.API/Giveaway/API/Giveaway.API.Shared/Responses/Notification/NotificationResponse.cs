@@ -31,5 +31,9 @@ namespace Giveaway.API.Shared.Responses.Notification
 		[DataMember(Name = "status")]
 		[JsonProperty(PropertyName = "status")]
 		public NotificationStatus Status { get; set; }
+
+		[DataMember(Name = "backgroundColor")]
+		[JsonProperty(PropertyName = "backgroundColor")]
+		public string BackgroundColor { get; set; }
 	}
 }

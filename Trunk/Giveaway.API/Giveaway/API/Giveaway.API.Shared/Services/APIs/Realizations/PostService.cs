@@ -266,7 +266,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 					foreach (PostAppResponse post in posts as List<PostAppResponse>)
 					{
 						var requests = _requestService.FirstOrDefault(x =>
-							x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+							x.EntityStatus != EntityStatus.Deleted && x.RequestStatus != RequestStatus.Rejected && x.PostId == post.Id && x.UserId == id);
 						if (requests != null)
 						{
 							post.IsCurrentUserRequested = true;

@@ -19,5 +19,7 @@ namespace Giveaway.Data.Models.Database
 		public NotificationType Type { get; set; }
 		[Required]
 		public NotificationStatus Status { get; set; }
+		[Required]
+		public string BackgroundColor { get; set; }
 	}
 }
