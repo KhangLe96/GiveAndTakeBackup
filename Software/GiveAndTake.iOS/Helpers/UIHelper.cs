@@ -320,7 +320,7 @@ namespace GiveAndTake.iOS.Helpers
 			return button;
 		}
 
-		public static CustomUIButton CreateButton(nfloat height, nfloat width, nfloat textSize, UIColor borderColor, nfloat borderWidth, UIColor normalStateColor, UIColor disableStateColor, FontType fontType = FontType.Regular)
+		public static CustomUIButton CreateButton(nfloat height, nfloat width, nfloat textSize, UIColor borderColor, nfloat borderWidth, FontType fontType = FontType.Regular)
 		{
 			var button = new CustomUIButton
 			{
@@ -328,8 +328,6 @@ namespace GiveAndTake.iOS.Helpers
 				Font = GetFont(fontType, textSize)
 			};
 
-			button.SetTitleColor(normalStateColor, UIControlState.Normal);
-			button.SetTitleColor(disableStateColor, UIControlState.Selected);
 			button.Layer.BorderWidth = borderWidth;
 			button.Layer.BorderColor = borderColor.CGColor;
 

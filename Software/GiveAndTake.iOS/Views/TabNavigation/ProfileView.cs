@@ -171,13 +171,13 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.Add(_requestedPostsTableView);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _profileView, NSLayoutAttribute.Bottom, 1, DimensionHelper.FilterSize / 2),
-				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
-				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(_postsTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
+				NSLayoutConstraint.Create(_requestedPostsTableView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _profileView, NSLayoutAttribute.Bottom, 1, DimensionHelper.FilterSize / 2),
+				NSLayoutConstraint.Create(_requestedPostsTableView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.Left, 1, DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(_requestedPostsTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_requestedPostsTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
 
-			_myPostsButton = UIHelper.CreateButton(DimensionHelper.FilterSize, 0, DimensionHelper.MediumTextSize, ColorHelper.ColorPrimary, DimensionHelper.BorderWidth, UIColor.White, ColorHelper.Gray)
+			_myPostsButton = UIHelper.CreateButton(DimensionHelper.FilterSize, 0, DimensionHelper.MediumTextSize, ColorHelper.ColorPrimary, DimensionHelper.BorderWidth)
 				.SetRoundedCorners((int)DimensionHelper.FilterSize / 2, CACornerMask.MinXMaxYCorner | CACornerMask.MinXMinYCorner);
 				
 			View.Add(_myPostsButton);
@@ -188,7 +188,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_myPostsButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
-			_myRequestedPostsButton = UIHelper.CreateButton(DimensionHelper.FilterSize, 0, DimensionHelper.MediumTextSize, ColorHelper.ColorPrimary, DimensionHelper.BorderWidth, UIColor.White, ColorHelper.Gray)
+			_myRequestedPostsButton = UIHelper.CreateButton(DimensionHelper.FilterSize, 0, DimensionHelper.MediumTextSize, ColorHelper.ColorPrimary, DimensionHelper.BorderWidth)
 				.SetRoundedCorners((int)DimensionHelper.FilterSize / 2, CACornerMask.MaxXMinYCorner | CACornerMask.MaxXMaxYCorner);
 
 			View.Add(_myRequestedPostsButton);
@@ -242,7 +242,8 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 			set.Bind(_postsTableView)
 				.For("Visibility")
-				.To(vm => vm.IsPostsList);
+				.To(vm => vm.IsPostsList)
+				.WithConversion("InvertBool");
 
 			set.Bind(_requestedPostsTableViewSource)
 				.To(vm => vm.RequestedPostViewModels);
@@ -259,10 +260,9 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.For(v => v.RefreshCommand)
 				.To(vm => vm.RefreshRequestedPostsCommand);
 
-			set.Bind(_postsTableView)
+			set.Bind(_requestedPostsTableView)
 				.For("Visibility")
-				.To(vm => vm.IsPostsList)
-				.WithConversion("InvertBool");
+				.To(vm => vm.IsPostsList);
 
 			set.Bind(_myPostsButton)
 				.For("Title")
@@ -273,7 +273,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.To(vm => vm.ShowMyPostsCommand);
 
 			set.Bind(_myPostsButton)
-				.For(v => v.Selected)
+				.For(v => v.Activated)
 				.To(vm => vm.IsPostsList);
 
 			set.Bind(_myRequestedPostsButton)
@@ -285,7 +285,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.To(vm => vm.ShowMyRequestsCommand);
 
 			set.Bind(_myRequestedPostsButton)
-				.For(v => v.Selected)
+				.For(v => v.Activated)
 				.To(vm => vm.IsPostsList)
 				.WithConversion("InvertBool");
 

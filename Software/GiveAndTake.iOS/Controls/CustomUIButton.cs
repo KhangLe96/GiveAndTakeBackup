@@ -5,13 +5,14 @@ namespace GiveAndTake.iOS.Controls
 {
 	public class CustomUIButton : UIButton
 	{
-		private bool _selected;
-		public override bool Selected
+		private bool _activated;
+		public bool Activated
 		{
-			get => _selected;
+			get => _activated;
 			set
 			{
-				_selected = value;
+				_activated = value;
+				SetTitleColor(value? UIColor.White : ColorHelper.Gray, UIControlState.Normal);
 				BackgroundColor = value ? ColorHelper.ColorPrimary : ColorHelper.ButtonOff;
 			}
 		}
