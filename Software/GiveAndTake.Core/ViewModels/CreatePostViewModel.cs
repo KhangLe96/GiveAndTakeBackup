@@ -4,7 +4,6 @@ using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using MvvmCross.Plugin.PictureChooser;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,8 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Services;
-using MvvmCross;
-
 namespace GiveAndTake.Core.ViewModels
 {
 	public class CreatePostViewModel : BaseViewModelResult<bool>
@@ -234,6 +231,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public async Task InitSubmit()
 		{
+			bool success = false;
 			try
 			{
 				await _overlay.ShowOverlay(AppConstants.UploadDataOverLayTitle);
@@ -242,7 +240,9 @@ namespace GiveAndTake.Core.ViewModels
 					Title = PostTitle,
 					Description = PostDescription,
 					PostImages = _postImages,
-					PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
+					PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName)
+						? AppConstants.DefaultCategoryCreatePostId
+						: _selectedCategory.Id,
 					Address = _selectedProvinceCity.Id,
 				};
 				var result = await ManagementService.CreatePost(post, _dataModel.LoginResponse.Token);
@@ -250,18 +250,20 @@ namespace GiveAndTake.Core.ViewModels
 				{
 					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
 				}
-				await NavigationService.Close(this, true);
-				//Review ThanhVo move it to finally because if api exception happen, overlay will not be closed
-				//Check all places and rework it
-				await _overlay.CloseOverlay();
+				success = true;			
 			}
 			catch (AppException.ApiException)
 			{
-				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-				//Review ThanhVo Although warning popup just has only one button, but should check the result when doing next action.
-				//It will help maintain easier in future, may be warning popup has two button
-				//Check all places and rework this
-				await InitSubmit();
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay(777);
+				if (success)
+				{
+					await NavigationService.Close(this, true);
+				}				
 			}
 		}
 

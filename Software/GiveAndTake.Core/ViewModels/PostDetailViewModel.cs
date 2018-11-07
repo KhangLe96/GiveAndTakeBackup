@@ -255,65 +255,81 @@ namespace GiveAndTake.Core.ViewModels
 			if (_isMyPost)
 			{
 				await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
-				//Review ThanhVo Why do we need to update datamodel in show request list
-				await UpdateDataModelWithOverlay(AppConstants.UpdateOverLayTitle);
 			}
 			else
 			{
 				//Review ThanhVo split this into small methods
 				if (IsRequested)
 				{
-					var popupResult = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>("\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");
-					if (popupResult != RequestStatus.Submitted)
-					{
-						return;
-					}
-					await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
-					var managementService = Mvx.Resolve<IManagementService>();
-					//Review ThanhVo No need to put the loop here. If user does not turn on internet, he cannot run this action
-					while (true)
-					{
-						try
-						{
-							await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
-							break;
-						}
-						catch (AppException.ApiException)
-						{
-							await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-						}
-					}	
-					await UpdateDataModel();
-					await _overlay.CloseOverlay();
+					await CancelOldRequest();
 				}
 				else
 				{
-					var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
-					if (result == RequestStatus.Submitted)
+					await CreateNewRequest();
+				}
+			}
+		}
+
+		private async Task CreateNewRequest()
+		{
+			var result = await NavigationService.Navigate<PopupCreateRequestViewModel, Post, RequestStatus>(_post);
+			if (result == RequestStatus.Submitted)
+			{
+				while (true)
+				{
+					try
 					{
-						while (true)
-						{
-							try
-							{
-								await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
-								_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
-								_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
-								IsRequested = _userRequestResponse.IsRequested;
-								CommentCount = _dataModel.CurrentPost.CommentCount;
-								RequestCount = _dataModel.CurrentPost.RequestCount;
-								//Review ThanhVo Check all places which closing overlay, should move it to finally block
-								await _overlay.CloseOverlay();
-								break;
-							}
-							catch (AppException.ApiException)
-							{
-								await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-							}
-						}
-						
+						await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
+						_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
+						_userRequestResponse =
+							await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
+						IsRequested = _userRequestResponse.IsRequested;
+						CommentCount = _dataModel.CurrentPost.CommentCount;
+						RequestCount = _dataModel.CurrentPost.RequestCount;
+						break;
+					}
+					catch (AppException.ApiException)
+					{
+						await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+							.ErrorConnectionMessage);
+					}
+					finally
+					{
+						//Review ThanhVo Check all places which closing overlay, should move it to finally block
+						await _overlay.CloseOverlay();
 					}
 				}
 			}
+		}
+
+		private async Task CancelOldRequest()
+		{
+			var popupResult =
+				await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(
+					"\nBạn có chắc chắn muốn bỏ yêu cầu ?\n");
+			if (popupResult != RequestStatus.Submitted)
+			{
+				return;
+			}
+
+			await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
+			var managementService = Mvx.Resolve<IManagementService>();
+			try
+			{
+				await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+				//MinhVan: we only need to update requestCount, but we have to fetch all data again (1 api for all data).
+				//The request count is only reloaded due to only new requestCount data received (SetProperty mechanism).
+				await LoadCurrentPostData();
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
+			}		
 		}
 
 		public override void Prepare(Post post)
@@ -324,51 +340,41 @@ namespace GiveAndTake.Core.ViewModels
 		}
 
 		//Review ThanhVo Look late, should we load data early in ViewAppearing
-		public override async void ViewAppeared()
+		public override async void ViewAppearing()
 		{
-			base.ViewAppeared();
+			base.ViewAppearing();
 			//Review ThanhVo should be if(!_isBackFromFullImage)
-			if (_isBackFromFullImage == false)
+			if (!_isBackFromFullImage)
 			{ 
-				await UpdateDataModelWithOverlay(AppConstants.LoadingDataOverlayTitle);				
+				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);				
 			}
 			_isBackFromFullImage = false;
 		}
 
 		//REview Thanh Vo This is not mean that updating view model, should be LoadDataFrom
-		private async Task UpdateDataModel()
+		private async Task LoadCurrentPostData()
 		{
-			try
+			_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
+			_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);			
+			IsRequested = _userRequestResponse.IsRequested;
+			RequestCount = _dataModel.CurrentPost.RequestCount;
+			if (_isMyPost)
 			{
-				_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
-				_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);			
-				IsRequested = _userRequestResponse.IsRequested;
-				RequestCount = _dataModel.CurrentPost.RequestCount;
-				if (_isMyPost)
-				{
-					IsRequested = RequestCount != 0;
-				}
-				CategoryName = _dataModel.CurrentPost.Category.CategoryName;
-				AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
-				UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
-				CreatedTime = TimeHelper.ToTimeAgo(_dataModel.CurrentPost.CreatedTime);
-				Address = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
-				PostDescription = _dataModel.CurrentPost.Description;
-				PostTitle = _dataModel.CurrentPost.Title;
-				PostImages = _dataModel.CurrentPost.Images;
-				CommentCount = _dataModel.CurrentPost.CommentCount;
-				Status = _isMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
-				CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
-				PostImageIndex = 0;
-				_post = _dataModel.CurrentPost;
+				IsRequested = RequestCount != 0;
 			}
-			catch (AppException.ApiException)
-			{
-				//Review Thanh Vo, should take message from ApiException instead of use one message every place which it happens
-				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-				//Review ThanhVo Should check the result before continue although popup message warning just has one button
-				await UpdateDataModel();
-			}
+			CategoryName = _dataModel.CurrentPost.Category.CategoryName;
+			AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
+			UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
+			CreatedTime = TimeHelper.ToTimeAgo(_dataModel.CurrentPost.CreatedTime);
+			Address = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
+			PostDescription = _dataModel.CurrentPost.Description;
+			PostTitle = _dataModel.CurrentPost.Title;
+			PostImages = _dataModel.CurrentPost.Images;
+			CommentCount = _dataModel.CurrentPost.CommentCount;
+			Status = _isMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
+			CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
+			PostImageIndex = 0;
+			_post = _dataModel.CurrentPost;	
 		}
 
 		public override Task Initialize()
@@ -390,13 +396,24 @@ namespace GiveAndTake.Core.ViewModels
 			ImageIndexIndicator = _postImageIndex + 1 + " / " + totalImage;
 		}
 
-		private async Task UpdateDataModelWithOverlay(string overlayTitle)
+		private async Task LoadCurrentPostDataWithOverlay(string overlayTitle)
 		{
-			await _overlay.ShowOverlay(overlayTitle);
-			await UpdateDataModel();
-			await _overlay.CloseOverlay();
+			try
+			{
+				await _overlay.ShowOverlay(overlayTitle);
+				await LoadCurrentPostData();
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await Task.Delay(777);//for iphone
+				await LoadCurrentPostDataWithOverlay(overlayTitle);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();			
+			}			
 		}
-
 		#endregion
 	}
 }

@@ -22,13 +22,14 @@ namespace GiveAndTake.Core.Services
 				await CloseOverlay();
 			}
 			await NavigationService.Navigate<LoadingOverlayViewModel, string>(loadingText);
+			await Task.Delay(777);//for iphone
 		}
 		public async Task CloseOverlay(int milliseconds = 0)
 		{
-			if (LoadingOverlayViewModel == null) return;
-			await Task.Delay(milliseconds);
+			if (LoadingOverlayViewModel == null) return;			
 			await NavigationService.Close(LoadingOverlayViewModel);
 			LoadingOverlayViewModel = null;
+			await Task.Delay(milliseconds);//for iphone
 		}
 	}
 }

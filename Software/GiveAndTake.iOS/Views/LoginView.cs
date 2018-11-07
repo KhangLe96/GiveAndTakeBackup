@@ -21,7 +21,7 @@ namespace GiveAndTake.iOS.Views
         private UIButton _customedLoginGoogleButton;
         private UIImageView _contentView;
         private PopupItemLabel _loginTitle;
-        public MvxCommand<BaseUser> LoginCommand { get; set; }
+        public IMvxCommand<BaseUser> LoginCommand { get; set; }
 
         protected override void InitView()
         {

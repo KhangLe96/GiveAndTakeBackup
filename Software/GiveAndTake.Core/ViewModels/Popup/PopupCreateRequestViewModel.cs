@@ -91,6 +91,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public async Task InitCreateNewRequest()
 		{
+			bool success = false;
 			try
 			{
 				await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
@@ -106,17 +107,22 @@ namespace GiveAndTake.Core.ViewModels.Popup
 				{
 					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
 				}
-				await NavigationService.Close(this, RequestStatus.Submitted);
-				//Review ThanhVo
-				await _overlay.CloseOverlay();
+				success = true;					
 			}
 			catch (AppException.ApiException)
 			{
-				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-				//Review ThanhVo
-				await InitCreateNewRequest();
+				var result =
+					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+						.ErrorConnectionMessage);
 			}
-			
+			finally
+			{
+				await _overlay.CloseOverlay(777);
+				if (success)
+				{
+					await NavigationService.Close(this, RequestStatus.Submitted);
+				}
+			}
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_requestDescription);

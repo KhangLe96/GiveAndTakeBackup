@@ -25,8 +25,8 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private ICommand _loginCommand;
-		public ICommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxAsyncCommand<BaseUser>(OnLoginSuccess));
+		private IMvxCommand _loginCommand;
+		public IMvxCommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxAsyncCommand<BaseUser>(OnLoginSuccess));
 
         public LoginViewModel(IDataModel dataModel,ILoadingOverlayService loadingOverlayService)
 		{
@@ -39,14 +39,18 @@ namespace GiveAndTake.Core.ViewModels
 			try
 			{
 				await _overlay.ShowOverlay(AppConstants.LoginProcessOverLayTitle);
-				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);			
+				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}
 			catch (AppException.ApiException)
 			{
-				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-				await OnLoginSuccess(baseUser);
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
 			}
 		}
 	}
