@@ -178,7 +178,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 if (updated)
                 {
                     DeleteOldImages(oldImages);
-                    CreateImage(postRequest);
+					if (postRequest.Images.Count != 0) CreateImage(postRequest);
                 }
                 else
                 {
