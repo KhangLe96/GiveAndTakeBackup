@@ -203,6 +203,7 @@ namespace GiveAndTake.Core.ViewModels
 		private bool _isBackFromFullImage = false;
 		private string _statusChange;
 		private List<string> _myPostOptions;
+		private bool _isLoadFirstTime = true;
 		#endregion
 
 		#region Constructor
@@ -268,7 +269,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			else if (result == AppConstants.ViewPostRequests)
 			{
-				await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);				
+				await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);				
 			}
 			else if (result == AppConstants.DeletePost)
 			{
@@ -293,12 +294,14 @@ namespace GiveAndTake.Core.ViewModels
 			if (Status == AppConstants.GivedStatus)
 			{
 				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+				
 			}
 			else
 			{
 				if (_isMyPost)
 				{
-					await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
+					await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
+					await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
 				}
 				else
 				{
@@ -386,11 +389,12 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			base.ViewAppearing();
 
-			if (!_isBackFromFullImage)
+			if (!_isBackFromFullImage && _isLoadFirstTime)
 			{
 				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
 			}
 			_isBackFromFullImage = false;
+			_isLoadFirstTime = false;
 		}
 
 		private async Task LoadCurrentPostData()

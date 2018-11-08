@@ -15,7 +15,10 @@ namespace GiveAndTake.Core.Models
         [DataMember(Name = "postId")]
         public string PostId { get; set; }
 
-        [DataMember(Name = "userId")]
+	    [DataMember(Name = "post")]
+	    public Post Post { get; set; }
+
+		[DataMember(Name = "userId")]
         public string UserId { get; set; }
 
         [DataMember(Name = "id")]

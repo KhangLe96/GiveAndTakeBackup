@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
@@ -22,6 +23,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		public IMvxCommand CloseCommand => _closeCommand ?? (_closeCommand = new MvxCommand(HandleOnClosed));
 
+		public IMvxCommand ShowPostDetailCommand => _showPostDetailCommand ?? (_showPostDetailCommand = new MvxCommand(HandleOnShowPostDetail));
+
 		public List<ITransformation> PostTransformations => new List<ITransformation> { new CornersTransformation(5, CornerTransformType.AllRounded) };
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
@@ -36,6 +39,12 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			get => _avatarUrl;
 			set => SetProperty(ref _avatarUrl, value);
+		}
+
+		public string PostUrl
+		{
+			get => _postUrl;
+			set => SetProperty(ref _postUrl, value);
 		}
 
 		public string RequestMessage
@@ -54,8 +63,10 @@ namespace GiveAndTake.Core.ViewModels
 		private IMvxCommand _rejectCommand;
 		private IMvxCommand _acceptCommand;
 		private IMvxCommand _closeCommand;
+		private IMvxCommand _showPostDetailCommand;
 		private string _userName;
 		private string _avatarUrl;
+		private string _postUrl;
 		private string _createdTime;
 		private string _requestMessage;
 		
@@ -67,6 +78,7 @@ namespace GiveAndTake.Core.ViewModels
 		public override Task Initialize()
 		{
 			AvatarUrl = _request.User.AvatarUrl;
+			PostUrl = _request.Post.Images.Any() ? _request.Post.Images.ElementAt(0).ResizedImage : "";
 			UserName = _request.User.FullName ?? AppConstants.DefaultUserName;
 			CreatedTime = _request.CreatedTime.ToString("dd.MM.yyyy");
 			RequestMessage = _request.RequestMessage;
@@ -77,6 +89,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void HandleOnAccepted() => NavigationService.Close(this, PopupRequestDetailResult.Accepted);
 
-		private void HandleOnClosed() => NavigationService.Close(this,PopupRequestDetailResult.Cancelled);
+		private void HandleOnClosed() => NavigationService.Close(this, PopupRequestDetailResult.Cancelled);
+
+		private void HandleOnShowPostDetail() => NavigationService.Close(this, PopupRequestDetailResult.ShowPostDetail);
 	}
 }
