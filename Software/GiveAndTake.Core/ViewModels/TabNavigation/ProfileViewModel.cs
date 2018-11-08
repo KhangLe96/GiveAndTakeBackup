@@ -139,6 +139,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private async Task ShowMyRequests()
 		{
 			IsPostsList = false;
+
+			/*
+			 * REVIEW [KHOA]: it's not a good way to deal with click command
+			 * when the button is first clicked -> disable click function -> user can't click again
+			 */
+
 			if (RequestedPostViewModels == null)
 			{
 				await UpdateMyRequestedPostViewModels();
@@ -164,13 +170,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, $"page={_dataModel.ApiPostsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
+
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
 					PostViewModels.Last().IsSeparatorLineShown = true;
 					PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 					PostViewModels.Last().IsSeparatorLineShown = false;
 				}
-
 			}
 			catch (AggregateException) 
 			{
@@ -187,13 +193,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiMyRequestedPostResponse = await ManagementService.GetMyRequestedPosts($"page={_dataModel.ApiMyRequestedPostResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
+
 				if (_dataModel.ApiMyRequestedPostResponse.Posts.Any())
 				{
 					RequestedPostViewModels.Last().IsSeparatorLineShown = true;
 					RequestedPostViewModels.AddRange(_dataModel.ApiMyRequestedPostResponse.Posts.Select(GeneratePostViewModels));
 					RequestedPostViewModels.Last().IsSeparatorLineShown = false;
 				}
-
 			}
 			catch (AggregateException) 
 			{
@@ -210,6 +216,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiMyPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, null, _dataModel.LoginResponse.Token);
+				// REVIEW [KHOA]: if there is no postresponse (=null) -> crashed
 				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyPostsResponse.Posts.Select(GeneratePostViewModels));
 				if (PostViewModels.Any())
 				{
