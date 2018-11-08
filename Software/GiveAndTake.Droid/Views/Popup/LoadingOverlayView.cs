@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.Droid.Helpers;
+using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Droid.Support.V4;
 using MvvmCross.Platforms.Android.Binding.BindingContext;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
@@ -24,6 +25,7 @@ namespace GiveAndTake.Droid.Views.Popup
 			var view = this.BindingInflate(Resource.Layout.LoadingOverlayView, null);
 			_progressBar = view.FindViewById<ProgressBar>(Resource.Id.loadingIndicator);
 			_progressBar.IndeterminateDrawable.SetColorFilter(ColorHelper.FromColorId(Resource.Color.loading_indicator), PorterDuff.Mode.SrcIn);
+			Cancelable = false;
 			return view;
 		}
 
@@ -33,6 +35,5 @@ namespace GiveAndTake.Droid.Views.Popup
 			Dialog.Window.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
 			Dialog.Window.SetBackgroundDrawable(new ColorDrawable(ColorHelper.FromColorId(Resource.Color.loading_indicator_Overlay)));
 		}
-
 	}
 }

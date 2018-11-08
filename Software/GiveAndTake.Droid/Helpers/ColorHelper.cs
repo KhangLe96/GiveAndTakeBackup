@@ -9,6 +9,7 @@ namespace GiveAndTake.Droid.Helpers
 	public static class ColorHelper
 	{
 		public static Color Default => ToColor("e4e4e4");
+		public static Color Green => ToColor("2CB273");
 
 		public static Color FromColorId(int colorId)
 		{

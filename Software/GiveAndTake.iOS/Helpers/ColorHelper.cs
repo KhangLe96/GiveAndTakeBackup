@@ -21,6 +21,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static UIColor Green => ToUIColor("2CB273");
 		public static UIColor DarkRed => ToUIColor("8B0000");
 		public static UIColor DarkGray => ToUIColor("666666");
+		public static UIColor LoadingIndicatorLightBlue => ToUIColor("3AB9EB");
 
 		public static UIColor ToUIColor(string hexString)
 		{

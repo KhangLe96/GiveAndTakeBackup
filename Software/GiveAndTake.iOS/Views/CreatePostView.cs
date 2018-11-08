@@ -129,6 +129,10 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
+			bindingSet.Bind(_btnSubmit)
+				.For("Enabled")
+				.To(vm => vm.IsSubmitBtnEnabled);
+
 			bindingSet.Apply();
 		}
 
