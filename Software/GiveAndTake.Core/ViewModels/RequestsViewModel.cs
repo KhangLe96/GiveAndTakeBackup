@@ -51,11 +51,6 @@ namespace GiveAndTake.Core.ViewModels
 			_overlay = loadingOverlayService;
 		}
 
-		private async void InitRequestViewModels()
-		{			
-			await UpdateRequestViewModelOverLay();			
-		}
-
 		private async Task OnLoadMore()
         {
 	        try
@@ -71,9 +66,7 @@ namespace GiveAndTake.Core.ViewModels
 	        catch (AppException.ApiException)
 	        {
 		        await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-		        await OnLoadMore();
-	        }
-			
+	        }			
         }
 
 	    private RequestItemViewModel GenerateRequestItem(Request request)
@@ -88,22 +81,27 @@ namespace GiveAndTake.Core.ViewModels
 	    }
 
 	    private async void OnRequestRejected(Request request)
-	    {
-			try
+	    {			
+			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.RequestRejectingMessage);
+			if (result == RequestStatus.Submitted)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.RequestRejectingMessage);
-				if (result == RequestStatus.Submitted)
+				try
 				{
-					await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _dataModel.LoginResponse.Token);
-					await UpdateRequestViewModelOverLay();
+					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+					await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected",
+						_dataModel.LoginResponse.Token);
+					await UpdateRequestItemViewModelCollection();
 				}
-			
-			}
-			catch (AppException.ApiException)
-			{
-				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-				await OnLoadMore();
-			}	
+				catch (AppException.ApiException)
+				{
+					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+						.ErrorConnectionMessage);
+				}
+				finally
+				{
+					await _overlay.CloseOverlay();
+				}				
+			}							
 		}
 
 	    private async void OnRequestAccepted(Request request)
@@ -111,7 +109,20 @@ namespace GiveAndTake.Core.ViewModels
 		    var result = await NavigationService.Navigate<PopupResponseViewModel, Request, RequestStatus>(request);
 		    if (result == RequestStatus.Submitted)
 		    {
-				await UpdateRequestViewModelOverLay();
+			    try
+			    {
+				    await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+				    await UpdateRequestItemViewModelCollection();
+			    }
+			    catch (AppException.ApiException)
+			    {
+				    await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					    .ErrorConnectionMessage);
+			    }
+			    finally
+			    {
+				    await _overlay.CloseOverlay();
+			    }
 			}
 		}
 
@@ -132,40 +143,49 @@ namespace GiveAndTake.Core.ViewModels
 	    private async void OnRefresh()
         {
             IsRefreshing = true;
-            await UpdateRequestViewModels();
+            await UpdateRequestItemViewModelCollection();
             IsRefreshing = false;
         }
 
-        public async Task UpdateRequestViewModels()
+        public async Task UpdateRequestItemViewModelCollection()
         {
-	        try
+			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");
+		    NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
+			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
+	        if (RequestItemViewModels.Any())
 	        {
-		        _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");
-		        NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
-		        RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
-		        if (RequestItemViewModels.Any())
-		        {
-			        RequestItemViewModels.Last().IsLastViewInList = true;
-		        }
-			}
-	        catch (AppException.ApiException)
-	        {
-		        await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-		        await OnLoadMore();
-	        }        
+		        RequestItemViewModels.Last().IsLastViewInList = true;
+	        }     
 		}
 
 	    public override void Prepare(string postId)
 	    {
-		    _postId = postId;
-		    InitRequestViewModels();
+		    _postId = postId;		    
 		}
 
-		public async Task UpdateRequestViewModelOverLay()
+		public override void ViewAppearing()
 		{
-			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-			await UpdateRequestViewModels();
-			await _overlay.CloseOverlay();
+			base.ViewAppearing();
+			LoadRequestListData();
+		}
+
+		public async Task LoadRequestListData()
+		{
+			try
+			{
+				await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+				await UpdateRequestItemViewModelCollection();
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
+				await LoadRequestListData();
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
+			}
 		}
 	}
 }
