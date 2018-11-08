@@ -58,9 +58,9 @@ namespace GiveAndTake.Core.ViewModels
             _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
 		        if (_dataModel.ApiRequestsResponse.Requests.Any())
 		        {
-			        RequestItemViewModels.Last().IsLastViewInList = false;
+			        RequestItemViewModels.Last().IsSeperatorShown = false;
 			        RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
-			        RequestItemViewModels.Last().IsLastViewInList = true;
+			        RequestItemViewModels.Last().IsSeperatorShown = true;
 		        }
 			}
 	        catch (AppException.ApiException)
