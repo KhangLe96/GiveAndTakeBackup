@@ -258,7 +258,6 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			else
 			{
-				//Review ThanhVo split this into small methods
 				if (IsRequested)
 				{
 					await CancelOldRequest();
@@ -295,7 +294,6 @@ namespace GiveAndTake.Core.ViewModels
 					}
 					finally
 					{
-						//Review ThanhVo Check all places which closing overlay, should move it to finally block
 						await _overlay.CloseOverlay();
 					}
 				}
@@ -317,7 +315,7 @@ namespace GiveAndTake.Core.ViewModels
 			try
 			{
 				await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
-				//MinhVan: we only need to update requestCount, but we have to fetch all data again (1 api for all data).
+				//TODO MinhVan: we only need to update requestCount, but we have to fetch all data again (1 api for all data).
 				//The request count is only reloaded due to only new requestCount data received (SetProperty mechanism).
 				await LoadCurrentPostData();
 			}
@@ -339,11 +337,10 @@ namespace GiveAndTake.Core.ViewModels
 			_isMyPost = post.IsMyPost;			
 		}
 
-		//Review ThanhVo Look late, should we load data early in ViewAppearing
 		public override async void ViewAppearing()
 		{
 			base.ViewAppearing();
-			//Review ThanhVo should be if(!_isBackFromFullImage)
+
 			if (!_isBackFromFullImage)
 			{ 
 				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);				
@@ -351,7 +348,6 @@ namespace GiveAndTake.Core.ViewModels
 			_isBackFromFullImage = false;
 		}
 
-		//REview Thanh Vo This is not mean that updating view model, should be LoadDataFrom
 		private async Task LoadCurrentPostData()
 		{
 			_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);

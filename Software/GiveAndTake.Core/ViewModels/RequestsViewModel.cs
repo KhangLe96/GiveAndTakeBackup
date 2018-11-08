@@ -163,10 +163,11 @@ namespace GiveAndTake.Core.ViewModels
 		    _postId = postId;		    
 		}
 
-		public override void ViewAppearing()
+		public override async void ViewAppearing()
 		{
 			base.ViewAppearing();
-			LoadRequestListData();
+
+			await LoadRequestListData();
 		}
 
 		public async Task LoadRequestListData()
