@@ -160,7 +160,7 @@ namespace GiveAndTake.Core.Services
 	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
 		}
 
-        public async Task ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
+        public async Task ChangeStatusOfPost(string postId, string newStatus, string token)  // open/close a  Post
         {
 			var postStatus = new StatusObj
 			{
@@ -169,7 +169,7 @@ namespace GiveAndTake.Core.Services
 			var statusInString = JsonHelper.Serialize(postStatus);
 			var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
 			string parameters = $"/{postId}";
-			var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
+			var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, token);
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 			{

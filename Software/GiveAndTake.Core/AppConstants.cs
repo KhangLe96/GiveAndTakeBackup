@@ -43,16 +43,16 @@ namespace GiveAndTake.Core
 		public const string PopupSortFiltersTitle = "Xếp theo";
 		public const string PopupLocationFiltersTitle = "Lọc theo";
 
-		public const string ChangePostStatus = "Chuyển trạng thái sang \"Đã cho\"";
+		public const string ChangePostStatus = "Chuyển trạng thái sang";
 		public const string ModifyPost = "Chỉnh sửa";
 		public const string ViewPostRequests = "Duyệt cho";
 		public const string DeletePost = "Xóa";
 		public const string ReportPost = "Báo cáo";
-		public static List<string> MyPostOptions = new List<string> {ChangePostStatus, ModifyPost, ViewPostRequests, DeletePost};
-		public static List<string> OtherPostOptions = new List<string> { ReportPost };
 
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";
+		public static string GivingStatusEN = "Giving";
+		public static string GivedStatusEN = "Gave";
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
@@ -77,5 +77,7 @@ namespace GiveAndTake.Core
 		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
 		public static int NumOfFragmentViewPager = 3;
 		public static string ProcessingDataOverLayTitle = "Đang xử lý";
+		public static string ConfirmDeletePost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn xóa ?";
+		public static string ConfirmDeleteOwnRequest = "Bạn có chắc chắn muốn hủy bỏ yêu cầu ?";
 	}
 }

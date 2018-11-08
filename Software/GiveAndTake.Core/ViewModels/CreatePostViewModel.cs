@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Services;
+using MvvmCross;
+
 namespace GiveAndTake.Core.ViewModels
 {
 	public class CreatePostViewModel : BaseViewModelResult<bool>
@@ -266,6 +268,8 @@ namespace GiveAndTake.Core.ViewModels
 					await NavigationService.Close(this, true);
 				}				
 			}
+			await NavigationService.Close(this, true);
+			await _overlay.CloseOverlay();
 		}
 
 		private void InitSelectedImage()

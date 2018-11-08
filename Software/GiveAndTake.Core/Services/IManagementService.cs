@@ -11,7 +11,7 @@ namespace GiveAndTake.Core.Services
 	    Task<ApiPostsResponse> GetPostList(string filterParams);
         Task<Post> GetPostDetail(string postId);
         Task<ApiPostsResponse> GetPostOfUser(string userId);
-        Task ChangeStatusOfPost(string postId, string newStatus);
+        Task ChangeStatusOfPost(string postId, string newStatus, string token);
 		Task EditPost(EditPost post);
 	    Task<LoginResponse> LoginFacebook(BaseUser baseUser);
 		Task<bool> CreatePost(CreatePost post, string token);

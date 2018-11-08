@@ -220,7 +220,7 @@ namespace GiveAndTake.Core.ViewModels
 
         private async Task ShowMenuView()
 	    {
-			var postOptions = _post.IsMyPost ? AppConstants.MyPostOptions : AppConstants.OtherPostOptions;
+			var postOptions = _post.IsMyPost ? MyPostOptions : OtherPostOptions;
 
 			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
 
