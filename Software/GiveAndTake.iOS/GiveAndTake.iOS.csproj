@@ -78,6 +78,7 @@
     <Compile Include="Controls\AlphaUiButton.cs" />
     <Compile Include="Controls\CustomTextField.cs" />
     <Compile Include="Controls\CustomTextView.cs" />
+    <Compile Include="Controls\LoadingIndicator.cs" />
     <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />

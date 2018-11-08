@@ -2,6 +2,7 @@
 
 namespace GiveAndTake.Core
 {
+	// REVIEW [KHOA]: all texts should get from locale files -> support multi-language later if needed
 	public static class AppConstants
 	{
 		public const string AppTitle = "Cho và Nhận";
@@ -28,7 +29,7 @@ namespace GiveAndTake.Core
 	    public const string GetRequestOfPost = "request/list";
 	    public const string ChangeStatusOfRequest = "request/status";
 
-        public const string API_KEY =
+		public const string ApiKey =
 			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMjMwMzc5MmItZGI1MC00YzlhLTk3MjAtN2JkMWVjN2QzM2U4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkFkbWluIEFkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJuYmYiOjE1MzM4ODY3MzMsImV4cCI6MTUzNjQ3ODczMywiaXNzIjoiR2l2ZWF3YXkiLCJhdWQiOiJFdmVyeW9uZSJ9.2A8md3WFGYT-w2Kz0OMAUAj7e20L-wTxIfKL4KyEOko";
 
 		public const string DefaultWarningMessage = "Chức năng này chưa xong, \n Xin vui lòng quay lại sau";
@@ -55,7 +56,6 @@ namespace GiveAndTake.Core
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
-		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
 		public static string SearchResultNullTitle = "Không tìm thấy kết quả nào";
 		public const string CreatePostDescriptionPlaceHolder = "Mô tả (Nhãn hiệu, kiểu dáng, màu sắc, ... )";
 		public const string CreatePostTitlePlaceHolder = "Tiêu đề (Thương hiệu, thể loại, ...)";
@@ -67,11 +67,15 @@ namespace GiveAndTake.Core
 		public static string PopupRequestDetailTitle = "Chi tiết yêu cầu";
 		public static string ButtonRejectTitle = "Từ chối";
 		public static string ButtonAcceptTitle = "Chấp nhận";
+		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
 		public static string LoadingDataOverlayTitle= "Đang tải dữ liệu";
 		public static string UploadDataOverLayTitle = "Đang đăng bài";
 		public static string CreateResponse = "response/create";
 		public static string UpdateOverLayTitle = "Đang cập nhật";
 
 		public static int NumberOfRequestPerPage = 20;
+		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
+		public static int NumOfFragmentViewPager = 3;
+		public static string ProcessingDataOverLayTitle = "Đang xử lý";
 	}
 }

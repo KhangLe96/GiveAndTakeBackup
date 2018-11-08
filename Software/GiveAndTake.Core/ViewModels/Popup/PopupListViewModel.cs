@@ -68,8 +68,11 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		private void OnItemSelected(PopupItemViewModel selectedPopupItemViewModel)
 		{
-			_selectedPopupItem.IsSelected = false;
-			_selectedPopupItem = selectedPopupItemViewModel;
+			if (_selectedPopupItem != selectedPopupItemViewModel)
+			{
+				_selectedPopupItem.IsSelected = false;
+				_selectedPopupItem = selectedPopupItemViewModel;
+			}	
 		}
 	}
 }

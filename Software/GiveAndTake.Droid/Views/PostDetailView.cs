@@ -13,6 +13,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System.Collections.Generic;
+using GiveAndTake.Droid.Helpers;
 
 namespace GiveAndTake.Droid.Views
 {
@@ -46,7 +47,7 @@ namespace GiveAndTake.Droid.Views
 			set
 			{
 				_status = value;
-				_tvStatus.SetTextColor(_status == AppConstants.GivingStatus ? Color.ParseColor("#2CB273") : Color.DarkRed);
+				_tvStatus.SetTextColor(_status == AppConstants.GivingStatus ? ColorHelper.Green : Color.DarkRed);
 			}
 		}
 
@@ -88,7 +89,7 @@ namespace GiveAndTake.Droid.Views
 
 			_imageViewer.SetClipToPadding(false);
 
-			_imageViewer.PageSelected += (sender, args) => UpdateImageIndexCommand?.Execute(_imageViewer.CurrentItem);
+			_imageViewer.PageSelected += OnPageSelected;
 
 		}
 
@@ -98,6 +99,18 @@ namespace GiveAndTake.Droid.Views
 				? Resource.Drawable.request_on
 				: Resource.Drawable.request_off);
 		}
+
+		public override void OnDestroyView()
+		{
+			base.OnDestroyView();
+			_imageViewer.PageSelected -= OnPageSelected;
+		}
+
+		private void OnPageSelected(object sender, System.EventArgs e)
+		{
+			UpdateImageIndexCommand?.Execute(_imageViewer.CurrentItem);
+		}
+
 
 		protected override void CreateBinding()
 		{

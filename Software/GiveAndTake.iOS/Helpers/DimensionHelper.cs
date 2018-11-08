@@ -106,6 +106,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupRequestHeight { get; set; }
 		public static nfloat PopupRequestDescriptionTextViewHeight { get; set; }
 		public static nfloat PopupRequestButtonWidth { get; set; }
+		public static nfloat LoadingLineWidth { get; set; }
 
 
 		public static void InitStaticVariable()
