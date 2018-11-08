@@ -22,7 +22,8 @@ namespace GiveAndTake.Droid.Views
 
     public class LoginView : BaseActivity
     {
-	    private static AccessToken accessToken;
+	    // REVIEW [KHOA]: naming convention
+		private static AccessToken accessToken;
         private ICallbackManager _callbackManager;
 	    private ImageButton _btnFacebookLogin;
 
