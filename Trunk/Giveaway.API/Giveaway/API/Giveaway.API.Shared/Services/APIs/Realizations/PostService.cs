@@ -69,6 +69,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 			    IEnumerable<Post> requestedPosts = new List<Post>();
 				
+				// REVIEW: Should use where condition instead of foreachs
 				foreach (var post in posts)
 				{
 					if (post.Requests.Any(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id))
@@ -82,6 +83,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			    requestedPosts = SortPosts(request, requestedPosts);
 
 			    var result = requestedPosts.Skip(request.Limit * (request.Page - 1)).Take(request.Limit).Select(Mapper.Map<PostAppResponse>).ToList();
+				
 			    foreach (var post in result)
 			    {
 				    post.IsCurrentUserRequested = true;

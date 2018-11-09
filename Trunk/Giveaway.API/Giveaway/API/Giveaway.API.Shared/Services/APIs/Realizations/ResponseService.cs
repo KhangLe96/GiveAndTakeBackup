@@ -29,11 +29,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			response.Id = Guid.NewGuid();
 
 			_responseService.Create(response, out var isPostSaved);
+			// REVIEW: Should use ! instead of the condition
 			if (isPostSaved == false)
 			{
 				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 			}
 
+			// REVIEW: Move status from hard code to constant.
 			_requestService.UpdateStatus(responseRequest.RequestId, new StatusRequest(){UserStatus = "Approved"});
 
 			var requestDb = _responseService.FirstOrDefault(x => x.Id == response.Id);
