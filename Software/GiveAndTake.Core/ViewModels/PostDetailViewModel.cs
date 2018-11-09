@@ -265,7 +265,8 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			else if (result == AppConstants.ModifyPost)
 			{
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+				await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
+				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
 			}
 			else if (result == AppConstants.ViewPostRequests)
 			{
@@ -425,7 +426,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public override Task Initialize()
 		{
-			_dataModel.PostImages = PostImages;
+			_dataModel.PostImages = _dataModel.PostImages;
 			_dataModel.PostImageIndex = 0;
 			return base.Initialize();
 		}

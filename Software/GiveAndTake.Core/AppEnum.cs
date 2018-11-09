@@ -48,4 +48,10 @@
 		MyPosts,
 		MyRequests
 	}
+
+	public enum ViewMode
+	{
+		CreatePost,
+		EditPost,
+	}
 }

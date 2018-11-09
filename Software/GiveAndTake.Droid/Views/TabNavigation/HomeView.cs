@@ -37,9 +37,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    _searchView = view.FindViewById<SearchView>(Resource.Id.searchView);
 		    _searchView.QueryTextSubmit += OnQueryTextSubmit;
 		    _searchView.Click += OnSearchViewClicked;
+		    _searchView.QueryTextChange += OnQueryTextChanged;
 
-			_clearButton = (ImageView)_searchView.FindViewById(MvvmCross.Droid.Support.V7.AppCompat.Resource.Id.search_close_btn);
-			_clearButton.Click += OnClearButtonClicked;
+			    _clearButton = (ImageView)_searchView.FindViewById(MvvmCross.Droid.Support.V7.AppCompat.Resource.Id.search_close_btn);
+			    _clearButton.Click += OnClearButtonClicked;
 
 			var rvPosts = view.FindViewById<MvxRecyclerView>(Resource.Id.rvPosts);
 			var layoutManager = new LinearLayoutManager(view.Context);
@@ -77,8 +78,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		}
 
 	    public override void OnDestroyView()
-	    {
-		    base.OnDestroyView();
+	    {		    
+			base.OnDestroyView();
 		    _clearButton.Visibility = ViewStates.Gone;
 		}
 
@@ -109,5 +110,12 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    _searchView.ClearFocus();
 		    SearchCommand.Execute();
 	    }
-    }
+	    private void OnQueryTextChanged(object sender, SearchView.QueryTextChangeEventArgs e)
+	    {
+		    if (String.IsNullOrEmpty(_searchView.Query))
+		    {
+			    _clearButton.Visibility = ViewStates.Gone;
+			}
+	    }
+	}
 }
