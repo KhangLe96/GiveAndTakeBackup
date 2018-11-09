@@ -270,7 +270,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
-			post.IsMyPost = false;
+			post.IsMyPost = IsPostsList;
 			return new PostItemViewModel(post);
 		}
 	}
