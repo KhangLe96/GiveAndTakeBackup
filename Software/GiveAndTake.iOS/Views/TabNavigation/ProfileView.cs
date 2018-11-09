@@ -4,6 +4,7 @@ using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
+using GiveAndTake.iOS.Views.TableViewCells;
 using GiveAndTake.iOS.Views.TableViewSources;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
@@ -31,10 +32,10 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UILabel _userSentCountLabel;
 		private UIButton _profileSettingButton;
 		private UITableView _postsTableView;
-		private PostItemTableViewSource _postTableViewSource;
+		private PostItemTableViewSource<MyPostItemViewCell> _postTableViewSource;
 		private MvxUIRefreshControl _refreshPostsControl;
 		private UITableView _requestedPostsTableView;
-		private PostItemTableViewSource _requestedPostsTableViewSource;
+		private PostItemTableViewSource<PostItemViewCell> _requestedPostsTableViewSource;
 		private MvxUIRefreshControl _refreshRequestedPostsControl;
 		private CustomUIButton _myPostsButton;
 		private CustomUIButton _myRequestedPostsButton;
@@ -140,7 +141,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 
 			_postsTableView = UIHelper.CreateTableView(0, 0);
-			_postTableViewSource = new PostItemTableViewSource(_postsTableView)
+			_postTableViewSource = new PostItemTableViewSource<MyPostItemViewCell>(_postsTableView)
 			{
 				LoadMoreEvent = () => LoadMorePostsCommand?.Execute()
 			};
@@ -159,7 +160,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 
 			_requestedPostsTableView = UIHelper.CreateTableView(0, 0);
-			_requestedPostsTableViewSource = new PostItemTableViewSource(_requestedPostsTableView)
+			_requestedPostsTableViewSource = new PostItemTableViewSource<PostItemViewCell>(_requestedPostsTableView)
 			{
 				LoadMoreEvent = () => LoadMoreRequestedPostsCommand?.Execute()
 			};

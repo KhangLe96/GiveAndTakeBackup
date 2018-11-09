@@ -74,6 +74,7 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\CustomUILabel.cs" />
     <Compile Include="Controls\CustomMvxCachedImageView.cs" />
     <Compile Include="Controls\AlphaUiButton.cs" />
     <Compile Include="Controls\CustomTextField.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Views\PostImageView.cs" />
     <Compile Include="Views\SlideViewDataSource.cs" />
     <Compile Include="Views\SlideViewDelegate.cs" />
+    <Compile Include="Views\TableViewCells\MyPostItemViewCell.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
     <Compile Include="Views\TabNavigation\HomeView.cs" />

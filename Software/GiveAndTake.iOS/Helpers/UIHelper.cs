@@ -33,6 +33,20 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
+		public static CustomUILabel CreateCustomLabel(UIColor textColor, nfloat fontSize, FontType fontType = FontType.Regular)
+		{
+			var label = new CustomUILabel
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				LineBreakMode = UILineBreakMode.WordWrap,
+				TextColor = textColor,
+				Font = GetFont(fontType, fontSize),
+				Lines = 0
+			};
+
+			return label;
+		}
+
 		public static HeaderBar CreateHeaderBar(nfloat width, nfloat height, UIColor backgroundColor, bool isShowBackButton=false)
 		{
 			var headerBar = new HeaderBar(isShowBackButton)

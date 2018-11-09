@@ -10,6 +10,7 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using System;
+using GiveAndTake.iOS.Views.TableViewCells;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -33,7 +34,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UISearchBar _searchBar;
 	    private UIView _separatorLine;
         private UITableView _postsTableView;
-		private PostItemTableViewSource _postTableViewSource;
+		private PostItemTableViewSource<PostItemViewCell> _postTableViewSource;
 		private MvxUIRefreshControl _refreshControl;
 		private UIButton _newPostButton;
 		private PopupItemLabel _searchResult;
@@ -137,7 +138,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private void InitPostsTableView()
 		{
 			_postsTableView = UIHelper.CreateTableView(0, 0);
-			_postTableViewSource = new PostItemTableViewSource(_postsTableView)
+			_postTableViewSource = new PostItemTableViewSource<PostItemViewCell>(_postsTableView)
 			{
 				LoadMoreEvent = () => LoadMoreCommand?.Execute()
 			};
