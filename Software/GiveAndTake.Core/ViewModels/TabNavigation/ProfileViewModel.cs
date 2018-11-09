@@ -80,7 +80,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			set
 			{
 				SetProperty(ref _postViewModels, value);
-				SentCount = _postViewModels.Count + " " + AppConstants.Times;
+				SentCount = _dataModel.ApiPostsResponse.Pagination.Totals + " " + AppConstants.Times;
 			}
 		}
 
@@ -227,10 +227,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiMyPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, null, _dataModel.LoginResponse.Token);
-				// REVIEW [KHOA]: if there is no postresponse (=null) -> crashed
-				PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyPostsResponse.Posts.Select(GeneratePostViewModels));
-				if (PostViewModels.Any())
+				if (_dataModel.ApiMyPostsResponse.Posts.Any())
 				{
+					PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyPostsResponse.Posts.Select(GeneratePostViewModels));
 					PostViewModels.Last().IsSeparatorLineShown = false;
 				}
 
@@ -251,9 +250,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiMyRequestedPostResponse = await ManagementService.GetMyRequestedPosts(null, _dataModel.LoginResponse.Token);
-				RequestedPostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyRequestedPostResponse.Posts.Select(GeneratePostViewModels));
-				if (RequestedPostViewModels.Any())
+				if (_dataModel.ApiMyRequestedPostResponse.Posts.Any())
 				{
+					RequestedPostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyRequestedPostResponse.Posts.Select(GeneratePostViewModels));
 					RequestedPostViewModels.Last().IsSeparatorLineShown = false;
 				}
 
