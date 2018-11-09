@@ -80,7 +80,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			set
 			{
 				SetProperty(ref _postViewModels, value);
-				SentCount = _dataModel.ApiPostsResponse.Pagination.Totals + " " + AppConstants.Times;
+				SentCount = _dataModel.ApiMyPostsResponse.Pagination.Totals + " " + AppConstants.Times;
 			}
 		}
 
