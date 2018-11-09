@@ -202,7 +202,8 @@ namespace GiveAndTake.iOS.Views
 			UIView paddingView = new UIView(new CGRect(0, 0, 15, _postTitleTextField.Frame.Height));
 			_postTitleTextField.LeftView = paddingView;
 			_postTitleTextField.LeftViewMode = UITextFieldViewMode.Always;
-			_postTitleTextField.ShouldReturn = (textField) => {
+			_postTitleTextField.ShouldReturn = (textField) =>
+			{
 				textField.ResignFirstResponder();
 				return true;
 			};
@@ -236,6 +237,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitChoosePictureButton()
 		{
 			_btnChoosePicture = UIHelper.CreateImageButton(DimensionHelper.PictureButtonHeight, DimensionHelper.PictureButtonWidth, ImageHelper.ChoosePictureButton);
+			_btnChoosePicture.UserInteractionEnabled = true;
 			_btnChoosePicture.TouchUpInside += HandleSelectImage;
 
 			View.Add(_btnChoosePicture);
@@ -322,9 +324,9 @@ namespace GiveAndTake.iOS.Views
 			image?.Clear();
 		}
 
-		public override void ViewDidAppear(bool animated)
+		public override void ViewDidDisappear(bool animated)
 		{
-			base.ViewDidAppear(animated);
+			base.ViewDidDisappear(animated);
 			_btnChoosePicture.TouchUpInside -= HandleSelectImage;
 		}
 

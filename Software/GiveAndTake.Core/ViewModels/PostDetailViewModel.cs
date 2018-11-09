@@ -234,9 +234,12 @@ namespace GiveAndTake.Core.ViewModels
 					break;
 
 				case AppConstants.ModifyPost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					var isModify = await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
+					//if (isModify)
+					//{
+					//	await LoadCurrentPostDataWithOverlay(AppConstants.UpdateOverLayTitle);
+					//}
 					break;
-
 				case AppConstants.ViewPostRequests:
 					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
 					break;
@@ -375,7 +378,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public override Task Initialize()
 		{
-			_dataModel.PostImages = PostImages;
+			_dataModel.PostImages = _dataModel.PostImages;
 			_dataModel.PostImageIndex = 0;
 			return base.Initialize();
 		}

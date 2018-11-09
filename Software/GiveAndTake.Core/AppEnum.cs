@@ -41,4 +41,10 @@
 		Accepted,
 		Rejected
 	}
+
+	public enum ViewMode
+	{
+		CreatePost,
+		EditPost,
+	}
 }
