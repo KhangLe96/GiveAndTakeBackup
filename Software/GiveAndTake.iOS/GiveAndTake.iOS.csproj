@@ -74,10 +74,12 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\CustomUILabel.cs" />
     <Compile Include="Controls\CustomMvxCachedImageView.cs" />
     <Compile Include="Controls\AlphaUiButton.cs" />
     <Compile Include="Controls\CustomTextField.cs" />
     <Compile Include="Controls\CustomTextView.cs" />
+    <Compile Include="Controls\CustomUIButton.cs" />
     <Compile Include="Controls\LoadingIndicator.cs" />
     <Compile Include="Controls\PlaceholderTextView.cs" />
     <Compile Include="Controls\PopupItemLabel.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Views\RequestsView.cs" />
     <Compile Include="Views\SlideViewDataSource.cs" />
     <Compile Include="Views\SlideViewDelegate.cs" />
+    <Compile Include="Views\TableViewCells\MyPostItemViewCell.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
     <Compile Include="Views\TableViewCells\RequestItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
@@ -177,6 +180,7 @@
     <BundleResource Include="Resources\Images\location_logo.png" />
     <BundleResource Include="Resources\Images\navigateLeft.png" />
     <BundleResource Include="Resources\Images\navigateRight.png" />
+    <BundleResource Include="Resources\Images\setting.png" />
     <BundleResource Include="Resources\Images\request_on.png" />
     <BundleResource Include="Resources\Images\btn_delete_request_detail.png" />
     <None Include="Info.plist">

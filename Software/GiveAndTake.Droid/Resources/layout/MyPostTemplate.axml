@@ -8,8 +8,7 @@
 	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-		local:MvxBind="Click ShowPostDetailCommand">
+        android:orientation="horizontal">
 
 		<RelativeLayout
             android:layout_width="@dimen/image_post_size"
@@ -23,8 +22,8 @@
                 local:MvxBind="LoadingPlaceholderImagePath 'res:default_post';
 							ErrorPlaceholderImagePath 'res:default_post';
 							Transformations PostTransformations;
-							ImageUrl PostImage" />
-
+							ImageUrl PostImage;
+							Click ShowPostDetailCommand" />
 
 			<ImageView
                 android:id="@+id/imgMultiImages"
@@ -46,93 +45,75 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
             android:orientation="vertical">
-
-			<giveandtake.droid.controls.CustomCardView
-                android:id="@+id/btnCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/button_category_height"
-                local:MvxBind="CardBackgroundColorCustom BackgroundColor"
-                local:cardCornerRadius="12dp">
-
-				<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/category_text_size"
-                    local:MvxBind="Text CategoryName" />
-			</giveandtake.droid.controls.CustomCardView>
 
 			<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_short"
                 android:orientation="horizontal">
 
-				<giveandtake.droid.controls.CustomMvxCachedImageView
-                    android:id="@+id/imgAvatar"
-                    android:layout_width="@dimen/image_avatar_size"
-                    android:layout_height="@dimen/image_avatar_size"
-                    android:layout_gravity="center"
-                    local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar';
-							ErrorPlaceholderImagePath 'res:default_avatar';
-							Transformations AvatarTransformations;
-							ImageUrl AvatarUrl;
-							Click ShowGiverProfileCommand" />
 
-				<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/avatar_margin"
-                    android:layout_marginStart="@dimen/avatar_margin"
-                    android:orientation="vertical">
+				<giveandtake.droid.controls.CustomCardView
+                    android:id="@+id/btnCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/button_category_height"
+                    local:MvxBind="CardBackgroundColorCustom BackgroundColor"
+                    local:cardCornerRadius="12dp">
 
 					<TextView
-                        android:id="@+id/tvUserFullName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="#000"
-                        android:textSize="@dimen/MediumTextSize"
-                        local:MvxBind="Text UserName; Click ShowGiverProfileCommand" />
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/category_text_size"
+                        local:MvxBind="Text CategoryName" />
+				</giveandtake.droid.controls.CustomCardView>
 
-					<LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-						<TextView
-                            android:id="@+id/tvPostDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/SmallTextSize"
-                            local:MvxBind="Text CreatedTime" />
-
-						<TextView
-                            android:id="@+id/tvSeperator"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_separator"
-                            android:layout_marginStart="@dimen/margin_separator"
-                            android:text="-"
-                            android:textSize="@dimen/SmallTextSize" />
-
-						<TextView
-                            android:id="@+id/tvLocation"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/margin_separator"
-                            android:layout_marginStart="@dimen/margin_separator"
-                            android:textSize="@dimen/SmallTextSize"
-                            local:MvxBind="Text Address" />
-					</LinearLayout>
-
-				</LinearLayout>
-
+				<giveandtake.droid.controls.CustomTextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/default_margin"
+                    android:fontFamily="@font/sanfranciscodisplay_light"
+                    android:gravity="right"
+                    android:textSize="@dimen/post_detail_status_text_size"
+                    local:MvxBind="Status Status" />
 
 			</LinearLayout>
-				
+
+
+			<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:orientation="horizontal">
+
+				<TextView
+                    android:id="@+id/tvPostDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/SmallTextSize"
+                    local:MvxBind="Text CreatedTime" />
+
+				<TextView
+                    android:id="@+id/tvSeperator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_separator"
+                    android:layout_marginStart="@dimen/margin_separator"
+                    android:text="-"
+                    android:textSize="@dimen/SmallTextSize" />
+
+				<TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_separator"
+                    android:layout_marginStart="@dimen/margin_separator"
+                    android:textSize="@dimen/SmallTextSize"
+                    local:MvxBind="Text Address" />
+			</LinearLayout>
 
 			<TextView
                 android:id="@+id/tvPostTitle"
@@ -142,11 +123,11 @@
                 android:layout_marginRight="@dimen/margin_short"
                 android:layout_marginTop="@dimen/margin_short"
                 android:ellipsize="end"
-                android:lines="2"
-                android:minLines="2"
+                android:lines="3"
+                android:minLines="3"
                 android:singleLine="false"
                 android:textSize="@dimen/post_description_text_size"
-                local:MvxBind="Text PostTitle" />
+                local:MvxBind="Text PostTitle; Click ShowPostDetailCommand" />
 
 			<LinearLayout
                 android:id="@+id/linearlayout"
@@ -239,7 +220,6 @@
                         android:layout_width="@dimen/button_small_width"
                         android:layout_height="@dimen/button_extension_height"
                         android:layout_marginBottom="@dimen/margin_normal"
-						android:layout_marginRight="@dimen/margin_normal"
                         android:background="@null"
                         android:scaleType="fitCenter"
                         android:src="@drawable/extention" />
@@ -247,10 +227,10 @@
 
 			</LinearLayout>
 
-
 		</LinearLayout>
 
 	</LinearLayout>
+
 	<TextView
         android:id="@+id/separator"
         android:layout_width="match_parent"

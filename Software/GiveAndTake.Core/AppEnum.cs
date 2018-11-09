@@ -42,4 +42,10 @@
 		Rejected,
 		ShowPostDetail
 	}
+
+	public enum ListViewItemType
+	{
+		MyPosts,
+		MyRequests
+	}
 }
