@@ -77,7 +77,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public MvxObservableCollection<PostItemViewModel> PostViewModels
 		{
 			get => _postViewModels;
-			set => SetProperty(ref _postViewModels, value);
+			set
+			{
+				SetProperty(ref _postViewModels, value);
+				SentCount = _postViewModels.Count + " " + AppConstants.Times;
+			}
 		}
 
 		public MvxObservableCollection<PostItemViewModel> RequestedPostViewModels
@@ -128,22 +132,29 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			AvatarUrl = _dataModel.LoginResponse.Profile.AvatarUrl;
 			UserName = _dataModel.LoginResponse.Profile.FullName.ToUpper();
 			RankType = AppConstants.Member;
-			SentCount = _dataModel.LoginResponse.Profile.SentCount + " " + AppConstants.Times;
 			IsPostsList = true;
 		}
 
 		public override Task Initialize() => UpdateMyPostViewModels();
 
-		private void ShowMyPosts() => IsPostsList = true;
+		private void ShowMyPosts()
+		{
+			if (IsPostsList)
+			{
+				return;
+			}
+
+			IsPostsList = true;
+		}
 
 		private async Task ShowMyRequests()
 		{
-			IsPostsList = false;
+			if (!IsPostsList)
+			{
+				return;
+			}
 
-			/*
-			 * REVIEW [KHOA]: it's not a good way to deal with click command
-			 * when the button is first clicked -> disable click function -> user can't click again
-			 */
+			IsPostsList = false;
 
 			if (RequestedPostViewModels == null)
 			{
