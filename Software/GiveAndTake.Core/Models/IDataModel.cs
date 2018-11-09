@@ -14,5 +14,6 @@ namespace GiveAndTake.Core.Models
 		List<Image> PostImages { get; set; }
 		int PostImageIndex { get; set; }
 		Post CurrentPost { get; set; }
+		ApiNotificationResponse ApiNotificationResponse { get; set; }
 	}
 }

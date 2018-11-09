@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:local="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                local:MvxBind="Click ClickCommand" >
+    <giveandtake.droid.controls.CustomMvxCachedImageView
+        android:id="@+id/imgSourceUser"
+        android:layout_width="@dimen/image_avatar_size"
+        android:layout_height="@dimen/image_avatar_size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/popup_request_Default_Margin"
+		android:layout_marginLeft="@dimen/margin_short"
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar'; 
+							ErrorPlaceholderImagePath 'res:default_avatar'; 
+							Transformations AvatarTransformations; 
+							ImageUrl AvatarUrl;"/>
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/avatar_margin"
+        android:layout_marginTop="@dimen/margin_short"
+        android:layout_toRightOf="@id/imgSourceUser"
+        android:textColor="#000"
+		android:lines="2"
+        android:minLines="2"
+        android:singleLine="false"
+        android:textSize="@dimen/MediumTextSize"
+        local:MvxBind="Text Message"
+		android:text="fdfafd"
+        />
+
+    <TextView
+        android:id="@+id/tvRequestDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/tvMessage"
+        android:layout_below="@id/tvMessage"
+        android:textSize="@dimen/SmallTextSize"
+        local:MvxBind="Text CreatedTime"
+		android:text="10.10.2018"
+        />
+
+	<giveandtake.droid.controls.CustomMvxCachedImageView
+        android:id="@+id/imgPostDelegate"
+        android:layout_width="@dimen/post_small_size"
+        android:layout_height="@dimen/post_small_size"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/PopupTitle"
+        android:layout_marginRight="@dimen/margin_short"
+        android:layout_marginTop="@dimen/margin_short"
+        local:MvxBind="LoadingPlaceholderImagePath 'res:default_post';
+							ErrorPlaceholderImagePath 'res:default_post';
+							Transformations PostTransformations;
+							ImageUrl PostUrl" />
+</RelativeLayout>

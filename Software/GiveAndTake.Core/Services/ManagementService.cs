@@ -26,7 +26,27 @@ namespace GiveAndTake.Core.Services
 			_dataModel.SortFilters = _dataModel.SortFilters ?? GetShortFilters();
 		}
 
-	    public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
+	    public async Task<ApiNotificationResponse> GetNotificationList(string filterParams)
+	    {
+		    var url = $"{AppConstants.GetNotificationList}";
+		    url = string.Join("?", url, filterParams);
+
+		    var response = await _apiHelper.Get(url, AppConstants.Token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<ApiNotificationResponse>(response.RawContent);
+		}
+
+		public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
 		{
 			var requestStatus = new StatusObj
 			{

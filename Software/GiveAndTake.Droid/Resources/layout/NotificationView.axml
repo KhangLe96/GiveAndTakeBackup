@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
-	<TextView
-		android:layout_height="wrap_content"
-		android:text="Notification View"
-		android:layout_width="match_parent">
-		Notification View
-	</TextView>
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:background="@color/white">
+
+    <MvxSwipeRefreshLayout
+        android:id="@+id/refreshNotification"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_short"
+        android:layout_marginRight="@dimen/margin_short"
+        local:MvxBind="Refreshing IsRefreshing; RefreshCommand RefreshCommand"
+        >
+
+        <MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+            android:id="@+id/rvNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            local:MvxBind="ItemsSource NotificationItemViewModels"
+            local:MvxItemTemplate="@layout/notificationtemplate" />
+
+    </MvxSwipeRefreshLayout>
+</RelativeLayout>
