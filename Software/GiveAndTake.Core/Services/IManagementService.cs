@@ -20,7 +20,7 @@ namespace GiveAndTake.Core.Services
 		Task<User> UpdateCurrentUserProfile(User user);
 	    Task<User> GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
-        Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams);
+        Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams, string token);
 		Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
 	    Task<UserRequest> CheckUserRequest(string postId, string token);
 	    Task<bool> CancelUserRequest(string postId, string token);

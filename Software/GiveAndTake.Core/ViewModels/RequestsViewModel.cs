@@ -1,4 +1,5 @@
 ﻿using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
@@ -60,7 +61,7 @@ namespace GiveAndTake.Core.ViewModels
         {
 	        try
 	        {
-            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
+		        _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
 		        if (_dataModel.ApiRequestsResponse.Requests.Any())
 		        {
 			        RequestItemViewModels.Last().IsSeperatorShown = false;
@@ -159,8 +160,8 @@ namespace GiveAndTake.Core.ViewModels
 
         public async Task UpdateRequestItemViewModelCollection()
         {
-			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");
-		    NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
+			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "", _dataModel.LoginResponse.Token);	       
+			NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {

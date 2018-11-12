@@ -50,12 +50,12 @@ namespace GiveAndTake.Core.Services
 			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
-		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)
+		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams, string token)
 		{
 			var url = $"{AppConstants.GetRequestOfPost}/{postId}";
 			url = string.Join("?", url, filterParams);
 
-			var response = await _apiHelper.Get(url, AppConstants.Token);
+			var response = await _apiHelper.Get(url, token);
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 	        {
