@@ -31,7 +31,7 @@ namespace GiveAndTake.Droid.Views
 		private ImageButton _choosePictureButton;
 		private Button _submitButton;
 		private EditText _title;
-		private EditText _postDescription;
+		private EditText _postDescriptionEditText;
 		private TextView _tvImageSelected;
 
 		protected override void InitView(View view)
@@ -42,8 +42,12 @@ namespace GiveAndTake.Droid.Views
 			_title = _view.FindViewById<EditText>(Resource.Id.Title);
 			_title.FocusChange += OnEditTextFocusChange;
 
-			_postDescription = _view.FindViewById<EditText>(Resource.Id.PostDescription);
-			_postDescription.FocusChange += OnEditTextFocusChange;
+			_postDescriptionEditText = _view.FindViewById<EditText>(Resource.Id.PostDescription);
+			_postDescriptionEditText.FocusChange += OnEditTextFocusChange;
+			_postDescriptionEditText.SetOnTouchListener(new MyTouchListener()
+			{
+				TouchViewId = _postDescriptionEditText.Id
+			});
 
 			_tvImageSelected = _view.FindViewById<TextView>(Resource.Id.tvSelectedImage);
 			_tvImageSelected.TextChanged += OnTextViewImageSelectedTextChanged;
@@ -91,12 +95,6 @@ namespace GiveAndTake.Droid.Views
 			bindingSet.Apply();
 		}
 
-		private void InitChoosePicture()
-		{
-			_choosePictureButton = _view.FindViewById<ImageButton>(Resource.Id.ChoosePicture);
-			_choosePictureButton.Click += ChoosePicture;
-		}
-
 		protected override void HandleActivityCommandFromFragment()
 		{
 			((MasterView)Activity).BackPressedCommand = BackPressedCommand;
@@ -107,9 +105,16 @@ namespace GiveAndTake.Droid.Views
 			base.OnDestroyView();
 			_choosePictureButton.Click -= ChoosePicture;
 			_title.FocusChange -= OnEditTextFocusChange;
-			_postDescription.FocusChange -= OnEditTextFocusChange;
+			_postDescriptionEditText.FocusChange -= OnEditTextFocusChange;
 			_tvImageSelected.TextChanged -= OnTextViewImageSelectedTextChanged;
-			((MasterView) Activity).BackPressedCommand = null;
+			((MasterView)Activity).BackPressedCommand = null;
+		}
+
+
+		private void InitChoosePicture()
+		{
+			_choosePictureButton = _view.FindViewById<ImageButton>(Resource.Id.ChoosePicture);
+			_choosePictureButton.Click += ChoosePicture;
 		}
 
 		private void ChoosePicture(object sender, System.EventArgs e)
@@ -163,6 +168,27 @@ namespace GiveAndTake.Droid.Views
 				byteArray = memoryStream.ToArray();
 			}
 			return byteArray;
+		}
+	}
+
+	public class MyTouchListener : Java.Lang.Object, View.IOnTouchListener
+	{
+		public int TouchViewId { get; set; }
+
+		public bool OnTouch(View v, MotionEvent e)
+		{
+			if (v.Id == TouchViewId)
+			{
+				v.Parent.RequestDisallowInterceptTouchEvent(true);
+				switch (e.Action & MotionEventActions.Mask)
+				{
+					case MotionEventActions.Up:
+						v.Parent.RequestDisallowInterceptTouchEvent(false);
+						break;
+				}
+			}
+
+			return false;
 		}
 	}
 }
