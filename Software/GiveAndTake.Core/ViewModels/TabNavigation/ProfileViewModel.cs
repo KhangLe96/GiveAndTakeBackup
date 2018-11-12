@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FFImageLoading.Transformations;
+﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -117,6 +118,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private bool _isRequestedPostsRefresh;
 		private bool _isSearchResultNull;
 		private readonly IDataModel _dataModel;
+		private readonly ILoadingOverlayService _overlayService;
 		private IMvxCommand _showMyPostsCommand;
 		private IMvxCommand _showMyRequestsCommand;
 		private IMvxCommand _loadMorePostsCommand;
@@ -126,9 +128,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private MvxObservableCollection<PostItemViewModel> _postViewModels;
 		private MvxObservableCollection<PostItemViewModel> _requestedPostViewModels;
 
-		public ProfileViewModel(IDataModel dataModel)
+		public ProfileViewModel(IDataModel dataModel, ILoadingOverlayService overlayService)
 		{
 			_dataModel = dataModel;
+			_overlayService = overlayService;
 			AvatarUrl = _dataModel.LoginResponse.Profile.AvatarUrl;
 			UserName = _dataModel.LoginResponse.Profile.FullName.ToUpper();
 			RankType = AppConstants.Member;
@@ -158,7 +161,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			if (RequestedPostViewModels == null)
 			{
+				await _overlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 				await UpdateMyRequestedPostViewModels();
+				await _overlayService.CloseOverlay();
 			}
 		}
 
