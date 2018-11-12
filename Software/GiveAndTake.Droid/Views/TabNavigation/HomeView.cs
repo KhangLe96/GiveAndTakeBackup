@@ -112,7 +112,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    }
 	    private void OnQueryTextChanged(object sender, SearchView.QueryTextChangeEventArgs e)
 	    {
-		    if (String.IsNullOrEmpty(_searchView.Query))
+		    if (string.IsNullOrEmpty(_searchView.Query))
 		    {
 			    _clearButton.Visibility = ViewStates.Gone;
 			}
