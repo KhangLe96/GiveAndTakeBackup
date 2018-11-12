@@ -407,6 +407,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				    throw new BadRequestException(CommonConstant.Error.InvalidInput);
 			    }
 			}
+		    else
+		    {
+				//get only posts that are giving to show at the news feed
+				posts = posts.Where(x => x.PostStatus == PostStatus.Giving);
+		    }
 				
 		    return posts;
 	    }
