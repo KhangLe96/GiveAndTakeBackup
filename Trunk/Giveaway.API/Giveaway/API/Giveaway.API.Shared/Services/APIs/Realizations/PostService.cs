@@ -59,30 +59,20 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		    if (Guid.TryParse(userId, out var id))
 		    {
-				var posts = _postService.Include(x => x.Category)
-					.Include(x => x.Images)
-					.Include(x => x.ProvinceCity)
-					.Include(x => x.User)
-					.Include(x => x.Comments)
-					.Include(x => x.Requests)
-					.Where(x => x.Category.EntityStatus == EntityStatus.Activated);
-
-			    IEnumerable<Post> requestedPosts = new List<Post>();
-				
-				// REVIEW: Should use where condition instead of foreachs
-				foreach (var post in posts)
-				{
-					if (post.Requests.Any(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id))
-					{
-						requestedPosts = requestedPosts.Concat(new List<Post>(){post});
-					}
-				}
+			    var posts = _postService.Include(x => x.Category)
+				    .Include(x => x.Images)
+				    .Include(x => x.ProvinceCity)
+				    .Include(x => x.User)
+				    .Include(x => x.Comments)
+				    .Include(x => x.Requests)
+				    .Where(x => x.Category.EntityStatus == EntityStatus.Activated &&
+				                x.Requests.Any(y => y.EntityStatus != EntityStatus.Deleted && y.UserId == id));
 
 				//filter posts by properties
-			    requestedPosts = FilterPost(request, requestedPosts);
-			    requestedPosts = SortPosts(request, requestedPosts);
+			    posts = FilterPost(request, posts);
+			    posts = SortPosts(request, posts);
 
-			    var result = requestedPosts.Skip(request.Limit * (request.Page - 1)).Take(request.Limit).Select(Mapper.Map<PostAppResponse>).ToList();
+			    var result = posts.Skip(request.Limit * (request.Page - 1)).Take(request.Limit).AsEnumerable().Select(Mapper.Map<PostAppResponse>).ToList();
 				
 			    foreach (var post in result)
 			    {
@@ -94,7 +84,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				    Data = result,
 				    PageInformation = new PageInformation
 				    {
-					    Total = requestedPosts.Count(),
+					    Total = posts.Count(),
 					    Page = request.Page,
 					    Limit = request.Limit
 				    }
@@ -364,7 +354,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, out int total)
         {
-	        IEnumerable<Post> posts = _postService.Include(x => x.Category)
+	        var posts = _postService.Include(x => x.Category)
 		        .Include(x => x.Images)
 		        .Include(x => x.ProvinceCity)
 		        .Include(x => x.User)
@@ -388,22 +378,22 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			posts = SortPosts(request, posts);
 
 			//just get requests that have not deleted yet
-	        posts = posts.ToList();
-			foreach (var post in posts)
+	        var postList = posts.ToList();
+			foreach (var post in postList)
 			{
 				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
 			}
 
-			total = posts.Count();
+			total = postList.Count();
 
-			return posts
+			return postList
 				.Skip(request.Limit * (request.Page - 1))
 				.Take(request.Limit)
 				.Select(Mapper.Map<T>)
 				.ToList();
 		}
 
-	    private IEnumerable<Post> GetPostListForApp(string userId, IEnumerable<Post> posts)
+	    private IQueryable<Post> GetPostListForApp(string userId, IQueryable<Post> posts)
 	    {
 			posts = posts.Where(x => x.EntityStatus == EntityStatus.Activated);
 		    if (!string.IsNullOrEmpty(userId))
@@ -421,7 +411,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		    return posts;
 	    }
 
-	    private IEnumerable<Post> SortPosts(PagingQueryPostRequest request, IEnumerable<Post> posts)
+	    private IQueryable<Post> SortPosts(PagingQueryPostRequest request, IQueryable<Post> posts)
         {
             if (!string.IsNullOrEmpty(request.Order) && request.Order == AppConstant.ASC)
             {
@@ -435,7 +425,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return posts;
         }
 
-        private IEnumerable<Post> FilterPost(PagingQueryPostRequest request, IEnumerable<Post> posts)
+        private IQueryable<Post> FilterPost(PagingQueryPostRequest request, IQueryable<Post> posts)
         {
             if (!string.IsNullOrEmpty(request.Title))
             {

@@ -6,6 +6,7 @@ using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Models.Database;
 using Giveaway.Util.Constants;
 using System;
+using Giveaway.Data.Enums;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -13,13 +14,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 	public class ResponseService : IResponseService
 	{
 		private readonly DbService.IResponseService _responseService;
-		private readonly DbService.IRequestService _requestDbService;
 		private readonly IRequestService _requestService;
 
-		public ResponseService(DbService.IResponseService responseService, DbService.IRequestService requestDbService, IRequestService requestService)
+		public ResponseService(DbService.IResponseService responseService, IRequestService requestService)
 		{
 			_responseService = responseService;
-			_requestDbService = requestDbService;
 			_requestService = requestService;
 		}
 
@@ -29,14 +28,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			response.Id = Guid.NewGuid();
 
 			_responseService.Create(response, out var isPostSaved);
-			// REVIEW: Should use ! instead of the condition
-			if (isPostSaved == false)
+			if (!isPostSaved)
 			{
 				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 			}
 
-			// REVIEW: Move status from hard code to constant.
-			_requestService.UpdateStatus(responseRequest.RequestId, new StatusRequest(){UserStatus = "Approved"});
+			_requestService.UpdateStatus(responseRequest.RequestId, new StatusRequest(){UserStatus = RequestStatus.Approved.ToString()});
 
 			var requestDb = _responseService.FirstOrDefault(x => x.Id == response.Id);
 			var result = Mapper.Map<ResponseRequestResponse>(requestDb);
