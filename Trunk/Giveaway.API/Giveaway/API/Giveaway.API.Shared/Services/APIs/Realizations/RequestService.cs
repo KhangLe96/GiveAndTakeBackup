@@ -172,7 +172,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    private bool CheckWhetherUserRequested(Guid postId, Guid userId)
 	    {
-		    var requests = _requestService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == postId && x.UserId == userId);
+		    var requests = _requestService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus != RequestStatus.Rejected && x.PostId == postId && x.UserId == userId);
 		    if (requests.Any()) return true;
 
 		    return false;

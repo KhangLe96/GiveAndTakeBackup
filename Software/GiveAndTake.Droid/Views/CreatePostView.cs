@@ -109,13 +109,13 @@ namespace GiveAndTake.Droid.Views
 			_title.FocusChange -= OnEditTextFocusChange;
 			_postDescription.FocusChange -= OnEditTextFocusChange;
 			_tvImageSelected.TextChanged -= OnTextViewImageSelectedTextChanged;
-			((MasterView) Activity).BackPressedCommand = null;
+			((MasterView)Activity).BackPressedCommand = null;
 		}
 
 		private void ChoosePicture(object sender, System.EventArgs e)
 		{
 			Intent intent = new Intent();
-			intent.SetType("ảnh/*");
+			intent.SetType("image/*");
 			intent.PutExtra(Intent.ExtraAllowMultiple, true);
 			intent.SetAction(Intent.ActionGetContent);
 			StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), ChoosePictureCode);

@@ -197,7 +197,12 @@ namespace GiveAndTake.Core.Services
 	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
 		}
 
-        public async Task ChangeStatusOfPost(string postId, string newStatus, string token)  // open/close a  Post
+	    public Task ChangeStatusOfPost(string postId, string newStatus)
+	    {
+		    throw new System.NotImplementedException();
+	    }
+
+	    public async Task ChangeStatusOfPost(string postId, string newStatus, string token)  // open/close a  Post
         {
 			var postStatus = new StatusObj
 			{
@@ -219,12 +224,12 @@ namespace GiveAndTake.Core.Services
 			}
 		}
 
-		public async Task EditPost(EditPost post)
+		public async Task<bool> EditPost(EditPost post, string postId, string token)
 		{
 			var postInformationInString = JsonHelper.Serialize(post);
 			var content = new StringContent(postInformationInString, Encoding.UTF8, "application/json");
-			string parameters = $"/{post.PostId}";
-			var response = await _apiHelper.Put(AppConstants.EditPost + parameters, content, AppConstants.Token);
+			string parameters = $"/{postId}";
+			var response = await _apiHelper.Put(AppConstants.EditPost + parameters, content, token);
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 			{
@@ -235,6 +240,8 @@ namespace GiveAndTake.Core.Services
 			{
 				throw new AppException.ApiException(response.ErrorMessage);
 			}
+
+			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
 		public async Task<LoginResponse> LoginFacebook(BaseUser baseUser)

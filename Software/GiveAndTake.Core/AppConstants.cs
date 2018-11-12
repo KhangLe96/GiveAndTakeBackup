@@ -86,6 +86,7 @@
 		public static string UpdateOverLayTitle = "Đang cập nhật";
 
 		public static int NumberOfRequestPerPage = 20;
+		public static string SaveAPost = "Lưu";
 		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
 		public static int NumOfFragmentViewPager = 3;
 		public static string ProcessingDataOverLayTitle = "Đang xử lý";
