@@ -9,8 +9,6 @@
         android:id="@+id/refreshNotification"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/margin_short"
-        android:layout_marginRight="@dimen/margin_short"
         local:MvxBind="Refreshing IsRefreshing; RefreshCommand RefreshCommand"
         >
 

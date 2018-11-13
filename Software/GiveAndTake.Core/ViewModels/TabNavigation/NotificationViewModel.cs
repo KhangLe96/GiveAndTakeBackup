@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
-	public class NotificationViewModel : BaseViewModel<string, bool>
+	public class NotificationViewModel : BaseViewModel
 	{
 		public bool IsRefreshing
 		{
@@ -51,25 +51,43 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task OnLoadMore()
 		{
-			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList($"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
+			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList($"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiNotificationResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
 			if (_dataModel.ApiNotificationResponse.Notifications.Any())
 			{
-				NotificationItemViewModels.AddRange(_dataModel.ApiNotificationResponse.Notifications.Select(GenerateRequestItem));
+				await GenerateNotificationItemViewModels();
 			}
 		}
 
-		private NotificationItemViewModel GenerateRequestItem(Notification notification)
+		private async Task GenerateNotificationItemViewModels()
 		{
-			var notificationItem = new NotificationItemViewModel(notification)
+			foreach (var notification in _dataModel.ApiNotificationResponse.Notifications)
 			{
-				//ClickAction = OnItemClicked,
+				_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString());
+				var postUrl = _dataModel.CurrentPost.Images.Count != 0 ? _dataModel.CurrentPost.Images.ElementAt(0).ResizedImage : null;
+				var avatarUrl = _dataModel.LoginResponse.Profile.AvatarUrl;
+
+				NotificationItemViewModels.Add(GenerateNotificationItem(notification, avatarUrl, postUrl));
+			}
+		}
+
+		private NotificationItemViewModel GenerateNotificationItem(Notification notification, string avatarUrl, string postUrl)
+		{
+			var notificationItem = new NotificationItemViewModel(notification, avatarUrl, postUrl)
+			{
+				ClickAction = OnItemClicked,
 			};
 			return notificationItem;
 		}
 
-		private async void OnItemClicked(Request request)
+		private async void OnItemClicked(Notification notification)
 		{
-
+			switch (notification.Type)
+			{
+				case "Like":
+					_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString());
+					await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_dataModel.CurrentPost);
+					break;
+			}
 		}
 
 		private async void OnRefresh()
@@ -81,14 +99,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		public async Task UpdateNotificationViewModels()
 		{
-			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList("");
-			NotificationItemViewModels = new MvxObservableCollection<NotificationItemViewModel>(_dataModel.ApiNotificationResponse.Notifications.Select(GenerateRequestItem));
-		}
-
-		public override void Prepare(string postId)
-		{
-			//_postId = postId;
-			InitNotificationViewModels();
+			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList("", _dataModel.LoginResponse.Token);
+			NotificationItemViewModels = new MvxObservableCollection<NotificationItemViewModel>();
+			await GenerateNotificationItemViewModels();
 		}
 
 		public async Task UpdateNotificationViewModelOverLay()

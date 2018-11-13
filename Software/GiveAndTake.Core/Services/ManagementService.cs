@@ -26,12 +26,12 @@ namespace GiveAndTake.Core.Services
 			_dataModel.SortFilters = _dataModel.SortFilters ?? GetShortFilters();
 		}
 
-	    public async Task<ApiNotificationResponse> GetNotificationList(string filterParams)
+	    public async Task<ApiNotificationResponse> GetNotificationList(string filterParams, string token)
 	    {
 		    var url = $"{AppConstants.GetNotificationList}";
 		    url = string.Join("?", url, filterParams);
 
-		    var response = await _apiHelper.Get(url, AppConstants.Token);
+		    var response = await _apiHelper.Get(url, token);
 
 		    if (response.NetworkStatus != NetworkStatus.Success)
 		    {

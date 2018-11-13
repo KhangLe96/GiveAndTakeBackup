@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core.Helpers;
 using MvvmCross.Commands;
+using MvvmCross.UI;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -42,20 +44,32 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _message, value);
 		}
 
+		public MvxColor BackgroundColor
+		{
+			get => _backgroundColor;
+			set => SetProperty(ref _backgroundColor, value);
+		}
+
 		private readonly Notification _notification;
 		private IMvxCommand _clickCommand;
 		private string _avatarUrl;
 		private string _postUrl;
 		private string _createdTime;
 		private string _message;
+		private MvxColor _backgroundColor;
 
 		#endregion
 
 		#region Constructor
 
-		public NotificationItemViewModel(Notification notification)
+		public NotificationItemViewModel(Notification notification, string avatarUrl, string postUrl)
 		{
 			_notification = notification;
+			Message = notification.Message;
+			CreatedTime = TimeHelper.ToTimeAgo(notification.CreatedTime);
+			BackgroundColor = notification.IsRead ? MvxColor.ParseHexString("#FFFFFF") : MvxColor.ParseHexString("#d2f9ff");
+			AvatarUrl = avatarUrl;
+			PostUrl = postUrl;
 		}
 
 		private void HandleOnClicked()

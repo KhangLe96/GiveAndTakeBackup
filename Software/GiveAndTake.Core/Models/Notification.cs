@@ -26,5 +26,14 @@ namespace GiveAndTake.Core.Models
 
 		[DataMember(Name = "status")]
 		public string Status { get; set; }
+
+		[DataMember(Name = "isSeen")]
+		public bool IsSeen { get; set; }
+
+		[DataMember(Name = "isRead")]
+		public bool IsRead { get; set; }
+
+		[DataMember(Name = "createdTime")]
+		public DateTime CreatedTime { get; set; }
 	}
 }

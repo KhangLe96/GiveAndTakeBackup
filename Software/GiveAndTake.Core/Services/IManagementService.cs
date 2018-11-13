@@ -24,7 +24,7 @@ namespace GiveAndTake.Core.Services
 	    Task<UserRequest> CheckUserRequest(string postId, string token);
 	    Task<bool> CancelUserRequest(string postId, string token);
 	    Task CreateResponse(RequestResponse requestResponse, string token);
-	    Task<ApiNotificationResponse> GetNotificationList(string filterParams);
+	    Task<ApiNotificationResponse> GetNotificationList(string filterParams, string token);
 		Task InitData();
     }
 }
