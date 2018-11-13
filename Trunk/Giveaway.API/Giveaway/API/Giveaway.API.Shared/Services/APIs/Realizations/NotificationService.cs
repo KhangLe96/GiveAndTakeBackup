@@ -68,7 +68,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		private List<NotificationResponse> GetPagedNotifications(Guid userId, PagingQueryNotificationRequest request, out int total)
 		{
-			IEnumerable<Notification> notifications =
+			var notifications =
 				_notificationService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.DestinationUserId == userId);
 
 
@@ -77,6 +77,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				return notifications
 					.Skip(request.Limit * (request.Page - 1))
 					.Take(request.Limit)
+					.AsEnumerable()
 					.Select(Mapper.Map<NotificationResponse>)
 					.ToList();
 		}

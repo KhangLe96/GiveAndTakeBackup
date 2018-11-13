@@ -28,12 +28,17 @@ namespace Giveaway.API.Shared.Responses.Notification
 		[JsonProperty(PropertyName = "type")]
 		public NotificationType Type { get; set; }
 
-		[DataMember(Name = "status")]
-		[JsonProperty(PropertyName = "status")]
-		public NotificationStatus Status { get; set; }
+		[DataMember(Name = "isSeen")]
+		[JsonProperty(PropertyName = "isSeen")]
+		public bool IsSeen { get; set; }
 
-		[DataMember(Name = "backgroundColor")]
-		[JsonProperty(PropertyName = "backgroundColor")]
-		public string BackgroundColor { get; set; }
+		[DataMember(Name = "isRead")]
+		[JsonProperty(PropertyName = "isRead")]
+		public bool IsRead { get; set; }
+
+		[DataMember(Name = "createdTime")]
+		[JsonProperty(PropertyName = "createdTime")]
+		public DateTimeOffset CreatedTime { get; set; }
+
 	}
 }
