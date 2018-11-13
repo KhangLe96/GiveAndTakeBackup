@@ -176,7 +176,7 @@ namespace GiveAndTake.Core.ViewModels
 		    CreatedTime = TimeHelper.ToTimeAgo(_post.CreatedTime);
 		    Address = _post.ProvinceCity.ProvinceCityName;
 		    PostTitle = _post.Title;
-		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage;
+		    PostImage = _post.Images.FirstOrDefault()?.OriginalImage;
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
 		    RequestCount = _post.RequestCount;

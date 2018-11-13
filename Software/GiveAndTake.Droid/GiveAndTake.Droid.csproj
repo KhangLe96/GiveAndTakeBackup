@@ -72,6 +72,7 @@
     <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />
+    <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Views\Popup\LoadingOverlayView.cs" />
