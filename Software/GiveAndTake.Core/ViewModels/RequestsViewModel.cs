@@ -140,6 +140,8 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    _postId = post.PostId;
 		    _post = post;
+			//Review ThanhVo When user go to Requests List view, that post is already belong to user.
+			//So IsMyPost should be true before navigating this view model
 		    _post.IsMyPost = true;
 		    InitRequestViewModels();
 		}

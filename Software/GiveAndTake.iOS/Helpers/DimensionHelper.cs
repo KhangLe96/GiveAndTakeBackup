@@ -228,6 +228,8 @@ namespace GiveAndTake.iOS.Helpers
 			RequestTitleMarignTop = 15 * Rate;
 			RequestNumberTextSize = 15 * Rate;
 			RequestActionButtonWidth = 65 * Rate;
+			//Review ThanhVo Don't do like this. Because if you add more view in request cell, you have to update this dimension also.
+			//Try to make it like wrap_content
 			RequestCellHeight = MediumTextSize + SmallTextSize + PostDescriptionTextSize * 3 + SeperatorHeight + MarginShort * 3;
 		}
 	}

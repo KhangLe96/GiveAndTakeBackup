@@ -41,6 +41,7 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 			{
 				var cells = tableview.IndexPathsForVisibleRows;
 
+				//Review ThanhVo why -3
 				if (!_isLoading && cells != null && cells.Length != 0 && cells[cells.Length - 1].Row == ItemsSource.Count() - 3)
 				{
 					_isLoading = true;

@@ -36,6 +36,8 @@ namespace GiveAndTake.iOS.Views
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
+
+			//Review ThanhVo should be bindingSet name
 			var set = this.CreateBindingSet<RequestsView, RequestsViewModel>();
 
 			set.Bind(this)
@@ -69,6 +71,8 @@ namespace GiveAndTake.iOS.Views
 		{
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
 				UIColor.White, true);
+
+			//Review ThanhVo OnBackPressed just action, so = is enough. But should make the method for easy maintainance
 			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
 
 			View.Add(_headerBar);
@@ -96,6 +100,7 @@ namespace GiveAndTake.iOS.Views
 			});
 
 			_title = UIHelper.CreateLabel(UIColor.White, DimensionHelper.RequestTitleTextSize);
+			//Review ThanhVo Should bind from view model
 			_title.Text = "Danh sách yêu cầu";
 			_titleArea.Add(_title);
 			_titleArea.AddConstraints(new []
@@ -130,6 +135,7 @@ namespace GiveAndTake.iOS.Views
 			_requestsTableView = UIHelper.CreateTableView(0, 0);
 			_requestTableViewSource = new RequestItemTableViewSource(_requestsTableView)
 			{
+				//Review ThanhVo should make the method for easy maintainance
 				LoadMoreEvent = () => LoadMoreCommand?.Execute()
 			};
 
