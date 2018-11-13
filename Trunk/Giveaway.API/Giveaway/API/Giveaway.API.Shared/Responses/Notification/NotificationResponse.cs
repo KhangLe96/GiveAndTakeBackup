@@ -26,7 +26,7 @@ namespace Giveaway.API.Shared.Responses.Notification
 
 		[DataMember(Name = "type")]
 		[JsonProperty(PropertyName = "type")]
-		public NotificationType Type { get; set; }
+		public string Type { get; set; }
 
 		[DataMember(Name = "isSeen")]
 		[JsonProperty(PropertyName = "isSeen")]

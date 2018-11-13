@@ -132,7 +132,11 @@ namespace Giveaway.API
 
 	        #region Notification
 
-	        cfg.CreateMap<Notification, NotificationResponse>();
+	        cfg.CreateMap<Notification, NotificationResponse>()
+				.ForMember(
+			        destination => destination.Type,
+			        map => map.MapFrom(source => source.Type.ToString())
+		        );
 	        cfg.CreateMap<NotificationRequest, Notification>();
 
 			#endregion
