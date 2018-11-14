@@ -37,34 +37,36 @@ namespace GiveAndTake.iOS.Views
 		{
 			base.CreateBinding();
 
-			//Review ThanhVo should be bindingSet name
-			var set = this.CreateBindingSet<RequestsView, RequestsViewModel>();
+			var bindingSet = this.CreateBindingSet<RequestsView, RequestsViewModel>();
 
-			set.Bind(this)
+			bindingSet.Bind(this)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
-			set.Bind(_btnRequestNumber)
+			bindingSet.Bind(_title)
+				.For(v => v.Text)
+				.To(vm => vm.Title);
+
+			bindingSet.Bind(_btnRequestNumber)
 				.For("Title")
 				.To(vm => vm.NumberOfRequest);
 
-			set.Bind(_requestTableViewSource)
+			bindingSet.Bind(_requestTableViewSource)
 				.To(vm => vm.RequestItemViewModels);
 
-			set.Bind(this)
+			bindingSet.Bind(this)
 				.For(v => v.LoadMoreCommand)
 				.To(vm => vm.LoadMoreCommand);
 
-
-			set.Bind(_refreshControl)
+			bindingSet.Bind(_refreshControl)
 				.For(v => v.IsRefreshing)
 				.To(vm => vm.IsRefreshing);
 
-			set.Bind(_refreshControl)
+			bindingSet.Bind(_refreshControl)
 				.For(v => v.RefreshCommand)
 				.To(vm => vm.RefreshCommand);
 
-			set.Apply();
+			bindingSet.Apply();
 		}
 
 		private void InitHeaderBar()
@@ -72,8 +74,7 @@ namespace GiveAndTake.iOS.Views
 			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
 				UIColor.White, true);
 
-			//Review ThanhVo OnBackPressed just action, so = is enough. But should make the method for easy maintainance
-			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
+			_headerBar.OnBackPressed = BackPressedEvent;
 
 			View.Add(_headerBar);
 			View.AddConstraints(new[]
@@ -83,6 +84,11 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0)
 			});
+		}
+
+		private void BackPressedEvent()
+		{
+			BackPressedCommand?.Execute();
 		}
 
 		private void InitTitleArea()
@@ -100,8 +106,6 @@ namespace GiveAndTake.iOS.Views
 			});
 
 			_title = UIHelper.CreateLabel(UIColor.White, DimensionHelper.RequestTitleTextSize);
-			//Review ThanhVo Should bind from view model
-			_title.Text = "Danh sách yêu cầu";
 			_titleArea.Add(_title);
 			_titleArea.AddConstraints(new []
 			{
@@ -133,10 +137,11 @@ namespace GiveAndTake.iOS.Views
 		private void InitRequestsTableView()
 		{
 			_requestsTableView = UIHelper.CreateTableView(0, 0);
+			_requestsTableView.RowHeight = UITableView.AutomaticDimension;
+			_requestsTableView.EstimatedRowHeight = 30f;
 			_requestTableViewSource = new RequestItemTableViewSource(_requestsTableView)
 			{
-				//Review ThanhVo should make the method for easy maintainance
-				LoadMoreEvent = () => LoadMoreCommand?.Execute()
+				LoadMoreEvent = LoadMoreEvent
 			};
 
 			_requestsTableView.Source = _requestTableViewSource;
@@ -151,6 +156,11 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_requestsTableView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View, NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_requestsTableView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View, NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
+		}
+
+		private void LoadMoreEvent()
+		{
+			LoadMoreCommand?.Execute();
 		}
 	}
 }

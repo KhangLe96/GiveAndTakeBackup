@@ -84,6 +84,7 @@
     <Compile Include="Converters\StringToUIColorValueConverter.cs" />
     <Compile Include="CustomControls\HeaderBar.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\Keys.cs" />

@@ -190,7 +190,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				NSLayoutConstraint.Create(_lbMessage, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgAvatar,
 					NSLayoutAttribute.Right, 1, DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_lbMessage, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
-					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
+					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort),
 			});
 		}
 
@@ -202,13 +202,16 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 			ContentView.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, ContentView,
-					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbMessage,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgAvatar,
 					NSLayoutAttribute.Left, 1, 0),
 				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
-					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
+					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(ContentView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _seperatorLine,
+					NSLayoutAttribute.Bottom, 1, 0)
 			});
+
 		}
 	}
 }

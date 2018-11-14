@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Foundation;
+﻿using Foundation;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.TableViewCells;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Platforms.Ios.Binding.Views;
+using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewSources
@@ -41,18 +37,12 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 			{
 				var cells = tableview.IndexPathsForVisibleRows;
 
-				//Review ThanhVo why -3
-				if (!_isLoading && cells != null && cells.Length != 0 && cells[cells.Length - 1].Row == ItemsSource.Count() - 3)
+				if (!_isLoading && cells != null && cells.Length != 0 && cells[cells.Length - 1].Row == ItemsSource.Count() - Constants.NumberOfRequestNotDisplayed)
 				{
 					_isLoading = true;
 					LoadMoreEvent?.BeginInvoke(result => _isLoading = false, null);
 				}
 			}
-		}
-
-		public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
-		{
-			return DimensionHelper.RequestCellHeight;
 		}
 	}
 }

@@ -127,7 +127,7 @@ namespace GiveAndTake.Core.ViewModels
 
         public async Task UpdateRequestViewModels()
         {
-			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "", _dataModel.LoginResponse.Token);	       
+			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}", _dataModel.LoginResponse.Token);	       
 			NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
@@ -140,9 +140,7 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    _postId = post.PostId;
 		    _post = post;
-			//Review ThanhVo When user go to Requests List view, that post is already belong to user.
-			//So IsMyPost should be true before navigating this view model
-		    _post.IsMyPost = true;
+			
 		    InitRequestViewModels();
 		}
 
