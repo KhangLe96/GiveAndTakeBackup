@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using Newtonsoft.Json;
 
 namespace GiveAndTake.Core.Models
 {
@@ -35,5 +32,11 @@ namespace GiveAndTake.Core.Models
 
 		[DataMember(Name = "createdTime")]
 		public DateTime CreatedTime { get; set; }
+
+		[DataMember(Name = "postUrl")]
+		public string PostUrl { get; set; }
+
+		[DataMember(Name = "avatarUrl")]
+		public string AvatarUrl { get; set; }
 	}
 }

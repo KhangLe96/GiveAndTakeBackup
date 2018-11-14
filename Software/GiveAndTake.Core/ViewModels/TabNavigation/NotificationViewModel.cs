@@ -23,19 +23,22 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			set => SetProperty(ref _notificationItemViewModel, value);
 		}
 
-		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
-
-		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
+	
 
 		private readonly IDataModel _dataModel;
+		private readonly ILoadingOverlayService _loadingOverlayService;
 		private MvxObservableCollection<NotificationItemViewModel> _notificationItemViewModel;
 		private bool _isRefresh;
+
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
+		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
+		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
 
-		public NotificationViewModel(IDataModel dataModel)
+		public NotificationViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
+			_loadingOverlayService = loadingOverlayService;
 		}
 
 		public override async Task Initialize()
@@ -54,25 +57,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList($"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiNotificationResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
 			if (_dataModel.ApiNotificationResponse.Notifications.Any())
 			{
-				await GenerateNotificationItemViewModels();
+				NotificationItemViewModels.AddRange(
+					_dataModel.ApiNotificationResponse.Notifications.Select(GenerateNotificationItem));
 			}
 		}
 
-		private async Task GenerateNotificationItemViewModels()
+		private NotificationItemViewModel GenerateNotificationItem(Notification notification)
 		{
-			foreach (var notification in _dataModel.ApiNotificationResponse.Notifications)
-			{
-				_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString());
-				var postUrl = _dataModel.CurrentPost.Images.Count != 0 ? _dataModel.CurrentPost.Images.ElementAt(0).ResizedImage : null;
-				var avatarUrl = _dataModel.LoginResponse.Profile.AvatarUrl;
-
-				NotificationItemViewModels.Add(GenerateNotificationItem(notification, avatarUrl, postUrl));
-			}
-		}
-
-		private NotificationItemViewModel GenerateNotificationItem(Notification notification, string avatarUrl, string postUrl)
-		{
-			var notificationItem = new NotificationItemViewModel(notification, avatarUrl, postUrl)
+			var notificationItem = new NotificationItemViewModel(notification)
 			{
 				ClickAction = OnItemClicked,
 			};
@@ -99,16 +91,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		public async Task UpdateNotificationViewModels()
 		{
-			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList("", _dataModel.LoginResponse.Token);
-			NotificationItemViewModels = new MvxObservableCollection<NotificationItemViewModel>();
-			await GenerateNotificationItemViewModels();
+			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList($"limit=20", _dataModel.LoginResponse.Token);
+			NotificationItemViewModels = new MvxObservableCollection<NotificationItemViewModel>(_dataModel.ApiNotificationResponse.Notifications.Select(GenerateNotificationItem));
 		}
 
 		public async Task UpdateNotificationViewModelOverLay()
 		{
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await _loadingOverlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdateNotificationViewModels();
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			await _loadingOverlayService.CloseOverlay();
 		}
 	}
 }

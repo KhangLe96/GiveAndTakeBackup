@@ -62,14 +62,19 @@ namespace GiveAndTake.Core.ViewModels
 
 		#region Constructor
 
-		public NotificationItemViewModel(Notification notification, string avatarUrl, string postUrl)
+		public NotificationItemViewModel(Notification notification)
 		{
 			_notification = notification;
-			Message = notification.Message;
-			CreatedTime = TimeHelper.ToTimeAgo(notification.CreatedTime);
-			BackgroundColor = notification.IsRead ? MvxColor.ParseHexString("#FFFFFF") : MvxColor.ParseHexString("#d2f9ff");
-			AvatarUrl = avatarUrl;
-			PostUrl = postUrl;
+			Init();
+		}
+
+		private void Init()
+		{
+			Message = _notification.Message;
+			CreatedTime = TimeHelper.ToTimeAgo(_notification.CreatedTime);
+			BackgroundColor = _notification.IsRead ? MvxColor.ParseHexString("#FFFFFF") : MvxColor.ParseHexString("#d2f9ff");
+			AvatarUrl = _notification.AvatarUrl;
+			PostUrl = _notification.PostUrl;
 		}
 
 		private void HandleOnClicked()
