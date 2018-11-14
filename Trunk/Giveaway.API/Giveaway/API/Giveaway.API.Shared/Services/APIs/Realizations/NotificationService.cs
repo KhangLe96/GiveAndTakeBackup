@@ -19,10 +19,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 	public class NotificationService : INotificationService
 	{
 		private readonly DbService.INotificationService _notificationService;
+		private readonly DbService.IPostService _postService;
+		private readonly DbService.IUserService _userService;
 
-		public NotificationService(DbService.INotificationService notificationService)
+		public NotificationService(DbService.INotificationService notificationService, DbService.IPostService postService, DbService.IUserService userService)
 		{
 			_notificationService = notificationService;
+			_postService = postService;
+			_userService = userService;
 		}
 
 		public PagingQueryResponse<NotificationResponse> GetNotificationForPaging(Guid userId, IDictionary<string, string> @params)
@@ -78,8 +82,27 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 					.Skip(request.Limit * (request.Page - 1))
 					.Take(request.Limit)
 					.AsEnumerable()
-					.Select(Mapper.Map<NotificationResponse>)
+					.Select(GenerateNotificationResponse)
 					.ToList();
+		}
+
+		private NotificationResponse GenerateNotificationResponse(Notification notification)
+		{
+			var notificationResponse = Mapper.Map<NotificationResponse>(notification);
+
+			var post = _postService.Include(x => x.Images).FirstOrDefault(x => x.Id == notification.RelevantId);
+			if (post != null)
+			{
+				notificationResponse.PostUrl = post.Images.Count > 0 ? post.Images.ElementAt(0).ResizedImage : null;
+			}
+
+			var user = _userService.FirstOrDefault(x => x.Id == notification.DestinationUserId);
+			if (user != null)
+			{
+				notificationResponse.AvatarUrl = user.AvatarUrl;
+			}
+
+			return notificationResponse;
 		}
 
 		#endregion

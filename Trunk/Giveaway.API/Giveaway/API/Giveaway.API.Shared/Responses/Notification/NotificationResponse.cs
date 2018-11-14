@@ -40,5 +40,12 @@ namespace Giveaway.API.Shared.Responses.Notification
 		[JsonProperty(PropertyName = "createdTime")]
 		public DateTimeOffset CreatedTime { get; set; }
 
+		[DataMember(Name = "postUrl")]
+		[JsonProperty(PropertyName = "postUrl")]
+		public string PostUrl { get; set; }
+
+		[DataMember(Name = "avatarUrl")]
+		[JsonProperty(PropertyName = "avatarUrl")]
+		public string AvatarUrl { get; set; }
 	}
 }
