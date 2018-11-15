@@ -44,12 +44,24 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		public IMvxCommand RefreshCommand =>
 			_refreshCommand ?? (_refreshCommand = new MvxAsyncCommand(OnRefresh));
+		public IMvxCommand BackPressedCommand =>
+			_backPressedCommand ?? (_backPressedCommand = new MvxAsyncCommand(OnBackPressedCommand));
 
 
 		public bool IsRefreshing
 		{
 			get => _isRefresh;
 			set => SetProperty(ref _isRefresh, value);
+		}
+
+		public bool IsClearButtonShown
+		{
+			get => _isClearButtonShown;
+			set
+			{
+				_isClearButtonShown = value;
+				RaisePropertyChanged();
+			} 
 		}
 
 		public bool IsCategoryFilterActivated
@@ -93,6 +105,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private bool _isSortFilterActivated;
 		private bool _isCategoryFilterActivated;
 		private bool _isRefresh;
+		private bool _isClearButtonShown;
 		private string _currentQueryString;
 		private readonly IDataModel _dataModel;
 		private MvxObservableCollection<PostItemViewModel> _postItemViewModelCollection;
@@ -106,8 +119,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _searchCommand;
 		private IMvxCommand _loadMoreCommand;
 		private IMvxCommand _refreshCommand;
+		private IMvxCommand _backPressedCommand;
 		private readonly ILoadingOverlayService _overlay;
-
+		private bool _isSearched = false;
 		#endregion
 
 		public HomeViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
@@ -130,11 +144,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				catch (AppException.ApiException)
 				{
 					await NavigationService.Navigate<PopupWarningViewModel, string,bool>(AppConstants.ErrorConnectionMessage);
+					await InitDataModels();
 				}
 				finally
 				{
-					await _overlay.CloseOverlay();
-					await InitDataModels();
+					await _overlay.CloseOverlay();					
 				}
 			}
 		}
@@ -209,6 +223,30 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		}
 
+		private async Task OnBackPressedCommand()
+		{
+			if (_isSearched)
+			{
+				try
+				{
+					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+					CurrentQueryString = null;
+					await UpdatePostViewModelCollection();
+					_isSearched = false;
+					IsClearButtonShown = false;
+				}
+				catch (AppException.ApiException)
+				{
+					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+						.ErrorConnectionMessage);
+				}
+				finally
+				{
+					await _overlay.CloseOverlay();
+				}
+
+			}
+		}
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
@@ -305,6 +343,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private async Task OnSearching()
 		{
 			await UpdatePostViewModelWithOverlay();
+			_isSearched = true;
 		}
 
 		private async Task UpdatePostViewModelWithOverlay()

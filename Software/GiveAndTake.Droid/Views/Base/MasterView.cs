@@ -4,7 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using GiveAndTake.Core.ViewModels.Base;
-
+using GiveAndTake.Droid.Views.TabNavigation;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Binding.BindingContext;
@@ -20,8 +20,7 @@ namespace GiveAndTake.Droid.Views.Base
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
 
 		public IMvxCommand BackPressedCommand { get; set; }
-
-		
+		public IMvxCommand BackPressedFromHomeViewSearchedCommand { get; set; }
 		protected override void InitView()
 		{		
 		}
@@ -50,13 +49,17 @@ namespace GiveAndTake.Droid.Views.Base
 		}
 		public override void OnBackPressed()
 		{
-			if (BackPressedCommand == null)
+			if (BackPressedCommand != null)
 			{
-				base.OnBackPressed();
+				BackPressedCommand.Execute();				
+			} else if (BackPressedFromHomeViewSearchedCommand != null)
+			{
+				BackPressedFromHomeViewSearchedCommand.Execute();
+				BackPressedFromHomeViewSearchedCommand = null;
 			}
 			else
 			{
-				BackPressedCommand.Execute();
+				base.OnBackPressed();
 			}
 		}
 
