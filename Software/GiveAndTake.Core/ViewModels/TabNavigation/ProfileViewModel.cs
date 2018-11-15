@@ -108,6 +108,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxCommand RefreshRequestedPostsCommand =>
 			_refreshRequestedPostsCommand ?? (_refreshRequestedPostsCommand = new MvxAsyncCommand(OnRefreshRequestedPosts));
 
+		public IMvxCommand ShowMenuPopupCommand =>
+			_showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxAsyncCommand(ShowMenuSettingView));
+
 		private string _avatarUrl;
 		private string _userName;
 		private string _rankType;
@@ -123,8 +126,17 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _loadMoreRequestedPostsCommand;
 		private IMvxCommand _refreshPostsCommand;
 		private IMvxCommand _refreshRequestedPostsCommand;
+		private IMvxCommand _showMenuPopupCommand;
 		private MvxObservableCollection<PostItemViewModel> _postViewModels;
 		private MvxObservableCollection<PostItemViewModel> _requestedPostViewModels;
+
+		private static readonly List<string> MenuSettingOptions = new List<string> 
+		{
+			AppConstants.Rename,
+			AppConstants.ChangeAvatar,
+			AppConstants.SendFeedback,
+			AppConstants.LogOut
+		};
 
 		public ProfileViewModel(IDataModel dataModel)
 		{
@@ -273,5 +285,32 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			post.IsMyPost = IsPostsList;
 			return new PostItemViewModel(post);
 		}
+
+		private async Task ShowMenuSettingView()
+		{
+			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(MenuSettingOptions);
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			switch (result)
+			{
+				case AppConstants.Rename:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.ChangeAvatar:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.SendFeedback:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.LogOut:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+			}
+		}
+
 	}
 }

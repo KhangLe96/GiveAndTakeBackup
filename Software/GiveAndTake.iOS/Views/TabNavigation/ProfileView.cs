@@ -290,6 +290,10 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.To(vm => vm.IsPostsList)
 				.WithConversion("InvertBool");
 
+			set.Bind(_profileSettingButton.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowMenuPopupCommand);
+
 			set.Apply();
 		}
 	}
