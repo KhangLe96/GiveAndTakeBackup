@@ -7,6 +7,7 @@ using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 using I18NPortable;
 
 namespace GiveAndTake.Core.ViewModels
@@ -221,8 +222,18 @@ namespace GiveAndTake.Core.ViewModels
 	    private async Task ShowPostDetailView() => 
 		    await NavigationService.Navigate<PostDetailViewModel, Post>(_post);
 
-	    private async Task ShowGiverProfile() =>
-		    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+	    private async Task ShowGiverProfile()
+	    {
+		    if (_post.IsMyPost)
+		    {
+				//TODO: bug begin here
+			    //await NavigationService.Navigate<ProfileViewModel>();
+			}
+		    else
+		    {
+			    await NavigationService.Navigate<UserProfileViewModel, User>(_post.User);
+			}
+		}
 
 	    #endregion
     }
