@@ -59,6 +59,44 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 		}
 
+		public NotificationResponse UpdateReadStatus(Guid notiId, NotificationIsReadRequest request)
+		{
+			var noti = _notificationService.FirstOrDefault(
+				x => x.EntityStatus != EntityStatus.Deleted && x.Id == notiId);
+			if (noti == null)
+			{
+				throw new BadRequestException(CommonConstant.Error.NotFound);
+			}
+
+			noti.IsRead = request.IsRead;
+			var isSaved = _notificationService.Update(noti);
+			if (isSaved)
+			{
+				return GenerateNotificationResponse(noti);
+			}
+
+			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+		}
+
+		public NotificationResponse UpdateSeenStatus(Guid notiId, NotificationIsSeenRequest request)
+		{
+			var noti = _notificationService.FirstOrDefault(
+				x => x.EntityStatus != EntityStatus.Deleted && x.Id == notiId);
+			if (noti == null)
+			{
+				throw new BadRequestException(CommonConstant.Error.NotFound);
+			}
+
+			noti.IsSeen = request.IsSeen;
+			var isSaved = _notificationService.Update(noti);
+			if (isSaved)
+			{
+				return GenerateNotificationResponse(noti);
+			}
+
+			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+		}
+
 		public bool Delete(Guid notiId)
 		{
 			bool updated = _notificationService.UpdateStatus(notiId, EntityStatus.Deleted.ToString()) != null;
