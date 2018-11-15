@@ -13,7 +13,7 @@ namespace Giveaway.API.Shared.Responses.Notification
 		public Guid Id { get; set; }
 
 		[DataMember(Name = "message")]
-		[JsonProperty(PropertyName = "message")]
+		[JsonProperty(PropertyName = "notiMessage")]
 		public string Message { get; set; }
 
 		[DataMember(Name = "sourceUserId")]
