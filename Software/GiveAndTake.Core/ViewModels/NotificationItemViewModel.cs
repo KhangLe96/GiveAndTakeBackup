@@ -80,6 +80,7 @@ namespace GiveAndTake.Core.ViewModels
 		private void HandleOnClicked()
 		{
 			ClickAction?.Invoke(_notification);
+			BackgroundColor = MvxColor.ParseHexString("#FFFFFF");
 		}
 
 		#endregion

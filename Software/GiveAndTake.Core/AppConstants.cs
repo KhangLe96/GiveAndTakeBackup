@@ -28,6 +28,7 @@ namespace GiveAndTake.Core
 	    public const string GetRequestOfPost = "request/list";
 	    public const string ChangeStatusOfRequest = "request/status";
 		public const string GetNotificationList = "notification/list";
+		public const string UpdateReadStatus = "notification/updateReadStatus";
 
 
 		public const string API_KEY =

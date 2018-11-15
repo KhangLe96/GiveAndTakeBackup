@@ -9,7 +9,7 @@ namespace GiveAndTake.Core.Models
 		[DataMember(Name = "id")]
 		public Guid Id { get; set; }
 
-		[DataMember(Name = "message")]
+		[DataMember(Name = "notiMessage")]
 		public string Message { get; set; }
 
 		[DataMember(Name = "sourceUserId")]

@@ -1,10 +1,13 @@
-﻿using GiveAndTake.Core.Exceptions;
+﻿using System;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SimpleJson;
 
 namespace GiveAndTake.Core.Services
 {
@@ -26,7 +29,28 @@ namespace GiveAndTake.Core.Services
 			_dataModel.SortFilters = _dataModel.SortFilters ?? GetShortFilters();
 		}
 
-	    public async Task<ApiNotificationResponse> GetNotificationList(string filterParams, string token)
+	    public async Task<Notification> UpdateReadStatus(string notiId, bool isRead, string token)
+	    {
+		    var status = isRead ? "{'isRead':'true'}" : "{'isRead':'false'}";
+		    var content = new StringContent(status, Encoding.UTF8, "application/json");
+		    string parameters = $"/{notiId}";
+
+		    var response = await _apiHelper.Put(AppConstants.UpdateReadStatus + parameters, content, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<Notification>(response.RawContent);
+		}
+
+		public async Task<ApiNotificationResponse> GetNotificationList(string filterParams, string token)
 	    {
 		    var url = $"{AppConstants.GetNotificationList}";
 		    url = string.Join("?", url, filterParams);

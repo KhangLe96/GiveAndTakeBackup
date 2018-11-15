@@ -30,7 +30,7 @@
         android:minLines="2"
         android:singleLine="false"
         android:textSize="@dimen/MediumTextSize"
-        local:MvxBind="Text BackgroundColor"
+        local:MvxBind="Text Message"
 		android:text="fdfafd"
         />
 

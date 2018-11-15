@@ -78,6 +78,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				case "Like":
 					_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString());
 					await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_dataModel.CurrentPost);
+					await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _dataModel.LoginResponse.Token);
+
 					break;
 			}
 		}
