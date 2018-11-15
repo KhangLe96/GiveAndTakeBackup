@@ -115,7 +115,7 @@ namespace GiveAndTake.Droid.Views
 		private void ChoosePicture(object sender, System.EventArgs e)
 		{
 			Intent intent = new Intent();
-			intent.SetType("ảnh/*");
+			intent.SetType("image/*");
 			intent.PutExtra(Intent.ExtraAllowMultiple, true);
 			intent.SetAction(Intent.ActionGetContent);
 			StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), ChoosePictureCode);
@@ -134,7 +134,7 @@ namespace GiveAndTake.Droid.Views
 					{
 						var selectedImage = data.ClipData.GetItemAt(i).Uri;
 						var imageInByte = ConvertUriToByte(selectedImage);
-						image.Add(imageInByte);
+						image.Add(ImageHelper.ResizeImage(imageInByte, 600, 600));
 					}
 
 					ImageCommand.Execute(image);

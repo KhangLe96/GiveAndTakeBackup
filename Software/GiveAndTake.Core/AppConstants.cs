@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GiveAndTake.Core
+﻿namespace GiveAndTake.Core
 {
 	// REVIEW [KHOA]: all texts should get from locale files -> support multi-language later if needed
 	public static class AppConstants
@@ -11,8 +9,10 @@ namespace GiveAndTake.Core
 		public const int ApiTimeout = 300; // seconds
 		public const string GetCategories = "categories/app/list";
 		public const string GetPostList = "post/app/list";
+		public const string GetMyPostList = "post/app/listPostOfUser";
 		public const string GetPostDetail = "post/app/detail";
 		public const string GetPostOfUser = "post/app/listPostOfUser";
+		public const string GetMyRequestedPosts = "post/app/listRequestedPostOfUser";
 		public const string ChangeStatusOfPost = "post/app/status";
 		public const string EditPost = "post/app/update";
 		public const string LoginFacebook = "user/login/facebook";
@@ -43,34 +43,46 @@ namespace GiveAndTake.Core
 		public const string PopupSortFiltersTitle = "Xếp theo";
 		public const string PopupLocationFiltersTitle = "Lọc theo";
 
-		public const string ChangePostStatus = "Chuyển trạng thái sang \"Đã cho\"";
+		public const string ChangePostStatus = "Chuyển trạng thái sang";
 		public const string ModifyPost = "Chỉnh sửa";
 		public const string ViewPostRequests = "Duyệt cho";
 		public const string DeletePost = "Xóa";
 		public const string ReportPost = "Báo cáo";
-		public static List<string> MyPostOptions = new List<string> {ChangePostStatus, ModifyPost, ViewPostRequests, DeletePost};
-		public static List<string> OtherPostOptions = new List<string> { ReportPost };
 
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";
+		public static string GivingStatusEN = "Giving";
+		public static string GivedStatusEN = "Gave";
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
+		public static string SelectedImage = "Đã chọn 0 hình";
+		public static string RequestRejectingMessage = "Bạn có chắc chắn từ chối yêu cầu?";
+		public static string PopupRequestDetailTitle = "Chi tiết yêu cầu";
+		public static string ButtonRejectTitle = "Từ chối";
+		public static string ButtonAcceptTitle = "Chấp nhận";
+		public static string CreateResponse = "response/create";
+
+		public static string RequestApprovalTitle = "Thông tin trao đổi";
+		public static string RequestReceiver= "Gửi đến: ";
+		public static string InformationPlaceHolder = "Thông tin trao đổi ...";
+		public static string ButtonSendTitle = "Gửi";
+
+		public static string RankTitle = "Xếp hạng";
+		public static string SentTitle = "Đã cho";
+		public static string MyPostsTitle = "Bài đăng của tôi";
+		public static string MyRequestsTitle = "Yêu cầu đã gửi";
+		public static string Member = "Thành viên";
+		public static string Times = "Lần";
+		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
 		public static string SearchResultNullTitle = "Không tìm thấy kết quả nào";
 		public const string CreatePostDescriptionPlaceHolder = "Mô tả (Nhãn hiệu, kiểu dáng, màu sắc, ... )";
 		public const string CreatePostTitlePlaceHolder = "Tiêu đề (Thương hiệu, thể loại, ...)";
 		public const string CreatePostBtnSubmitTitle = "Đăng";
 		public const string CreatePostSelectedImageWarning = "Bạn hãy chọn một ảnh bất kỳ để vào xem những ảnh đã chọn";
 		public static string LoginTitle = "Đăng nhập với tài khoản";
-		public static string SelectedImage = "Đã chọn 0 hình";
-		public static string RequestRejectingMessage = "Bạn có chắc chắn từ chối yêu cầu?";
-		public static string PopupRequestDetailTitle = "Chi tiết yêu cầu";
-		public static string ButtonRejectTitle = "Từ chối";
-		public static string ButtonAcceptTitle = "Chấp nhận";
-		public static string DeleteConfirmationMessage = "Bạn có muốn xóa bài viết này?";
 		public static string LoadingDataOverlayTitle= "Đang tải dữ liệu";
 		public static string UploadDataOverLayTitle = "Đang đăng bài";
-		public static string CreateResponse = "response/create";
 		public static string UpdateOverLayTitle = "Đang cập nhật";
 
 		public static int NumberOfRequestPerPage = 20;
@@ -78,5 +90,7 @@ namespace GiveAndTake.Core
 		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
 		public static int NumOfFragmentViewPager = 3;
 		public static string ProcessingDataOverLayTitle = "Đang xử lý";
+		public static string ConfirmDeletePost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn xóa ?";
+		public static string ConfirmDeleteOwnRequest = "Bạn có chắc chắn muốn hủy bỏ yêu cầu ?";
 	}
 }

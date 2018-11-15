@@ -1,5 +1,4 @@
 ﻿using System;
-using HealthKit;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -18,6 +17,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat MarginText { get; private set; }
 		public static nfloat AvatarMargin { get; private set; }
 		public static nfloat ImagePostSize { get; private set; }
+		public static nfloat ImagePostSmallSize { get; private set; }
 		public static nfloat ImageMultiSize { get; private set; }
 		public static nfloat ImageAvatarSize { get; private set; }
 		public static nfloat FilterSize { get; private set; }
@@ -98,6 +98,12 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PostDetailExtensionTouchFieldHeight { get; set; }
 		public static nfloat PostDetailExtensionTouchFieldWidth { get; set; }
 		public static nfloat PostImageMarginObject { get; set; }
+		public static nfloat ProfileViewHeight { get; set; }
+		public static nfloat AvatarBigSize { get; set; }
+		public static nfloat ProfileButtonMarginTop { get; set; }
+		public static nfloat LargeTextSize { get; set; }
+		public static nfloat ProfileMarginLeft { get; set; }
+		public static nfloat SettingButtonMargin { get; set; }
 		public static nfloat PopupRequestTitleTextSize { get; set; }
 		public static nfloat PopupRequestGiverInformationViewWidth { get; set; }
 		public static nfloat PopupRequestGiverInformationViewHeight { get; set; }
@@ -107,7 +113,13 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupRequestDescriptionTextViewHeight { get; set; }
 		public static nfloat PopupRequestButtonWidth { get; set; }
 		public static nfloat LoadingLineWidth { get; set; }
-
+		public static nfloat RequestTitleAreaHeight { get; set; }
+		public static nfloat RequestTitleTextSize { get; set; }
+		public static nfloat RequestTitleMarignLeft { get; set; }
+		public static nfloat RequestTitleMarignTop { get; set; }
+		public static nfloat RequestNumberTextSize { get; set; }
+		public static nfloat RequestActionButtonWidth { get; set; }
+		public static nfloat RequestCellHeight { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -125,6 +137,7 @@ namespace GiveAndTake.iOS.Helpers
 			MarginNormal = 12 * Rate;
 			AvatarMargin = 16 * Rate;
 			ImagePostSize = 120 * Rate;
+			ImagePostSmallSize = 50 * Rate;
 			ImageMultiSize = 20 * Rate;
 			ImageAvatarSize = 29 * Rate;
 			FilterSize = 40 * Rate;
@@ -156,7 +169,7 @@ namespace GiveAndTake.iOS.Helpers
 			PictureButtonHeight = 20 * Rate;
 			CreatePostButtonWidth = 160 * Rate;
 			CreatePostButtonHeight = 30 * Rate;
-			BorderWidth = 2 * Rate;
+			BorderWidth = 0.5f * Rate;
 			LoginLogoWidth = 61 * Rate;
 			LoginLogoHeight = 38 * Rate;
 			LoginButtonWidth = 106 * Rate;
@@ -200,6 +213,12 @@ namespace GiveAndTake.iOS.Helpers
 			PostDetailImageIndexHeight = 35 * Rate;
 			PostDetailImageIndexWidth = 50 * Rate;
 			PostImageMarginObject = 40 * Rate;
+			ProfileViewHeight = 130 * Rate;
+			AvatarBigSize = 85 * Rate;
+			ProfileButtonMarginTop = 110 * Rate;
+			LargeTextSize = 20 * Rate;
+			ProfileMarginLeft = 45 * Rate;
+			SettingButtonMargin = 17 * Rate;
 			PopupRequestTitleTextSize = 20 * Rate;
 			PopupRequestGiverInformationViewWidth = PopupContentWidth - 10 * Rate;
 			PopupRequestGiverInformationViewHeight = 40 * Rate;
@@ -209,11 +228,19 @@ namespace GiveAndTake.iOS.Helpers
 			PopupRequestDescriptionTextViewHeight = 220 * Rate;
 			PopupRequestButtonWidth = PopupContentWidth / 2 - 15 * Rate ;
 			PopupRequestButtonWidth =
-				PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
+			PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
 			PostDetailRequestTouchFieldHeight = 52 * Rate;
 			PostDetailRequestTouchFieldWidth = 80 * Rate;
 			PostDetailExtensionTouchFieldHeight = 50 * Rate;
 			PostDetailExtensionTouchFieldWidth = 50 * Rate;
+
+			RequestTitleAreaHeight = 50 * Rate;
+			RequestTitleTextSize = 17 * Rate;
+			RequestTitleMarignLeft = 18 * Rate;
+			RequestTitleMarignTop = 15 * Rate;
+			RequestNumberTextSize = 15 * Rate;
+			RequestActionButtonWidth = 65 * Rate;
+			RequestCellHeight = MediumTextSize + SmallTextSize + PostDescriptionTextSize * 3 + SeperatorHeight + MarginShort * 3;
 		}
 	}
 }

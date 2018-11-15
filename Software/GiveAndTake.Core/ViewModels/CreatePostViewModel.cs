@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Services;
+using MvvmCross;
+
 namespace GiveAndTake.Core.ViewModels
 {
 	public class CreatePostViewModel : BaseViewModel<ViewMode, bool>
@@ -237,13 +239,14 @@ namespace GiveAndTake.Core.ViewModels
 			bool success = false;
 			try
 			{
+				await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
 				if (_viewModelMode == ViewMode.EditPost)
 				{
-					InitEditPost();
+					await InitEditPost();
 				}
 				else
 				{
-					InitCreateNewPost();
+					await InitCreateNewPost();
 				}
 				success = true;
 			}
@@ -262,7 +265,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		public async void InitCreateNewPost()
+		public async Task InitCreateNewPost()
 		{
 			await _overlay.ShowOverlay(AppConstants.UploadDataOverLayTitle);
 			var post = new CreatePost()
@@ -278,7 +281,7 @@ namespace GiveAndTake.Core.ViewModels
 			await ManagementService.CreatePost(post, _dataModel.LoginResponse.Token);
 		}
 
-		public async void InitEditPost()
+		public async Task InitEditPost()
 		{
 			var post = new EditPost()
 			{

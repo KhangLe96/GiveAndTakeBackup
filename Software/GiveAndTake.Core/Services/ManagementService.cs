@@ -50,12 +50,12 @@ namespace GiveAndTake.Core.Services
 			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
-		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)
+		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams, string token)
 		{
 			var url = $"{AppConstants.GetRequestOfPost}/{postId}";
 			url = string.Join("?", url, filterParams);
 
-			var response = await _apiHelper.Get(url, AppConstants.Token);
+			var response = await _apiHelper.Get(url, token);
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 	        {
@@ -125,7 +125,44 @@ namespace GiveAndTake.Core.Services
 
 		}
 
-        public async Task<Post> GetPostDetail(string postId)
+	    public async Task<ApiPostsResponse> GetMyPostList(string id, string filterParams, string token)
+	    {
+		    var url = $"{AppConstants.GetMyPostList}/{id}?{filterParams}";
+		    var response = await _apiHelper.Get(url, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+
+	    }
+
+	    public async Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token)
+	    {
+			var url = $"{AppConstants.GetMyRequestedPosts}?{param}";
+		    var response = await _apiHelper.Get(url, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
+		}
+
+		public async Task<Post> GetPostDetail(string postId)
         {
 			var parameters = $"/{postId}";
 	        var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
@@ -160,7 +197,12 @@ namespace GiveAndTake.Core.Services
 	        return JsonHelper.Deserialize<ApiPostsResponse>(response.RawContent);
 		}
 
-        public async Task ChangeStatusOfPost(string postId, string newStatus)  // open/close a  Post
+	    public Task ChangeStatusOfPost(string postId, string newStatus)
+	    {
+		    throw new System.NotImplementedException();
+	    }
+
+	    public async Task ChangeStatusOfPost(string postId, string newStatus, string token)  // open/close a  Post
         {
 			var postStatus = new StatusObj
 			{
@@ -169,7 +211,7 @@ namespace GiveAndTake.Core.Services
 			var statusInString = JsonHelper.Serialize(postStatus);
 			var content = new StringContent(statusInString, Encoding.UTF8, "application/json");
 			string parameters = $"/{postId}";
-			var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, AppConstants.Token);
+			var response = await _apiHelper.Put(AppConstants.ChangeStatusOfPost + parameters, content, token);
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 			{

@@ -34,6 +34,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string LoginBackground { get; private set; }
 		public static string NewPost { get; private set; }
 		public static string DeletePhotoButton { get; private set; }
+		public static string DeleteRequestDetailButton { get; private set; }
 		public static string LocationButtonDefault { get; private set; }
 		public static string LocationButtonSelected { get; private set; }
 		public static string CategoryButtonDefault { get; private set; }
@@ -44,6 +45,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string LocationLogo { get; private set; }
 		public static string NextNavigationButton { get; private set; }
 		public static string BackNavigationButton { get; private set; }
+		public static string Setting { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -75,6 +77,7 @@ namespace GiveAndTake.iOS.Helpers
 			LoginBackground = Path.Combine(BasePath, "login_background");
 			NewPost = Path.Combine(BasePath, "new_post");
 			DeletePhotoButton = Path.Combine(BasePath, "btn_delete_photo");
+			DeleteRequestDetailButton = Path.Combine(BasePath, "btn_delete_request_detail");
 			LocationButtonDefault = Path.Combine(BasePath, "location_button_default");
 			LocationButtonSelected = Path.Combine(BasePath, "location_button_selected");
 			CategoryButtonDefault = Path.Combine(BasePath, "category_button_default");
@@ -85,6 +88,7 @@ namespace GiveAndTake.iOS.Helpers
 			LocationLogo = Path.Combine(BasePath, "location_logo");
 			NextNavigationButton = Path.Combine(BasePath, "navigateRight");
 			BackNavigationButton = Path.Combine(BasePath, "navigateLeft");
+			Setting = Path.Combine(BasePath, "setting");
 		}
 	}
 }
