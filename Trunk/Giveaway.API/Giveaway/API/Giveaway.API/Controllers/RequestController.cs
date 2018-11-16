@@ -49,12 +49,25 @@ namespace Giveaway.API.Controllers
             return _requestService.GetRequestForPaging(postId, @params);
         }
 
-        /// <summary>
-        /// Create a request
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Authorize]
+		/// <summary>
+		/// Get a request by Id
+		/// </summary>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
+	    [Authorize]
+	    [HttpGet("getRequestById/{requestId}")]
+	    [Produces("application/json")]
+		public RequestPostResponse GetRequestById(Guid requestId)
+	    {
+		    return _requestService.GetRequestById(requestId);
+	    }
+
+		/// <summary>
+		/// Create a request
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		[Authorize]
         [HttpPost("create")]
         [Produces("application/json")]
         public RequestPostResponse Create([FromBody]RequestPostRequest request)
