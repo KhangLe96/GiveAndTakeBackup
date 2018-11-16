@@ -44,6 +44,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string NextNavigationButton { get; private set; }
 		public static string BackNavigationButton { get; private set; }
 		public static string Setting { get; private set; }
+		public static string Chat { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -85,6 +86,7 @@ namespace GiveAndTake.iOS.Helpers
 			NextNavigationButton = Path.Combine(BasePath, "navigateRight");
 			BackNavigationButton = Path.Combine(BasePath, "navigateLeft");
 			Setting = Path.Combine(BasePath, "setting");
+			Chat = Path.Combine(BasePath, "chat");
 		}
 	}
 }

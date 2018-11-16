@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FFImageLoading.Transformations;
+﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Models;
@@ -10,6 +6,10 @@ using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -77,6 +77,9 @@ namespace GiveAndTake.Core.ViewModels
 	    public IMvxCommand OpenConversationCommand =>
 			_openConversationCommand ?? (_openConversationCommand = new MvxAsyncCommand(OpenConversation));
 
+	    public IMvxCommand BackPressedCommand =>
+		    _backPressedCommand ?? (_backPressedCommand = new MvxAsyncCommand(OnBackPressed));
+
 	    private User _user;
 		private string _userName;
 		private string _rankType;
@@ -89,15 +92,8 @@ namespace GiveAndTake.Core.ViewModels
 		private IMvxCommand _refreshPostsCommand;
 		private IMvxCommand _loadMorePostsCommand;
 		private IMvxCommand _openConversationCommand;
+		private IMvxCommand _backPressedCommand;
 		private MvxObservableCollection<PostItemViewModel> _postViewModels;
-
-		private static readonly List<string> MenuSettingOptions = new List<string>
-		{
-			AppConstants.Rename,
-			AppConstants.ChangeAvatar,
-			AppConstants.SendFeedback,
-			AppConstants.LogOut
-		};
 
 	    public UserProfileViewModel(IDataModel dataModel)
 	    {
@@ -182,5 +178,7 @@ namespace GiveAndTake.Core.ViewModels
 			//TODO: close current view and navigate to conversation view
 			await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
 		}
-	}
+
+	    private Task OnBackPressed() => NavigationService.Close(this);
+    }
 }

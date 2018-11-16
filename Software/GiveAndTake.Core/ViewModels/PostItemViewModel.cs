@@ -227,7 +227,7 @@ namespace GiveAndTake.Core.ViewModels
 		    if (_post.IsMyPost)
 		    {
 				//TODO: bug begin here
-			    //await NavigationService.Navigate<ProfileViewModel>();
+			    await NavigationService.Navigate<ProfileViewModel>();
 			}
 		    else
 		    {
