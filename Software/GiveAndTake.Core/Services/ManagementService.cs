@@ -29,7 +29,26 @@ namespace GiveAndTake.Core.Services
 			_dataModel.SortFilters = _dataModel.SortFilters ?? GetShortFilters();
 		}
 
-	    public async Task<Notification> UpdateReadStatus(string notiId, bool isRead, string token)
+	    public async Task<bool> CheckIfRequestProcessed(Guid requestId, string token)
+	    {
+		    string parameters = $"/{requestId}";
+
+		    var response = await _apiHelper.Get(AppConstants.CheckIfRequestProcessed + parameters, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<bool>(response.RawContent);
+		}
+
+		public async Task<Notification> UpdateReadStatus(string notiId, bool isRead, string token)
 	    {
 		    var status = isRead ? "{'isRead':'true'}" : "{'isRead':'false'}";
 		    var content = new StringContent(status, Encoding.UTF8, "application/json");
@@ -94,12 +113,12 @@ namespace GiveAndTake.Core.Services
 			return JsonHelper.Deserialize<bool>(response.RawContent);
 		}
 
-		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams)
+		public async Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams, string token)
 		{
 			var url = $"{AppConstants.GetRequestOfPost}/{postId}";
 			url = string.Join("?", url, filterParams);
 
-			var response = await _apiHelper.Get(url, AppConstants.Token);
+			var response = await _apiHelper.Get(url, token);
 
 			if (response.NetworkStatus != NetworkStatus.Success)
 	        {
@@ -114,7 +133,26 @@ namespace GiveAndTake.Core.Services
 	        return JsonHelper.Deserialize<ApiRequestsResponse>(response.RawContent);
 		}
 
-	    public async Task<CategoryResponse> GetCategories()
+	    public async Task<Request> GetRequestById(Guid id, string token)
+	    {
+		    var url = $"{AppConstants.GetRequestById}/{id}";
+
+		    var response = await _apiHelper.Get(url, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<Request>(response.RawContent);
+		}
+
+		public async Task<CategoryResponse> GetCategories()
         {
 			var response = await _apiHelper.Get(AppConstants.GetCategories);
 

@@ -8,7 +8,7 @@ using GiveAndTake.Core.Helpers;
 using MvvmCross.Commands;
 using MvvmCross.UI;
 
-namespace GiveAndTake.Core.ViewModels
+namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
 	public class NotificationItemViewModel : BaseViewModel
 	{

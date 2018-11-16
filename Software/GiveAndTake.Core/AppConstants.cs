@@ -26,10 +26,11 @@ namespace GiveAndTake.Core
 		public const string DefaultCategoryCreatePostId = "0c109358-fae2-42bd-b2f3-45cbe98a5dbd";
 		public const string GetProvinceCities = "provincecity/list";
 	    public const string GetRequestOfPost = "request/list";
-	    public const string ChangeStatusOfRequest = "request/status";
+		public const string GetRequestById = "request/getRequestById";
+		public const string ChangeStatusOfRequest = "request/status";
+		public const string CheckIfRequestProcessed = "request/checkIfRequestProcessed";
 		public const string GetNotificationList = "notification/list";
 		public const string UpdateReadStatus = "notification/updateReadStatus";
-
 
 		public const string API_KEY =
 			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMjMwMzc5MmItZGI1MC00YzlhLTk3MjAtN2JkMWVjN2QzM2U4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkFkbWluIEFkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJuYmYiOjE1MzM4ODY3MzMsImV4cCI6MTUzNjQ3ODczMywiaXNzIjoiR2l2ZWF3YXkiLCJhdWQiOiJFdmVyeW9uZSJ9.2A8md3WFGYT-w2Kz0OMAUAj7e20L-wTxIfKL4KyEOko";
@@ -74,6 +75,8 @@ namespace GiveAndTake.Core
 		public static string UploadDataOverLayTitle = "Đang đăng bài";
 		public static string CreateResponse = "response/create";
 		public static string UpdateOverLayTitle = "Đang cập nhật";
+		public static string SuccessfulAcceptanceMessage = "Bạn đã chấp nhận thành công!";
+		public static string SuccessfulRejectionMessage = "Bạn đã từ chối thành công!";
 
 		public static int NumberOfRequestPerPage = 20;
 	}
