@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Design;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -125,9 +126,20 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return new JsonObject("{'requested': 'false'}").Object;
         }
 
-        #region Utils
+	    public bool CheckIfRequestProcessed(Guid requestId)
+	    {
+		    var request = _requestService.FirstOrDefault(x => x.EntityStatus != EntityStatus.Deleted && x.Id == requestId && x.RequestStatus == RequestStatus.Pending);
+		    if (request == null)
+		    {
+			    return true;
+		    }
 
-        private void ChangeStatus(StatusRequest statusRequest, Request request)
+		    return false;
+	    }
+
+		#region Utils
+
+		private void ChangeStatus(StatusRequest statusRequest, Request request)
         {
             if (statusRequest.UserStatus == RequestStatus.Approved.ToString())
             {

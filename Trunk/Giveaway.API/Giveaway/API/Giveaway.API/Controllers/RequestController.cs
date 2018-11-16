@@ -130,5 +130,18 @@ namespace Giveaway.API.Controllers
             var userId = User.GetUserId();
             return _requestService.CheckUserRequest(postId, userId);
         }
-    }
+
+		/// <summary>
+		/// Check if a request has been processed: true means request is deleted or accecpted or rejected, false means request is activated and pending
+		/// </summary>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
+	    [Authorize]
+	    [HttpGet("checkIfRequestProcessed/{requestId}")]
+	    [Produces("application/json")]
+	    public bool CheckIfRequestProcessed(Guid requestId)
+	    {
+		    return _requestService.CheckIfRequestProcessed(requestId);
+	    }
+	}
 }
