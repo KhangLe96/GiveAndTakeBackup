@@ -33,9 +33,9 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
-		public static HeaderBar CreateHeaderBar(nfloat width, nfloat height, UIColor backgroundColor, bool isShowBackButton=false)
+		public static HeaderBar CreateHeaderBar(nfloat width, nfloat height, UIColor backgroundColor)
 		{
-			var headerBar = new HeaderBar(isShowBackButton)
+			var headerBar = new HeaderBar()
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				BackgroundColor = backgroundColor,

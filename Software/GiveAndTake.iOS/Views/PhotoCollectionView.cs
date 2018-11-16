@@ -14,29 +14,13 @@ namespace GiveAndTake.iOS.Views
 	[MvxModalPresentation]
 	public class PhotoCollectionView : BaseView
 	{
-		public IMvxCommand BackPressedCommand { get; set; }
-
 		private CustomImageFlowLayout _customImageFlowLayout;
 		private UICollectionView _photoCollectionView;
 		private PhotoItemViewSource _photoItemViewSource;
-		private HeaderBar _headerBar;
 
 		protected override void InitView()
 		{
 			View.BackgroundColor = UIColor.White;
-
-			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
-				UIColor.White, true);
-			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
-
-			View.Add(_headerBar);
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight),
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Left, 1, 0),
-			});
 
 			_customImageFlowLayout = new CustomImageFlowLayout();
 			_photoCollectionView =
@@ -55,7 +39,7 @@ namespace GiveAndTake.iOS.Views
 			{
 				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0),
-				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
 					NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, 0),
@@ -72,7 +56,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_photoItemViewSource)
 				.To(vm => vm.PhotoTemplateViewModels);
 
-			bindingSet.Bind(this)
+			bindingSet.Bind(Header)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 

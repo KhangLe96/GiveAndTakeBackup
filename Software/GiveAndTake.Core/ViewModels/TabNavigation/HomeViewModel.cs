@@ -47,6 +47,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxCommand BackPressedCommand =>
 			_backPressedCommand ?? (_backPressedCommand = new MvxAsyncCommand(OnBackPressedCommand));
 
+		public bool IsSearched
+		{
+			get => _isSearched;
+			set => SetProperty(ref _isSearched, value);
+		}
 
 		public bool IsRefreshing
 		{
@@ -121,7 +126,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _backPressedCommand;
 		private readonly ILoadingOverlayService _overlay;
-		private bool _isSearched = false;
+		private bool _isSearched;
+
+
 		#endregion
 
 		public HomeViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
@@ -225,14 +232,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task OnBackPressedCommand()
 		{
-			if (_isSearched)
+			if (IsSearched)
 			{
 				try
 				{
 					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 					CurrentQueryString = null;
 					await UpdatePostViewModelCollection();
-					_isSearched = false;
+					IsSearched = false;
 					IsClearButtonShown = false;
 				}
 				catch (AppException.ApiException)
@@ -244,7 +251,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				{
 					await _overlay.CloseOverlay();
 				}
-
 			}
 		}
 		private PostItemViewModel GeneratePostViewModels(Post post)
@@ -343,7 +349,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private async Task OnSearching()
 		{
 			await UpdatePostViewModelWithOverlay();
-			_isSearched = true;
+			IsSearched = true;
 		}
 
 		private async Task UpdatePostViewModelWithOverlay()

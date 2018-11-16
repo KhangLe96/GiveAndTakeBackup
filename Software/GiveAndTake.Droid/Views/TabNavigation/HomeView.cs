@@ -101,7 +101,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    {
 		    base.OnDestroyView();
 		    _clearButton.Visibility = ViewStates.Gone;
-		}
+		    ((MasterView) Activity).BackPressedFromHomeViewSearchedCommand = null;
+	    }
 
 	    protected override void Dispose(bool disposing)
 	    {

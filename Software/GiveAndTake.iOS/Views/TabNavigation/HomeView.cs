@@ -22,7 +22,6 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		public IMvxCommand LoadMoreCommand { get; set; }
 
 		public IMvxCommand SearchCommand { get; set; }
-
 		private const int TopColorAlpha = 0;
 		private const int VerticalSublayer = 0;
 		private const float BottomColorAlpha = 0.8f;
@@ -104,6 +103,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 			_searchBar = UIHelper.CreateSearchBar(DimensionHelper.FilterSize, DimensionHelper.FilterSize);
 			_searchBar.SearchButtonClicked += OnSearchSubmit;
+			_searchBar.TextChanged += OnCancelClicked;
 			View.Add(_searchBar);
 
 			View.AddConstraints(new[]
@@ -128,9 +128,20 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 		}
 
+		private void OnCancelClicked(object sender, UISearchBarTextChangedEventArgs e)
+		{
+			if (_searchBar.Text == "")
+			{
+				Header.BackPressedCommand.Execute();
+				_searchBar.EndEditing(true);
+			}
+		}
+
+
 		protected override void Dispose(bool disposing)
 		{
 			_searchBar.SearchButtonClicked -= OnSearchSubmit;
+			_searchBar.TextChanged -= OnCancelClicked;
 			base.Dispose(disposing);
 		}
 
@@ -257,6 +268,12 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.For("Visibility")
 				.To(vm => vm.IsSearchResultNull);
 
+			set.Bind(Header)
+				.For(v => v.BackButtonIsShown)
+				.To(vm => vm.IsSearched);
+			set.Bind(Header)
+				.For(v => v.BackPressedCommand)
+				.To(vm => vm.BackPressedCommand);
 			set.Apply();
 		}
 

@@ -22,8 +22,6 @@ namespace GiveAndTake.iOS.Views
 	{
 		public IMvxCommand<int> ShowFullImageCommand { get; set; }
 		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
-		public IMvxCommand BackPressedCommand { get; set; }
-
 		public List<Image> PostImages
 		{
 			get => _postImages;
@@ -72,7 +70,6 @@ namespace GiveAndTake.iOS.Views
 		}
 
 		private bool _isRequested;
-		private HeaderBar _headerBar;
 		private UIButton _btnCategory;
 		private UIButton _btnExtension;
 		private UIButton _backNavigationButton;
@@ -107,7 +104,7 @@ namespace GiveAndTake.iOS.Views
 
 		protected override void InitView()
 		{
-			InitHeaderBar();
+			InitHeader();
 			InitScrollContentView();
 		}
 
@@ -216,7 +213,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_lbPostDescription)
 				.To(vm => vm.PostDescription);
 
-			bindingSet.Bind(this)
+			bindingSet.Bind(Header)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
@@ -229,20 +226,9 @@ namespace GiveAndTake.iOS.Views
 
 		#region InitViews
 
-		private void InitHeaderBar()
+		private void InitHeader()
 		{
-			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
-				UIColor.White, true);
-			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
-			View.Add(_headerBar);
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight),
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Left, 1, 0),
-			});
-
+			Header.BackButtonIsShown = true;
 			_btnCategory = UIHelper.CreateButton(DimensionHelper.ButtonCategoryHeight,
 				0,
 				ColorHelper.Blue,
@@ -252,7 +238,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddSubview(_btnCategory);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
 				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginObjectPostDetail)
@@ -263,7 +249,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddSubview(_imgLocation);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_imgLocation, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_imgLocation, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail + 2),
 				NSLayoutConstraint.Create(_imgLocation, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _btnCategory,
 					NSLayoutAttribute.Right, 1, DimensionHelper.DefaultMargin)
@@ -273,7 +259,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddSubview(_lbPostAddress);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_lbPostAddress, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_lbPostAddress, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
 				NSLayoutConstraint.Create(_lbPostAddress, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgLocation,
 					NSLayoutAttribute.Right, 1, DimensionHelper.MarginShort)
@@ -284,7 +270,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddSubview(_btnExtension);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_btnExtension, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_btnExtension, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.ExtensionButtonMarginTop),
 				NSLayoutConstraint.Create(_btnExtension, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginShort)
@@ -295,7 +281,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddSubview(_extensionTouchView);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_extensionTouchView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_extensionTouchView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
 					NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_extensionTouchView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, 0)
@@ -305,7 +291,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddSubview(_lbPostStatus);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_lbPostStatus, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_lbPostStatus, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
 				NSLayoutConstraint.Create(_lbPostStatus, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _btnExtension,
 					NSLayoutAttribute.Left, 1, -DimensionHelper.DefaultMargin)
@@ -315,7 +301,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddSubview(_extensionView);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_extensionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_extensionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
 					NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_extensionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, 0),
