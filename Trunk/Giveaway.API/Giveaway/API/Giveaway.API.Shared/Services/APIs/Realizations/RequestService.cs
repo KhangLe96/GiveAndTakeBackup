@@ -44,7 +44,18 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public RequestPostResponse Create(RequestPostRequest requestPost)
+	    public RequestPostResponse GetRequestById(Guid requestId)
+	    {
+		    var request = _requestService.Include(x => x.User).FirstOrDefault(x => x.Id == requestId);
+		    if (request == null)
+		    {
+			    throw new BadRequestException(CommonConstant.Error.NotFound);
+		    }
+
+		    return Mapper.Map<RequestPostResponse>(request);
+	    }
+
+		public RequestPostResponse Create(RequestPostRequest requestPost)
         {
 	        if (CheckWhetherUserRequested(requestPost.PostId, requestPost.UserId))
 	        {
