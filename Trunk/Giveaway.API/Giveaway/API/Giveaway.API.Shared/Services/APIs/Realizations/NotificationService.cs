@@ -134,7 +134,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				notificationResponse.PostUrl = post.Images.Count > 0 ? post.Images.ElementAt(0).ResizedImage : null;
 			}
 
-			var user = _userService.FirstOrDefault(x => x.Id == notification.DestinationUserId);
+			var user = _userService.FirstOrDefault(x => x.Id == notification.SourceUserId);
 			if (user != null)
 			{
 				notificationResponse.AvatarUrl = user.AvatarUrl;
