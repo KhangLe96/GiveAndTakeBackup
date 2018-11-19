@@ -57,7 +57,7 @@ namespace GiveAndTake.iOS.Views
 			View.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_profileView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight + DimensionHelper.HeaderBarHeight + DimensionHelper.MarginShort),
+					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight + DimensionHelper.HeaderBarHeight),
 				NSLayoutConstraint.Create(_profileView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0)
 			});
