@@ -41,5 +41,8 @@ namespace GiveAndTake.Core.Models
 		public string Status { get; set; }
 
 		//public DateTimeOffset LastLogin { get; set; }
+
+		[DataMember(Name = "sentCount")]
+		public int SentCount { get; set; }
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using HealthKit;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -99,6 +98,12 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PostDetailExtensionTouchFieldHeight { get; set; }
 		public static nfloat PostDetailExtensionTouchFieldWidth { get; set; }
 		public static nfloat PostImageMarginObject { get; set; }
+		public static nfloat ProfileViewHeight { get; set; }
+		public static nfloat AvatarBigSize { get; set; }
+		public static nfloat ProfileButtonMarginTop { get; set; }
+		public static nfloat LargeTextSize { get; set; }
+		public static nfloat ProfileMarginLeft { get; set; }
+		public static nfloat SettingButtonMargin { get; set; }
 		public static nfloat PopupRequestTitleTextSize { get; set; }
 		public static nfloat PopupRequestGiverInformationViewWidth { get; set; }
 		public static nfloat PopupRequestGiverInformationViewHeight { get; set; }
@@ -164,7 +169,7 @@ namespace GiveAndTake.iOS.Helpers
 			PictureButtonHeight = 20 * Rate;
 			CreatePostButtonWidth = 160 * Rate;
 			CreatePostButtonHeight = 30 * Rate;
-			BorderWidth = 2 * Rate;
+			BorderWidth = 0.5f * Rate;
 			LoginLogoWidth = 61 * Rate;
 			LoginLogoHeight = 38 * Rate;
 			LoginButtonWidth = 106 * Rate;
@@ -208,6 +213,12 @@ namespace GiveAndTake.iOS.Helpers
 			PostDetailImageIndexHeight = 35 * Rate;
 			PostDetailImageIndexWidth = 50 * Rate;
 			PostImageMarginObject = 40 * Rate;
+			ProfileViewHeight = 130 * Rate;
+			AvatarBigSize = 85 * Rate;
+			ProfileButtonMarginTop = 110 * Rate;
+			LargeTextSize = 20 * Rate;
+			ProfileMarginLeft = 45 * Rate;
+			SettingButtonMargin = 17 * Rate;
 			PopupRequestTitleTextSize = 20 * Rate;
 			PopupRequestGiverInformationViewWidth = PopupContentWidth - 10 * Rate;
 			PopupRequestGiverInformationViewHeight = 40 * Rate;

@@ -45,6 +45,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static string LocationLogo { get; private set; }
 		public static string NextNavigationButton { get; private set; }
 		public static string BackNavigationButton { get; private set; }
+		public static string Setting { get; private set; }
 
 		public static void InitStaticVariable()
 		{
@@ -87,6 +88,7 @@ namespace GiveAndTake.iOS.Helpers
 			LocationLogo = Path.Combine(BasePath, "location_logo");
 			NextNavigationButton = Path.Combine(BasePath, "navigateRight");
 			BackNavigationButton = Path.Combine(BasePath, "navigateLeft");
+			Setting = Path.Combine(BasePath, "setting");
 		}
 	}
 }

@@ -65,22 +65,15 @@ namespace GiveAndTake.Core.ViewModels
 	            $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
 		        if (_dataModel.ApiRequestsResponse.Requests.Any())
 		        {
-			        RequestItemViewModels.Last().IsSeperatorShown = false;
-			        RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
 			        RequestItemViewModels.Last().IsSeperatorShown = true;
+			        RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
+			        RequestItemViewModels.Last().IsSeperatorShown = false;
 		        }
 			}
 	        catch (AppException.ApiException)
 	        {
 		        await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 	        }			
-            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
-            if (_dataModel.ApiRequestsResponse.Requests.Any())
-            {
-                RequestItemViewModels.Last().IsSeperatorShown = true;
-                RequestItemViewModels.AddRange(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
-                RequestItemViewModels.Last().IsSeperatorShown = false;
-            }
         }
 
 	    private RequestItemViewModel GenerateRequestItem(Request request)
@@ -126,7 +119,7 @@ namespace GiveAndTake.Core.ViewModels
 			    try
 			    {
 				    await Task.Delay(777);
-					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+				    await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 				    await UpdateRequestItemViewModelCollection();
 			    }
 			    catch (AppException.ApiException)
@@ -186,7 +179,6 @@ namespace GiveAndTake.Core.ViewModels
 		public override async void ViewAppearing()
 		{
 			base.ViewAppearing();
-
 			await LoadRequestListData();
 		}
 

@@ -92,7 +92,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 				};
 				await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
 				await ManagementService.CreateResponse(response, _dataModel.LoginResponse.Token);
-				success = true;
+				success = true;				
 			}
 			catch (AppException.ApiException)
 			{
