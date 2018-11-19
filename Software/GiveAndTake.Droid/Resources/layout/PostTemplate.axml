@@ -8,13 +8,13 @@
 	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_normal"
         android:orientation="horizontal"
 		local:MvxBind="Click ShowPostDetailCommand">
 
 		<RelativeLayout
             android:layout_width="@dimen/image_post_size"
-            android:layout_height="@dimen/image_post_size">
+            android:layout_height="@dimen/image_post_size"
+            android:layout_margin="@dimen/margin_normal">
 
 			<giveandtake.droid.controls.CustomMvxCachedImageView
                 android:id="@+id/imgPost"
@@ -45,8 +45,7 @@
 		<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
             android:orientation="vertical">
 
 			<giveandtake.droid.controls.CustomCardView
@@ -153,8 +152,6 @@
                 android:id="@+id/linearlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/margin_short"
-                android:layout_marginRight="@dimen/margin_short"
                 android:layout_marginTop="@dimen/margin_short"
                 android:orientation="horizontal"
                 android:weightSum="4">
@@ -163,29 +160,32 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:layout_marginBottom="@dimen/margin_normal"
                     android:gravity="bottom">
 
-					<ImageButton
+					<giveandtake.droid.controls.CustomImageView
                         android:id="@+id/imageButton"
                         android:layout_width="@dimen/button_small_width"
                         android:layout_height="@dimen/button_request_height"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/request_off" />
+                        android:src="@drawable/request_icon"
+                        local:MvxBind="IsActivated IsRequested"/>
 
 					<TextView
                         android:id="@+id/tvRequestCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/SmallTextSize"
-                        local:MvxBind="Text RequestCount" />
+                        local:MvxBind="Text RequestCount"/>
 				</LinearLayout>
 
 				<LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center|bottom">
+                    android:gravity="center|bottom"
+                    android:layout_marginBottom="@dimen/margin_normal">
 
 					<ImageButton
                         android:id="@+id/imageButton2"
@@ -200,14 +200,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/SmallTextSize"
-                        local:MvxBind="Text AppreciationCount" />
+                        local:MvxBind="Text AppreciationCount"/>
 				</LinearLayout>
 
 				<LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="right|bottom">
+                    android:gravity="right|bottom"
+                    android:layout_marginBottom="@dimen/margin_normal">
 
 					<ImageButton
                         android:id="@+id/imageButton4"
@@ -222,7 +223,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/SmallTextSize"
-                        local:MvxBind="Text CommentCount" />
+                        local:MvxBind="Text CommentCount"/>
 				</LinearLayout>
 
 				<LinearLayout
@@ -237,13 +238,15 @@
                         android:id="@+id/imageButton5"
                         android:layout_width="@dimen/button_small_width"
                         android:layout_height="@dimen/button_extension_height"
-                        android:layout_marginBottom="@dimen/margin_short"
+                        android:layout_marginBottom="@dimen/margin_normal"
+						android:layout_marginRight="@dimen/margin_normal"
                         android:background="@null"
                         android:scaleType="fitCenter"
                         android:src="@drawable/extention" />
 				</LinearLayout>
 
 			</LinearLayout>
+
 
 		</LinearLayout>
 
@@ -255,5 +258,5 @@
         android:layout_marginLeft="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"
         android:background="@color/post_line_color"
-		local:MvxBind="Visibility Visibility(IsSeparatorLineShown)" />
+        local:MvxBind="Visibility Visibility(IsSeparatorLineShown)" />
 </LinearLayout>

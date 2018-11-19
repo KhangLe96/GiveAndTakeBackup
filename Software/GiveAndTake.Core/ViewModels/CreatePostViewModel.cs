@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Services;
+using MvvmCross;
+
 namespace GiveAndTake.Core.ViewModels
 {
-	public class CreatePostViewModel : BaseViewModelResult<bool>
+	public class CreatePostViewModel : BaseViewModel<ViewMode, bool>
 	{
 		private readonly IDataModel _dataModel;
 		private readonly IMvxPictureChooserTask _pictureChooserTask;
@@ -38,6 +40,8 @@ namespace GiveAndTake.Core.ViewModels
 		private ProvinceCity _selectedProvinceCity;
 		private List<PostImage> _postImages = new List<PostImage>();
 		private bool _enableSelectedImage;
+		private string _postId;
+		private ViewMode _viewModelMode;
 		private bool _isSubmitBtnEnabled;
 
 		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxAsyncCommand(InitSubmit));
@@ -235,23 +239,16 @@ namespace GiveAndTake.Core.ViewModels
 			bool success = false;
 			try
 			{
-				await _overlay.ShowOverlay(AppConstants.UploadDataOverLayTitle);
-				var post = new CreatePost()
+				await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
+				if (_viewModelMode == ViewMode.EditPost)
 				{
-					Title = PostTitle,
-					Description = PostDescription,
-					PostImages = _postImages,
-					PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName)
-						? AppConstants.DefaultCategoryCreatePostId
-						: _selectedCategory.Id,
-					Address = _selectedProvinceCity.Id,
-				};
-				var result = await ManagementService.CreatePost(post, _dataModel.LoginResponse.Token);
-				if (result)
-				{
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.ErrorMessage);
+					await InitEditPost();
 				}
-				success = true;			
+				else
+				{
+					await InitCreateNewPost();
+				}
+				success = true;
 			}
 			catch (AppException.ApiException)
 			{
@@ -264,8 +261,38 @@ namespace GiveAndTake.Core.ViewModels
 				if (success)
 				{
 					await NavigationService.Close(this, true);
-				}				
+				}
 			}
+		}
+
+		public async Task InitCreateNewPost()
+		{
+			await _overlay.ShowOverlay(AppConstants.UploadDataOverLayTitle);
+			var post = new CreatePost()
+			{
+				Title = PostTitle,
+				Description = PostDescription,
+				PostImages = _postImages,
+				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName)
+					? AppConstants.DefaultCategoryCreatePostId
+					: _selectedCategory.Id,
+				Address = _selectedProvinceCity.Id,
+			};
+			await ManagementService.CreatePost(post, _dataModel.LoginResponse.Token);
+		}
+
+		public async Task InitEditPost()
+		{
+			var post = new EditPost()
+			{
+				PostId = _postId,
+				Title = PostTitle,
+				Description = PostDescription,
+				PostImages = _postImages,
+				PostCategory = (_selectedCategory.CategoryName == AppConstants.DefaultCategoryCreatePostName) ? AppConstants.DefaultCategoryCreatePostId : _selectedCategory.Id,
+				Address = _selectedProvinceCity.Id,
+			};
+			await ManagementService.EditPost(post, _postId, _dataModel.LoginResponse.Token);
 		}
 
 		private void InitSelectedImage()
@@ -274,5 +301,65 @@ namespace GiveAndTake.Core.ViewModels
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_postTitle) && !string.IsNullOrEmpty(_postDescription);
+
+		public byte[] getImageFromUrl(string url)
+		{
+			System.Net.HttpWebRequest request = null;
+			System.Net.HttpWebResponse response = null;
+			byte[] b = null;
+
+			request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+			response = (System.Net.HttpWebResponse)request.GetResponse();
+
+			if (request.HaveResponse)
+			{
+				if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				{
+					Stream receiveStream = response.GetResponseStream();
+					using (BinaryReader br = new BinaryReader(receiveStream))
+					{
+						b = br.ReadBytes(500000);
+						br.Close();
+					}
+				}
+			}
+
+			return b;
+		}
+
+		public override void Prepare(ViewMode mode)
+		{
+			if (mode != ViewMode.EditPost) return;
+			_viewModelMode = ViewMode.EditPost;
+			_postId = _dataModel.CurrentPost.PostId;
+			_selectedCategory.CategoryName = _dataModel.CurrentPost.Category.CategoryName;
+			_selectedCategory.Id = _dataModel.CurrentPost.Category.Id;
+			_selectedProvinceCity.ProvinceCityName = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
+			_selectedProvinceCity.Id = _dataModel.CurrentPost.ProvinceCity.Id;
+			_postTitle = _dataModel.CurrentPost.Title;
+			_postDescription = _dataModel.CurrentPost.Description;
+			EditImageList();
+			IsSubmitBtnEnabled = true;
+
+			BtnSubmitTitle = AppConstants.SaveAPost;
+		}
+
+		private void EditImageList()
+		{
+			var imageList = _dataModel.CurrentPost.Images;
+			foreach (var img in imageList)
+			{
+				var urlInBytes = getImageFromUrl(img.OriginalImage);
+				var image = new PostImage()
+				{
+
+					ImageData = JsonHelper.ConvertToBase64String(urlInBytes),
+				};
+				PostImages.Add(image);
+
+				EnableSelectedImage = (_postImages.Count != 0);
+				InitSelectedImage();
+			}
+		}
 	}
 }

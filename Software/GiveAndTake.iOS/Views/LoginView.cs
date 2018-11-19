@@ -137,6 +137,6 @@ namespace GiveAndTake.iOS.Views
             return userProfile;
         }
 
-		private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
+		private string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=large";
     }
 }

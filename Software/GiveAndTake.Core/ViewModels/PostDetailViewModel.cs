@@ -201,6 +201,9 @@ namespace GiveAndTake.Core.ViewModels
 		private UserRequest _userRequestResponse;
 		private readonly ILoadingOverlayService _overlay;
 		private bool _isBackFromFullImage = false;
+		private string _statusChange;
+		private List<string> _myPostOptions;
+		private bool _isLoadFirstTime = true;
 		#endregion
 
 		#region Constructor
@@ -221,50 +224,96 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async void ShowMenuView()
 		{
-			var postOptions = _isMyPost ? AppConstants.MyPostOptions : AppConstants.OtherPostOptions;
+			_myPostOptions = GetMyPostOptions();
+			var postOptions = _isMyPost ? _myPostOptions : OtherPostOptions;
 
 			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
 
 			if (string.IsNullOrEmpty(result)) return;
 
-			switch (result)
+			if (result.Equals(_myPostOptions[0]))
 			{
-				case AppConstants.ChangePostStatus:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
-
-				case AppConstants.ModifyPost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
-
-				case AppConstants.ViewPostRequests:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
-
-				case AppConstants.DeletePost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
-				case AppConstants.ReportPost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
-			}
-		}
-
-		private async Task ShowMyRequestList()
-		{
-			if (_isMyPost)
-			{
-				await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
-			}
-			else
-			{
-				if (IsRequested)
+				if (_status == AppConstants.GivingStatus)
 				{
-					await CancelOldRequest();
+					if (IsRequested)
+					{
+						var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmDeletePost);
+						if (userConfirmation != RequestStatus.Submitted) return;
+						await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+						await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN,
+							_dataModel.LoginResponse.Token);
+						await LoadCurrentPostData();
+						await _overlay.CloseOverlay();
+					}
+					else
+					{
+						await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+						await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN,
+							_dataModel.LoginResponse.Token);
+						await LoadCurrentPostData();
+						await _overlay.CloseOverlay();
+					}
 				}
 				else
 				{
-					await CreateNewRequest();
+					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+					await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivingStatusEN,
+						_dataModel.LoginResponse.Token);
+					await LoadCurrentPostData();
+					await _overlay.CloseOverlay();
+				}
+			}
+			else if (result == AppConstants.ModifyPost)
+			{
+				await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
+				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
+			}
+			else if (result == AppConstants.ViewPostRequests)
+			{
+				await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);				
+			}
+			else if (result == AppConstants.DeletePost)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+			}
+			else if (result == AppConstants.ReportPost)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+			}
+		}
+
+		private List<string> GetMyPostOptions() => new List<string>
+		{
+			$"Chuyển trạng thái sang \"{_statusChange}\"",
+			AppConstants.ModifyPost,
+			AppConstants.ViewPostRequests,
+			AppConstants.DeletePost
+		};
+
+		private async Task ShowMyRequestList()
+		{
+			if (Status == AppConstants.GivedStatus)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+				
+			}
+			else
+			{
+				if (_isMyPost)
+				{
+					await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
+					await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
+				}
+				else
+				{
+					if (IsRequested)
+					{
+						await CancelOldRequest();
+					}
+					else
+					{
+						await CreateNewRequest();
+					}
 				}
 			}
 		}
@@ -327,31 +376,32 @@ namespace GiveAndTake.Core.ViewModels
 			finally
 			{
 				await _overlay.CloseOverlay();
-			}		
+			}
 		}
 
 		public override void Prepare(Post post)
-		{			
+		{
 			_postId = post.PostId;
 			PostImages = post.Images;
-			_isMyPost = post.IsMyPost;			
+			_isMyPost = post.IsMyPost;
 		}
 
 		public override async void ViewAppearing()
 		{
 			base.ViewAppearing();
 
-			if (!_isBackFromFullImage)
-			{ 
-				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);				
+			if (!_isBackFromFullImage && _isLoadFirstTime)
+			{
+				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
 			}
 			_isBackFromFullImage = false;
+			_isLoadFirstTime = false;
 		}
 
 		private async Task LoadCurrentPostData()
 		{
 			_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
-			_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);			
+			_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
 			IsRequested = _userRequestResponse.IsRequested;
 			RequestCount = _dataModel.CurrentPost.RequestCount;
 			if (_isMyPost)
@@ -370,12 +420,13 @@ namespace GiveAndTake.Core.ViewModels
 			Status = _isMyPost ? _dataModel.CurrentPost.PostStatus.Translate() : " ";
 			CategoryBackgroundColor = _dataModel.CurrentPost.Category.BackgroundColor;
 			PostImageIndex = 0;
-			_post = _dataModel.CurrentPost;	
+			_post = _dataModel.CurrentPost;
+			_statusChange = Status == AppConstants.GivingStatus ? AppConstants.GivedStatus : AppConstants.GivingStatus;
 		}
 
 		public override Task Initialize()
 		{
-			_dataModel.PostImages = PostImages;
+			_dataModel.PostImages = _dataModel.PostImages;
 			_dataModel.PostImageIndex = 0;
 			return base.Initialize();
 		}
@@ -407,8 +458,8 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			finally
 			{
-				await _overlay.CloseOverlay();			
-			}			
+				await _overlay.CloseOverlay();
+			}
 		}
 		#endregion
 	}

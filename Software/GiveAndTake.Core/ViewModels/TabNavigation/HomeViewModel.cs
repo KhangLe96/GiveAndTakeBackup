@@ -130,11 +130,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				catch (AppException.ApiException)
 				{
 					await NavigationService.Navigate<PopupWarningViewModel, string,bool>(AppConstants.ErrorConnectionMessage);
+					await InitDataModels();
 				}
 				finally
 				{
-					await _overlay.CloseOverlay();
-					await InitDataModels();
+					await _overlay.CloseOverlay();					
 				}
 			}
 		}

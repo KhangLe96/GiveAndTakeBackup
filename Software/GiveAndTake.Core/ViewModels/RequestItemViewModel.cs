@@ -6,6 +6,7 @@ using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System;
 using System.Collections.Generic;
+using MvvmCross.Binding.Extensions;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -25,7 +26,6 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public IMvxCommand ClickCommand => _clickCommand ?? (_clickCommand = new MvxCommand(HandleOnClicked));
 
-
 	    public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
 	    public string Acceptance => "Chấp nhận";
@@ -43,7 +43,7 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _avatarUrl, value);
 	    }
 
-	    public string RequestMessage
+		public string RequestMessage
 	    {
 		    get => _requestMessage;
 		    set => SetProperty(ref _requestMessage, value);
@@ -62,12 +62,12 @@ namespace GiveAndTake.Core.ViewModels
 	    }
 
 	    private readonly Request _request;
-	    private IMvxCommand _rejectCommand;
+		private IMvxCommand _rejectCommand;
 	    private IMvxCommand _acceptCommand;
 	    private IMvxCommand _clickCommand;
 	    private string _userName;
         private string _avatarUrl;
-        private string _createdTime;
+		private string _createdTime;
         private string _requestMessage;
         private bool _isSeperatorShown = true;
 	
@@ -78,7 +78,7 @@ namespace GiveAndTake.Core.ViewModels
         public RequestItemViewModel(Request request)
         {
 	        _request = request;
-	        AvatarUrl = request.User.AvatarUrl;
+			AvatarUrl = request.User.AvatarUrl;
 	        UserName = request.User.FullName ?? AppConstants.DefaultUserName;
 	        CreatedTime = TimeHelper.ToTimeAgo(request.CreatedTime);
 	        RequestMessage = request.RequestMessage;

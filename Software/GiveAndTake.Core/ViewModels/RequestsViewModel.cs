@@ -1,4 +1,5 @@
 ﻿using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
@@ -11,7 +12,7 @@ using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class RequestsViewModel : BaseViewModel<string, bool>
+	public class RequestsViewModel : BaseViewModel<Post, bool>
 	{
 		public string Title => "Danh sách yêu cầu";
 
@@ -34,8 +35,10 @@ namespace GiveAndTake.Core.ViewModels
 		}
 
 		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
-
 		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
+
+		public IMvxCommand BackPressedCommand =>
+			_backPressedCommand = _backPressedCommand ?? new MvxAsyncCommand(() => NavigationService.Close(this, true));
 
 		private readonly IDataModel _dataModel;
 		private MvxObservableCollection<RequestItemViewModel> _requestItemViewModels;
@@ -43,8 +46,11 @@ namespace GiveAndTake.Core.ViewModels
 		private bool _isRefresh;
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
+		private IMvxCommand _backPressedCommand;
 		private string _postId;
+		private Post _post;
 		private readonly ILoadingOverlayService _overlay;
+
 		public RequestsViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
@@ -55,7 +61,7 @@ namespace GiveAndTake.Core.ViewModels
         {
 	        try
 	        {
-            _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}");
+		        _dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, $"limit={AppConstants.NumberOfRequestPerPage}&page={_dataModel.ApiRequestsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
 		        if (_dataModel.ApiRequestsResponse.Requests.Any())
 		        {
 			        RequestItemViewModels.Last().IsSeperatorShown = false;
@@ -111,6 +117,7 @@ namespace GiveAndTake.Core.ViewModels
 		    {
 			    try
 			    {
+				    await Task.Delay(777);
 				    await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 				    await UpdateRequestItemViewModelCollection();
 			    }
@@ -128,6 +135,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private async void OnItemClicked(Request request)
 	    {
+		    request.Post = _post;
 		    var popupResult = await NavigationService.Navigate<RequestDetailViewModel, Request, PopupRequestDetailResult>(request);
 		    switch (popupResult)
 		    {
@@ -137,7 +145,10 @@ namespace GiveAndTake.Core.ViewModels
 			    case PopupRequestDetailResult.Accepted:
 				    OnRequestAccepted(request);
 				    break;
-		    }
+			    case PopupRequestDetailResult.ShowPostDetail:
+				    await NavigationService.Navigate<PostDetailViewModel, Post>(_post);
+				    break;
+			}
 	    }
 
 	    private async void OnRefresh()
@@ -149,8 +160,8 @@ namespace GiveAndTake.Core.ViewModels
 
         public async Task UpdateRequestItemViewModelCollection()
         {
-			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "");
-		    NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
+			_dataModel.ApiRequestsResponse = await ManagementService.GetRequestOfPost(_postId, "", _dataModel.LoginResponse.Token);	       
+			NumberOfRequest = _dataModel.ApiRequestsResponse.Pagination.Totals;
 			RequestItemViewModels = new MvxObservableCollection<RequestItemViewModel>(_dataModel.ApiRequestsResponse.Requests.Select(GenerateRequestItem));
             if (RequestItemViewModels.Any())
             {
@@ -158,15 +169,16 @@ namespace GiveAndTake.Core.ViewModels
             }	        
 		}
 
-	    public override void Prepare(string postId)
+	    public override void Prepare(Post post)
 	    {
-		    _postId = postId;		    
+		    _postId = post.PostId;
+		    _post = post;
+		    _post.IsMyPost = true;
 		}
 
 		public override async void ViewAppearing()
 		{
 			base.ViewAppearing();
-
 			await LoadRequestListData();
 		}
 

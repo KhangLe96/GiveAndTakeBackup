@@ -107,7 +107,7 @@ namespace GiveAndTake.Droid.Views
 		    SocialAccountId = Profile.CurrentProfile.Id
 	    });
 
-	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
+	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=large";
 	}
 
 
