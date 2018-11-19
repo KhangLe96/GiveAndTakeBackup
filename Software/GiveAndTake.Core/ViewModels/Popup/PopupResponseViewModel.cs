@@ -81,7 +81,8 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		}
 
 		public async Task OnSubmit()
-		{			
+		{
+			bool success = false;
 			try
 			{
 				var response = new RequestResponse
@@ -91,7 +92,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 				};
 				await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
 				await ManagementService.CreateResponse(response, _dataModel.LoginResponse.Token);
-				await NavigationService.Close(this, RequestStatus.Submitted);
+				success = true;
 			}
 			catch (AppException.ApiException)
 			{
@@ -101,6 +102,10 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			finally
 			{
 				await _overlay.CloseOverlay();
+				if (success)
+				{
+					await NavigationService.Close(this, RequestStatus.Submitted);
+				}
 			}
 		}
 

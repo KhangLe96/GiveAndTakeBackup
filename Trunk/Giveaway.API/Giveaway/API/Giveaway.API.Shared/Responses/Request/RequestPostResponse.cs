@@ -1,4 +1,5 @@
-﻿using Giveaway.API.Shared.Responses.Response;
+﻿using Giveaway.API.Shared.Responses.Post;
+using Giveaway.API.Shared.Responses.Response;
 using Giveaway.API.Shared.Responses.User;
 using Newtonsoft.Json;
 using System;
@@ -37,8 +38,8 @@ namespace Giveaway.API.Shared.Responses.Request
         [JsonProperty(PropertyName = "user")]
         public UserRequestResponse User { get; set; }
 
-        [DataMember(Name = "postId")]
-        [JsonProperty(PropertyName = "postId")]
-        public Guid PostId { get; set; }
+        [DataMember(Name = "post")]
+        [JsonProperty(PropertyName = "post")]
+        public PostRequestResponse Post { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat MarginText { get; private set; }
 		public static nfloat AvatarMargin { get; private set; }
 		public static nfloat ImagePostSize { get; private set; }
+		public static nfloat ImagePostSmallSize { get; private set; }
 		public static nfloat ImageMultiSize { get; private set; }
 		public static nfloat ImageAvatarSize { get; private set; }
 		public static nfloat FilterSize { get; private set; }
@@ -107,7 +108,13 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupRequestDescriptionTextViewHeight { get; set; }
 		public static nfloat PopupRequestButtonWidth { get; set; }
 		public static nfloat LoadingLineWidth { get; set; }
-
+		public static nfloat RequestTitleAreaHeight { get; set; }
+		public static nfloat RequestTitleTextSize { get; set; }
+		public static nfloat RequestTitleMarignLeft { get; set; }
+		public static nfloat RequestTitleMarignTop { get; set; }
+		public static nfloat RequestNumberTextSize { get; set; }
+		public static nfloat RequestActionButtonWidth { get; set; }
+		public static nfloat RequestCellHeight { get; set; }
 
 		public static void InitStaticVariable()
 		{
@@ -125,6 +132,7 @@ namespace GiveAndTake.iOS.Helpers
 			MarginNormal = 12 * Rate;
 			AvatarMargin = 16 * Rate;
 			ImagePostSize = 120 * Rate;
+			ImagePostSmallSize = 50 * Rate;
 			ImageMultiSize = 20 * Rate;
 			ImageAvatarSize = 29 * Rate;
 			FilterSize = 40 * Rate;
@@ -209,11 +217,18 @@ namespace GiveAndTake.iOS.Helpers
 			PopupRequestDescriptionTextViewHeight = 220 * Rate;
 			PopupRequestButtonWidth = PopupContentWidth / 2 - 15 * Rate ;
 			PopupRequestButtonWidth =
-				PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
+			PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
 			PostDetailRequestTouchFieldHeight = 52 * Rate;
 			PostDetailRequestTouchFieldWidth = 80 * Rate;
 			PostDetailExtensionTouchFieldHeight = 50 * Rate;
 			PostDetailExtensionTouchFieldWidth = 50 * Rate;
+
+			RequestTitleAreaHeight = 50 * Rate;
+			RequestTitleTextSize = 17 * Rate;
+			RequestTitleMarignLeft = 18 * Rate;
+			RequestTitleMarignTop = 15 * Rate;
+			RequestNumberTextSize = 15 * Rate;
+			RequestActionButtonWidth = 65 * Rate;
 		}
 	}
 }

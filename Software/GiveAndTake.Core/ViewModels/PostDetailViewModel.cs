@@ -254,7 +254,8 @@ namespace GiveAndTake.Core.ViewModels
 		{
 			if (_isMyPost)
 			{
-				await NavigationService.Navigate<RequestsViewModel, string, bool>(_post.PostId);
+				_post.IsMyPost = _isMyPost;
+				var result = await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
 			}
 			else
 			{
