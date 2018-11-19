@@ -38,6 +38,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxCommand RefreshCommand =>
 			_refreshCommand ?? (_refreshCommand = new MvxAsyncCommand(OnRefresh));
 
+		public IMvxInteraction ShowProfileTab => 
+			_showProfileTab ?? (_showProfileTab = new MvxInteraction());
 
 		public bool IsRefreshing
 		{
@@ -107,6 +109,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _searchCommand;
 		private IMvxCommand _loadMoreCommand;
 		private IMvxCommand _refreshCommand;
+		private MvxInteraction _showProfileTab;
 
 		#endregion
 
@@ -196,7 +199,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
-			return new PostItemViewModel(post);
+			return new PostItemViewModel(post)
+			{
+				ShowProfileTab = () => { _showProfileTab.Raise();}
+			};
 		}
 		
 		private async Task ShowCategoriesPopup() 

@@ -1,4 +1,5 @@
-﻿using FFImageLoading.Transformations;
+﻿using System;
+using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
@@ -122,8 +123,8 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public IMvxCommand ShowMenuPopupCommand =>
 		    _showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxAsyncCommand(ShowMenuView));
-		
 
+	    public Action ShowProfileTab { get; set; }
 
 	    private static readonly List<string> MyPostOptions = new List<string>
 	    {
@@ -226,8 +227,7 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    if (_post.IsMyPost)
 		    {
-				//TODO: bug begin here
-			    await NavigationService.Navigate<ProfileViewModel>();
+			    ShowProfileTab?.Invoke();
 			}
 		    else
 		    {

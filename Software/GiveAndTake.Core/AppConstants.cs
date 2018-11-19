@@ -80,5 +80,6 @@ namespace GiveAndTake.Core
 		public const string ChangeAvatar = "Đổi ảnh đại diện";
 		public const string SendFeedback = "Gửi phản hồi";
 		public const string LogOut = "Đăng xuất";
+		public const int ProfileTabIndex = 3;
 	}
 }
