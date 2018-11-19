@@ -70,7 +70,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public override Task Initialize()
 		{
-			PostImages = _dataModel.PostImages;
+			PostImages = _dataModel.CurrentPost.Images;
 			PostImageIndex = _dataModel.PostImageIndex;
 			return base.Initialize();
 		}
