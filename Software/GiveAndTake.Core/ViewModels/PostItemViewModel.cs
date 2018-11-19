@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GiveAndTake.Core.Helpers;
 using I18NPortable;
+using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -221,10 +222,13 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-	    private async Task ShowPostDetailView() => 
-		    await NavigationService.Navigate<PostDetailViewModel, Post>(_post);
+		private async Task ShowPostDetailView()
+		{
+			await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
+			RequestCount = Mvx.Resolve<IDataModel>().CurrentPost.RequestCount;
+		}
 
-	    private async Task ShowGiverProfile() =>
+		private async Task ShowGiverProfile() =>
 		    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
 
 	    #endregion

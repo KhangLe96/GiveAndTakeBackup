@@ -134,7 +134,7 @@ namespace GiveAndTake.Droid.Views
 					{
 						var selectedImage = data.ClipData.GetItemAt(i).Uri;
 						var imageInByte = ConvertUriToByte(selectedImage);
-						image.Add(imageInByte);
+						image.Add(ImageHelper.ResizeImage(imageInByte, 600, 600));
 					}
 
 					ImageCommand.Execute(image);
