@@ -54,7 +54,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-	    public PagingQueryResponse<PostAppResponse> GetListRequestedPostOfUser(IDictionary<string, string> @params, string userId)
+	    public PagingQueryResponse<RequestedPostResponse> GetListRequestedPostOfUser(IDictionary<string, string> @params, string userId)
 	    {
 		    var request = @params.ToObject<PagingQueryPostRequest>();
 
@@ -73,14 +73,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			    posts = FilterPost(request, posts);
 			    posts = SortPosts(request, posts);
 
-			    var result = posts.Skip(request.Limit * (request.Page - 1)).Take(request.Limit).AsEnumerable().Select(Mapper.Map<PostAppResponse>).ToList();
-				
-			    foreach (var post in result)
-			    {
-				    post.IsCurrentUserRequested = true;
-			    }
+			    var result = posts.Skip(request.Limit * (request.Page - 1))
+				    .Take(request.Limit).AsEnumerable()
+				    .Select(x => GenerateRequestedPostResponse(x, id))
+				    .ToList();
 
-				return new PagingQueryResponse<PostAppResponse>
+				return new PagingQueryResponse<RequestedPostResponse>
 			    {
 				    Data = result,
 				    PageInformation = new PageInformation
@@ -95,7 +93,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		    throw new BadRequestException(CommonConstant.Error.InvalidInput);
 	    }
 
-		public T GetDetail(Guid postId, string userId)
+	    public T GetDetail(Guid postId, string userId)
 		{
             try
             {
@@ -220,7 +218,26 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		#region Utils
 
-	    private void RejectRequests(Guid postId)
+
+	    private RequestedPostResponse GenerateRequestedPostResponse(Post post, Guid userId)
+	    {
+		    var requestedPost = Mapper.Map<RequestedPostResponse>(post);
+		    if (requestedPost != null)
+		    {
+			    requestedPost.IsCurrentUserRequested = true;
+			    var request = post.Requests.FirstOrDefault(x => x.UserId == userId && x.EntityStatus == EntityStatus.Activated);
+
+			    requestedPost.RequestedPostStatus = request?.RequestStatus.ToString();
+
+			    if (post.PostStatus == PostStatus.Received)
+			    {
+				    requestedPost.RequestedPostStatus = PostStatus.Received.ToString();
+			    }
+		    }
+		    return requestedPost;
+	    }
+
+		private void RejectRequests(Guid postId)
 	    {
 		    var requests = _requestService.Where(x =>
 			    x.PostId == postId && x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending);
