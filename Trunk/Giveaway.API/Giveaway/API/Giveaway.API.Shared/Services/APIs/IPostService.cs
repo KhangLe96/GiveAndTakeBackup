@@ -13,8 +13,7 @@ namespace Giveaway.API.Shared.Services.APIs
 	    PagingQueryResponse<PostAppResponse> GetListRequestedPostOfUser(IDictionary<string, string> @params, string userId);
 		T GetDetail(Guid postId, string userId);
         PostAppResponse Create(PostRequest post);
-        bool ChangePostStatusCMS(Guid id, StatusRequest request);
-        bool ChangePostStatusApp(Guid postId, StatusRequest request);
+        bool ChangePostStatus(Guid postId, StatusRequest request);
         PostAppResponse Update(Guid id, PostRequest postRequest);
     }
 }

@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Giveaway.Data.Models;
 using DbService = Giveaway.Service.Services;
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -188,16 +189,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        public bool ChangePostStatusCMS(Guid id, StatusRequest request)
-        {
-            bool updated = _postService.UpdateStatus(id, request.UserStatus) != null;
-            if (updated == false)
-                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-
-            return updated;
-        }
-
-        public bool ChangePostStatusApp(Guid postId, StatusRequest request)
+        public bool ChangePostStatus(Guid postId, StatusRequest request)
         {
             var post = _postService.Include(x => x.Requests).FirstOrDefault(x => x.Id == postId);
 	        bool updated = false;
@@ -207,24 +199,20 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 throw new BadRequestException(CommonConstant.Error.NotFound);
             }
 
-            if (request.UserStatus == PostStatus.Giving.ToString())
-            {
-                post.PostStatus = PostStatus.Giving;
-	            updated = _postService.Update(post);
+	        var isStatus = Enum.TryParse(request.UserStatus, out PostStatus postStatus);
+	        if (isStatus)
+	        {
+		        post.PostStatus = postStatus;
+		        updated = _postService.Update(post);
+		        if (updated && postStatus == PostStatus.Gave)
+		        {
+			        RejectRequests(postId);
+		        }
 			}
-            else if (request.UserStatus == PostStatus.Gave.ToString())
-            {
-                post.PostStatus = PostStatus.Gave;
-	            updated = _postService.Update(post);
-	            if (updated)
-	            {
-		            RejectRequests(postId);
-	            }
-            }
-            else
-                throw new BadRequestException(CommonConstant.Error.InvalidInput);
+	        else
+				updated = _postService.UpdateStatus(postId, request.UserStatus) != null;
 
-            if (updated == false)
+			if (updated == false)
                 throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
             return updated;
