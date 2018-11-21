@@ -256,7 +256,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
-			return new PostItemViewModel(post);
+			return new PostItemViewModel(post, ReloadData);
+		}
+
+		private async void ReloadData()
+		{
+			await UpdatePostViewModelWithOverlay();
 		}
 
 		private async Task ShowCategoriesPopup()

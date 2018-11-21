@@ -13,7 +13,7 @@
 		public const string GetPostDetail = "post/app/detail";
 		public const string GetPostOfUser = "post/app/listPostOfUser";
 		public const string GetMyRequestedPosts = "post/app/listRequestedPostOfUser";
-		public const string ChangeStatusOfPost = "post/app/status";
+		public const string ChangeStatusOfPost = "post/status";
 		public const string EditPost = "post/app/update";
 		public const string LoginFacebook = "user/login/facebook";
 		public const string CreatePost = "post/app/create";

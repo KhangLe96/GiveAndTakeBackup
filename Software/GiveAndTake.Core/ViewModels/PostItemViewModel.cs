@@ -158,18 +158,19 @@ namespace GiveAndTake.Core.ViewModels
 	    private IMvxCommand _showPostDetailCommand;
 	    private IMvxCommand _showMenuPopupCommand;
 	    private readonly Post _post;
-
-	    #endregion
+	    private readonly Action _doReload;
+		#endregion
 
 		#region Methods
 
-		public PostItemViewModel(Post post) 
-		{
-			_post = post;
-			Init();
-		}
+		public PostItemViewModel(Post post, Action doReload = null)
+	    {
+		    _post = post;
+		    _doReload = doReload;
+		    Init();
+	    }
 
-	    private void Init()
+		private void Init()
 	    {
 		    CategoryName = _post.Category.CategoryName;
 		    AvatarUrl = _post.User.AvatarUrl;
@@ -224,8 +225,12 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task ShowPostDetailView()
 		{
-			await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
+			var result = await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
 			RequestCount = Mvx.Resolve<IDataModel>().CurrentPost.RequestCount;
+			if (result)
+			{
+				_doReload?.Invoke();
+			}
 		}
 
 		private async Task ShowGiverProfile() =>
