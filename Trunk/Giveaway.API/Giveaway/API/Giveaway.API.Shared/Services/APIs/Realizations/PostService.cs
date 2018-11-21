@@ -154,7 +154,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PostAppResponse Update(Guid id, PostRequest postRequest)
         {
-            var post = _postService.Include(x => x.Images).FirstAsync(x => x.Id == id).Result;
+            var post = _postService.Include(x => x.Images).FirstOrDefault(x => x.Id == id);
             if (post == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
@@ -167,11 +167,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 bool updated = _postService.Update(post);
 
                 if (updated)
-                {
-                    DeleteOldImages(oldImages);
-					if (postRequest.Images.Count != 0) CreateImage(postRequest);
-                }
-                else
+				{
+					UpdateImages(postRequest, oldImages);
+				}
+				else
                 {
                     throw new InternalServerErrorException("Internal Error");
                 }
@@ -187,7 +186,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        public bool ChangePostStatus(Guid postId, StatusRequest request)
+		public bool ChangePostStatus(Guid postId, StatusRequest request)
         {
             var post = _postService.Include(x => x.Requests).FirstOrDefault(x => x.Id == postId);
 	        bool updated = false;
@@ -217,7 +216,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         }
 
 		#region Utils
-
 
 	    private RequestedPostResponse GenerateRequestedPostResponse(Post post, Guid userId)
 	    {
@@ -291,7 +289,35 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<ImageBase64Request> InitImageBase64Requests(PostRequest post)
+	    private void UpdateImages(PostRequest postRequest, List<Image> oldImages)
+	    {
+		    // get retained images from request
+		    var retainedImages =
+			    postRequest.Images.Where(x => x.Image.Contains("https://") || x.Image.Contains("http://")).ToList();
+		    // get images needing to be deleted
+		    var deletedImages = oldImages.Except(
+			    // get retained images from database
+			    oldImages.Where(x => retainedImages.Any(y => y.Image == x.OriginalImage))
+		    ).ToList();
+
+		    DeleteImages(deletedImages);
+
+		    postRequest.Images = postRequest.Images.Except(retainedImages).ToList();
+		    if (postRequest.Images.Count != 0) CreateImage(postRequest);
+	    }
+
+	    private void DeleteImages(List<Image> images)
+	    {
+		    foreach (var image in images)
+		    {
+			    _imageService.Delete(x => x.Id == image.Id, out var isSaved);
+
+			    if (isSaved == false)
+				    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+		    }
+	    }
+
+		private List<ImageBase64Request> InitImageBase64Requests(PostRequest post)
         {
             var requests = new List<ImageBase64Request>();
             foreach (var image in post.Images)
@@ -344,17 +370,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
 
             return imageList;
-        }
-
-        private void DeleteOldImages(List<Image> images)
-        {
-            foreach (var image in images)
-            {
-                _imageService.Delete(x => x.Id == image.Id, out var isSaved);
-
-                if (isSaved == false)
-                    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-            }
         }
 
         private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, out int total)
