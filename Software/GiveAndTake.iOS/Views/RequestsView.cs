@@ -23,8 +23,6 @@ namespace GiveAndTake.iOS.Views
 		private MvxUIRefreshControl _refreshControl;
 
 		public IMvxCommand LoadMoreCommand { get; set; }
-		public IMvxCommand BackPressedCommand { get; set; }
-
 		protected override void InitView()
 		{
 			Header.BackButtonIsShown = true;
@@ -38,7 +36,7 @@ namespace GiveAndTake.iOS.Views
 
 			var bindingSet = this.CreateBindingSet<RequestsView, RequestsViewModel>();
 
-			bindingSet.Bind(this)
+			bindingSet.Bind(Header)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
