@@ -111,13 +111,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			var isProcessed = await ManagementService.CheckIfRequestProcessed(notification.RelevantId, _token);
 			var request = await ManagementService.GetRequestById(notification.RelevantId, _token);
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 			
 			if (isProcessed)
 			{
-				var post = await ManagementService.GetPostDetail(request.Post.PostId);
-				post.IsMyPost = true;
-				await NavigationService.Navigate<RequestsViewModel, Post, bool>(post);
+                var post = await ManagementService.GetPostDetail(request.Post.PostId);
+                await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+                await NavigationService.Navigate<RequestsViewModel, Post, bool>(post);
 			}
 			else
 			{
@@ -127,10 +126,19 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					case PopupRequestDetailResult.Rejected:
 						OnRequestRejected(request);
 						break;
+
 					case PopupRequestDetailResult.Accepted:
 						OnRequestAccepted(request);
 						break;
-				}
+
+                    case PopupRequestDetailResult.ShowPostDetail:
+                        await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+                        var post = await ManagementService.GetPostDetail(request.Post.PostId);
+                        post.IsMyPost = true;
+
+                        await NavigationService.Navigate<PostDetailViewModel, Post>(post);
+                        break;
+                }
 			}
 
 			await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
