@@ -9,7 +9,7 @@ namespace GiveAndTake.iOS.Views.Base
 {
 	public abstract class BaseView : MvxViewController
 	{
-		protected HeaderBar Header;
+		protected HeaderBar HeaderBar;
 		public override void ViewDidLoad()
 		{
 			View = new UIView
@@ -34,13 +34,13 @@ namespace GiveAndTake.iOS.Views.Base
 
 		protected void CreateHeaderBar()
 		{
-			Header = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight, UIColor.White);
-			View.Add(Header);
+			HeaderBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight, UIColor.White);
+			View.Add(HeaderBar);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(Header, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(HeaderBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight),
-				NSLayoutConstraint.Create(Header, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(HeaderBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0),
 			});
 		}

@@ -21,7 +21,7 @@ namespace GiveAndTake.iOS.Views
 		protected override void InitView()
 		{
 			View.BackgroundColor = UIColor.White;
-
+			HeaderBar.BackButtonIsShown = true;
 			_customImageFlowLayout = new CustomImageFlowLayout();
 			_photoCollectionView =
 				new UICollectionView(
@@ -39,7 +39,7 @@ namespace GiveAndTake.iOS.Views
 			{
 				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0),
-				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
+				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HeaderBar,
 					NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_photoCollectionView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, 0),
@@ -56,7 +56,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_photoItemViewSource)
 				.To(vm => vm.PhotoTemplateViewModels);
 
-			bindingSet.Bind(Header)
+			bindingSet.Bind(HeaderBar)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
