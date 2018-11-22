@@ -30,5 +30,6 @@ namespace GiveAndTake.Core.Services
 	    Task<Notification> UpdateReadStatus(string notiId, bool isRead, string token);
 	    Task<bool> CheckIfRequestProcessed(Guid requestId, string token);
 		Task InitData();
+	    Task SendFireBaseUserInformation(FireBaseUserInformation info);
     }
 }

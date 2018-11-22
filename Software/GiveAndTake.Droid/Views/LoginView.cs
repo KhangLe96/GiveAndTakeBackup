@@ -14,7 +14,11 @@ using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Object = Java.Lang.Object;
 using Result = Android.App.Result;
-
+using Android.Gms.Common;
+using Android.OS;
+using Firebase.Messaging;
+using Firebase.Iid;
+using Android.Util;
 namespace GiveAndTake.Droid.Views
 {
 	[MvxActivityPresentation]
@@ -25,10 +29,13 @@ namespace GiveAndTake.Droid.Views
 	    private static AccessToken accessToken;
         private ICallbackManager _callbackManager;
 	    private ImageButton _btnFacebookLogin;
+	    static readonly string TAG = "MainActivity";
 
-	    public IMvxCommand<BaseUser> LoginCommand { get; set; }
+		public IMvxCommand<BaseUser> LoginCommand { get; set; }
+	    public string FireBaseToken { get; set; }
+		protected override int LayoutId => Resource.Layout.LoginView;
 
-        protected override int LayoutId => Resource.Layout.LoginView;
+	    
 
 	    protected override void InitView()
 	    {
@@ -42,7 +49,7 @@ namespace GiveAndTake.Droid.Views
 		    LoginManager.Instance.RegisterCallback(_callbackManager, loginCallback);
 
 		    _btnFacebookLogin = FindViewById<ImageButton>(Resource.Id.btnFb);
-		    _btnFacebookLogin.Click += OnLoginButtonClicked;
+		    _btnFacebookLogin.Click += OnLoginButtonClicked;			
 		}
 
 	    protected override void CreateBinding()
@@ -55,7 +62,11 @@ namespace GiveAndTake.Droid.Views
                 .For(v => v.LoginCommand)
                 .To(vm => vm.LoginCommand);
 
-            bindingSet.Apply();
+	        bindingSet.Bind(this)
+		        .For(v => v.FireBaseToken)
+		        .To(vm => vm.FireBaseToken);
+
+			bindingSet.Apply();
         }
 
 	    protected override void OnViewModelSet()
@@ -97,17 +108,33 @@ namespace GiveAndTake.Droid.Views
 		    }
 	    }
 
-	    private void HandleSuccessfulLogin() => LoginCommand.Execute(new BaseUser
+	    private void HandleSuccessfulLogin()
 	    {
-		    FirstName = Profile.CurrentProfile.FirstName,
-		    LastName = Profile.CurrentProfile.LastName,
-			Name = Profile.CurrentProfile.Name,
-		    UserName = Profile.CurrentProfile.Id,
-		    AvatarUrl = GetProfilePicture(Profile.CurrentProfile.Id),
-		    SocialAccountId = Profile.CurrentProfile.Id
-	    });
+		    LoginCommand.Execute(new BaseUser
+		    {
+			    FirstName = Profile.CurrentProfile.FirstName,
+			    LastName = Profile.CurrentProfile.LastName,
+			    Name = Profile.CurrentProfile.Name,
+			    UserName = Profile.CurrentProfile.Id,
+			    AvatarUrl = GetProfilePicture(Profile.CurrentProfile.Id),
+			    SocialAccountId = Profile.CurrentProfile.Id
+		    });
+		    
+			var result = IsPlayServicesAvailable();
+		    if (result)
+		    {
+			    FireBaseToken = FirebaseInstanceId.Instance.Token;						
+			    Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
+			}		   
+		}
 
-	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
+	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=large";
+	   
+	    public bool IsPlayServicesAvailable()
+	    {
+		    int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);
+		    return resultCode == ConnectionResult.Success;
+	    }
 	}
 
 
@@ -133,4 +160,6 @@ namespace GiveAndTake.Droid.Views
 			HandleLogin?.Invoke();
 		}
 	}
+
+
 }

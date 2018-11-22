@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "179460394067",
+    "firebase_url": "https://giveandtaketest.firebaseio.com",
+    "project_id": "giveandtaketest",
+    "storage_bucket": "giveandtaketest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179460394067:android:339a8a7f3c1c4933",
+        "android_client_info": {
+          "package_name": "com.sioux.giveandtake"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179460394067-tbpfgpe9th7ibmueavtmdt5nadkf3oi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzwsdP3TFoDyrgR_WbWL4u9DmTSZBEyIk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

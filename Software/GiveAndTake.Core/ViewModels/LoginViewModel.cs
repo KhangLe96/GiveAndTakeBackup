@@ -10,20 +10,25 @@ namespace GiveAndTake.Core.ViewModels
 	public class LoginViewModel : BaseViewModel
 	{
 		public string LoginTitle => AppConstants.LoginTitle;
-
 		public IMvxCommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxAsyncCommand<BaseUser>(OnLoginSuccess));
-
 		public User User
 		{
 			get => _user;
 			set => SetProperty(ref _user, value);
 		}
+		public string FireBaseToken
+		{
+			get => _fireBaseToken;
+			set => SetProperty(ref _fireBaseToken, value);
+		}
 
 		private readonly IDataModel _dataModel;
 		private User _user;
 		private IMvxCommand _loginCommand;
+		private IMvxCommand _registerFireBaseUserInformation;
+		private string _fireBaseToken;
 
-        public LoginViewModel(IDataModel dataModel)
+		public LoginViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
 		}
@@ -33,6 +38,7 @@ namespace GiveAndTake.Core.ViewModels
 			try
 			{
 				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
+				await ManagementService.SendFireBaseUserInformation(new FireBaseUserInformation(){FireBaseToken = FireBaseToken, OsPlatform = "Android"});
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}
