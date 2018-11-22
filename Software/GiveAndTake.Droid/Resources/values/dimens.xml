@@ -93,4 +93,6 @@
 	<dimen name="medium_margin">10dp</dimen>
 	<dimen name="medium_padding">10dp</dimen>
 	<dimen name="request_number_button_text_size">15dp</dimen>
+	<dimen name="notification_message_margin_right">61dp</dimen>
+	<dimen name="notification_message_text_size">13dp</dimen>
 </resources>
