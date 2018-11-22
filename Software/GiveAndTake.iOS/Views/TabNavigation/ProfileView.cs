@@ -323,6 +323,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private void OnLogoutFacebook(object sender, EventArgs e)
 		{
 			new LoginManager().LogOut();
+			TabBarController.Dispose();
 		}
 	}
 }

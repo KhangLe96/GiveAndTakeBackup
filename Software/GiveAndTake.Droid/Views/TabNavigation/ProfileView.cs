@@ -62,6 +62,11 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				.For(v => v.LoadMoreRequestedPostsCommand)
 				.To(vm => vm.LoadMoreRequestedPostsCommand);
 
+			bindingSet.Bind(this)
+				.For(v => v.LogoutFacebook)
+				.To(vm => vm.LogoutFacebook)
+				.OneWay();
+
 			bindingSet.Apply();
 		}
 
@@ -78,6 +83,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		private void OnLogoutFacebook(object sender, EventArgs e)
 		{
 			LoginManager.Instance.LogOut();
+			Activity.Finish();
 		}
 	}
 }

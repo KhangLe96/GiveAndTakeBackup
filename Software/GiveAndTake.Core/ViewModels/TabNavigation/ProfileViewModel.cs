@@ -316,8 +316,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					_logoutFacebook.Raise();
 					await Task.WhenAll(
 						ManagementService.Logout(_dataModel.LoginResponse.Token),
-						NavigationService.Navigate<LoginViewModel>(),
-						NavigationService.Close(this));
+						NavigationService.Navigate<LoginViewModel>());
 					_dataModel.LoginResponse = null;
 					break;
 			}
