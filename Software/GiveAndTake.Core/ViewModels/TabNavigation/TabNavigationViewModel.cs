@@ -16,16 +16,25 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
 		private ICommand _showErrorCommand;
+		public IMvxAsyncCommand _showNotificationsCommand;
+
 		public ICommand ShowErrorCommand => _showErrorCommand ?? (_showErrorCommand = new MvxCommand(InitErrorResponseAsync));
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
 			_showInitialViewModelsCommand ??
 			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));
+
+		public IMvxAsyncCommand ShowNotificationsCommand => _showNotificationsCommand ?? new MvxAsyncCommand(ShowNotifications);
 
 		public string AvatarUrl => _dataModel.LoginResponse.Profile.AvatarUrl;
 
 		public TabNavigationViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
+		}
+
+		private async Task ShowNotifications()
+		{
+			await NavigationService.Navigate<NotificationViewModel>();
 		}
 
 		private async Task ShowInitialViewModels()

@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests.Notification;
-using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Notification;
+using Giveaway.Data.EF.Exceptions;
+using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using Giveaway.Util.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Giveaway.Data.EF.Exceptions;
-using Giveaway.Data.Enums;
-using Giveaway.Util.Constants;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations

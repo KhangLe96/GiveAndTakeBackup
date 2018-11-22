@@ -2,7 +2,6 @@
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Notification;
-using Giveaway.API.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

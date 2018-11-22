@@ -90,6 +90,7 @@
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popup\PopupMessageView.cs" />
+    <Compile Include="Views\Popup\PopupNotificationView.cs" />
     <Compile Include="Views\Popup\PopupResponseView.cs" />
     <Compile Include="Views\Popup\PopupWarningResponseView.cs" />
     <Compile Include="Views\Popup\PopupWarningView.cs" />
@@ -681,6 +682,16 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\chat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\NotificationTemplate.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\PopupNotificationView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
