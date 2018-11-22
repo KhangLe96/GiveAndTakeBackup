@@ -141,6 +141,9 @@
     <PackageReference Include="MvvmCross.Droid.Support.V7.RecyclerView">
       <Version>6.1.2</Version>
     </PackageReference>
+    <PackageReference Include="MvvmCross.Plugin.Color">
+      <Version>6.1.2</Version>
+    </PackageReference>
     <PackageReference Include="MvvmCross.Plugin.Json">
       <Version>6.1.2</Version>
     </PackageReference>

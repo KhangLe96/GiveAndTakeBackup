@@ -41,5 +41,8 @@ namespace GiveAndTake.Core.Models
 
 		[DataMember(Name = "isCurrentUserRequested")]
 		public bool IsRequested { get; set; }
+
+		[DataMember(Name = "requestedPostStatus")]
+		public string RequestedPostStatus { get; set; }
 	}
 }

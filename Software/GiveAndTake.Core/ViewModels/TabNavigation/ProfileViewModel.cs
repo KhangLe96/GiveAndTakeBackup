@@ -192,9 +192,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, $"page={_dataModel.ApiPostsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
+				_dataModel.ApiMyPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, $"page={_dataModel.ApiMyPostsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
 
-				if (_dataModel.ApiPostsResponse.Posts.Any())
+				if (_dataModel.ApiMyPostsResponse.Posts.Any())
 				{
 					PostViewModels.Last().IsSeparatorLineShown = true;
 					PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
@@ -242,7 +242,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				PostViewModels = new MvxObservableCollection<PostItemViewModel>();
 				if (_dataModel.ApiMyPostsResponse.Posts.Any())
 				{
-					PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+					PostViewModels.AddRange(_dataModel.ApiMyPostsResponse.Posts.Select(GeneratePostViewModels));
 					PostViewModels.Last().IsSeparatorLineShown = false;
 				}
 
@@ -263,13 +263,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiMyRequestedPostResponse = await ManagementService.GetMyRequestedPosts(null, _dataModel.LoginResponse.Token);
+				RequestedPostViewModels = new MvxObservableCollection<PostItemViewModel>();
 				if (_dataModel.ApiMyRequestedPostResponse.Posts.Any())
 				{
-					RequestedPostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyRequestedPostResponse.Posts.Select(GeneratePostViewModels));
+					RequestedPostViewModels.AddRange(_dataModel.ApiMyRequestedPostResponse.Posts.Select(GeneratePostViewModels));
 					RequestedPostViewModels.Last().IsSeparatorLineShown = false;
 				}
 
-				IsSearchResultNull = PostViewModels.Any();
+				IsSearchResultNull = RequestedPostViewModels.Any();
 			}
 			catch (AppException.ApiException)
 			{

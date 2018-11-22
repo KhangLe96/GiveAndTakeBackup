@@ -29,6 +29,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private UILabel _lbRequestCount;
 		private UILabel _lbAppreciationCount;
 		private UILabel _lbCommentCount;
+		private UILabel _requestedPostStatus;
 		private UIView _reactionArea;
 		private UIView _seperatorLine;
 		private UIView _optionView;
@@ -111,6 +112,15 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		        .To(vm => vm.BackgroundColor)
 		        .WithConversion("StringToUIColor");
 
+			set.Bind(_requestedPostStatus)
+				.For(v => v.Text)
+				.To(vm => vm.RequestedPostStatus);
+
+			set.Bind(_requestedPostStatus)
+				.For(v => v.TextColor)
+				.To(vm => vm.RequestedPostStatusColor)
+				.WithConversion("NativeColor");
+
 			set.Apply();
 		}
 
@@ -177,6 +187,18 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 					NSLayoutAttribute.Top, 1, DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_btnCategory, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imagePost,
 					NSLayoutAttribute.Right, 1, DimensionHelper.MarginNormal)
+			});
+
+			_requestedPostStatus = UIHelper.CreateLabel(ColorHelper.Green, DimensionHelper.MediumTextSize);
+
+			ContentView.AddSubview(_requestedPostStatus);
+
+			ContentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_requestedPostStatus, NSLayoutAttribute.Top, NSLayoutRelation.Equal, ContentView,
+					NSLayoutAttribute.Top, 1, DimensionHelper.MarginShort),
+				NSLayoutConstraint.Create(_requestedPostStatus, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
+					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
 		}
 

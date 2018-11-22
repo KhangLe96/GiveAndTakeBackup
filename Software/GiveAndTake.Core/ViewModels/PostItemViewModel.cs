@@ -8,8 +8,10 @@ using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using I18NPortable;
+using MvvmCross.UI;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -108,8 +110,20 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _isRequested, value);
 	    }
 
+	    public string RequestedPostStatus
+	    {
+		    get => _requestedPostStatus;
+		    set => SetProperty(ref _requestedPostStatus, value);
+	    }
 
-		public List<ITransformation> PostTransformations => 
+	    public MvxColor RequestedPostStatusColor
+	    {
+		    get => _requestedPostStatusColor;
+		    set => SetProperty(ref _requestedPostStatusColor, value);
+		}
+
+
+	    public List<ITransformation> PostTransformations => 
 		    new List<ITransformation> { new CornersTransformation(5 , CornerTransformType.AllRounded) };
 
 	    public List<ITransformation> AvatarTransformations => 
@@ -146,6 +160,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private string _postImage;
 	    private string _backgroundColor;
 	    private string _status;
+	    private string _requestedPostStatus;
 	    private int _requestCount;
 	    private int _appreciationCount;
 	    private int _commentCount;
@@ -156,6 +171,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private IMvxCommand _showPostDetailCommand;
 	    private IMvxCommand _showMenuPopupCommand;
 	    private readonly Post _post;
+	    private MvxColor _requestedPostStatusColor;
 
 	    #endregion
 
@@ -184,11 +200,14 @@ namespace GiveAndTake.Core.ViewModels
 	        BackgroundColor = _post.Category.BackgroundColor;
 		    Status = _post.PostStatus.Translate();
 		    IsRequested = _post.IsRequested;
+		    RequestedPostStatus = _post.RequestedPostStatus?.Translate();
+		    RequestedPostStatusColor = ColorHelper.GetStatusColor(_post.RequestedPostStatus);
+
 	    }
 
-	    
 
-	    private async Task ShowMenuView()
+
+		private async Task ShowMenuView()
 	    {
 			var postOptions = _post.IsMyPost ? MyPostOptions : OtherPostOptions;
 
@@ -235,6 +254,6 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-	    #endregion
-    }
+		#endregion
+	}
 }
