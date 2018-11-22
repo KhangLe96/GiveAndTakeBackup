@@ -157,14 +157,6 @@ namespace GiveAndTake.Core.ViewModels
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
-		private static readonly List<string> MyPostOptions = new List<string>
-		{
-			AppConstants.ChangePostStatus,
-			AppConstants.ModifyPost,
-			AppConstants.ViewPostRequests,
-			AppConstants.DeletePost
-		};
-
 		private static readonly List<string> OtherPostOptions = new List<string> { AppConstants.ReportPost };
 
 		private readonly IDataModel _dataModel;
@@ -233,53 +225,35 @@ namespace GiveAndTake.Core.ViewModels
 
 			if (result.Equals(_myPostOptions[0]))
 			{
-				if (_status == AppConstants.GivingStatus)
-				{
-					if (IsRequested)
-					{
-						var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmDeletePost);
-						if (userConfirmation != RequestStatus.Submitted) return;
-						await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-						await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN,
-							_dataModel.LoginResponse.Token);
-						await LoadCurrentPostData();
-						await _overlay.CloseOverlay();
-					}
-					else
-					{
-						await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-						await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN,
-							_dataModel.LoginResponse.Token);
-						await LoadCurrentPostData();
-						await _overlay.CloseOverlay();
-					}
-				}
-				else
-				{
-					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-					await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivingStatusEN,
-						_dataModel.LoginResponse.Token);
-					await LoadCurrentPostData();
-					await _overlay.CloseOverlay();
-				}
+				ChangeStatusOfPost();
 			}
-			else if (result == AppConstants.ModifyPost)
+			else switch (result)
 			{
-				await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
-				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
+				case AppConstants.ModifyPost:
+					await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
+					await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
+					break;
+				case AppConstants.ViewPostRequests:
+					await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
+					break;
+				case AppConstants.DeletePost:
+					await DeletePost();
+					break;
+				case AppConstants.ReportPost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
 			}
-			else if (result == AppConstants.ViewPostRequests)
+		}
+
+		private async Task DeletePost()
+		{
+			var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmDeletePost);
+			if (userConfirmation != RequestStatus.Submitted)
 			{
-				await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);				
+				return;
 			}
-			else if (result == AppConstants.DeletePost)
-			{
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			}
-			else if (result == AppConstants.ReportPost)
-			{
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			}
+			await ChangeStatus(AppConstants.DeletedStatus);
+			await NavigationService.Close(this, true);
 		}
 
 		private List<string> GetMyPostOptions() => new List<string>
@@ -347,6 +321,37 @@ namespace GiveAndTake.Core.ViewModels
 					}
 				}
 			}
+		}
+
+		private async void ChangeStatusOfPost()
+		{
+			if (_status == AppConstants.GivingStatus)
+			{
+				if (IsRequested)
+				{
+					var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmChangeStatusOfPost);
+					if (userConfirmation != RequestStatus.Submitted)
+					{
+						return;
+					}
+				}
+				await ChangeStatus(AppConstants.GivedStatusEN);
+			}
+			else
+			{
+				await ChangeStatus(AppConstants.GivingStatusEN);
+			}
+		}
+
+		private async Task ChangeStatus(string inputStatus)
+		{
+			await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
+			await ManagementService.ChangeStatusOfPost(_postId, inputStatus, _dataModel.LoginResponse.Token);
+			if (inputStatus != AppConstants.DeletedStatus)
+			{
+				await LoadCurrentPostData();
+			}
+			await _overlay.CloseOverlay();
 		}
 
 		private async Task CancelOldRequest()

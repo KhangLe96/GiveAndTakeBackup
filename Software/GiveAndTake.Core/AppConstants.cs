@@ -13,7 +13,7 @@
 		public const string GetPostDetail = "post/app/detail";
 		public const string GetPostOfUser = "post/app/listPostOfUser";
 		public const string GetMyRequestedPosts = "post/app/listRequestedPostOfUser";
-		public const string ChangeStatusOfPost = "post/app/status";
+		public const string ChangeStatusOfPost = "post/status";
 		public const string EditPost = "post/app/update";
 		public const string LoginFacebook = "user/login/facebook";
 		public const string CreatePost = "post/app/create";
@@ -43,7 +43,7 @@
 		public const string PopupSortFiltersTitle = "Xếp theo";
 		public const string PopupLocationFiltersTitle = "Lọc theo";
 
-		public const string ChangePostStatus = "Chuyển trạng thái sang";
+		public const string ChangePostStatus = "Chuyển trạng thái sang \" Đã cho \"";
 		public const string ModifyPost = "Chỉnh sửa";
 		public const string ViewPostRequests = "Duyệt cho";
 		public const string DeletePost = "Xóa";
@@ -53,6 +53,9 @@
 		public static string GivedStatus = "Đã cho";
 		public static string GivingStatusEN = "Giving";
 		public static string GivedStatusEN = "Gave";
+		public static string ActivatedStatus = "Activated";
+		public static string BlockedStatus = "Blocked";
+		public static string DeletedStatus = "Deleted";
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
@@ -90,7 +93,9 @@
 		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
 		public static int NumOfFragmentViewPager = 3;
 		public static string ProcessingDataOverLayTitle = "Đang xử lý";
-		public static string ConfirmDeletePost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn xóa ?";
+		public static string ConfirmChangeStatusOfPost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn xóa ?";
+		public static string ConfirmDeletePost = "Bạn có chắc chắn muốn xóa bài đăng này?";
 		public static string ConfirmDeleteOwnRequest = "Bạn có chắc chắn muốn hủy bỏ yêu cầu ?";
+		public static string CancelEditPostConfirmMessage = "Bạn có muốn hủy chỉnh sửa?";
 	}
 }

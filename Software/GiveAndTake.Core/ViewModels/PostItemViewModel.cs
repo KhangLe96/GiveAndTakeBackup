@@ -139,6 +139,7 @@ namespace GiveAndTake.Core.ViewModels
 
 	    private static readonly List<string> OtherPostOptions = new List<string> { AppConstants.ReportPost };
 
+	    private string _postId;
 	    private string _categoryName;
 	    private string _userName;
 	    private string _avatarUrl;
@@ -157,15 +158,21 @@ namespace GiveAndTake.Core.ViewModels
 	    private IMvxCommand _showGiverProfileCommand;
 	    private IMvxCommand _showPostDetailCommand;
 	    private IMvxCommand _showMenuPopupCommand;
+		
+
 	    private readonly Post _post;
+	    private readonly IDataModel _dataModel;
 
-	    #endregion
+		#endregion
 
+	    private readonly Action _doReload;
 		#region Methods
 
-		public PostItemViewModel(Post post) 
+		public PostItemViewModel(IDataModel dataModel, Post post, Action doReload = null) 
 		{
+			_dataModel = dataModel;
 			_post = post;
+			_doReload = doReload;
 			Init();
 		}
 
@@ -186,7 +193,8 @@ namespace GiveAndTake.Core.ViewModels
 	        BackgroundColor = _post.Category.BackgroundColor;
 		    Status = _post.PostStatus.Translate();
 		    IsRequested = _post.IsRequested;
-	    }
+		    _postId = _post.PostId;
+		}
 
 	    
 
@@ -201,19 +209,20 @@ namespace GiveAndTake.Core.ViewModels
 			switch (result)
 			{
 				case AppConstants.ChangePostStatus:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN, _dataModel.LoginResponse.Token);
 					break;
 
 				case AppConstants.ModifyPost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					_dataModel.CurrentPost = _post;
+					await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
 					break;
 
 				case AppConstants.ViewPostRequests:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
 					break;
 
 				case AppConstants.DeletePost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					await DeletePost();
 					break;
 
 				case AppConstants.ReportPost:
@@ -222,10 +231,25 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private async Task ShowPostDetailView()
+	    private async Task DeletePost()
+	    {
+			var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmDeletePost);
+		    if (userConfirmation != RequestStatus.Submitted)
+		    {
+			    return;
+		    }
+		    await ManagementService.ChangeStatusOfPost(_postId, AppConstants.DeletedStatus, _dataModel.LoginResponse.Token);
+		    _doReload?.Invoke();
+		}
+
+	    private async Task ShowPostDetailView()
 		{
-			await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
+			var result = await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
 			RequestCount = Mvx.Resolve<IDataModel>().CurrentPost.RequestCount;
+			if (result)
+			{
+				_doReload?.Invoke();
+			}
 		}
 
 		private async Task ShowGiverProfile() =>

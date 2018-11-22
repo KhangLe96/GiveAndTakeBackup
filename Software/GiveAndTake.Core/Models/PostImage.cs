@@ -7,5 +7,7 @@ namespace GiveAndTake.Core.Models
 	{
 		[DataMember(Name = "image")]
 		public string ImageData { get; set; }
+
+		public ViewMode ViewMode { get; set; }
 	}
 }
