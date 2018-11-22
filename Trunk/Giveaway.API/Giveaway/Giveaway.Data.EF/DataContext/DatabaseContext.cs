@@ -19,8 +19,9 @@ namespace Giveaway.Data.EF.DataContext
         public DbSet<Report> Reports { get; set; }
         public DbSet<WarningMessage> WarningMessages { get; set; }
 		public DbSet<Notification> Notifications { get; set; }
+	    public DbSet<DeviceIdentity> DeviceIdentities { get; set; }
 
-        private readonly IConfigurationRoot _configRoot;
+		private readonly IConfigurationRoot _configRoot;
 
         public DatabaseContext(IConfigurationRoot configRoot)
         {

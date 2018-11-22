@@ -20,6 +20,8 @@
     <Compile Remove="Migrations\20181025043927_ChangeRelationshipBetweenRequestAndResponse.cs" />
     <Compile Remove="Migrations\20181025050159_ChangeRelationshipBetweenRequestAndResponse2.cs" />
     <Compile Remove="Migrations\20181030091027_AddNotificationTable.cs" />
+    <Compile Remove="Migrations\20181121084535_AddDeviceIdentityTable.cs" />
+    <Compile Remove="Migrations\20181121085431_AddDeviceIdentityTable.cs" />
   </ItemGroup>
 
   <ItemGroup>

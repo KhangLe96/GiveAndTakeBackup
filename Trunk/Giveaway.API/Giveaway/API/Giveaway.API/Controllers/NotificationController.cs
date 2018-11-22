@@ -16,10 +16,12 @@ namespace Giveaway.API.Controllers
 	public class NotificationController : BaseController
 	{
 		private readonly INotificationService _notificationService;
+		private readonly IDeviceIdentityService _deviceIdentityService;
 
-		public NotificationController(INotificationService notificationService)
+		public NotificationController(INotificationService notificationService, IDeviceIdentityService deviceIdentityService)
 		{
 			_notificationService = notificationService;
+			_deviceIdentityService = deviceIdentityService;
 		}
 
 		[Authorize]
@@ -57,6 +59,22 @@ namespace Giveaway.API.Controllers
 		public NotificationResponse UpdateSeenStatus(Guid notiId, [FromBody] NotificationIsSeenRequest request)
 		{
 			return _notificationService.UpdateSeenStatus(notiId, request);
+		}
+
+		[Authorize]
+		[HttpGet("pushNotification")]
+		[Produces("application/json")]
+		public void PushNotification()
+		{
+			_notificationService.PushNotification();
+		}
+
+		[Authorize]
+		[HttpGet("registerDevice")]
+		[Produces("application/json")]
+		public bool RegisterDevice()
+		{
+			_deviceIdentityService.Create();
 		}
 	}
 }

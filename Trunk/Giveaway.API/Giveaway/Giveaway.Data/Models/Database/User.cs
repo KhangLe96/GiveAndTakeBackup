@@ -89,5 +89,6 @@ namespace Giveaway.Data.Models.Database
         public virtual ICollection<UserConversation> UserConversations { get; set; }
         public virtual ICollection<WarningMessage> WarningMessages { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
-    }
+	    public virtual ICollection<DeviceIdentity> DeviceIdentities { get; set; }
+	}
 }

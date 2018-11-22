@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests.Notification;
-using Giveaway.API.Shared.Requests.Post;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Notification;
+using Giveaway.Data.EF.Exceptions;
+using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using Giveaway.Util.Constants;
+using Newtonsoft.Json.Linq;
+using PushSharp.Google;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Giveaway.Data.EF.Exceptions;
-using Giveaway.Data.Enums;
-using Giveaway.Util.Constants;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -106,6 +106,106 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			return true;
 		}
 
+		public void PushNotification()
+		{
+			var config = new FcmConfiguration("179460394067", "AIzaSyCfzK4m0TR78drfat67wl_K5WuSRpVrDN4", "");
+			//config.FcmUrl = "https://fcm.googleapis.com/fcm/send";
+			//var provider = "FCM";
+
+			// Create a new broker
+			var gcmBroker = new FcmServiceBroker(config);
+
+			// Wire up events
+			gcmBroker.OnNotificationFailed += (notification, aggregateEx) => {
+
+				aggregateEx.Handle(ex => {
+
+					// See what kind of exception it was to further diagnose
+					if (ex is FcmNotificationException notificationException)
+					{
+
+						// Deal with the failed notification
+						var gcmNotification = notificationException.Notification;
+						var description = notificationException.Description;
+
+						//Console.WriteLine($"{provider} Notification Failed: ID={gcmNotification.MessageId}, Desc={description}");
+					}
+					else if (ex is FcmMulticastResultException multicastException)
+					{
+
+						foreach (var succeededNotification in multicastException.Succeeded)
+						{
+							//Console.WriteLine($"{provider} Notification Succeeded: ID={succeededNotification.MessageId}");
+						}
+
+						foreach (var failedKvp in multicastException.Failed)
+						{
+							var n = failedKvp.Key;
+							var e = failedKvp.Value;
+
+							//Console.WriteLine($"{provider} Notification Failed: ID={n.MessageId}, Desc={e.Description}");
+						}
+
+					}
+					//else if (ex is DeviceSubscriptionExpiredException expiredException)
+					//{
+
+					//	var oldId = expiredException.OldSubscriptionId;
+					//	var newId = expiredException.NewSubscriptionId;
+
+					//	Console.WriteLine($"Device RegistrationId Expired: {oldId}");
+
+					//	if (!string.IsNullOrWhiteSpace(newId))
+					//	{
+					//		// If this value isn't null, our subscription changed and we should update our database
+					//		Console.WriteLine($"Device RegistrationId Changed To: {newId}");
+					//	}
+					//}
+					//else if (ex is RetryAfterException retryException)
+					//{
+
+					//	// If you get rate limited, you should stop sending messages until after the RetryAfterUtc date
+					//	Console.WriteLine($"{provider} Rate Limited, don't send more until after {retryException.RetryAfterUtc}");
+					//}
+					//else
+					//{
+					//	Console.WriteLine("{provider} Notification Failed for some unknown reason");
+					//}
+
+					// Mark it as handled
+					return true;
+				});
+			};
+
+			gcmBroker.OnNotificationSucceeded += (notification) => {
+				Console.WriteLine("{provider} Notification Sent!");
+			};
+
+			// Start the broker
+			gcmBroker.Start();
+
+			List<string> MY_REGISTRATION_IDS = new List<string>() { "cABz-hrZIgU:APA91bGEBsp7xQQq-kv46M76E1VQb_xfkT3jv__HKQgztxJedrP7EXYrGpc9rH_LXfN1EJUc-CC8h7LuouHjVVFtqYhSKpi3gcNgK7RezQDBij0JyjGspQEpatjaS6kuEHLXDOP-UQQR" };
+			//foreach (var regId in MY_REGISTRATION_IDS)
+			//{
+			//	// Queue a notification to send
+
+			//}
+			gcmBroker.QueueNotification(new FcmNotification
+			{
+				RegistrationIds = MY_REGISTRATION_IDS,
+				Notification = JObject.Parse("{ \"somekey\" : \"somevalue\" }"),
+				//Data = JObject.Parse("{ \"somekey\" : \"somevalue\" }")
+			});
+			// Stop the broker, wait for it to finish   
+			// This isn't done after every message, but after you're
+			// done with the broker
+
+			if (gcmBroker.IsCompleted)
+			{
+				gcmBroker.Stop();
+			}
+		}
+
 		#region Utils
 
 		private List<NotificationResponse> GetPagedNotifications(Guid userId, PagingQueryNotificationRequest request, out int total)
@@ -114,14 +214,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				_notificationService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.DestinationUserId == userId);
 
 
-				total = notifications.ToList().Count();
+			total = notifications.ToList().Count();
 
-				return notifications
-					.Skip(request.Limit * (request.Page - 1))
-					.Take(request.Limit)
-					.AsEnumerable()
-					.Select(GenerateNotificationResponse)
-					.ToList();
+			return notifications
+				.Skip(request.Limit * (request.Page - 1))
+				.Take(request.Limit)
+				.AsEnumerable()
+				.Select(GenerateNotificationResponse)
+				.ToList();
 		}
 
 		private NotificationResponse GenerateNotificationResponse(Notification notification)
