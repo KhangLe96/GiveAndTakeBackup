@@ -5,6 +5,7 @@ using GiveAndTake.iOS.Helpers;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
+using MvvmCross.Plugin.Color;
 using System;
 using UIKit;
 
@@ -119,11 +120,11 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			set.Bind(_requestedPostStatus)
 				.For(v => v.TextColor)
 				.To(vm => vm.RequestedPostStatusColor)
-				.WithConversion("NativeColor");
+				.WithConversion(new MvxNativeColorValueConverter());
 
 			set.Apply();
 		}
-
+		
 		private void InitViews()
 		{
 			InitPostPhoto();
