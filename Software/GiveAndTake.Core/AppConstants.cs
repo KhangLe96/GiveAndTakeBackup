@@ -13,9 +13,10 @@
 		public const string GetPostDetail = "post/app/detail";
 		public const string GetPostOfUser = "post/app/listPostOfUser";
 		public const string GetMyRequestedPosts = "post/app/listRequestedPostOfUser";
-		public const string ChangeStatusOfPost = "post/app/status";
+		public const string ChangeStatusOfPost = "post/status";
 		public const string EditPost = "post/app/update";
 		public const string LoginFacebook = "user/login/facebook";
+		public const string LogoutApp = "user/logout";
 		public const string CreatePost = "post/app/create";
 		public const string CreateRequest = "request/create";
 		public const string CheckUserRequest = "request/checkUserRequest";
@@ -92,5 +93,11 @@
 		public static string ProcessingDataOverLayTitle = "Đang xử lý";
 		public static string ConfirmDeletePost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn xóa ?";
 		public static string ConfirmDeleteOwnRequest = "Bạn có chắc chắn muốn hủy bỏ yêu cầu ?";
+
+		public const string Rename = "Sửa tên";
+		public const string ChangeAvatar = "Đổi ảnh đại diện";
+		public const string SendFeedback = "Gửi phản hồi";
+		public const string LogOut = "Đăng xuất";
+		public const int ProfileTabIndex = 3;
 	}
 }

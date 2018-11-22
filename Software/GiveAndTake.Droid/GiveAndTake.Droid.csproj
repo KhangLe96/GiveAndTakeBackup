@@ -147,6 +147,9 @@
     <PackageReference Include="MvvmCross.Droid.Support.V7.RecyclerView">
       <Version>6.1.2</Version>
     </PackageReference>
+    <PackageReference Include="MvvmCross.Plugin.Color">
+      <Version>6.1.2</Version>
+    </PackageReference>
     <PackageReference Include="MvvmCross.Plugin.Json">
       <Version>6.1.2</Version>
     </PackageReference>
@@ -675,6 +678,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\request_on.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\chat.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

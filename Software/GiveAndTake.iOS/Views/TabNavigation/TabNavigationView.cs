@@ -11,13 +11,12 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 {
 	public class TabNavigationView : MvxTabBarViewController<TabNavigationViewModel>
 	{
-		private HeaderBar _headerBar;
 		private CustomMvxCachedImageView _imgAvatar;
 
 
 		public TabNavigationView()
 		{
-			InitHeaderBar();
+			//InitHeaderBar();
 		}
 
 		public override void ViewWillAppear(bool animated)
@@ -27,20 +26,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			ConfigTabBar(animated);
 		}
 
-		private void InitHeaderBar()
-		{
-			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight, UIColor.White);
-
-			View.Add(_headerBar);
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight),
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Left, 1, 0),
-			});
-		}
-
+		
 		private async void ConfigTabBar(bool animated)
 		{
 			TabBar.BackgroundColor = UIColor.White;

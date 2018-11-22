@@ -28,5 +28,6 @@ namespace GiveAndTake.Core.Services
 	    Task InitData();
 
 	    Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token);
+	    Task Logout(string token);
     }
 }

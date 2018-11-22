@@ -1,5 +1,4 @@
-﻿using System;
-using Android.Runtime;
+﻿using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
 using GiveAndTake.Core;
@@ -9,6 +8,9 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
+using MvvmCross.ViewModels;
+using System;
+using Xamarin.Facebook.Login;
 
 namespace GiveAndTake.Droid.Views.TabNavigation
 {
@@ -22,7 +24,22 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		public IMvxCommand LoadMorePostsCommand { get; set; }
 		public IMvxCommand LoadMoreRequestedPostsCommand { get; set; }
 
+		public IMvxInteraction LogoutFacebook
+		{
+			get => _logoutFacebook;
+			set
+			{
+				if (_logoutFacebook != null)
+					_logoutFacebook.Requested -= OnLogoutFacebook;
+
+				_logoutFacebook = value;
+				_logoutFacebook.Requested += OnLogoutFacebook;
+			}
+		}
+
 		protected override int LayoutId => Resource.Layout.ProfileView;
+
+		private IMvxInteraction _logoutFacebook;
 
 		protected override void InitView(View view)
 		{
@@ -45,6 +62,11 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				.For(v => v.LoadMoreRequestedPostsCommand)
 				.To(vm => vm.LoadMoreRequestedPostsCommand);
 
+			bindingSet.Bind(this)
+				.For(v => v.LogoutFacebook)
+				.To(vm => vm.LogoutFacebook)
+				.OneWay();
+
 			bindingSet.Apply();
 		}
 
@@ -56,6 +78,12 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				LoadMoreEvent = action
 			});
 			recyclerView.SetLayoutManager(layoutManager);
+		}
+
+		private void OnLogoutFacebook(object sender, EventArgs e)
+		{
+			LoginManager.Instance.LogOut();
+			Activity.Finish();
 		}
 	}
 }

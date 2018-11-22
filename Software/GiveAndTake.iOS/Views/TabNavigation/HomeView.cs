@@ -10,7 +10,9 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using System;
+using GiveAndTake.Core;
 using GiveAndTake.iOS.Views.TableViewCells;
+using MvvmCross.ViewModels;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -23,6 +25,19 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		public IMvxCommand LoadMoreCommand { get; set; }
 
 		public IMvxCommand SearchCommand { get; set; }
+
+		public IMvxInteraction ShowProfileTab
+		{
+			get => _showProfileTab;
+			set
+			{
+				if (_showProfileTab != null)
+					_showProfileTab.Requested -= OnShowProfileTabRequested;
+
+				_showProfileTab = value;
+				_showProfileTab.Requested += OnShowProfileTabRequested;
+			}
+		}
 
 		private const int TopColorAlpha = 0;
 		private const int VerticalSublayer = 0;
@@ -39,6 +54,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UIButton _newPostButton;
 		private PopupItemLabel _searchResult;
 		private UIView _gradientView;
+		private IMvxInteraction _showProfileTab;
 
 		protected override void InitView()
 		{
@@ -105,6 +121,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 
 			_searchBar = UIHelper.CreateSearchBar(DimensionHelper.FilterSize, DimensionHelper.FilterSize);
 			_searchBar.SearchButtonClicked += OnSearchSubmit;
+			_searchBar.TextChanged += OnCancelClicked;
 			View.Add(_searchBar);
 
 			View.AddConstraints(new[]
@@ -129,9 +146,20 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			});
 		}
 
+		private void OnCancelClicked(object sender, UISearchBarTextChangedEventArgs e)
+		{
+			if (_searchBar.Text == "")
+			{
+				HeaderBar.BackPressedCommand.Execute();
+				_searchBar.EndEditing(true);
+			}
+		}
+
+
 		protected override void Dispose(bool disposing)
 		{
 			_searchBar.SearchButtonClicked -= OnSearchSubmit;
+			_searchBar.TextChanged -= OnCancelClicked;
 			base.Dispose(disposing);
 		}
 
@@ -258,6 +286,17 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.For("Visibility")
 				.To(vm => vm.IsSearchResultNull);
 
+			set.Bind(this)
+				.For(view => view.ShowProfileTab)
+				.To(viewModel => viewModel.ShowProfileTab)
+				.OneWay();
+
+			set.Bind(HeaderBar)
+				.For(v => v.BackButtonIsShown)
+				.To(vm => vm.IsSearched);
+			set.Bind(HeaderBar)
+				.For(v => v.BackPressedCommand)
+				.To(vm => vm.BackPressedCommand);
 			set.Apply();
 		}
 
@@ -267,6 +306,11 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		{
 			_searchBar.ResignFirstResponder();
 			SearchCommand.Execute();
+		}
+
+		private void OnShowProfileTabRequested(object sender, EventArgs e)
+		{
+			TabBarController.SelectedIndex = AppConstants.ProfileTabIndex;
 		}
 	}
 }
