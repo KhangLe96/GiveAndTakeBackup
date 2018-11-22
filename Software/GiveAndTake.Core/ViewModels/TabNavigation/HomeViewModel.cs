@@ -47,6 +47,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxCommand BackPressedCommand =>
 			_backPressedCommand ?? (_backPressedCommand = new MvxAsyncCommand(OnBackPressedCommand));
 
+		public IMvxInteraction ShowProfileTab => 
+			_showProfileTab ?? (_showProfileTab = new MvxInteraction());
 		public bool IsSearched
 		{
 			get => _isSearched;
@@ -127,6 +129,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _backPressedCommand;
 		private readonly ILoadingOverlayService _overlay;
 		private bool _isSearched;
+		private MvxInteraction _showProfileTab;
 
 
 		#endregion
@@ -135,8 +138,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			_dataModel = dataModel;
 			_overlay = loadingOverlayService;
-			InitDataModels();
 		}
+
+		public override Task Initialize() => InitDataModels();
 
 		private async Task InitDataModels()
 		{
@@ -256,7 +260,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
-			return new PostItemViewModel(post, ReloadData);
+			return new PostItemViewModel(post, ReloadData)
+			{
+				ShowProfileTab = () => { _showProfileTab.Raise();}
+			};
 		}
 
 		private async void ReloadData()

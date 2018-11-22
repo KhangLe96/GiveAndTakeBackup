@@ -10,7 +10,9 @@ using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
 using System;
+using GiveAndTake.Core;
 using GiveAndTake.iOS.Views.TableViewCells;
+using MvvmCross.ViewModels;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -23,6 +25,20 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		public IMvxCommand LoadMoreCommand { get; set; }
 
 		public IMvxCommand SearchCommand { get; set; }
+
+		public IMvxInteraction ShowProfileTab
+		{
+			get => _showProfileTab;
+			set
+			{
+				if (_showProfileTab != null)
+					_showProfileTab.Requested -= OnShowProfileTabRequested;
+
+				_showProfileTab = value;
+				_showProfileTab.Requested += OnShowProfileTabRequested;
+			}
+		}
+
 		private const int TopColorAlpha = 0;
 		private const int VerticalSublayer = 0;
 		private const float BottomColorAlpha = 0.8f;
@@ -38,6 +54,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UIButton _newPostButton;
 		private PopupItemLabel _searchResult;
 		private UIView _gradientView;
+		private IMvxInteraction _showProfileTab;
 
 		protected override void InitView()
 		{
@@ -269,6 +286,11 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.For("Visibility")
 				.To(vm => vm.IsSearchResultNull);
 
+			set.Bind(this)
+				.For(view => view.ShowProfileTab)
+				.To(viewModel => viewModel.ShowProfileTab)
+				.OneWay();
+
 			set.Bind(HeaderBar)
 				.For(v => v.BackButtonIsShown)
 				.To(vm => vm.IsSearched);
@@ -284,6 +306,11 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		{
 			_searchBar.ResignFirstResponder();
 			SearchCommand.Execute();
+		}
+
+		private void OnShowProfileTabRequested(object sender, EventArgs e)
+		{
+			TabBarController.SelectedIndex = AppConstants.ProfileTabIndex;
 		}
 	}
 }

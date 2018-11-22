@@ -83,7 +83,8 @@
             android:scaleType="fitXY"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@id/tvUserName"
-            android:layout_marginRight="@dimen/margin_17dp"/>
+            android:layout_marginRight="@dimen/margin_17dp"
+			local:MvxBind="Click ShowMenuPopupCommand"/>
 
 	</RelativeLayout>
 

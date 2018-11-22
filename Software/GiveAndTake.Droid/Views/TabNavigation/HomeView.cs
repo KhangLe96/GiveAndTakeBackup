@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using GiveAndTake.Core.ViewModels.TabNavigation;
@@ -12,6 +13,7 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 using GiveAndTake.Core;
 using Android.Widget;
 using GiveAndTake.Droid.Converters;
+using MvvmCross.ViewModels;
 using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace GiveAndTake.Droid.Views.TabNavigation
@@ -27,12 +29,26 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public IMvxCommand LoadMoreCommand { get; set; }
 	    public IMvxCommand CloseSearchBarCommand { get; set; }
 	    public IMvxCommand BackPressedCommand { get; set; }
-		protected override int LayoutId => Resource.Layout.HomeView;
 
+	    public IMvxInteraction ShowProfileTab
+	    {
+		    get => _showProfileTab;
+		    set
+		    {
+			    if (_showProfileTab != null)
+				    _showProfileTab.Requested -= OnShowProfileTabRequested;
+
+			    _showProfileTab = value;
+			    _showProfileTab.Requested += OnShowProfileTabRequested;
+		    }
+	    }
+
+		protected override int LayoutId => Resource.Layout.HomeView;
 	    private SearchView _searchView;
 	    private ImageView _clearButton;
+	    private IMvxInteraction _showProfileTab;
 
-	    protected override void InitView(View view)
+		protected override void InitView(View view)
 	    {
 		    base.InitView(view);
 
@@ -82,6 +98,11 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    bindingSet.Bind(this)
 			    .For(v => v.BackPressedCommand)
 			    .To(vm => vm.BackPressedCommand);
+
+		    bindingSet.Bind(this)
+			    .For(view => view.ShowProfileTab)
+			    .To(viewModel => viewModel.ShowProfileTab)
+			    .OneWay();
 
 		    bindingSet.Bind(_clearButton)
 			    .For(v => v.Visibility)
@@ -134,5 +155,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    ((MasterView)Activity).BackPressedFromHomeViewSearchedCommand = BackPressedCommand;
 		    _searchView.ClearFocus();
 		}
+	    private void OnShowProfileTabRequested(object sender, EventArgs e)
+	    {
+		    var tabhost = Activity.FindViewById<TabLayout>(Resource.Id.tabLayout);
+		    tabhost.GetTabAt(AppConstants.ProfileTabIndex).Select();
+	    }
 	}
 }
