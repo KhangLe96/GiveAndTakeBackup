@@ -1,10 +1,15 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace Giveaway.API.Shared.Responses.Image
 {
+	[DataContract]
 	public class ImageResponse
     {
-        [DataMember(Name = "originalImage")]
+	    [DataMember(Name = "id")]
+	    public Guid Id { get; set; }
+
+		[DataMember(Name = "originalImage")]
         public string OriginalImage { get; set; }
 
         [DataMember(Name = "resizedImage")]
