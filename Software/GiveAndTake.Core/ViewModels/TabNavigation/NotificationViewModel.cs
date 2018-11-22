@@ -81,14 +81,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case "Comment":
+					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 
 				case "Request":
-					
 					await HandleRequestType(notification);
 					break;
 
 				case "IsAccepted":
+					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 
 				case "IsRejected":
@@ -96,9 +97,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case "BlockedPost":
+					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 
 				case "Warning":
+					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 			}
 		}
@@ -109,6 +112,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			var isProcessed = await ManagementService.CheckIfRequestProcessed(notification.RelevantId, _token);
 			var request = await ManagementService.GetRequestById(notification.RelevantId, _token);
 			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			
 			if (isProcessed)
 			{
 				await NavigationService.Navigate<RequestsViewModel, string, bool>(request.PostId);
@@ -126,6 +130,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 						break;
 				}
 			}
+
+			await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
 		}
 
 		private async void OnRequestRejected(Request request)
