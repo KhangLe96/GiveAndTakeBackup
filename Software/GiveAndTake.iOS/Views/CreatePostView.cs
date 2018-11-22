@@ -45,7 +45,7 @@ namespace GiveAndTake.iOS.Views
 
 		protected override void InitView()
 		{
-			Header.BackButtonIsShown = true;
+			HeaderBar.BackButtonIsShown = true;
 			InitChooseProvinceCityButton();
 			InitChooseCategoryButton();
 			InitPostTitleTextField();
@@ -124,7 +124,7 @@ namespace GiveAndTake.iOS.Views
 				.For("Title")
 				.To(vm => vm.BtnSubmitTitle);
 
-			bindingSet.Bind(Header)
+			bindingSet.Bind(HeaderBar)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
@@ -149,7 +149,7 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_chooseProvinceCityButton);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_chooseProvinceCityButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
+				NSLayoutConstraint.Create(_chooseProvinceCityButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HeaderBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
 				NSLayoutConstraint.Create(_chooseProvinceCityButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
@@ -169,7 +169,7 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_chooseCategoryButton);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_chooseCategoryButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
+				NSLayoutConstraint.Create(_chooseCategoryButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HeaderBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
 				NSLayoutConstraint.Create(_chooseCategoryButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin)

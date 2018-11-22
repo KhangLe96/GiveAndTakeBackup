@@ -25,7 +25,7 @@ namespace GiveAndTake.iOS.Views
 		public IMvxCommand LoadMoreCommand { get; set; }
 		protected override void InitView()
 		{
-			Header.BackButtonIsShown = true;
+			HeaderBar.BackButtonIsShown = true;
 			InitTitleArea();
 			InitRequestsTableView();
 		}
@@ -36,7 +36,7 @@ namespace GiveAndTake.iOS.Views
 
 			var bindingSet = this.CreateBindingSet<RequestsView, RequestsViewModel>();
 
-			bindingSet.Bind(Header)
+			bindingSet.Bind(HeaderBar)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
@@ -73,7 +73,7 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_titleArea);
 			View.AddConstraints(new []
 			{
-				NSLayoutConstraint.Create(_titleArea, NSLayoutAttribute.Top, NSLayoutRelation.Equal, Header,
+				NSLayoutConstraint.Create(_titleArea, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HeaderBar,
 					NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_titleArea, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0)

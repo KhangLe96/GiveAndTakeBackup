@@ -133,7 +133,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		{
 			if (_searchBar.Text == "")
 			{
-				Header.BackPressedCommand.Execute();
+				HeaderBar.BackPressedCommand.Execute();
 				_searchBar.EndEditing(true);
 			}
 		}
@@ -269,10 +269,10 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.For("Visibility")
 				.To(vm => vm.IsSearchResultNull);
 
-			set.Bind(Header)
+			set.Bind(HeaderBar)
 				.For(v => v.BackButtonIsShown)
 				.To(vm => vm.IsSearched);
-			set.Bind(Header)
+			set.Bind(HeaderBar)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 			set.Apply();
