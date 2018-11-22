@@ -14,6 +14,7 @@ using GiveAndTake.Droid.Views.Base;
 using GiveAndTake.Droid.Views.TabNavigation;
 using MvvmCross;
 using Resource = GiveAndTake.Droid.Resource;
+using TaskStackBuilder = Android.App.TaskStackBuilder;
 
 namespace FCMClient
 {
@@ -23,7 +24,7 @@ namespace FCMClient
 	{
 		internal static readonly string CHANNEL_ID = "giveandtake_notification_channel";
 		internal static string ChannelName = "giveandtake-channel-name";
-		internal static readonly int NOTIFICATION_ID = 100;
+		internal static readonly int NOTIFICATION_ID = 111;
 		public override void HandleIntent(Intent intent)
 		{
 			const string TAG = "MyFirebaseMsgService";
@@ -45,16 +46,19 @@ namespace FCMClient
 		}
 		void SendNotification(string messageBody, IDictionary<string, string> data)
 		{
-			var intent = new Intent(this, typeof(LoginView));
+			var intent = new Intent(this, typeof(MasterView));
 			intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
 			foreach (var key in data.Keys)
 			{
 				intent.PutExtra(key, data[key]);
 			}
-			var pendingIntent = PendingIntent.GetActivity(this,
-				NOTIFICATION_ID,
-				intent,
-				PendingIntentFlags.OneShot);
+			TaskStackBuilder stackBuilder = TaskStackBuilder.Create(this);
+			stackBuilder.AddNextIntentWithParentStack(intent);
+			var pendingIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
+			//var pendingIntent = PendingIntent.GetActivity(this,
+			//	NOTIFICATION_ID,
+			//	intent,
+			//	PendingIntentFlags.OneShot);
 			var notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
 				.SetSmallIcon(Resource.Drawable.LoginLogo)
 				.SetContentTitle("FCM Message")

@@ -1,42 +1,42 @@
 {
-	"project_info": {
-		"project_number": "947442486658",
-		"firebase_url": "https://giveandtakedroidtest.firebaseio.com",
-		"project_id": "giveandtakedroidtest",
-		"storage_bucket": "giveandtakedroidtest.appspot.com"
-	},
-	"client": [
-		{
-			"client_info": {
-				"mobilesdk_app_id": "1:947442486658:android:4bd2e1435bcddeff",
-				"android_client_info": {
-					"package_name": "GiveAndTake.Droid"
-				}
-			},
-			"oauth_client": [
-				{
-					"client_id": "947442486658-u33i8celdsiua367v0hup25ohbe6tit6.apps.googleusercontent.com",
-					"client_type": 3
-				}
-			],
-			"api_key": [
-				{
-					"current_key": "AIzaSyCLtC9K8zxy9SriXSwXgvYOb5Qk0HyPFDo"
-				}
-			],
-			"services": {
-				"analytics_service": {
-					"status": 1
-				},
-				"appinvite_service": {
-					"status": 1,
-					"other_platform_oauth_client": []
-				},
-				"ads_service": {
-					"status": 2
-				}
-			}
-		}
-	],
-	"configuration_version": "1"
+  "project_info": {
+    "project_number": "947442486658",
+    "firebase_url": "https://giveandtakedroidtest.firebaseio.com",
+    "project_id": "giveandtakedroidtest",
+    "storage_bucket": "giveandtakedroidtest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947442486658:android:4bd2e1435bcddeff",
+        "android_client_info": {
+          "package_name": "GiveAndTake.Droid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947442486658-u33i8celdsiua367v0hup25ohbe6tit6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLtC9K8zxy9SriXSwXgvYOb5Qk0HyPFDo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }
