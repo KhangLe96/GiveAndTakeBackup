@@ -52,8 +52,7 @@ namespace GiveAndTake.Droid.Views.Base
 		{
 			if (BackPressedFromCreatePostCommand != null)
 			{
-				BackPressedFromCreatePostCommand.Execute();
-				BackPressedFromCreatePostCommand = null;
+				BackPressedFromCreatePostCommand.Execute();				
 			} else if (BackPressedFromHomeViewSearchedCommand != null)
 			{
 				BackPressedFromHomeViewSearchedCommand.Execute();
