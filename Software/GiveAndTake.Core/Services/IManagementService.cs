@@ -20,5 +20,6 @@ namespace GiveAndTake.Core.Services
 	    Task<User> GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
 	    Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token);
+	    Task Logout(string token);
     }
 }

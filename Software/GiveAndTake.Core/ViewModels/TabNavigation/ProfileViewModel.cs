@@ -111,6 +111,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxCommand ShowMenuPopupCommand =>
 			_showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxAsyncCommand(ShowMenuSettingView));
 
+		public IMvxInteraction LogoutFacebook =>
+			_logoutFacebook ?? (_logoutFacebook = new MvxInteraction());
+
 		private string _avatarUrl;
 		private string _userName;
 		private string _rankType;
@@ -127,6 +130,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _refreshPostsCommand;
 		private IMvxCommand _refreshRequestedPostsCommand;
 		private IMvxCommand _showMenuPopupCommand;
+		private MvxInteraction _logoutFacebook;
 		private MvxObservableCollection<PostItemViewModel> _postViewModels;
 		private MvxObservableCollection<PostItemViewModel> _requestedPostViewModels;
 
@@ -309,7 +313,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case AppConstants.LogOut:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					_logoutFacebook.Raise();
+					await Task.WhenAll(
+						ManagementService.Logout(_dataModel.LoginResponse.Token),
+						NavigationService.Navigate<LoginViewModel>(),
+						NavigationService.Close(this));
+					_dataModel.LoginResponse = null;
 					break;
 			}
 		}

@@ -1,4 +1,6 @@
-﻿using CoreAnimation;
+﻿using System;
+using CoreAnimation;
+using Facebook.LoginKit;
 using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Controls;
@@ -11,6 +13,7 @@ using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.ViewModels;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -22,6 +25,19 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 	{
 		public IMvxCommand LoadMorePostsCommand { get; set; }
 		public IMvxCommand LoadMoreRequestedPostsCommand { get; set; }
+
+		public IMvxInteraction LogoutFacebook
+		{
+			get => _logoutFacebook;
+			set
+			{
+				if (_logoutFacebook != null)
+					_logoutFacebook.Requested -= OnLogoutFacebook;
+
+				_logoutFacebook = value;
+				_logoutFacebook.Requested += OnLogoutFacebook;
+			}
+		}
 
 		private UIView _profileView;
 		private CustomMvxCachedImageView _avatarView;
@@ -39,6 +55,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private MvxUIRefreshControl _refreshRequestedPostsControl;
 		private CustomUIButton _myPostsButton;
 		private CustomUIButton _myRequestedPostsButton;
+		private IMvxInteraction _logoutFacebook;
 
 		protected override void InitView()
 		{
@@ -294,7 +311,18 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.For(v => v.Command)
 				.To(vm => vm.ShowMenuPopupCommand);
 
+			set.Bind(this)
+				.For(view => view.LogoutFacebook)
+				.To(viewModel => viewModel.LogoutFacebook)
+				.OneWay();
+
+
 			set.Apply();
+		}
+
+		private void OnLogoutFacebook(object sender, EventArgs e)
+		{
+			new LoginManager().LogOut();
 		}
 	}
 }
