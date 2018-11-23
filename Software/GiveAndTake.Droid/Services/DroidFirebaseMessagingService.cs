@@ -60,8 +60,7 @@ namespace FCMClient
 			//	intent,
 			//	PendingIntentFlags.OneShot);
 			var notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-				.SetSmallIcon(Resource.Drawable.LoginLogo)
-				.SetContentTitle("FCM Message")
+				.SetSmallIcon(Resource.Drawable.login_logo)
 				.SetContentText(messageBody)
 				.SetAutoCancel(true)
 				.SetContentIntent(pendingIntent);
