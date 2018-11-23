@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="HockeySDK.Xamarin" Version="5.1.2" />
     <PackageReference Include="I18NPortable" Version="0.6.0" />
     <PackageReference Include="MvvmCross" Version="6.1.2" />
     <PackageReference Include="MvvmCross.Plugin.Color" Version="6.1.2" />

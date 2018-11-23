@@ -144,7 +144,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task InitDataModels()
 		{
-			if (_dataModel.ApiPostsResponse == null)
+			if (PostItemViewModelCollection == null)
 			{
 				try
 				{
