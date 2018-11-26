@@ -22,6 +22,17 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			_requestService = requestService;
 		}
 
+		public ResponseRequestResponse GetResponseById(Guid id)
+		{
+			var response = _responseService.Find(id);
+			if (response != null)
+			{
+				return Mapper.Map<ResponseRequestResponse>(response);
+			}
+
+			throw new BadRequestException(CommonConstant.Error.NotFound);
+		}
+
 		public ResponseRequestResponse Create(ResponseRequest responseRequest)
 		{
 			var response = Mapper.Map<Response>(responseRequest);
@@ -33,7 +44,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 			}
 
-			//_requestService.UpdateStatus(responseRequest.RequestId, new StatusRequest(){UserStatus = RequestStatus.Approved.ToString()});
+			_requestService.UpdateStatus(responseRequest.RequestId, new StatusRequest() { UserStatus = RequestStatus.Approved.ToString() }, Guid.NewGuid());
 
 			var requestDb = _responseService.FirstOrDefault(x => x.Id == response.Id);
 			var result = Mapper.Map<ResponseRequestResponse>(requestDb);

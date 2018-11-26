@@ -245,7 +245,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			    {
 				    item.RequestStatus = RequestStatus.Rejected;
 			    }
-
+				
 			    _requestService.UpdateMany(requests, out var isSaved);
 			    if (isSaved == false)
 				    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);

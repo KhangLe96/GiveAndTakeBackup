@@ -1,4 +1,5 @@
-﻿using Giveaway.API.Shared.Requests.Response;
+﻿using System;
+using Giveaway.API.Shared.Requests.Response;
 using Giveaway.API.Shared.Responses.Response;
 using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +16,14 @@ namespace Giveaway.API.Controllers
 		public ResponseController(IResponseService responseService)
 		{
 			_responseService = responseService;
+		}
+
+		[Authorize]
+		[HttpPost("getResponseById/{id}")]
+		[Produces("application/json")]
+		public ResponseRequestResponse GetResponseById(Guid id)
+		{
+			return _responseService.GetResponseById(id);
 		}
 
 		/// <summary>
