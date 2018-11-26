@@ -306,7 +306,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		    if (postRequest.Images.Count != 0) CreateImage(postRequest);
 	    }
 
-	    private void DeleteImages(List<Image> images)
+
+		private void DeleteImages(List<Image> images)
 	    {
 		    foreach (var image in images)
 		    {

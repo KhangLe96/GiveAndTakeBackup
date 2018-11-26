@@ -20,13 +20,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		public bool Create(DeviceIdentityRequest request, Guid userId)
 		{
-			var deviceIdentityDb = _deviceIdentityService.FirstOrDefault(x => x.DeviceToken == "test");
-			if (deviceIdentityDb != null)
+			var deviceIdentity = _deviceIdentityService.FirstOrDefault(x => x.DeviceToken == request.DeviceToken && x.EntityStatus != EntityStatus.Deleted);
+			if (deviceIdentity != null)
 			{
 				return true;
 			}
 
-			DeviceIdentity deviceIdentity = GenerateDeviceIdentity(request, userId);
+			deviceIdentity = GenerateDeviceIdentity(request, userId);
 
 			_deviceIdentityService.Create(deviceIdentity, out var isSaved);
 
@@ -38,22 +38,22 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 		}
 
-		//public bool Delete(DeviceIdentityRequest request)
-		//{
-		//	if (Enum.TryParse<MobilePlatform>(request.MobilePlatform, out var platform))
-		//	{
-		//		_deviceIdentityService.Delete(x => x.DeviceToken == request.DeviceToken && x.MobilePlatform == platform,
-		//			out var isSaved);
-		//		if (isSaved)
-		//		{
-		//			return true;
-		//		}
+		public bool Delete(DeviceIdentityRequest request)
+		{
+			if (Enum.TryParse<MobilePlatform>(request.MobilePlatform, out var platform))
+			{
+				var deviceIdentity = _deviceIdentityService.FirstOrDefault(x => x.DeviceToken == request.DeviceToken && x.MobilePlatform == platform);
+				var isSaved = _deviceIdentityService.UpdateStatus(deviceIdentity.Id, EntityStatus.Deleted.ToString()) != null;
+				if (isSaved)
+				{
+					return true;
+				}
 
-		//		throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-		//	}
+				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+			}
 
-		//	throw new BadRequestException(CommonConstant.Error.InvalidInput);
-		//}
+			throw new BadRequestException(CommonConstant.Error.InvalidInput);
+		}
 
 		#region Utils
 

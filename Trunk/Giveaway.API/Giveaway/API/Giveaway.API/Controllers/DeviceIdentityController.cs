@@ -31,12 +31,12 @@ namespace Giveaway.API.Controllers
 			return _deviceIdentityService.Create(request, userId);
 		}
 
-		//[Authorize]
-		//[HttpDelete("delete")]
-		//[Produces("application/json")]
-		//public bool Delete([FromBody] DeviceIdentityRequest request)
-		//{
-		//	return _deviceIdentityService.Delete(request);
-		//}
+		[Authorize]
+		[HttpDelete("delete")]
+		[Produces("application/json")]
+		public bool Delete([FromBody] DeviceIdentityRequest request)
+		{
+			return _deviceIdentityService.Delete(request);
+		}
 	}
 }

@@ -8,6 +8,6 @@ namespace Giveaway.API.Shared.Services.APIs
 	public interface IDeviceIdentityService
 	{
 		bool Create(DeviceIdentityRequest request, Guid userId);
-		//bool Delete(DeviceIdentityRequest request);
+		bool Delete(DeviceIdentityRequest request);
 	}
 }
