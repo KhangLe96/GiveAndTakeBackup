@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration;
 using Giveaway.API.Shared.Models.DTO;
+using Giveaway.API.Shared.Requests.DeviceIdentity;
 using Giveaway.API.Shared.Requests.Image;
 using Giveaway.API.Shared.Requests.Notification;
 using Giveaway.API.Shared.Requests.Post;
@@ -154,6 +155,12 @@ namespace Giveaway.API
 			        map => map.MapFrom(source => source.Type.ToString())
 		        );
 	        cfg.CreateMap<NotificationRequest, Notification>();
+
+			#endregion
+
+			#region DeviceIdentity
+
+	        cfg.CreateMap<DeviceIdentityRequest, DeviceIdentity>();
 
 			#endregion
 

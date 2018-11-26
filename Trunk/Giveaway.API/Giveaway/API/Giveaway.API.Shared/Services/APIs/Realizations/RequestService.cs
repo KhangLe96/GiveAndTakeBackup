@@ -46,7 +46,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    public RequestPostResponse GetRequestById(Guid requestId)
 	    {
-		    var request = _requestService.Include(x => x.User).FirstOrDefault(x => x.Id == requestId);
+		    var request = _requestService.Include(x => x.User).Include(x => x.Post).FirstOrDefault(x => x.Id == requestId);
 		    if (request == null)
 		    {
 			    throw new BadRequestException(CommonConstant.Error.NotFound);

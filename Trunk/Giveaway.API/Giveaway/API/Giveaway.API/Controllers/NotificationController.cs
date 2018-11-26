@@ -6,6 +6,7 @@ using Giveaway.API.Shared.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Giveaway.API.Shared.Requests.DeviceIdentity;
 using Giveaway.API.Shared.Requests.Notification;
 using Giveaway.API.Shared.Services.APIs;
 
@@ -16,12 +17,10 @@ namespace Giveaway.API.Controllers
 	public class NotificationController : BaseController
 	{
 		private readonly INotificationService _notificationService;
-		private readonly IDeviceIdentityService _deviceIdentityService;
 
-		public NotificationController(INotificationService notificationService, IDeviceIdentityService deviceIdentityService)
+		public NotificationController(INotificationService notificationService)
 		{
 			_notificationService = notificationService;
-			_deviceIdentityService = deviceIdentityService;
 		}
 
 		[Authorize]
@@ -67,14 +66,6 @@ namespace Giveaway.API.Controllers
 		public void PushNotification()
 		{
 			_notificationService.PushNotification();
-		}
-
-		[Authorize]
-		[HttpGet("registerDevice")]
-		[Produces("application/json")]
-		public bool RegisterDevice()
-		{
-			_deviceIdentityService.Create();
 		}
 	}
 }

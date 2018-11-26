@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Giveaway.Data.Enums;
+
 //using MySql.Data.EntityFrameworkCore.DataAnnotations;
 
 namespace Giveaway.Data.Models.Database
@@ -9,7 +11,7 @@ namespace Giveaway.Data.Models.Database
 	public class DeviceIdentity : BaseEntity
 	{
 		[Required]
-		public string MobilePlatform { get; set; }
+		public MobilePlatform MobilePlatform { get; set; }
 		[Required]
 		public string DeviceToken { get; set; }
 
