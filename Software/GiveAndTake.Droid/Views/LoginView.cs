@@ -39,61 +39,61 @@ namespace GiveAndTake.Droid.Views
 
 	    protected override void InitView()
 	    {
-		    _callbackManager = CallbackManagerFactory.Create();
+			_callbackManager = CallbackManagerFactory.Create();
 
-		    var loginCallback = new FacebookCallback<LoginResult>
-		    {
-			    HandleSuccess = OnLoginSuccess
-		    };
+			var loginCallback = new FacebookCallback<LoginResult>
+			{
+				HandleSuccess = OnLoginSuccess
+			};
 
-		    LoginManager.Instance.RegisterCallback(_callbackManager, loginCallback);
+			LoginManager.Instance.RegisterCallback(_callbackManager, loginCallback);
 
-		    _btnFacebookLogin = FindViewById<ImageButton>(Resource.Id.btnFb);
-		    _btnFacebookLogin.Click += OnLoginButtonClicked;			
+			_btnFacebookLogin = FindViewById<ImageButton>(Resource.Id.btnFb);
+			_btnFacebookLogin.Click += OnLoginButtonClicked;
 		}
 
 	    protected override void CreateBinding()
         {
-            base.CreateBinding();
+			base.CreateBinding();
 
-            var bindingSet = this.CreateBindingSet<LoginView, LoginViewModel>();
+			var bindingSet = this.CreateBindingSet<LoginView, LoginViewModel>();
 
-            bindingSet.Bind(this)
-                .For(v => v.LoginCommand)
-                .To(vm => vm.LoginCommand);
+			bindingSet.Bind(this)
+				.For(v => v.LoginCommand)
+				.To(vm => vm.LoginCommand);
 
-	        bindingSet.Bind(this)
-		        .For(v => v.FireBaseToken)
-		        .To(vm => vm.FireBaseToken);
+			bindingSet.Bind(this)
+				.For(v => v.FireBaseToken)
+				.To(vm => vm.FireBaseToken);
 
 			bindingSet.Apply();
-        }
+		}
 
 	    protected override void OnViewModelSet()
 	    {
 		    base.OnViewModelSet();
 
 			accessToken = AccessToken.CurrentAccessToken;
-		    bool isLoggedIn = accessToken != null && !accessToken.IsExpired;
-		    if (isLoggedIn)
-		    {
+			bool isLoggedIn = accessToken != null && !accessToken.IsExpired;
+			if (isLoggedIn)
+			{
 				HandleSuccessfulLogin();
-		    }
+			}
 		}
 
-	    protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-	        _callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
+		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+		{
+			_callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
 			base.OnActivityResult(requestCode, resultCode, data);
-        }
+		}
 
-	    protected override void Dispose(bool disposing)
-	    {
+		protected override void Dispose(bool disposing)
+		{
 			_btnFacebookLogin.Click -= OnLoginButtonClicked;
 			base.Dispose(disposing);
-	    }
+		}
 
-	    private void OnLoginButtonClicked(object sender, EventArgs e) => 
+		private void OnLoginButtonClicked(object sender, EventArgs e) => 
 		    LoginManager.Instance.LogInWithReadPermissions(this, new[] {"public_profile", "email"});
 
 	    private void OnLoginSuccess(LoginResult loginResult)
@@ -110,16 +110,16 @@ namespace GiveAndTake.Droid.Views
 
 	    private void HandleSuccessfulLogin()
 	    {
-		    LoginCommand.Execute(new BaseUser
-		    {
-			    FirstName = Profile.CurrentProfile.FirstName,
-			    LastName = Profile.CurrentProfile.LastName,
-			    Name = Profile.CurrentProfile.Name,
-			    UserName = Profile.CurrentProfile.Id,
-			    AvatarUrl = GetProfilePicture(Profile.CurrentProfile.Id),
-			    SocialAccountId = Profile.CurrentProfile.Id
-		    });
-		    
+			LoginCommand.Execute(new BaseUser
+			{
+				FirstName = Profile.CurrentProfile.FirstName,
+				LastName = Profile.CurrentProfile.LastName,
+				Name = Profile.CurrentProfile.Name,
+				UserName = Profile.CurrentProfile.Id,
+				AvatarUrl = GetProfilePicture(Profile.CurrentProfile.Id),
+				SocialAccountId = Profile.CurrentProfile.Id
+			});
+
 			var result = IsPlayServicesAvailable();
 		    if (result)
 		    {

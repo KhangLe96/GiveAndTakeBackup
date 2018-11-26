@@ -3,6 +3,7 @@ using System.Reflection;
 using GiveAndTake.Core;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Droid.Support.V7.RecyclerView;
+using MvvmCross.Platforms.Android.Core;
 
 namespace GiveAndTake.Droid
 {

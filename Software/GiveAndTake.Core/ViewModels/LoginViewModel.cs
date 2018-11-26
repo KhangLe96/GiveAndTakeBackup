@@ -38,7 +38,7 @@ namespace GiveAndTake.Core.ViewModels
 			try
 			{
 				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
-				await ManagementService.SendFireBaseUserInformation(new FireBaseUserInformation(){FireBaseToken = FireBaseToken, OsPlatform = "Android"});
+				//await ManagementService.SendFireBaseUserInformation(new FireBaseUserInformation() { FireBaseToken = FireBaseToken, OsPlatform = "Android" });
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}

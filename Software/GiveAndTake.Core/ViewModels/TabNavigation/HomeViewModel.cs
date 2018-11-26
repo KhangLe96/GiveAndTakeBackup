@@ -127,19 +127,26 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 					await ManagementService.InitData();
 					_selectedCategory = _selectedCategory ?? _dataModel.Categories.First();
-					_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
-					_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();				
-					await UpdatePostViewModels();
-					await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+					_selectedProvinceCity = _selectedProvinceCity ??
+					                        _dataModel.ProvinceCities.First(p =>
+						                        p.ProvinceCityName == AppConstants.DefaultLocationFilter);
+					_selectedSortFilter = _selectedSortFilter ?? _dataModel.SortFilters.First();
+					await UpdatePostViewModels();					
 				}
 			}
 			catch (AppException.ApiException)
 			{
-				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ErrorConnectionMessage);
+				var result =
+					await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants
+						.ErrorConnectionMessage);
 				if (result == RequestStatus.Submitted)
 				{
 					await InitDataModels();
 				}
+			}
+			finally
+			{
+				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 			}			
 		}
 
@@ -255,7 +262,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel.Categories.RemoveAt(0);
 
 			var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			//await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdateCategories();
 			if (result)
 			{				

@@ -6,7 +6,7 @@ namespace GiveAndTake.Core
 	{
 		public const string AppTitle = "Cho và Nhận";
 		public const string DefaultLocationFilter = "Đà Nẵng";
-		public const string ApiUrl = "https://api.chovanhan.asia/api/v1/";
+		public const string ApiUrl = "http://192.168.51.137:8089/api/v1/";
 		public const int ApiTimeout = 300; // seconds
 		public const string GetCategories = "categories/app/list";
 		public const string GetPostList = "post/app/list";

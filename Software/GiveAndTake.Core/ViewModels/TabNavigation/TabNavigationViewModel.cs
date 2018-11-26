@@ -27,9 +27,31 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		public string AvatarUrl => _dataModel.LoginResponse.Profile.AvatarUrl;
 
-		public TabNavigationViewModel(IDataModel dataModel)
+		public override void ViewCreated()
 		{
-			_dataModel = dataModel;
+			base.ViewCreated();
+			DataModel.NotificationReceived += OnNotificationReceived;
+		}
+
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			DataModel.NotificationReceived -= OnNotificationReceived;
+		}
+		
+		public async void InitErrorResponseAsync()
+		{
+			var result = await NavigationService.Navigate<PopupWarningResponseViewModel, string, bool>(AppConstants.ErrorMessage);
+			if (result)
+			{
+				System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
+			}
+		}
+
+		private void OnNotificationReceived(object sender, Notification notification)
+		{
+			NavigationService.Navigate<PopupWarningViewModel>("Master view show truoc");
+			HandleNotificationClicked(notification);
 		}
 
 		private async Task ShowNotifications()
@@ -49,15 +71,19 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			NumberOfTab = tasks.Count;
 			await Task.WhenAll(tasks);
+
+			if (DataModel.SelectedNotification != null)
+			{
+				//await NavigationService.Navigate<PopupWarningViewModel>("Tu splash");
+
+				HandleNotificationClicked(DataModel.SelectedNotification);
+			}
 		}
 
-		public async void InitErrorResponseAsync()
+		private void HandleNotificationClicked(Notification notification)
 		{
-			var result = await NavigationService.Navigate<PopupWarningResponseViewModel, string, bool>(AppConstants.ErrorMessage);
-			if (result)
-			{
-				System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
-			}
+			// TODO: navigate to corresponding page, check uid
+			DataModel.SelectedNotification = null;
 		}
 	}
 }

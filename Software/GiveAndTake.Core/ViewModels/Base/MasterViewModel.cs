@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Commands;
 
@@ -14,8 +15,8 @@ namespace GiveAndTake.Core.ViewModels.Base
 
 		private async Task ShowInitialViewModels()
 		{
+			DataModel.IsLoggedIn = true;
 			await NavigationService.Navigate<TabNavigationViewModel>();
 		}
-
 	}
 }
