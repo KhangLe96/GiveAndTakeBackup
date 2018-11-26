@@ -12,21 +12,31 @@ using PushSharp.Google;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Giveaway.API.Shared.Constants;
+using Newtonsoft.Json;
+using PushSharp.Core;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
 	public class NotificationService : INotificationService
 	{
+		private readonly string FcmProjectNumber = "947442486658";
+		private readonly string FcmApiKey = "AIzaSyDz4a1OFP_qeQ8BsJ3seHulWHUs2RSgklM";
+		private FcmServiceBroker _fcmBroker;
+
 		private readonly DbService.INotificationService _notificationService;
 		private readonly DbService.IPostService _postService;
 		private readonly DbService.IUserService _userService;
+		private readonly DbService.IDeviceIdentityService _deviceIdentityService;
 
-		public NotificationService(DbService.INotificationService notificationService, DbService.IPostService postService, DbService.IUserService userService)
+		public NotificationService(DbService.INotificationService notificationService, DbService.IPostService postService,
+			DbService.IUserService userService, DbService.IDeviceIdentityService deviceIdentityService)
 		{
 			_notificationService = notificationService;
 			_postService = postService;
 			_userService = userService;
+			_deviceIdentityService = deviceIdentityService;
 		}
 
 		public PagingQueryResponse<NotificationResponse> GetNotificationForPaging(Guid userId, IDictionary<string, string> @params)
@@ -53,6 +63,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var noti = _notificationService.Create(notification, out var isSaved);
 			if (isSaved)
 			{
+				PushAndroidNotification(noti);
 				return Mapper.Map<Notification, NotificationResponse>(noti);
 			}
 
@@ -106,103 +117,24 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			return true;
 		}
 
-		public void PushNotification()
+		public void PushAndroidNotification(Notification notification)
 		{
-			var config = new FcmConfiguration("179460394067", "AIzaSyCfzK4m0TR78drfat67wl_K5WuSRpVrDN4", "");
-			//config.FcmUrl = "https://fcm.googleapis.com/fcm/send";
-			//var provider = "FCM";
+			InitForAndroid();
 
-			// Create a new broker
-			var gcmBroker = new FcmServiceBroker(config);
+			_fcmBroker.Start();
 
-			// Wire up events
-			gcmBroker.OnNotificationFailed += (notification, aggregateEx) => {
+			List<string> myRegistrationIds = new List<string>() { "dJn93Lzb4nM:APA91bHqL0YL8_VlAyP3fa68hqjyFAXQOZ5NA4PJVBj0xPuZFacsm--mSVmXUze-jZJw_AWR4Jc2ss_IRJg9MqxqOaSThScsOYzZuCHv7nsX74tyUn1nlIIiKGa1Bo30ce9nWaJTAgu8" };
+			var dataNotification = JsonConvert.SerializeObject(Mapper.Map<NotificationResponse>(notification));
 
-				aggregateEx.Handle(ex => {
-
-					// See what kind of exception it was to further diagnose
-					if (ex is FcmNotificationException notificationException)
-					{
-
-						// Deal with the failed notification
-						var gcmNotification = notificationException.Notification;
-						var description = notificationException.Description;
-
-						//Console.WriteLine($"{provider} Notification Failed: ID={gcmNotification.MessageId}, Desc={description}");
-					}
-					else if (ex is FcmMulticastResultException multicastException)
-					{
-
-						foreach (var succeededNotification in multicastException.Succeeded)
-						{
-							//Console.WriteLine($"{provider} Notification Succeeded: ID={succeededNotification.MessageId}");
-						}
-
-						foreach (var failedKvp in multicastException.Failed)
-						{
-							var n = failedKvp.Key;
-							var e = failedKvp.Value;
-
-							//Console.WriteLine($"{provider} Notification Failed: ID={n.MessageId}, Desc={e.Description}");
-						}
-
-					}
-					//else if (ex is DeviceSubscriptionExpiredException expiredException)
-					//{
-
-					//	var oldId = expiredException.OldSubscriptionId;
-					//	var newId = expiredException.NewSubscriptionId;
-
-					//	Console.WriteLine($"Device RegistrationId Expired: {oldId}");
-
-					//	if (!string.IsNullOrWhiteSpace(newId))
-					//	{
-					//		// If this value isn't null, our subscription changed and we should update our database
-					//		Console.WriteLine($"Device RegistrationId Changed To: {newId}");
-					//	}
-					//}
-					//else if (ex is RetryAfterException retryException)
-					//{
-
-					//	// If you get rate limited, you should stop sending messages until after the RetryAfterUtc date
-					//	Console.WriteLine($"{provider} Rate Limited, don't send more until after {retryException.RetryAfterUtc}");
-					//}
-					//else
-					//{
-					//	Console.WriteLine("{provider} Notification Failed for some unknown reason");
-					//}
-
-					// Mark it as handled
-					return true;
-				});
-			};
-
-			gcmBroker.OnNotificationSucceeded += (notification) => {
-				Console.WriteLine("{provider} Notification Sent!");
-			};
-
-			// Start the broker
-			gcmBroker.Start();
-
-			List<string> MY_REGISTRATION_IDS = new List<string>() { "cABz-hrZIgU:APA91bGEBsp7xQQq-kv46M76E1VQb_xfkT3jv__HKQgztxJedrP7EXYrGpc9rH_LXfN1EJUc-CC8h7LuouHjVVFtqYhSKpi3gcNgK7RezQDBij0JyjGspQEpatjaS6kuEHLXDOP-UQQR" };
-			//foreach (var regId in MY_REGISTRATION_IDS)
-			//{
-			//	// Queue a notification to send
-
-			//}
-			gcmBroker.QueueNotification(new FcmNotification
+			_fcmBroker.QueueNotification(new FcmNotification
 			{
-				RegistrationIds = MY_REGISTRATION_IDS,
-				Notification = JObject.Parse("{ \"somekey\" : \"somevalue\" }"),
-				//Data = JObject.Parse("{ \"somekey\" : \"somevalue\" }")
+				RegistrationIds = myRegistrationIds,
+				Notification = JObject.Parse(dataNotification)
 			});
-			// Stop the broker, wait for it to finish   
-			// This isn't done after every message, but after you're
-			// done with the broker
 
-			if (gcmBroker.IsCompleted)
+			if (_fcmBroker.IsCompleted)
 			{
-				gcmBroker.Stop();
+				_fcmBroker.Stop();
 			}
 		}
 
@@ -243,6 +175,28 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			return notificationResponse;
 		}
 
+		private void InitForAndroid()
+		{
+			var config = new FcmConfiguration(FcmProjectNumber, FcmApiKey, null);
+			_fcmBroker = new FcmServiceBroker(config);
+
+			_fcmBroker.OnNotificationFailed += (notification, aggregateEx) =>
+			{
+				aggregateEx.Handle(ex =>
+				{
+					if (ex is DeviceSubscriptionExpiredException expiredException)
+					{
+						var oldId = expiredException.OldSubscriptionId;
+						if (Guid.TryParse(oldId, out var id))
+						{
+							_deviceIdentityService.UpdateStatus(id, EntityStatus.Deleted.ToString());
+						}
+					}
+
+					return true;
+				});
+			};
+		}
 		#endregion
 	}
 }

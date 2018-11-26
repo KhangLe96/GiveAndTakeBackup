@@ -87,7 +87,8 @@ namespace Giveaway.API.Controllers
         [Produces("application/json")]
         public bool UpdateStatus(Guid requestId, [FromBody]StatusRequest request)
         {
-            return _requestService.UpdateStatus(requestId, request);
+	        var userId = User.GetUserId();
+			return _requestService.UpdateStatus(requestId, request, userId);
         }
 
         /// <summary>

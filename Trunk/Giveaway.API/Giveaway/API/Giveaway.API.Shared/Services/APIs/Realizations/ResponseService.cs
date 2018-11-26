@@ -33,7 +33,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 			}
 
-			_requestService.UpdateStatus(responseRequest.RequestId, new StatusRequest(){UserStatus = RequestStatus.Approved.ToString()});
+			//_requestService.UpdateStatus(responseRequest.RequestId, new StatusRequest(){UserStatus = RequestStatus.Approved.ToString()});
 
 			var requestDb = _responseService.FirstOrDefault(x => x.Id == response.Id);
 			var result = Mapper.Map<ResponseRequestResponse>(requestDb);

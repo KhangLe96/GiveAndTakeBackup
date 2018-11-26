@@ -1,10 +1,9 @@
-﻿using System;
-using AutoMapper;
-using Giveaway.API.Shared.Requests.DeviceIdentity;
+﻿using Giveaway.API.Shared.Requests.DeviceIdentity;
 using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using Giveaway.Util.Constants;
+using System;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations

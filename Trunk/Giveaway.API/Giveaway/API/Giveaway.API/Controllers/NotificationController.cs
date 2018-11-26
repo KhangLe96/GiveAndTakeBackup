@@ -65,7 +65,7 @@ namespace Giveaway.API.Controllers
 		[Produces("application/json")]
 		public void PushNotification()
 		{
-			_notificationService.PushNotification();
+			//_notificationService.PushAndroidNotification();
 		}
 	}
 }

@@ -10,8 +10,8 @@ namespace Giveaway.Data.Models.Database
 	[Table("Request")]
     public class Request : BaseEntity
     {
-        public Guid? PostId { get; set; }
-        public Guid? UserId { get; set; }
+        public Guid PostId { get; set; }
+        public Guid UserId { get; set; }
 
         [Required]
         public string RequestMessage { get; set; }

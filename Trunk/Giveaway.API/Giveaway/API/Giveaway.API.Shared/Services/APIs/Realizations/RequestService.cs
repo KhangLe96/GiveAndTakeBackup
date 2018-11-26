@@ -21,11 +21,16 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
     {
         private readonly DbService.IRequestService _requestService;
         private readonly DbService.IPostService _postService;
+	    private readonly DbService.IUserService _userService;
+		private readonly INotificationService _notificationService;
 
-        public RequestService(DbService.IRequestService requestService, DbService.IPostService postService)
+		public RequestService(DbService.IRequestService requestService, DbService.IPostService postService,
+			INotificationService notificationService, DbService.IUserService userService)
         {
             _requestService = requestService;
             _postService = postService;
+	        _notificationService = notificationService;
+	        _userService = userService;
         }
 
         public PagingQueryResponse<RequestPostResponse> GetRequestForPaging(string postId, IDictionary<string, string> @params)
@@ -77,9 +82,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			return postResponse;
         }
 
-        public bool UpdateStatus(Guid requestId, StatusRequest statusRequest)
+        public bool UpdateStatus(Guid requestId, StatusRequest statusRequest, Guid userId)
         {
-            var request = _requestService.Find(requestId);
+            var request = _requestService.Include(x => x.User).Find(requestId);
             if (request == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
@@ -88,10 +93,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             ChangeStatus(statusRequest, request);
 
             bool updated = _requestService.Update(request);
-            if (updated == false)
-                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+            if (updated)
+			{
+				if (statusRequest.UserStatus == RequestStatus.Rejected.ToString())
+				{
+					var user = _userService.Find(userId);
+					_notificationService.Create(new Notification()
+					{
+						Message = $"{user.FirstName} {user.LastName} đã từ chối yêu cầu của bạn!",
+						Type = NotificationType.IsRejected,
+						RelevantId = request.PostId,
+						SourceUserId = userId,
+						DestinationUserId = request.UserId
+					});
+				}
 
-            return updated;
+				return updated;
+			}
+
+			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
         }
 
         public bool Delete(Guid requestId)
@@ -140,20 +160,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		private void ChangeStatus(StatusRequest statusRequest, Request request)
         {
-            if (statusRequest.UserStatus == RequestStatus.Approved.ToString())
-            {
-                request.RequestStatus = RequestStatus.Approved;
-            }
-            else if (statusRequest.UserStatus == RequestStatus.Pending.ToString())
-            {
-                request.RequestStatus = RequestStatus.Pending;
-            }
-            else if (statusRequest.UserStatus == RequestStatus.Rejected.ToString())
-            {
-                request.RequestStatus = RequestStatus.Rejected;
-            }
-            else
-                throw new BadRequestException(CommonConstant.Error.BadRequest);
+	        if (Enum.TryParse<RequestStatus>(statusRequest.UserStatus, out var status))
+	        {
+				request.RequestStatus = status;
+			}
+	        else
+	        {
+				throw new BadRequestException(CommonConstant.Error.InvalidInput);
+			}
+            
         }
 
         private List<RequestPostResponse> GetPagedRequests(string postId, PagingQueryRequestPostRequest request, out int total)

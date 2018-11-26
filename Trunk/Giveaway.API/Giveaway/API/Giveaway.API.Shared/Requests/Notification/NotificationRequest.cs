@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
-using System.Text;
-using Giveaway.Data.Enums;
-using Newtonsoft.Json;
 
 namespace Giveaway.API.Shared.Requests.Notification
 {
