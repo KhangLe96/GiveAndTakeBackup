@@ -20,11 +20,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		public bool Create(DeviceIdentityRequest request, Guid userId)
 		{
-			//var deviceIdentityDb = _deviceIdentityService.FirstOrDefault(x => x.DeviceToken == request.DeviceToken);
-			//if (deviceIdentityDb != null)
-			//{
-			//	return true;
-			//}
+			var deviceIdentityDb = _deviceIdentityService.FirstOrDefault(x => x.DeviceToken == "test");
+			if (deviceIdentityDb != null)
+			{
+				return true;
+			}
 
 			DeviceIdentity deviceIdentity = GenerateDeviceIdentity(request, userId);
 
