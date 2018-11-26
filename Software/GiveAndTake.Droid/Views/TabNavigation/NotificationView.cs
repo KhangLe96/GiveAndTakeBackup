@@ -2,7 +2,6 @@
 using Android.Support.V7.Widget;
 using Android.Views;
 using GiveAndTake.Core;
-using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Binding.BindingContext;
