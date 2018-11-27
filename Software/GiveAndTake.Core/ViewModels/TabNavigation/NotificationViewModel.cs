@@ -138,6 +138,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
                         await NavigationService.Navigate<PostDetailViewModel, Post>(post);
                         break;
+
+					default:
+						await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+						break;
                 }
 			}
 
@@ -147,9 +151,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private async void OnRequestRejected(Request request)
 		{
 			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.RequestRejectingMessage);
+
 			if (result == RequestStatus.Submitted)
 			{
 				var isSaved = await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _token);
+				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 				if (isSaved)
 				{
 					await NavigationService.Navigate<PopupNotificationViewModel, string>(AppConstants.SuccessfulRejectionMessage);
