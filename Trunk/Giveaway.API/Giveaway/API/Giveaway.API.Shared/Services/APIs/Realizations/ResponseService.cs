@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using Giveaway.API.Shared.Requests;
 using Giveaway.API.Shared.Requests.Response;
-using Giveaway.API.Shared.Responses.Response;
-using Giveaway.Data.EF.Exceptions;
-using Giveaway.Data.Models.Database;
-using Giveaway.Util.Constants;
-using System;
 using Giveaway.API.Shared.Responses.Post;
+using Giveaway.API.Shared.Responses.Response;
 using Giveaway.API.Shared.Responses.User;
+using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.EF.Extensions;
 using Giveaway.Data.Enums;
+using Giveaway.Data.Models.Database;
+using Giveaway.Util.Constants;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -33,12 +33,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		public ResponseRequestResponse GetResponseById(Guid id)
 		{
-			var response = _responseService.Include(x => x.Request.User).Include(x => x.Request.Post).Find(id);
+			var response = _responseService.Include(x => x.Request.User).Include(x => x.Request.Post.Images).Find(id);
 			if (response != null)
 			{
 				var result = Mapper.Map<ResponseRequestResponse>(response);
 				result.User = Mapper.Map<UserRequestResponse>(response.Request.User);
 				result.Post = Mapper.Map<PostRequestResponse>(response.Request.Post);
+				result.Post.Image = response.Request.Post.Images?.ElementAt(0).ResizedImage;
 
 				return result;
 			}

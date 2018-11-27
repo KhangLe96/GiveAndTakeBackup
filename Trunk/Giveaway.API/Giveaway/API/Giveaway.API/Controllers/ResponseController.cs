@@ -20,7 +20,7 @@ namespace Giveaway.API.Controllers
 		}
 
 		[Authorize]
-		[HttpPost("getResponseById/{id}")]
+		[HttpGet("getResponseById/{id}")]
 		[Produces("application/json")]
 		public ResponseRequestResponse GetResponseById(Guid id)
 		{

@@ -179,8 +179,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
             }
-
-            if (!string.IsNullOrEmpty(postId))
+			// Get list by postId
+			if (!string.IsNullOrEmpty(postId))
             {
                 try
                 {

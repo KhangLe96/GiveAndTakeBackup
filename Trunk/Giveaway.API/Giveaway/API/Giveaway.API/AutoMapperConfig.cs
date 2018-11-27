@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using AutoMapper.Configuration;
 using Giveaway.API.Shared.Models.DTO;
 using Giveaway.API.Shared.Requests.DeviceIdentity;
@@ -131,11 +132,11 @@ namespace Giveaway.API
 
             #region Request
 
-            cfg.CreateMap<Request, RequestPostResponse>()
-                .ForMember(
-                    destination => destination.RequestStatus,
-                    map => map.MapFrom(source => source.RequestStatus.ToString())
-                );
+	        cfg.CreateMap<Request, RequestPostResponse>()
+		        .ForMember(
+			        destination => destination.RequestStatus,
+			        map => map.MapFrom(source => source.RequestStatus.ToString())
+		        );
             cfg.CreateMap<RequestPostRequest, Request>();
 
 			#endregion

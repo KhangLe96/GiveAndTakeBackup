@@ -7,14 +7,13 @@ using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Enums;
 using Giveaway.Data.Models.Database;
 using Giveaway.Util.Constants;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PushSharp.Core;
 using PushSharp.Google;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Giveaway.API.Shared.Constants;
-using Newtonsoft.Json;
-using PushSharp.Core;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations

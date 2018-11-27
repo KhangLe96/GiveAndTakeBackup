@@ -1,14 +1,12 @@
-﻿using System;
-using Giveaway.API.Shared.Extensions;
+﻿using Giveaway.API.Shared.Extensions;
+using Giveaway.API.Shared.Requests.Notification;
 using Giveaway.API.Shared.Responses;
 using Giveaway.API.Shared.Responses.Notification;
-using Giveaway.API.Shared.Services;
+using Giveaway.API.Shared.Services.APIs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using Giveaway.API.Shared.Requests.DeviceIdentity;
-using Giveaway.API.Shared.Requests.Notification;
-using Giveaway.API.Shared.Services.APIs;
 
 namespace Giveaway.API.Controllers
 {
