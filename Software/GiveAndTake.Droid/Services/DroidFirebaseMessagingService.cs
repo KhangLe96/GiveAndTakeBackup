@@ -32,7 +32,6 @@ namespace FCMClient
 			{
 				var notification = new Notification();
 				var dictionary = new Dictionary<string, string>();
-
 				foreach (var dataMember in GetModelDataMembers(notification.GetType()))
 				{
 
@@ -44,7 +43,6 @@ namespace FCMClient
 						dictionary[dataMember] = value;
 					}
 				}
-
 				notification = dictionary.ToObject<Notification>();
 				SendNotification(notification);
 			}
@@ -54,7 +52,7 @@ namespace FCMClient
 		{
 			var intent = new Intent(this, typeof(SplashScreen));
 			intent.AddFlags(ActivityFlags.ClearTop);
-			intent.PutExtra("giveandtake", JsonHelper.Serialize(notification));
+			intent.PutExtra("GiveAndTakeNotification", JsonHelper.Serialize(notification));
 			var pendingIntent = PendingIntent.GetActivity(this,
 				GenerateUniqueInt(),
 				intent,
@@ -79,7 +77,6 @@ namespace FCMClient
 				channel.SetVibrationPattern(new long[] { 1000, 1000, 1000, 1000, 1000 });
 				channel.EnableVibration(true);
 				notificationManager.CreateNotificationChannel(channel);
-
 			}
 			else
 			{
@@ -106,12 +103,10 @@ namespace FCMClient
 				{
 					continue;
 				}
-
 				var dataMemberAttributes = property.GetCustomAttributes(typeof(DataMemberAttribute), false).OfType<DataMemberAttribute>().ToList();
 				var dataMemberName = dataMemberAttributes.Any() ? dataMemberAttributes[0].Name : property.Name;
 				names.Add(dataMemberName);
 			}
-
 			return names;
 		}
 	}

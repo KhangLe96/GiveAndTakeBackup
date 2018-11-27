@@ -30,38 +30,28 @@ namespace GiveAndTake.Droid
 		{
 			base.OnResume();
 
-			var data = Intent?.Extras?.GetString("giveandtake");
+			var notificationData = Intent?.Extras?.GetString("GiveAndTakeNotification");
 			bool isDataModelInitialized = Mvx.CanResolve<IDataModel>();
-			
-			if (data != null)
+
+			if (notificationData != null)
 			{
-				try
+				var notification = JsonHelper.Deserialize<Core.Models.Notification>(notificationData);
+				if (isDataModelInitialized)
 				{
-					var notification = JsonHelper.Deserialize<Core.Models.Notification>(data);
-					if (isDataModelInitialized)
-					{
-						var dataModel = Mvx.Resolve<IDataModel>();
+					var dataModel = Mvx.Resolve<IDataModel>();
 
-						if (dataModel.IsLoggedIn)
-						{
-							a = true;
-							_clickedNotification = notification;
-							Finish();
-						}
-
-						// TODO: clear extra 'giveandtake'
-						Intent.Extras.Clear();
-					}
-					else
+					if (dataModel.IsLoggedIn)
 					{
+						a = true;
 						_clickedNotification = notification;
+						Finish();
 					}
+					Intent.Extras.Clear();
 				}
-				catch (Exception e)
+				else
 				{
-					Toast.MakeText(this, e.Message, ToastLength.Long).Show();
+					_clickedNotification = notification;
 				}
-				
 			}
 			else
 			{
@@ -75,16 +65,11 @@ namespace GiveAndTake.Droid
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
-
 			if (_clickedNotification != null)
 			{
 				var dataModel = Mvx.Resolve<IDataModel>();
 				dataModel.SelectedNotification = _clickedNotification;
-
-				if (a)
-				{
-					dataModel.RaiseNotificationReceived(_clickedNotification);
-				}
+				dataModel.RaiseNotificationReceived(_clickedNotification);
 			}
 		}
 	}

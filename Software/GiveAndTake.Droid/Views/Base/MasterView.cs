@@ -18,7 +18,6 @@ namespace GiveAndTake.Droid.Views.Base
 	{
 		protected override int LayoutId => Resource.Layout.MasterView;
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
-
 		public IMvxCommand BackPressedFromCreatePostCommand { get; set; }
 		public IMvxCommand BackPressedFromHomeViewSearchedCommand { get; set; }
 		public IMvxCommand BackPressedFromPostDetailCommand { get; set; }
@@ -76,7 +75,5 @@ namespace GiveAndTake.Droid.Views.Base
 				}				
 		}
 		}
-
-
 	}
 }
