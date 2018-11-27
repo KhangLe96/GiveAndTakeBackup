@@ -100,14 +100,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case "Comment":
+					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 
 				case "Request":
-					
 					await HandleRequestType(notification);
 					break;
 
 				case "IsAccepted":
+					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 
 				case "IsRejected":
@@ -115,9 +116,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case "BlockedPost":
+					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 
 				case "Warning":
+					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 			}
 		}
@@ -127,10 +130,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			var isProcessed = await ManagementService.CheckIfRequestProcessed(notification.RelevantId, _token);
 			var request = await ManagementService.GetRequestById(notification.RelevantId, _token);
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			
 			if (isProcessed)
 			{
-				await NavigationService.Navigate<RequestsViewModel, string, bool>(request.PostId);
+                var post = await ManagementService.GetPostDetail(request.Post.PostId);
+                await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+                await NavigationService.Navigate<RequestsViewModel, Post, bool>(post);
 			}
 			else
 			{
@@ -140,19 +145,36 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					case PopupRequestDetailResult.Rejected:
 						OnRequestRejected(request);
 						break;
+
 					case PopupRequestDetailResult.Accepted:
 						OnRequestAccepted(request);
 						break;
-				}
+
+                    case PopupRequestDetailResult.ShowPostDetail:
+                        await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+                        var post = await ManagementService.GetPostDetail(request.Post.PostId);
+                        post.IsMyPost = true;
+
+                        await NavigationService.Navigate<PostDetailViewModel, Post>(post);
+                        break;
+
+					default:
+						await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+						break;
+                }
 			}
+
+			await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
 		}
 
 		private async void OnRequestRejected(Request request)
 		{
 			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.RequestRejectingMessage);
+
 			if (result == RequestStatus.Submitted)
 			{
 				var isSaved = await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _token);
+				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 				if (isSaved)
 				{
 					await NavigationService.Navigate<PopupNotificationViewModel, string>(AppConstants.SuccessfulRejectionMessage);

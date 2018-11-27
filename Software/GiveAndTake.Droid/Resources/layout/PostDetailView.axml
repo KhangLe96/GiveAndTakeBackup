@@ -75,7 +75,7 @@
 		android:layout_marginTop="@dimen/post_detail_default_text_view_margin_top"
 		android:textSize="@dimen/post_detail_status_text_size"
 		android:layout_toLeftOf="@+id/extensionField"
-		android:fontFamily="@font/sanfranciscodisplay_light"
+		android:fontFamily="@font/sanfranciscodisplay_regular"
 		local:MvxBind="Text Status" />
 	<ScrollView
 		android:id="@+id/scrollView"

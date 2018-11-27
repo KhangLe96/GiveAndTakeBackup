@@ -30,7 +30,7 @@ namespace GiveAndTake.iOS.Views
 				Frame = _cellFrame
 			};
 
-			imageView.ImageUrl = _images.Count == 0 ? ImageHelper.DefaultPost : _images[(int)index]?.ResizedImage.Replace("192.168.51.137:8089", "api.chovanhan.asia");
+			imageView.ImageUrl = _images.Count == 0 ? ImageHelper.DefaultPost : _images[(int)index]?.OriginalImage;
 	
 			return imageView;
 		}

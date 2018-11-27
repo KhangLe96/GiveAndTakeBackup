@@ -25,6 +25,7 @@ namespace GiveAndTake.iOS.Views.Popups
 
 		protected override void InitView()
 		{
+			HeaderBar.Hidden = true;
 			View.BackgroundColor = UIColor.Clear;
 			var container = UIHelper.CreateView(0, 0, UIColor.White);
 			View.Add(container);

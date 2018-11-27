@@ -39,6 +39,19 @@
 	{
 		Cancelled,
 		Accepted,
-		Rejected
+		Rejected,
+		ShowPostDetail
+	}
+
+	public enum ListViewItemType
+	{
+		MyPosts,
+		MyRequests
+	}
+
+	public enum ViewMode
+	{
+		CreatePost,
+		EditPost,
 	}
 }

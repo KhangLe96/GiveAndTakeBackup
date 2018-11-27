@@ -18,6 +18,8 @@ namespace Giveaway.Data.Models.Database
 		[Required]
 		public NotificationType Type { get; set; }
 		[Required]
-		public NotificationStatus Status { get; set; }
+		public bool IsSeen { get; set; }
+		[Required]
+		public bool IsRead { get; set; }
 	}
 }

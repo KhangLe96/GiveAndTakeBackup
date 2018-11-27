@@ -10,11 +10,12 @@ namespace GiveAndTake.Core.Services
 	    Task<CategoryResponse> GetCategories();
 	    Task<ProvinceCitiesResponse> GetProvinceCities();
 	    Task<ApiPostsResponse> GetPostList(string filterParams);
+	    Task<ApiPostsResponse> GetMyPostList(string id, string filterParams, string token);
         Task<Post> GetPostDetail(string postId);
         Task<ApiPostsResponse> GetPostOfUser(string userId);
-        Task ChangeStatusOfPost(string postId, string newStatus);
-		Task EditPost(EditPost post);
-	    Task<LoginResponse> LoginFacebook(BaseUser baseUser);
+        Task ChangeStatusOfPost(string postId, string newStatus, string token);
+	    Task<bool> EditPost(EditPost post, string postId, string token);
+		Task<LoginResponse> LoginFacebook(BaseUser baseUser);
 		Task<bool> CreatePost(CreatePost post, string token);
 	    Task<bool> CreateRequest(Request request, string token);
 		Task<User> UpdateCurrentUserProfile(User user);
@@ -31,5 +32,8 @@ namespace GiveAndTake.Core.Services
 	    Task<bool> CheckIfRequestProcessed(Guid requestId, string token);
 		Task InitData();
 	    Task SendFireBaseUserInformation(FireBaseUserInformation info, string token);
+
+	    Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token);
+	    Task Logout(string token);
     }
 }

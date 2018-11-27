@@ -49,12 +49,25 @@ namespace Giveaway.API.Controllers
             return _requestService.GetRequestForPaging(postId, @params);
         }
 
-        /// <summary>
-        /// Create a request
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Authorize]
+		/// <summary>
+		/// Get a request by Id
+		/// </summary>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
+	    [Authorize]
+	    [HttpGet("getRequestById/{requestId}")]
+	    [Produces("application/json")]
+		public RequestPostResponse GetRequestById(Guid requestId)
+	    {
+		    return _requestService.GetRequestById(requestId);
+	    }
+
+		/// <summary>
+		/// Create a request
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		[Authorize]
         [HttpPost("create")]
         [Produces("application/json")]
         public RequestPostResponse Create([FromBody]RequestPostRequest request)
@@ -117,5 +130,18 @@ namespace Giveaway.API.Controllers
             var userId = User.GetUserId();
             return _requestService.CheckUserRequest(postId, userId);
         }
-    }
+
+		/// <summary>
+		/// Check if a request has been processed: true means request is deleted or accecpted or rejected, false means request is activated and pending
+		/// </summary>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
+	    [Authorize]
+	    [HttpGet("checkIfRequestProcessed/{requestId}")]
+	    [Produces("application/json")]
+	    public bool CheckIfRequestProcessed(Guid requestId)
+	    {
+		    return _requestService.CheckIfRequestProcessed(requestId);
+	    }
+	}
 }

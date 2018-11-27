@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Giveaway.Data.Models;
 using DbService = Giveaway.Service.Services;
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -53,46 +54,36 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-	    public PagingQueryResponse<PostAppResponse> GetListRequestedPostOfUser(IDictionary<string, string> @params, string userId)
+	    public PagingQueryResponse<RequestedPostResponse> GetListRequestedPostOfUser(IDictionary<string, string> @params, string userId)
 	    {
 		    var request = @params.ToObject<PagingQueryPostRequest>();
 
 		    if (Guid.TryParse(userId, out var id))
 		    {
-				var posts = _postService.Include(x => x.Category)
-					.Include(x => x.Images)
-					.Include(x => x.ProvinceCity)
-					.Include(x => x.User)
-					.Include(x => x.Comments)
-					.Include(x => x.Requests)
-					.Where(x => x.Category.EntityStatus == EntityStatus.Activated);
-
-			    IEnumerable<Post> requestedPosts = new List<Post>();
-				
-				foreach (var post in posts)
-				{
-					if (post.Requests.Any(x => x.EntityStatus != EntityStatus.Deleted && x.UserId == id))
-					{
-						requestedPosts = requestedPosts.Concat(new List<Post>(){post});
-					}
-				}
+			    var posts = _postService.Include(x => x.Category)
+				    .Include(x => x.Images)
+				    .Include(x => x.ProvinceCity)
+				    .Include(x => x.User)
+				    .Include(x => x.Comments)
+				    .Include(x => x.Requests)
+				    .Where(x => x.Category.EntityStatus == EntityStatus.Activated &&
+				                x.Requests.Any(y => y.EntityStatus != EntityStatus.Deleted && y.UserId == id));
 
 				//filter posts by properties
-			    requestedPosts = FilterPost(request, requestedPosts);
-			    requestedPosts = SortPosts(request, requestedPosts);
+			    posts = FilterPost(request, posts);
+			    posts = SortPosts(request, posts);
 
-			    var result = requestedPosts.Skip(request.Limit * (request.Page - 1)).Take(request.Limit).Select(Mapper.Map<PostAppResponse>).ToList();
-			    foreach (var post in result)
-			    {
-				    post.IsCurrentUserRequested = true;
-			    }
+			    var result = posts.Skip(request.Limit * (request.Page - 1))
+				    .Take(request.Limit).AsEnumerable()
+				    .Select(x => GenerateRequestedPostResponse(x, id))
+				    .ToList();
 
-				return new PagingQueryResponse<PostAppResponse>
+				return new PagingQueryResponse<RequestedPostResponse>
 			    {
 				    Data = result,
 				    PageInformation = new PageInformation
 				    {
-					    Total = requestedPosts.Count(),
+					    Total = posts.Count(),
 					    Page = request.Page,
 					    Limit = request.Limit
 				    }
@@ -102,7 +93,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		    throw new BadRequestException(CommonConstant.Error.InvalidInput);
 	    }
 
-		public T GetDetail(Guid postId, string userId)
+	    public T GetDetail(Guid postId, string userId)
 		{
             try
             {
@@ -163,7 +154,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         public PostAppResponse Update(Guid id, PostRequest postRequest)
         {
-            var post = _postService.Include(x => x.Images).FirstAsync(x => x.Id == id).Result;
+            var post = _postService.Include(x => x.Images).FirstOrDefault(x => x.Id == id);
             if (post == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
@@ -176,11 +167,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 bool updated = _postService.Update(post);
 
                 if (updated)
-                {
-                    DeleteOldImages(oldImages);
-                    CreateImage(postRequest);
-                }
-                else
+				{
+					UpdateImages(postRequest, oldImages);
+				}
+				else
                 {
                     throw new InternalServerErrorException("Internal Error");
                 }
@@ -196,16 +186,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        public bool ChangePostStatusCMS(Guid id, StatusRequest request)
-        {
-            bool updated = _postService.UpdateStatus(id, request.UserStatus) != null;
-            if (updated == false)
-                throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-
-            return updated;
-        }
-
-        public bool ChangePostStatusApp(Guid postId, StatusRequest request)
+		public bool ChangePostStatus(Guid postId, StatusRequest request)
         {
             var post = _postService.Include(x => x.Requests).FirstOrDefault(x => x.Id == postId);
 	        bool updated = false;
@@ -215,24 +196,20 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 throw new BadRequestException(CommonConstant.Error.NotFound);
             }
 
-            if (request.UserStatus == PostStatus.Giving.ToString())
-            {
-                post.PostStatus = PostStatus.Giving;
-	            updated = _postService.Update(post);
+	        var isStatus = Enum.TryParse(request.UserStatus, out PostStatus postStatus);
+	        if (isStatus)
+	        {
+		        post.PostStatus = postStatus;
+		        updated = _postService.Update(post);
+		        if (updated && postStatus == PostStatus.Gave)
+		        {
+			        RejectRequests(postId);
+		        }
 			}
-            else if (request.UserStatus == PostStatus.Gave.ToString())
-            {
-                post.PostStatus = PostStatus.Gave;
-	            updated = _postService.Update(post);
-	            if (updated)
-	            {
-		            RejectRequests(postId);
-	            }
-            }
-            else
-                throw new BadRequestException(CommonConstant.Error.InvalidInput);
+	        else
+				updated = _postService.UpdateStatus(postId, request.UserStatus) != null;
 
-            if (updated == false)
+			if (updated == false)
                 throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
             return updated;
@@ -240,7 +217,25 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		#region Utils
 
-	    private void RejectRequests(Guid postId)
+	    private RequestedPostResponse GenerateRequestedPostResponse(Post post, Guid userId)
+	    {
+		    var requestedPost = Mapper.Map<RequestedPostResponse>(post);
+		    if (requestedPost != null)
+		    {
+			    requestedPost.IsCurrentUserRequested = true;
+			    var request = post.Requests.FirstOrDefault(x => x.UserId == userId && x.EntityStatus == EntityStatus.Activated);
+
+			    requestedPost.RequestedPostStatus = request?.RequestStatus.ToString();
+
+			    if (post.PostStatus == PostStatus.Received)
+			    {
+				    requestedPost.RequestedPostStatus = PostStatus.Received.ToString();
+			    }
+		    }
+		    return requestedPost;
+	    }
+
+		private void RejectRequests(Guid postId)
 	    {
 		    var requests = _requestService.Where(x =>
 			    x.PostId == postId && x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending);
@@ -266,7 +261,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 					foreach (PostAppResponse post in posts as List<PostAppResponse>)
 					{
 						var requests = _requestService.FirstOrDefault(x =>
-							x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+							x.EntityStatus != EntityStatus.Deleted && x.RequestStatus != RequestStatus.Rejected && x.PostId == post.Id && x.UserId == id);
 						if (requests != null)
 						{
 							post.IsCurrentUserRequested = true;
@@ -294,7 +289,35 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-        private List<ImageBase64Request> InitImageBase64Requests(PostRequest post)
+	    private void UpdateImages(PostRequest postRequest, List<Image> oldImages)
+	    {
+		    // get retained images from request
+		    var retainedImages =
+			    postRequest.Images.Where(x => x.Image.Contains("https://") || x.Image.Contains("http://")).ToList();
+		    // get images needing to be deleted
+		    var deletedImages = oldImages.Except(
+			    // get retained images from database
+			    oldImages.Where(x => retainedImages.Any(y => y.Image == x.OriginalImage))
+		    ).ToList();
+
+		    DeleteImages(deletedImages);
+
+		    postRequest.Images = postRequest.Images.Except(retainedImages).ToList();
+		    if (postRequest.Images.Count != 0) CreateImage(postRequest);
+	    }
+
+	    private void DeleteImages(List<Image> images)
+	    {
+		    foreach (var image in images)
+		    {
+			    _imageService.Delete(x => x.Id == image.Id, out var isSaved);
+
+			    if (isSaved == false)
+				    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+		    }
+	    }
+
+		private List<ImageBase64Request> InitImageBase64Requests(PostRequest post)
         {
             var requests = new List<ImageBase64Request>();
             foreach (var image in post.Images)
@@ -349,20 +372,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return imageList;
         }
 
-        private void DeleteOldImages(List<Image> images)
-        {
-            foreach (var image in images)
-            {
-                _imageService.Delete(x => x.Id == image.Id, out var isSaved);
-
-                if (isSaved == false)
-                    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-            }
-        }
-
         private List<T> GetPagedPosts(string userId, PagingQueryPostRequest request, out int total)
         {
-	        IEnumerable<Post> posts = _postService.Include(x => x.Category)
+	        var posts = _postService.Include(x => x.Category)
 		        .Include(x => x.Images)
 		        .Include(x => x.ProvinceCity)
 		        .Include(x => x.User)
@@ -386,22 +398,22 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			posts = SortPosts(request, posts);
 
 			//just get requests that have not deleted yet
-	        posts = posts.ToList();
-			foreach (var post in posts)
+	        var postList = posts.ToList();
+			foreach (var post in postList)
 			{
 				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
 			}
 
-			total = posts.Count();
+			total = postList.Count();
 
-			return posts
+			return postList
 				.Skip(request.Limit * (request.Page - 1))
 				.Take(request.Limit)
 				.Select(Mapper.Map<T>)
 				.ToList();
 		}
 
-	    private IEnumerable<Post> GetPostListForApp(string userId, IEnumerable<Post> posts)
+	    private IQueryable<Post> GetPostListForApp(string userId, IQueryable<Post> posts)
 	    {
 			posts = posts.Where(x => x.EntityStatus == EntityStatus.Activated);
 		    if (!string.IsNullOrEmpty(userId))
@@ -415,11 +427,16 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				    throw new BadRequestException(CommonConstant.Error.InvalidInput);
 			    }
 			}
+		    else
+		    {
+				//get only posts that are giving to show at the news feed
+				posts = posts.Where(x => x.PostStatus == PostStatus.Giving);
+		    }
 				
 		    return posts;
 	    }
 
-	    private IEnumerable<Post> SortPosts(PagingQueryPostRequest request, IEnumerable<Post> posts)
+	    private IQueryable<Post> SortPosts(PagingQueryPostRequest request, IQueryable<Post> posts)
         {
             if (!string.IsNullOrEmpty(request.Order) && request.Order == AppConstant.ASC)
             {
@@ -433,7 +450,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return posts;
         }
 
-        private IEnumerable<Post> FilterPost(PagingQueryPostRequest request, IEnumerable<Post> posts)
+        private IQueryable<Post> FilterPost(PagingQueryPostRequest request, IQueryable<Post> posts)
         {
             if (!string.IsNullOrEmpty(request.Title))
             {

@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Design;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -44,7 +45,18 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             };
         }
 
-        public RequestPostResponse Create(RequestPostRequest requestPost)
+	    public RequestPostResponse GetRequestById(Guid requestId)
+	    {
+		    var request = _requestService.Include(x => x.User).FirstOrDefault(x => x.Id == requestId);
+		    if (request == null)
+		    {
+			    throw new BadRequestException(CommonConstant.Error.NotFound);
+		    }
+
+		    return Mapper.Map<RequestPostResponse>(request);
+	    }
+
+		public RequestPostResponse Create(RequestPostRequest requestPost)
         {
 	        if (CheckWhetherUserRequested(requestPost.PostId, requestPost.UserId))
 	        {
@@ -114,9 +126,20 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return new JsonObject("{'requested': 'false'}").Object;
         }
 
-        #region Utils
+	    public bool CheckIfRequestProcessed(Guid requestId)
+	    {
+		    var request = _requestService.FirstOrDefault(x => x.EntityStatus != EntityStatus.Deleted && x.Id == requestId && x.RequestStatus == RequestStatus.Pending);
+		    if (request == null)
+		    {
+			    return true;
+		    }
 
-        private void ChangeStatus(StatusRequest statusRequest, Request request)
+		    return false;
+	    }
+
+		#region Utils
+
+		private void ChangeStatus(StatusRequest statusRequest, Request request)
         {
             if (statusRequest.UserStatus == RequestStatus.Approved.ToString())
             {
@@ -172,7 +195,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    private bool CheckWhetherUserRequested(Guid postId, Guid userId)
 	    {
-		    var requests = _requestService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == postId && x.UserId == userId);
+		    var requests = _requestService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus != RequestStatus.Rejected && x.PostId == postId && x.UserId == userId);
 		    if (requests.Any()) return true;
 
 		    return false;

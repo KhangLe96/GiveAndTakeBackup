@@ -12,5 +12,7 @@ namespace Giveaway.API.Shared.Services.APIs
 		PagingQueryResponse<NotificationResponse> GetNotificationForPaging(Guid userId, IDictionary<string, string> @params);
 		NotificationResponse Create(Notification notification);
 		bool Delete(Guid notiId);
+		NotificationResponse UpdateReadStatus(Guid notiId, NotificationIsReadRequest request);
+		NotificationResponse UpdateSeenStatus(Guid notiId, NotificationIsSeenRequest request);
 	}
 }

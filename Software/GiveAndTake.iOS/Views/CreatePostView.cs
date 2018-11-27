@@ -19,7 +19,7 @@ namespace GiveAndTake.iOS.Views
 		ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
 	public class CreatePostView : BaseView
 	{
-		private HeaderBar _headerBar;
+		
 		private UIButton _chooseProvinceCityButton;
 		private UIButton _chooseCategoryButton;
 		private UITextField _postTitleTextField;
@@ -42,11 +42,10 @@ namespace GiveAndTake.iOS.Views
 		}
 
 		public IMvxCommand<List<byte[]>> ImageCommand { get; set; }
-		public IMvxCommand BackPressedCommand { get; set; }
 
 		protected override void InitView()
 		{
-			InitHeaderBar();
+			HeaderBar.BackButtonIsShown = true;
 			InitChooseProvinceCityButton();
 			InitChooseCategoryButton();
 			InitPostTitleTextField();
@@ -125,28 +124,15 @@ namespace GiveAndTake.iOS.Views
 				.For("Title")
 				.To(vm => vm.BtnSubmitTitle);
 
-			bindingSet.Bind(this)
+			bindingSet.Bind(HeaderBar)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
+			bindingSet.Bind(_btnSubmit)
+				.For("Enabled")
+				.To(vm => vm.IsSubmitBtnEnabled);
+
 			bindingSet.Apply();
-		}
-
-		private void InitHeaderBar()
-		{
-			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
-				UIColor.White, true);
-			_headerBar.OnBackPressed += () => BackPressedCommand?.Execute();
-
-			View.Add(_headerBar);
-
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight),
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Left, 1, 0),
-			});
 		}
 
 		private void InitChooseProvinceCityButton()
@@ -163,7 +149,7 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_chooseProvinceCityButton);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_chooseProvinceCityButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_chooseProvinceCityButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HeaderBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
 				NSLayoutConstraint.Create(_chooseProvinceCityButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
@@ -183,7 +169,7 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_chooseCategoryButton);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_chooseCategoryButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_chooseCategoryButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HeaderBar,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
 				NSLayoutConstraint.Create(_chooseCategoryButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin)
@@ -198,7 +184,8 @@ namespace GiveAndTake.iOS.Views
 			UIView paddingView = new UIView(new CGRect(0, 0, 15, _postTitleTextField.Frame.Height));
 			_postTitleTextField.LeftView = paddingView;
 			_postTitleTextField.LeftViewMode = UITextFieldViewMode.Always;
-			_postTitleTextField.ShouldReturn = (textField) => {
+			_postTitleTextField.ShouldReturn = (textField) =>
+			{
 				textField.ResignFirstResponder();
 				return true;
 			};
@@ -232,6 +219,7 @@ namespace GiveAndTake.iOS.Views
 		private void InitChoosePictureButton()
 		{
 			_btnChoosePicture = UIHelper.CreateImageButton(DimensionHelper.PictureButtonHeight, DimensionHelper.PictureButtonWidth, ImageHelper.ChoosePictureButton);
+			_btnChoosePicture.UserInteractionEnabled = true;
 			_btnChoosePicture.TouchUpInside += HandleSelectImage;
 
 			View.Add(_btnChoosePicture);
@@ -318,9 +306,9 @@ namespace GiveAndTake.iOS.Views
 			image?.Clear();
 		}
 
-		public override void ViewDidAppear(bool animated)
+		public override void ViewDidDisappear(bool animated)
 		{
-			base.ViewDidAppear(animated);
+			base.ViewDidDisappear(animated);
 			_btnChoosePicture.TouchUpInside -= HandleSelectImage;
 		}
 

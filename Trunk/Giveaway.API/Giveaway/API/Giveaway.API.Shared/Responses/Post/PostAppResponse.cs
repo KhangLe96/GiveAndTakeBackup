@@ -16,6 +16,6 @@ namespace Giveaway.API.Shared.Responses.Post
 
 	    [DataMember(Name = "isCurrentUserRequested", EmitDefaultValue = false)]
 	    [JsonProperty(PropertyName = "isCurrentUserRequested")]
-	    public bool IsCurrentUserRequested { get; set; } = false;
+	    public bool IsCurrentUserRequested { get; set; }
     }
 }

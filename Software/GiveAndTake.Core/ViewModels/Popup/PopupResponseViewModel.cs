@@ -5,6 +5,8 @@ using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Services;
 
 namespace GiveAndTake.Core.ViewModels.Popup
 {
@@ -59,14 +61,16 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		private bool _isSubmitBtnEnabled;
 		private IMvxCommand _closeCommand;
 		private IMvxCommand _submitCommand;
+		private readonly ILoadingOverlayService _overlay;
 
 		#endregion
 
 		#region Constructor
 
-		public PopupResponseViewModel(IDataModel dataModel)
+		public PopupResponseViewModel(IDataModel dataModel, ILoadingOverlayService loadingOverlayService)
 		{
 			_dataModel = dataModel;
+			_overlay = loadingOverlayService;
 		}
 
 		public override void Prepare(Request request)
@@ -78,13 +82,31 @@ namespace GiveAndTake.Core.ViewModels.Popup
 
 		public async Task OnSubmit()
 		{
-			var response = new RequestResponse
+			bool success = false;
+			try
 			{
-				RequestId = _request.Id,
-				ResponseMessage = RequestDescription
-			};
-			await ManagementService.CreateResponse(response, _dataModel.LoginResponse.Token);
-			await NavigationService.Close(this, RequestStatus.Submitted);
+				var response = new RequestResponse
+				{
+					RequestId = _request.Id,
+					ResponseMessage = RequestDescription
+				};
+				await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
+				await ManagementService.CreateResponse(response, _dataModel.LoginResponse.Token);
+				success = true;				
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
+				if (success)
+				{
+					await NavigationService.Close(this, RequestStatus.Submitted);
+				}
+			}
 		}
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_requestDescription);
