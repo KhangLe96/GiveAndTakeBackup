@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross;
+using MvvmCross.Navigation;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -89,7 +90,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case "IsAccepted":
-					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
+					await HandleIsAcceptedType(notification);
 					break;
 
 				case "IsRejected":
@@ -104,6 +105,25 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 			}
+		}
+
+		private async Task HandleIsAcceptedType(Notification notification)
+		{
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			var response = await ManagementService.GetResponseById(notification.RelevantId, _token);
+			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+
+			var popupResult = await NavigationService.Navigate<ReponseViewModel, Response, PopupRequestDetailResult>(response);
+			if (popupResult == PopupRequestDetailResult.ShowPostDetail)
+			{
+				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+				var post = await ManagementService.GetPostDetail(response.Post.Id.ToString());
+				post.IsMyPost = true;
+
+				await NavigationService.Navigate<PostDetailViewModel, Post>(post);
+			}
+
+			await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
 		}
 
 		private async Task HandleRequestType(Notification notification)

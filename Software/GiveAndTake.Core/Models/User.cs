@@ -7,10 +7,10 @@ namespace GiveAndTake.Core.Models
     [DataContract]
     public class User : BaseUser
     {
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
+	    [DataMember(Name = "id")]
+	    public string Id { get; set; }
 
-        [DataMember(Name = "email")]
+		[DataMember(Name = "email")]
         public string Email { get; set; }
 
         //[DataMember(Name = "appreciationNumber")]
