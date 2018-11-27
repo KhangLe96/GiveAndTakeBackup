@@ -121,6 +121,20 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			_tabLayout.TabSelected += OnTabSelected;
 		}
 
+		public override void OnResume()
+		{
+			base.OnResume();
+			((MasterView)Activity).IsHomeScreen = true;
+		}
+
+
+
+		public override void OnPause()
+		{
+			base.OnPause();
+			((MasterView)Activity).IsHomeScreen = false;
+		}
+
 		#endregion
 
 		#region Event Handlers
