@@ -1,4 +1,5 @@
 ﻿using System;
+using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests.Response;
 using Giveaway.API.Shared.Responses.Response;
 using Giveaway.API.Shared.Services.APIs;
@@ -36,7 +37,8 @@ namespace Giveaway.API.Controllers
 		[Produces("application/json")]
 		public ResponseRequestResponse Create([FromBody]ResponseRequest request)
 		{
-			return _responseService.Create(request);
+			var userId = User.GetUserId();
+			return _responseService.Create(request, userId);
 		}
 	}
 }

@@ -7,6 +7,6 @@ namespace Giveaway.API.Shared.Services.APIs
 	public interface IResponseService
 	{
 		ResponseRequestResponse GetResponseById(Guid id);
-		ResponseRequestResponse Create(ResponseRequest response);
+		ResponseRequestResponse Create(ResponseRequest response, Guid userId);
 	}
 }

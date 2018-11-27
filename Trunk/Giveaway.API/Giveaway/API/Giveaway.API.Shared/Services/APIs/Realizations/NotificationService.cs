@@ -123,7 +123,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 			_fcmBroker.Start();
 
-			List<string> myRegistrationIds = new List<string>() { "dJn93Lzb4nM:APA91bHqL0YL8_VlAyP3fa68hqjyFAXQOZ5NA4PJVBj0xPuZFacsm--mSVmXUze-jZJw_AWR4Jc2ss_IRJg9MqxqOaSThScsOYzZuCHv7nsX74tyUn1nlIIiKGa1Bo30ce9nWaJTAgu8" };
+			List<string> myRegistrationIds = new List<string>() { "eC2RzFra0Bw:APA91bGMAOi59QbjgBOeMM8BtGwIWJEoXirqJvv3Dqd_UbqZIz2ocBfOfmno7AAPLMOVt-ItEZoD387DpHY_RPM2FkK_FujsiBd7UHpfl8GDieiZW3K6fEtfkGFnEfzNCSHKdjcvTZEs" };
 			var dataNotification = JsonConvert.SerializeObject(Mapper.Map<NotificationResponse>(notification));
 
 			_fcmBroker.QueueNotification(new FcmNotification

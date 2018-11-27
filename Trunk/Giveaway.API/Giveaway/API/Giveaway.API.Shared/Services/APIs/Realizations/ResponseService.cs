@@ -14,12 +14,17 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 	public class ResponseService : IResponseService
 	{
 		private readonly DbService.IResponseService _responseService;
-		private readonly IRequestService _requestService;
+		private readonly DbService.IRequestService _requestService;
+		private readonly DbService.IUserService _userService;
+		private readonly INotificationService _notificationService;
 
-		public ResponseService(DbService.IResponseService responseService, IRequestService requestService)
+		public ResponseService(DbService.IResponseService responseService, DbService.IRequestService requestService, 
+			INotificationService notificationService, DbService.IUserService userService)
 		{
 			_responseService = responseService;
 			_requestService = requestService;
+			_notificationService = notificationService;
+			_userService = userService;
 		}
 
 		public ResponseRequestResponse GetResponseById(Guid id)
@@ -33,23 +38,35 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			throw new BadRequestException(CommonConstant.Error.NotFound);
 		}
 
-		public ResponseRequestResponse Create(ResponseRequest responseRequest)
+		public ResponseRequestResponse Create(ResponseRequest responseRequest, Guid userId)
 		{
 			var response = Mapper.Map<Response>(responseRequest);
 			response.Id = Guid.NewGuid();
 
-			_responseService.Create(response, out var isPostSaved);
-			if (!isPostSaved)
-			{
+			response = _responseService.Create(response, out var isSaved);
+			if (!isSaved) throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+
+			var request = _requestService.Find(responseRequest.RequestId);
+			if (request == null)
+				throw new BadRequestException(CommonConstant.Error.NotFound);
+
+			request.RequestStatus = RequestStatus.Approved;
+			if (!_requestService.Update(request))
 				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-			}
 
-			_requestService.UpdateStatus(responseRequest.RequestId, new StatusRequest() { UserStatus = RequestStatus.Approved.ToString() }, Guid.NewGuid());
+			var user = _userService.Find(userId);
+			_notificationService.Create(new Notification()
+			{
+				Message = $"{user.FirstName} {user.LastName} đã chấp nhận yêu cầu của bạn!",
+				Type = NotificationType.IsAccepted,
+				RelevantId = response.Id,
+				SourceUserId = userId,
+				DestinationUserId = request.UserId
+			});
 
-			var requestDb = _responseService.FirstOrDefault(x => x.Id == response.Id);
-			var result = Mapper.Map<ResponseRequestResponse>(requestDb);
-
+			var result = Mapper.Map<ResponseRequestResponse>(response);
 			return result;
+
 		}
 	}
 }
