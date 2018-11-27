@@ -6,7 +6,11 @@ using Giveaway.Data.EF.Exceptions;
 using Giveaway.Data.Models.Database;
 using Giveaway.Util.Constants;
 using System;
+using Giveaway.API.Shared.Responses.Post;
+using Giveaway.API.Shared.Responses.User;
+using Giveaway.Data.EF.Extensions;
 using Giveaway.Data.Enums;
+using Microsoft.EntityFrameworkCore;
 using DbService = Giveaway.Service.Services;
 
 namespace Giveaway.API.Shared.Services.APIs.Realizations
@@ -43,7 +47,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var response = Mapper.Map<Response>(responseRequest);
 			response.Id = Guid.NewGuid();
 
-			response = _responseService.Create(response, out var isSaved);
+			_responseService.Create(response, out var isSaved);
 			if (!isSaved) throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
 			var request = _requestService.Find(responseRequest.RequestId);
@@ -54,10 +58,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			if (!_requestService.Update(request))
 				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
-			var user = _userService.Find(userId);
+			response = _responseService.Include(x => x.Request.User).Include(x => x.Request.Post).Find(response.Id);
+			
+			// Send a notification to an user who is accepted and also save it to db 
 			_notificationService.Create(new Notification()
 			{
-				Message = $"{user.FirstName} {user.LastName} đã chấp nhận yêu cầu của bạn!",
+				Message = $"{response.Request.User.FirstName} {response.Request.User.LastName} đã chấp nhận yêu cầu của bạn!",
 				Type = NotificationType.IsAccepted,
 				RelevantId = response.Id,
 				SourceUserId = userId,
@@ -65,8 +71,10 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			});
 
 			var result = Mapper.Map<ResponseRequestResponse>(response);
-			return result;
+			result.User = Mapper.Map<UserRequestResponse>(response.Request.User);
+			result.Post = Mapper.Map<PostRequestResponse>(response.Request.Post);
 
+			return result;
 		}
 	}
 }
