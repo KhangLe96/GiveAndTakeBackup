@@ -17,10 +17,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 	public class NotificationService : INotificationService
 	{
 		private readonly DbService.INotificationService _notificationService;
+		private readonly DbService.IPostService _postService;
+		private readonly DbService.IUserService _userService;
 
-		public NotificationService(DbService.INotificationService notificationService)
+		public NotificationService(DbService.INotificationService notificationService, DbService.IPostService postService, DbService.IUserService userService)
 		{
 			_notificationService = notificationService;
+			_postService = postService;
+			_userService = userService;
 		}
 
 		public PagingQueryResponse<NotificationResponse> GetNotificationForPaging(Guid userId, IDictionary<string, string> @params)
@@ -53,6 +57,44 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 		}
 
+		public NotificationResponse UpdateReadStatus(Guid notiId, NotificationIsReadRequest request)
+		{
+			var noti = _notificationService.FirstOrDefault(
+				x => x.EntityStatus != EntityStatus.Deleted && x.Id == notiId);
+			if (noti == null)
+			{
+				throw new BadRequestException(CommonConstant.Error.NotFound);
+			}
+
+			noti.IsRead = request.IsRead;
+			var isSaved = _notificationService.Update(noti);
+			if (isSaved)
+			{
+				return GenerateNotificationResponse(noti);
+			}
+
+			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+		}
+
+		public NotificationResponse UpdateSeenStatus(Guid notiId, NotificationIsSeenRequest request)
+		{
+			var noti = _notificationService.FirstOrDefault(
+				x => x.EntityStatus != EntityStatus.Deleted && x.Id == notiId);
+			if (noti == null)
+			{
+				throw new BadRequestException(CommonConstant.Error.NotFound);
+			}
+
+			noti.IsSeen = request.IsSeen;
+			var isSaved = _notificationService.Update(noti);
+			if (isSaved)
+			{
+				return GenerateNotificationResponse(noti);
+			}
+
+			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+		}
+
 		public bool Delete(Guid notiId)
 		{
 			bool updated = _notificationService.UpdateStatus(notiId, EntityStatus.Deleted.ToString()) != null;
@@ -66,7 +108,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		private List<NotificationResponse> GetPagedNotifications(Guid userId, PagingQueryNotificationRequest request, out int total)
 		{
-			IEnumerable<Notification> notifications =
+			var notifications =
 				_notificationService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.DestinationUserId == userId);
 
 
@@ -75,8 +117,28 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				return notifications
 					.Skip(request.Limit * (request.Page - 1))
 					.Take(request.Limit)
-					.Select(Mapper.Map<NotificationResponse>)
+					.AsEnumerable()
+					.Select(GenerateNotificationResponse)
 					.ToList();
+		}
+
+		private NotificationResponse GenerateNotificationResponse(Notification notification)
+		{
+			var notificationResponse = Mapper.Map<NotificationResponse>(notification);
+
+			var post = _postService.Include(x => x.Images).FirstOrDefault(x => x.Id == notification.RelevantId);
+			if (post != null)
+			{
+				notificationResponse.PostUrl = post.Images.Count > 0 ? post.Images.ElementAt(0).ResizedImage : null;
+			}
+
+			var user = _userService.FirstOrDefault(x => x.Id == notification.SourceUserId);
+			if (user != null)
+			{
+				notificationResponse.AvatarUrl = user.AvatarUrl;
+			}
+
+			return notificationResponse;
 		}
 
 		#endregion

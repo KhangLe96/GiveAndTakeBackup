@@ -2,6 +2,7 @@
 using Android.App;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V4.View;
 using Android.Views;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
@@ -76,6 +77,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		{
 			base.InitView(view);
 			_tabLayout = view.FindViewById<TabLayout>(Resource.Id.tabLayout);
+			var viewPager = view.FindViewById<ViewPager>(Resource.Id.viewPager);
+			viewPager.OffscreenPageLimit = AppConstants.NumOfFragmentViewPager;
 		}
 
 		public override void OnDestroy()

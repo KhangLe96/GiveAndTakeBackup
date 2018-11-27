@@ -8,7 +8,7 @@ using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewSources
 {
-	public class PostItemTableViewSource : MvxStandardTableViewSource
+	public class PostItemTableViewSource<T> : MvxStandardTableViewSource where T:MvxTableViewCell
 	{
 		public Action LoadMoreEvent { get; set; }
 
@@ -18,13 +18,13 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 
 		public PostItemTableViewSource(UITableView tableView) : base(tableView)
 		{
-			tableView.RegisterClassForCellReuse(typeof(PostItemViewCell), new NSString(CellId));
+			tableView.RegisterClassForCellReuse(typeof(T), new NSString(CellId));
 			_isLoading = false;
 		}
 
 		protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
 		{
-			var cell = (PostItemViewCell)tableView.DequeueReusableCell(CellId, indexPath);
+			var cell = (T)tableView.DequeueReusableCell(CellId, indexPath);
 
 			cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 

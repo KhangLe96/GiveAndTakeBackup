@@ -178,14 +178,16 @@ namespace Giveaway.Data.EF.Migrations
 
                     b.Property<int>("EntityStatus");
 
+                    b.Property<bool>("IsRead");
+
+                    b.Property<bool>("IsSeen");
+
                     b.Property<string>("Message")
                         .IsRequired();
 
                     b.Property<Guid>("RelevantId");
 
                     b.Property<Guid>("SourceUserId");
-
-                    b.Property<int>("Status");
 
                     b.Property<int>("Type");
 

@@ -1,3 +1,7 @@
 ﻿# key = value (the key will be the same across locales)
 Giving = Đang cho
-Gived = Đã cho
+Gave = Đã cho
+Pending = Đang đợi
+Approved = Đã duyệt
+Rejected = Đã từ chối
+Received = Đã nhận

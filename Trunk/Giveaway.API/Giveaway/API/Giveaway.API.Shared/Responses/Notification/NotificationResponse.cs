@@ -13,7 +13,7 @@ namespace Giveaway.API.Shared.Responses.Notification
 		public Guid Id { get; set; }
 
 		[DataMember(Name = "message")]
-		[JsonProperty(PropertyName = "message")]
+		[JsonProperty(PropertyName = "notiMessage")]
 		public string Message { get; set; }
 
 		[DataMember(Name = "sourceUserId")]
@@ -26,10 +26,26 @@ namespace Giveaway.API.Shared.Responses.Notification
 
 		[DataMember(Name = "type")]
 		[JsonProperty(PropertyName = "type")]
-		public NotificationType Type { get; set; }
+		public string Type { get; set; }
 
-		[DataMember(Name = "status")]
-		[JsonProperty(PropertyName = "status")]
-		public NotificationStatus Status { get; set; }
+		[DataMember(Name = "isSeen")]
+		[JsonProperty(PropertyName = "isSeen")]
+		public bool IsSeen { get; set; }
+
+		[DataMember(Name = "isRead")]
+		[JsonProperty(PropertyName = "isRead")]
+		public bool IsRead { get; set; }
+
+		[DataMember(Name = "createdTime")]
+		[JsonProperty(PropertyName = "createdTime")]
+		public DateTimeOffset CreatedTime { get; set; }
+
+		[DataMember(Name = "postUrl")]
+		[JsonProperty(PropertyName = "postUrl")]
+		public string PostUrl { get; set; }
+
+		[DataMember(Name = "avatarUrl")]
+		[JsonProperty(PropertyName = "avatarUrl")]
+		public string AvatarUrl { get; set; }
 	}
 }

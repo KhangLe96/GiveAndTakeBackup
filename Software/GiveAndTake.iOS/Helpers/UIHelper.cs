@@ -3,6 +3,7 @@ using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using System;
 using Foundation;
+using CoreAnimation;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -33,9 +34,23 @@ namespace GiveAndTake.iOS.Helpers
 			return label;
 		}
 
-		public static HeaderBar CreateHeaderBar(nfloat width, nfloat height, UIColor backgroundColor, bool isShowBackButton=false)
+		public static CustomUILabel CreateCustomLabel(UIColor textColor, nfloat fontSize, FontType fontType = FontType.Regular)
 		{
-			var headerBar = new HeaderBar(isShowBackButton)
+			var label = new CustomUILabel
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				LineBreakMode = UILineBreakMode.WordWrap,
+				TextColor = textColor,
+				Font = GetFont(fontType, fontSize),
+				Lines = 0
+			};
+
+			return label;
+		}
+
+		public static HeaderBar CreateHeaderBar(nfloat width, nfloat height, UIColor backgroundColor)
+		{
+			var headerBar = new HeaderBar()
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false,
 				BackgroundColor = backgroundColor,
@@ -307,6 +322,30 @@ namespace GiveAndTake.iOS.Helpers
 			button.Layer.BorderWidth = borderWidth;
 			button.Layer.BorderColor = borderColor.CGColor;
 
+			return button;
+		}
+
+		public static CustomUIButton CreateButton(nfloat height, nfloat width, nfloat textSize, UIColor borderColor, nfloat borderWidth, FontType fontType = FontType.Regular)
+		{
+			var button = new CustomUIButton
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				Font = GetFont(fontType, textSize)
+			};
+
+			button.Layer.BorderWidth = borderWidth;
+			button.Layer.BorderColor = borderColor.CGColor;
+
+			AddWidthHeight(height, width, button);
+
+			return button;
+		}
+
+		public static CustomUIButton SetRoundedCorners(this CustomUIButton button, int cornerRadius, CACornerMask cornerMask)
+		{
+			button.Layer.CornerRadius = cornerRadius;
+			button.Layer.MaskedCorners = cornerMask;
+			button.Layer.MasksToBounds = true;
 			return button;
 		}
 

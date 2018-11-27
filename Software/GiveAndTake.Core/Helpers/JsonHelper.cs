@@ -34,5 +34,11 @@ namespace GiveAndTake.Core.Helpers
 
 	    public static bool ArePropertiesNotNull<T>(this T obj) =>
 		    typeof(T).GetProperties().All(propertyInfo => propertyInfo.GetValue(obj) != null);
-    }
+
+	    public static string ConvertToBase64String(byte[] imageByte)
+	    {
+		    string result = Convert.ToBase64String(imageByte);
+		    return result;
+	    }
+	}
 }

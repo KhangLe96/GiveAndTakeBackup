@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using GiveAndTake.Core.ViewModels.TabNavigation;
@@ -11,6 +12,8 @@ using MvvmCross.Droid.Support.V7.RecyclerView;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using GiveAndTake.Core;
 using Android.Widget;
+using GiveAndTake.Droid.Converters;
+using MvvmCross.ViewModels;
 using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace GiveAndTake.Droid.Views.TabNavigation
@@ -25,19 +28,35 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public IMvxCommand SearchCommand { get; set; }
 	    public IMvxCommand LoadMoreCommand { get; set; }
 	    public IMvxCommand CloseSearchBarCommand { get; set; }
-		protected override int LayoutId => Resource.Layout.HomeView;
+	    public IMvxCommand BackPressedCommand { get; set; }
 
+	    public IMvxInteraction ShowProfileTab
+	    {
+		    get => _showProfileTab;
+		    set
+		    {
+			    if (_showProfileTab != null)
+				    _showProfileTab.Requested -= OnShowProfileTabRequested;
+
+			    _showProfileTab = value;
+			    _showProfileTab.Requested += OnShowProfileTabRequested;
+		    }
+	    }
+
+		protected override int LayoutId => Resource.Layout.HomeView;
 	    private SearchView _searchView;
 	    private ImageView _clearButton;
+	    private IMvxInteraction _showProfileTab;
 
-	    protected override void InitView(View view)
+		protected override void InitView(View view)
 	    {
 		    base.InitView(view);
 
 		    _searchView = view.FindViewById<SearchView>(Resource.Id.searchView);
 		    _searchView.QueryTextSubmit += OnQueryTextSubmit;
 		    _searchView.Click += OnSearchViewClicked;
-
+			_searchView.QueryTextChange += OnQueryTextChanged;
+		
 			_clearButton = (ImageView)_searchView.FindViewById(MvvmCross.Droid.Support.V7.AppCompat.Resource.Id.search_close_btn);
 			_clearButton.Click += OnClearButtonClicked;
 
@@ -50,7 +69,17 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			rvPosts.SetLayoutManager(layoutManager);
 		}
 
-	    protected override void CreateBinding()
+
+
+		private void OnQueryTextChanged(object sender, SearchView.QueryTextChangeEventArgs e)
+		{
+			if (_searchView.Query == "")
+			{
+				_clearButton.Visibility = ViewStates.Gone;
+			}
+		}
+
+		protected override void CreateBinding()
 	    {
 		    base.CreateBinding();
 		    var bindingSet = this.CreateBindingSet<HomeView, HomeViewModel>();
@@ -66,6 +95,19 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    bindingSet.Bind(this)
 			    .For(v => v.CloseSearchBarCommand)
 			    .To(vm => vm.CloseSearchBarCommand);
+		    bindingSet.Bind(this)
+			    .For(v => v.BackPressedCommand)
+			    .To(vm => vm.BackPressedCommand);
+
+		    bindingSet.Bind(this)
+			    .For(view => view.ShowProfileTab)
+			    .To(viewModel => viewModel.ShowProfileTab)
+			    .OneWay();
+
+		    bindingSet.Bind(_clearButton)
+			    .For(v => v.Visibility)
+			    .To(vm => vm.IsClearButtonShown)
+			    .WithConversion("BoolToViewStates");
 
 			bindingSet.Apply();
         }
@@ -73,7 +115,14 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	    public override void OnPause()
 	    {
 		    base.OnPause();
-			KeyboardHelper.HideKeyboard(_searchView);
+			KeyboardHelper.HideKeyboard(_searchView);		    
+		}
+
+	    public override void OnDestroyView()
+	    {		    
+			base.OnDestroyView();
+		    _clearButton.Visibility = ViewStates.Gone;
+		    ((MasterView) Activity).BackPressedFromHomeViewSearchedCommand = null;
 	    }
 
 	    protected override void Dispose(bool disposing)
@@ -81,27 +130,35 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		    _searchView.QueryTextSubmit -= OnQueryTextSubmit;
 		    _searchView.Click -= OnSearchViewClicked;
 		    _clearButton.Click -= OnClearButtonClicked;
+		    _searchView.QueryTextChange -= OnQueryTextChanged;
 			base.Dispose(disposing);
 		}
 
 	    private void OnClearButtonClicked(object sender, EventArgs e)
 	    {
-		    _searchView.SetQuery("", false);
-		    _searchView.ClearFocus();
+		    _searchView.SetQuery("", false);		    
 		    _clearButton.Visibility = ViewStates.Gone;
 		    CloseSearchBarCommand.Execute();
-	    }
+		    _searchView.ClearFocus();
+		}
+
 
 	    private void OnSearchViewClicked(object sender, EventArgs args)
 	    {
 		    _searchView.Iconified = false;
-	    }
+		}
 
 	    private void OnQueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
 	    {
-		    KeyboardHelper.HideKeyboard(sender as View);
-		    _searchView.ClearFocus();
+		    KeyboardHelper.HideKeyboard(sender as View);		    
 		    SearchCommand.Execute();
+		    ((MasterView)Activity).BackPressedFromHomeViewSearchedCommand = BackPressedCommand;
+		    _searchView.ClearFocus();
+		}
+	    private void OnShowProfileTabRequested(object sender, EventArgs e)
+	    {
+		    var tabhost = Activity.FindViewById<TabLayout>(Resource.Id.tabLayout);
+		    tabhost.GetTabAt(AppConstants.ProfileTabIndex).Select();
 	    }
-    }
+	}
 }

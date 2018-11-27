@@ -72,7 +72,7 @@ namespace Giveaway.API.Controllers
 		[Authorize]
 	    [HttpGet("app/listRequestedPostOfUser")]
 	    [Produces("application/json")]
-		public PagingQueryResponse<PostAppResponse> GetListRequestedPostOfUser([FromHeader]IDictionary<string, string> @params)
+		public PagingQueryResponse<RequestedPostResponse> GetListRequestedPostOfUser([FromHeader]IDictionary<string, string> @params)
 	    {
 		    var userId = GetUserId();
 			return _postService.GetListRequestedPostOfUser(@params, userId);
@@ -132,32 +132,18 @@ namespace Giveaway.API.Controllers
             return _postService.Update(postId, postRequest);
         }
 
-        /// <summary>
-        /// Change status of a post: Activated, Blocked, Deleted
-        /// </summary>
-        /// <param name="postId"></param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpPut("cms/status/{postId}")]
+		/// <summary>
+		/// Change status of a post: Giving, Gave, Received, Activated, Blocked, Deleted
+		/// </summary>
+		/// <param name="postId"></param>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		[Authorize]
+        [HttpPut("status/{postId}")]
         [Produces("application/json")]
-        public bool ChangePostStatusCMS(Guid postId, [FromBody]StatusRequest request)
+        public bool ChangePostStatus(Guid postId, [FromBody]StatusRequest request)
         {
-            return _postService.ChangePostStatusCMS(postId, request);
-        }
-
-        /// <summary>
-        /// Change status of a post: Giving, Gave
-        /// </summary>
-        /// <param name="postId"></param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpPut("app/status/{postId}")]
-        [Produces("application/json")]
-        public bool ChangePostStatusApp(Guid postId, [FromBody]StatusRequest request)
-        {
-            return _postService.ChangePostStatusApp(postId, request);
+            return _postService.ChangePostStatus(postId, request);
         }
 
 		#region Utils

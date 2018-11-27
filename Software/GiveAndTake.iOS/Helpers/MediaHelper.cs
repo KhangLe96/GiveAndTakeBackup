@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using ELCImagePicker;
@@ -42,7 +43,7 @@ namespace GiveAndTake.iOS.Helpers
 						{
 							var path = Save(item.Image, item.Name);
 							var bytes = File.ReadAllBytes(path);
-							Images.Add(bytes);
+							Images.Add(ResizeImage(bytes, 600, 600));
 							//CleanPath(path);
 						}
 					}
@@ -80,6 +81,43 @@ namespace GiveAndTake.iOS.Helpers
 					File.Delete(p);
 				}
 			}
+		}
+
+		public static byte[] ResizeImage(byte[] imageData, float width, float height)
+		{
+
+			var originalImage = new UIImage(Foundation.NSData.FromArray(imageData));
+
+			var originalHeight = originalImage.Size.Height;
+			var originalWidth = originalImage.Size.Width;
+
+			nfloat newHeight;
+			nfloat newWidth;
+
+			if (originalHeight > originalWidth)
+			{
+				newHeight = height;
+				var ratio = originalHeight / height;
+				newWidth = originalWidth / ratio;
+			}
+			else
+			{
+				newWidth = width;
+				var ratio = originalWidth / width;
+				newHeight = originalHeight / ratio;
+			}
+
+			width = (float)newWidth;
+			height = (float)newHeight;
+
+			UIGraphics.BeginImageContext(new SizeF(width, height));
+			originalImage.Draw(new RectangleF(0, 0, width, height));
+			var resizedImage = UIGraphics.GetImageFromCurrentImageContext();
+			UIGraphics.EndImageContext();
+
+			var bytesImage = resizedImage.AsJPEG().ToArray();
+			resizedImage.Dispose();
+			return bytesImage;
 		}
 	}
 }

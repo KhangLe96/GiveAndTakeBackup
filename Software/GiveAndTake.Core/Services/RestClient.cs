@@ -98,7 +98,7 @@ namespace GiveAndTake.Core.Services
 		{
 			var client = new HttpClient { BaseAddress = new Uri(AppConstants.ApiUrl) };
 			client.DefaultRequestHeaders.Add("ContentType", ContentType);
-            client.DefaultRequestHeaders.Add("ApiKey", AppConstants.API_KEY);
+            client.DefaultRequestHeaders.Add("ApiKey", AppConstants.ApiKey);
 			client.Timeout = TimeSpan.FromSeconds(AppConstants.ApiTimeout);
 
 			if (token != null)

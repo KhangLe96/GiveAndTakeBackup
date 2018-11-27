@@ -22,7 +22,7 @@ namespace GiveAndTake.Droid.Views
 
     public class LoginView : BaseActivity
     {
-	    private static AccessToken accessToken;
+		private static AccessToken _accessToken;
         private ICallbackManager _callbackManager;
 	    private ImageButton _btnFacebookLogin;
 
@@ -62,8 +62,8 @@ namespace GiveAndTake.Droid.Views
 	    {
 		    base.OnViewModelSet();
 
-			accessToken = AccessToken.CurrentAccessToken;
-		    bool isLoggedIn = accessToken != null && !accessToken.IsExpired;
+			_accessToken = AccessToken.CurrentAccessToken;
+		    bool isLoggedIn = _accessToken != null && !_accessToken.IsExpired;
 		    if (isLoggedIn)
 		    {
 				HandleSuccessfulLogin();
@@ -107,7 +107,7 @@ namespace GiveAndTake.Droid.Views
 		    SocialAccountId = Profile.CurrentProfile.Id
 	    });
 
-	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=small";
+	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=large";
 	}
 
 

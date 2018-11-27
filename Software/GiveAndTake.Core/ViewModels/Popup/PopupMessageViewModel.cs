@@ -6,8 +6,13 @@ namespace GiveAndTake.Core.ViewModels.Popup
 {
 	public class PopupMessageViewModel : BaseViewModel<string, RequestStatus>
 	{
-		public IMvxAsyncCommand SubmitCommand { get; set; }
-		public IMvxAsyncCommand CancelCommand { get; set; }
+		private IMvxAsyncCommand _cancelCommand;
+		private IMvxAsyncCommand _submitCommand;
+	
+		public IMvxAsyncCommand SubmitCommand =>
+			_submitCommand ?? (_submitCommand = new MvxAsyncCommand(OnSubmit));
+		public IMvxAsyncCommand CancelCommand =>
+			_cancelCommand ?? (_cancelCommand = new MvxAsyncCommand(OnCancel));
 
 		public string SubmitButtonTitle { get; } = AppConstants.SubmitTitle;
 		public string CancelButtonTitle { get; } = AppConstants.CancelTitle;
@@ -17,12 +22,6 @@ namespace GiveAndTake.Core.ViewModels.Popup
 		{
 			get => _message;
 			set => SetProperty(ref _message, value);
-		}
-
-		public PopupMessageViewModel()
-		{
-			SubmitCommand = new MvxAsyncCommand(OnSubmit);
-			CancelCommand = new MvxAsyncCommand(OnCancel);
 		}
 
 		public Task OnSubmit() => NavigationService.Close(this, RequestStatus.Submitted);
