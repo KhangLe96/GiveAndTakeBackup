@@ -8,10 +8,10 @@ namespace GiveAndTake.Core.Models
 	[DataContract]
 	public class FireBaseUserInformation
 	{
-		[DataMember(Name = "fireBaseToken")]
+		[DataMember(Name = "deviceToken")]
 		public string FireBaseToken { get; set; }
 
-		[DataMember(Name = "osPlatform")]
+		[DataMember(Name = "mobilePlatform")]
 		public string OsPlatform { get; set; }
 	}
 }

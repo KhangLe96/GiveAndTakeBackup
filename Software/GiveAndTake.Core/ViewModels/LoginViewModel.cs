@@ -4,6 +4,8 @@ using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Helpers;
+using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -16,17 +18,11 @@ namespace GiveAndTake.Core.ViewModels
 			get => _user;
 			set => SetProperty(ref _user, value);
 		}
-		public string FireBaseToken
-		{
-			get => _fireBaseToken;
-			set => SetProperty(ref _fireBaseToken, value);
-		}
+		public string FireBaseToken { get; set; }
 
 		private readonly IDataModel _dataModel;
 		private User _user;
 		private IMvxCommand _loginCommand;
-		private IMvxCommand _registerFireBaseUserInformation;
-		private string _fireBaseToken;
 
 		public LoginViewModel(IDataModel dataModel)
 		{
@@ -38,7 +34,8 @@ namespace GiveAndTake.Core.ViewModels
 			try
 			{
 				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
-				//await ManagementService.SendFireBaseUserInformation(new FireBaseUserInformation() { FireBaseToken = FireBaseToken, OsPlatform = "Android" });
+				await ManagementService.SendFireBaseUserInformation(new FireBaseUserInformation()
+					{ FireBaseToken = Mvx.Resolve<IDeviceInfo>().DeviceToken, OsPlatform = "Android" }, _dataModel.LoginResponse.Token);
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}

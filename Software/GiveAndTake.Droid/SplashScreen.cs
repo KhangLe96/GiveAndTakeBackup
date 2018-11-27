@@ -35,7 +35,6 @@ namespace GiveAndTake.Droid
 			
 			if (data != null)
 			{
-				string str = "";
 				try
 				{
 					var notification = JsonHelper.Deserialize<Core.Models.Notification>(data);
@@ -51,6 +50,7 @@ namespace GiveAndTake.Droid
 						}
 
 						// TODO: clear extra 'giveandtake'
+						Intent.Extras.Clear();
 					}
 					else
 					{

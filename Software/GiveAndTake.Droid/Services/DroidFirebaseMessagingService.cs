@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections;
 using Android.App;
 using Android.Content;
 using Android.Media;
-using Android.Util;
 using Firebase.Messaging;
-using FCMClient;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using Android.OS;
 using Android.Support.V4.App;
+using GiveAndTake.Core;
+using GiveAndTake.Core.Extensions;
 using GiveAndTake.Core.Helpers;
 using GiveAndTake.Droid;
-using GiveAndTake.Droid.Views;
-using GiveAndTake.Droid.Views.Base;
-using GiveAndTake.Droid.Views.TabNavigation;
-using MvvmCross;
+using Newtonsoft.Json;
+using Notification = GiveAndTake.Core.Models.Notification;
 using Resource = GiveAndTake.Droid.Resource;
-using TaskStackBuilder = Android.App.TaskStackBuilder;
 
 namespace FCMClient
 {
@@ -26,53 +24,48 @@ namespace FCMClient
 	{
 		internal static readonly string ChannelId = "giveandtake_notification_channel";
 		internal static string ChannelName = "giveandtake-channel-name";
-		internal static readonly int NOTIFICATION_ID = 111;
-
+	
 		public override void HandleIntent(Intent intent)
 		{
-			//const string TAG = "MyFirebaseMsgService";
-			////TODO handel intent
-			//if (intent.Extras != null)
-			//{
-			//	var dictionary = new Dictionary<string, string>();
-			//	foreach (var key in intent.Extras.KeySet())
-			//	{
-			//		var value = intent.Extras.GetString(key);
-			//		Log.Debug(TAG, "Key: {0} Value: {1}", key, value);
-			//	}
-			//}
-			var dictionary1 = new Dictionary<string, string>();
-			dictionary1["123"] = "456";
-			//send to notification tray
-			//parameters: notification.title and notification
-			SendNotification("VCM", dictionary1);
+			var keySet = intent?.Extras?.KeySet();
+			if (keySet != null)
+			{
+				var notification = new Notification();
+				var dictionary = new Dictionary<string, string>();
+
+				foreach (var dataMember in GetModelDataMembers(notification.GetType()))
+				{
+
+					var key = AppConstants.FcmPrefixKey + dataMember;
+
+					if (keySet.Contains(key))
+					{
+						var value = intent.Extras.GetString(key);
+						dictionary[dataMember] = value;
+					}
+				}
+
+				notification = dictionary.ToObject<Notification>();
+				SendNotification(notification);
+			}
 		}
-		void SendNotification(string messageBody, IDictionary<string, string> data)
+
+		void SendNotification(Notification notification)
 		{
 			var intent = new Intent(this, typeof(SplashScreen));
 			intent.AddFlags(ActivityFlags.ClearTop);
-			//foreach (var key in data.Keys)
-			//{
-			//	intent.PutExtra(key, data[key]);
-			//}
-
-			intent.PutExtra("giveandtake", JsonHelper.Serialize(new Notification()));
-			//TaskStackBuilder stackBuilder = TaskStackBuilder.Create(this);
-			//stackBuilder.AddNextIntentWithParentStack(intent);
-			//var pendingIntent = stackBuilder.GetPendingIntent(0, PendingIntentFlags.UpdateCurrent);
+			intent.PutExtra("giveandtake", JsonHelper.Serialize(notification));
 			var pendingIntent = PendingIntent.GetActivity(this,
 				GenerateUniqueInt(),
 				intent,
 				PendingIntentFlags.UpdateCurrent);
 			var notificationBuilder = new NotificationCompat.Builder(this, ChannelId)
 				.SetSmallIcon(Resource.Drawable.login_logo)
-				.SetContentText(messageBody)
+				.SetContentText(notification.Message)
 				.SetAutoCancel(true)
 				.SetWhen(Java.Lang.JavaSystem.CurrentTimeMillis())
 				.SetContentIntent(pendingIntent);
-			//var notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID).SetContentIntent(pendingIntent).SetContentText("vcm");
 			var notificationManager = (NotificationManager)GetSystemService(NotificationService);
-			//NotificationManagerCompat notificationManager1 = NotificationManagerCompat.From(this);
 
 			if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
 			{
@@ -86,7 +79,6 @@ namespace FCMClient
 				channel.SetVibrationPattern(new long[] { 1000, 1000, 1000, 1000, 1000 });
 				channel.EnableVibration(true);
 				notificationManager.CreateNotificationChannel(channel);
-				//notificationManager1.Notify(NOTIFICATION_ID, notificationBuilder.Build());
 
 			}
 			else
@@ -94,7 +86,6 @@ namespace FCMClient
 				notificationBuilder.SetVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
 				notificationBuilder.SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification));
 			}
-			//notificationManager1.Notify(NOTIFICATION_ID, notificationBuilder.Build());
 			notificationManager.Notify((int)(DateTime.Now.Ticks % 10000), notificationBuilder.Build());
 		}
 
@@ -102,8 +93,26 @@ namespace FCMClient
 		{
 			var now = DateTime.Now;
 			var uniqueInt = now.Year & now.Month & now.Day & now.Hour & now.Minute & now.Second & now.Millisecond & 0xff;
-
 			return uniqueInt;
+		}
+		private List<string> GetModelDataMembers(Type type)
+		{
+			var names = new List<string>();
+			foreach (var property in type.GetProperties())
+			{
+				var jsonIgnoreAttributes = property.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).OfType<JsonIgnoreAttribute>().ToList();
+
+				if (jsonIgnoreAttributes.Any())
+				{
+					continue;
+				}
+
+				var dataMemberAttributes = property.GetCustomAttributes(typeof(DataMemberAttribute), false).OfType<DataMemberAttribute>().ToList();
+				var dataMemberName = dataMemberAttributes.Any() ? dataMemberAttributes[0].Name : property.Name;
+				names.Add(dataMemberName);
+			}
+
+			return names;
 		}
 	}
 }

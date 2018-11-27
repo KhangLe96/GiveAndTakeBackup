@@ -52,7 +52,8 @@ namespace GiveAndTake.Droid.Views.Base
 		{
 			if (BackPressedCommand == null)
 			{
-				base.OnBackPressed();
+				//base.OnBackPressed();
+				MoveTaskToBack(true);
 			}
 			else
 			{

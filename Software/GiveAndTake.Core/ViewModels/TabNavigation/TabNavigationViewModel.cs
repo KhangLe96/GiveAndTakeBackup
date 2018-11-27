@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 	public class TabNavigationViewModel : BaseViewModel
 	{
 		private readonly IDataModel _dataModel;
-
 		public int NumberOfTab { get; set; }
 
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
@@ -75,15 +75,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			if (DataModel.SelectedNotification != null)
 			{
 				//await NavigationService.Navigate<PopupWarningViewModel>("Tu splash");
-
 				HandleNotificationClicked(DataModel.SelectedNotification);
 			}
 		}
 
 		private void HandleNotificationClicked(Notification notification)
 		{
-			// TODO: navigate to corresponding page, check uid
-			DataModel.SelectedNotification = null;
+			// TODO: navigate to corresponding page, check uid			
+			//set null after use
+			//DataModel.SelectedNotification = null;
 		}
 	}
 }

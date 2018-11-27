@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross;
+using System;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -45,12 +46,30 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public override async Task Initialize()
 		{
 			await base.Initialize();
-			await UpdateNotificationViewModels();
+			await UpdateNotificationViewModels();			
 		}
 
 		private async void InitNotificationViewModels()
 		{
 			await UpdateNotificationViewModelOverLay();
+		}
+
+		public override void ViewCreated()
+		{
+			base.ViewCreated();
+			DataModel.NotificationReceived += OnNotificationReceived;
+		}
+
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			//DataModel.NotificationReceived -= OnNotificationReceived;
+		}
+
+		private async void OnNotificationReceived(object sender, Notification notification)
+		{
+			OnItemClicked(notification);
+			//var result = await NavigationService.Navigate<PopupWarningResponseViewModel, string, bool>(AppConstants.ErrorMessage);		
 		}
 
 		private async Task OnLoadMore()

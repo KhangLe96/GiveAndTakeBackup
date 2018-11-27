@@ -29,7 +29,7 @@ namespace GiveAndTake.Droid.Views
 	    private static AccessToken accessToken;
         private ICallbackManager _callbackManager;
 	    private ImageButton _btnFacebookLogin;
-	    static readonly string TAG = "MainActivity";
+	    static readonly string TAG = "LoginView";
 
 		public IMvxCommand<BaseUser> LoginCommand { get; set; }
 	    public string FireBaseToken { get; set; }
@@ -110,6 +110,12 @@ namespace GiveAndTake.Droid.Views
 
 	    private void HandleSuccessfulLogin()
 	    {
+		    var result = IsPlayServicesAvailable();
+		    if (result)
+		    {
+			    FireBaseToken = FirebaseInstanceId.Instance.Token;
+			    Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
+		    }
 			LoginCommand.Execute(new BaseUser
 			{
 				FirstName = Profile.CurrentProfile.FirstName,
@@ -120,12 +126,7 @@ namespace GiveAndTake.Droid.Views
 				SocialAccountId = Profile.CurrentProfile.Id
 			});
 
-			var result = IsPlayServicesAvailable();
-		    if (result)
-		    {
-			    FireBaseToken = FirebaseInstanceId.Instance.Token;						
-			    Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
-			}		   
+					   
 		}
 
 	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=large";

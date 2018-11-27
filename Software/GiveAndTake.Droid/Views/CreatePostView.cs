@@ -114,7 +114,7 @@ namespace GiveAndTake.Droid.Views
 		private void ChoosePicture(object sender, System.EventArgs e)
 		{
 			Intent intent = new Intent();
-			intent.SetType("ảnh/*");
+			intent.SetType("image/*");
 			intent.PutExtra(Intent.ExtraAllowMultiple, true);
 			intent.SetAction(Intent.ActionGetContent);
 			StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), ChoosePictureCode);

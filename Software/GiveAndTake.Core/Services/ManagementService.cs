@@ -434,11 +434,11 @@ namespace GiveAndTake.Core.Services
 		    }
 		}
 
-	    public async Task SendFireBaseUserInformation(FireBaseUserInformation info)
+	    public async Task SendFireBaseUserInformation(FireBaseUserInformation info, string token)
 	    {
 		    var responseInformationInString = JsonHelper.Serialize(info);
 		    var content = new StringContent(responseInformationInString, Encoding.UTF8, "application/json");
-		    var response = await _apiHelper.Post(AppConstants.RegisterFireBaseUserInformation, content);
+		    var response = await _apiHelper.Post(AppConstants.RegisterFireBaseUserInformation, content, token);
 
 		    if (response.NetworkStatus != NetworkStatus.Success)
 		    {
