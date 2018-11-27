@@ -51,7 +51,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var response = Mapper.Map<Response>(responseRequest);
 			response.Id = Guid.NewGuid();
 
-			response = _responseService.Create(response, out var isSaved);
+			_responseService.Create(response, out var isSaved);
 			if (!isSaved) throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
 			var request = _requestService.Find(responseRequest.RequestId);
@@ -66,7 +66,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			// Send a notification to an user who is accepted and also save it to db
 			_notificationService.Create(new Notification()
 			{
-				Message = $"{user.FirstName} {user.LastName} đã chấp nhận yêu cầu của bạn!",
+				Message = $"{response.Request.User.FirstName} {response.Request.User.LastName} đã chấp nhận yêu cầu của bạn!",
 				Type = NotificationType.IsAccepted,
 				RelevantId = response.Id,
 				SourceUserId = userId,
@@ -74,6 +74,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			});
 
 			var result = Mapper.Map<ResponseRequestResponse>(response);
+			result.User = Mapper.Map<UserRequestResponse>(response.Request.User);
+			result.Post = Mapper.Map<PostRequestResponse>(response.Request.Post);
+
 			return result;
 		}
 	}
