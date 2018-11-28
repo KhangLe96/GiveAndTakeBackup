@@ -50,7 +50,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private void OnNotificationReceived(object sender, Notification notification)
 		{
-			NavigationService.Navigate<PopupWarningViewModel>("Master view show truoc");
+			//foreground (when app is alive)
 			HandleNotificationClicked(notification);
 		}
 
@@ -74,16 +74,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			if (DataModel.SelectedNotification != null)
 			{
-				//await NavigationService.Navigate<PopupWarningViewModel>("Tu splash");
+				//background (when app is destroyed)
 				HandleNotificationClicked(DataModel.SelectedNotification);
 			}
 		}
 
 		private void HandleNotificationClicked(Notification notification)
 		{
-			// TODO: navigate to corresponding page, check uid			
-			//set null after use
-			//DataModel.SelectedNotification = null;
+			// Handle both background and foreground when push notification is received	
 		}
 	}
 }

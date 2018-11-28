@@ -63,13 +63,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public override void ViewDestroy(bool viewFinishing = true)
 		{
 			base.ViewDestroy(viewFinishing);
-			//DataModel.NotificationReceived -= OnNotificationReceived;
+			DataModel.NotificationReceived -= OnNotificationReceived;
 		}
 
-		private async void OnNotificationReceived(object sender, Notification notification)
+		private void OnNotificationReceived(object sender, Notification notification)
 		{
-			OnItemClicked(notification);
-			//var result = await NavigationService.Navigate<PopupWarningResponseViewModel, string, bool>(AppConstants.ErrorMessage);		
+			if (DataModel.SelectedNotification != null)
+			{
+				OnItemClicked(notification);
+				DataModel.SelectedNotification = null;
+			}			
 		}
 
 		private async Task OnLoadMore()
@@ -122,7 +125,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				case "Warning":
 					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
-			}
+			}			
 		}
 
 		private async Task HandleRequestType(Notification notification)

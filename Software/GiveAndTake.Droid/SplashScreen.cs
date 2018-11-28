@@ -24,8 +24,6 @@ namespace GiveAndTake.Droid
 			: base(Resource.Layout.SplashScreen)
 		{
 		}
-
-		private bool a;
 		protected override void OnResume()
 		{
 			base.OnResume();
@@ -39,10 +37,8 @@ namespace GiveAndTake.Droid
 				if (isDataModelInitialized)
 				{
 					var dataModel = Mvx.Resolve<IDataModel>();
-
 					if (dataModel.IsLoggedIn)
 					{
-						a = true;
 						_clickedNotification = notification;
 						Finish();
 					}
@@ -55,7 +51,7 @@ namespace GiveAndTake.Droid
 			}
 			else
 			{
-				if (Mvx.CanResolve<IDataModel>() && Mvx.Resolve<IDataModel>().IsLoggedIn)
+				if (isDataModelInitialized && Mvx.Resolve<IDataModel>().IsLoggedIn)
 				{
 					Finish();
 				}
