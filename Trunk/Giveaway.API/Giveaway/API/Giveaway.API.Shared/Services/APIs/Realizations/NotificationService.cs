@@ -38,16 +38,16 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			_deviceIdentityService = deviceIdentityService;
 		}
 
-		public PagingQueryResponse<NotificationResponse> GetNotificationForPaging(Guid userId, IDictionary<string, string> @params)
+		public PagingQueryResponseForNotification GetNotificationForPaging(Guid userId, IDictionary<string, string> @params)
 		{
 			var request = @params.ToObject<PagingQueryNotificationRequest>();
 
-			int total;
-			var notifications = GetPagedNotifications(userId, request, out total);
+			var notifications = GetPagedNotifications(userId, request, out var total, out var numberOfNotiNotSeen);
 
-			return new PagingQueryResponse<NotificationResponse>
+			return new PagingQueryResponseForNotification
 			{
 				Data = notifications,
+				NumberOfNotiNotSeen = numberOfNotiNotSeen,
 				PageInformation = new PageInformation
 				{
 					Total = total,
@@ -139,14 +139,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		#region Utils
 
-		private List<NotificationResponse> GetPagedNotifications(Guid userId, PagingQueryNotificationRequest request, out int total)
+		private List<NotificationResponse> GetPagedNotifications(Guid userId, PagingQueryNotificationRequest request, out int total, out int numberOfNotiNotSeen)
 		{
 			var notifications =
 				_notificationService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.DestinationUserId == userId);
 
-
+			numberOfNotiNotSeen = notifications.Count(x => x.IsSeen == false);
 			total = notifications.ToList().Count();
-
+			
 			return notifications
 				.Skip(request.Limit * (request.Page - 1))
 				.Take(request.Limit)

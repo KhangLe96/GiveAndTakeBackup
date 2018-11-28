@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 namespace Giveaway.API.Shared.Services.APIs
 {
-    public interface IRequestService
+	public interface IRequestService
     {
-        PagingQueryResponse<RequestPostResponse> GetRequestForPaging(string postId, IDictionary<string, string> @params);
+	    PagingQueryResponse<RequestPostResponse> GetRequestForPaging(string postId, IDictionary<string, string> @params);
 	    RequestPostResponse GetRequestById(Guid requestId);
 
 		RequestPostResponse Create(RequestPostRequest requestPost);

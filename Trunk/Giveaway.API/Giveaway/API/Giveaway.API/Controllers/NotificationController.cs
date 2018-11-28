@@ -24,7 +24,7 @@ namespace Giveaway.API.Controllers
 		[Authorize]
 		[HttpGet("list")]
 		[Produces("application/json")]
-		public PagingQueryResponse<NotificationResponse> GetList([FromHeader]IDictionary<string, string> @params)
+		public PagingQueryResponseForNotification GetList([FromHeader]IDictionary<string, string> @params)
 		{
 			var userId = User.GetUserId();
 			return _notificationService.GetNotificationForPaging(userId, @params);

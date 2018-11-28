@@ -9,7 +9,7 @@ namespace Giveaway.API.Shared.Services.APIs
 {
 	public interface INotificationService
 	{
-		PagingQueryResponse<NotificationResponse> GetNotificationForPaging(Guid userId, IDictionary<string, string> @params);
+		PagingQueryResponseForNotification GetNotificationForPaging(Guid userId, IDictionary<string, string> @params);
 		NotificationResponse Create(Notification notification);
 		bool Delete(Guid notiId);
 		NotificationResponse UpdateReadStatus(Guid notiId, NotificationIsReadRequest request);
