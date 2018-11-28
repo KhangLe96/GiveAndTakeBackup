@@ -155,4 +155,14 @@
 
 	</LinearLayout>
 
+	<ImageButton
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:layout_margin="@dimen/margin_normal"
+		android:src="@drawable/new_post"
+		android:background="@null"
+		local:MvxBind="Click CreatePostCommand"/>
+
 </RelativeLayout>

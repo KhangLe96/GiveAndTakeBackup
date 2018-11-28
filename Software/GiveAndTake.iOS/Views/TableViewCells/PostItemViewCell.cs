@@ -32,11 +32,22 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private UIView _reactionArea;
 		private UIView _seperatorLine;
 		private UIView _optionView;
+		private bool _isRequested;
 
 		public PostItemViewCell(IntPtr handle) : base(handle)
 		{
 			InitViews();
 			CreateBinding();
+		}
+
+		public bool IsRequested
+		{
+			get => _isRequested;
+			set
+			{
+				_isRequested = value;
+				InitSetRequestIcon();
+			}
 		}
 
 		private void CreateBinding()
@@ -110,6 +121,10 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		        .For(v => v.BackgroundColor)
 		        .To(vm => vm.BackgroundColor)
 		        .WithConversion("StringToUIColor");
+
+			set.Bind(this)
+				.For(v => v.IsRequested)
+				.To(vm => vm.IsRequested);
 
 			set.Apply();
 		}
@@ -435,6 +450,11 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
+		}
+
+		private void InitSetRequestIcon()
+		{
+			_imgRequest.Image = UIImage.FromBundle(IsRequested ? ImageHelper.RequestOn : ImageHelper.RequestOff);
 		}
 	}
 }

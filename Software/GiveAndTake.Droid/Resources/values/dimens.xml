@@ -84,4 +84,5 @@
 	<dimen name="medium_margin">10dp</dimen>
 	<dimen name="medium_padding">10dp</dimen>
 	<dimen name="request_number_button_text_size">15dp</dimen>
+	<dimen name="profile_post_title_text_size">12dp</dimen>
 </resources>

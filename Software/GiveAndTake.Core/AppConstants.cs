@@ -5,7 +5,7 @@
 	{
 		public const string AppTitle = "Cho và Nhận";
 		public const string DefaultLocationFilter = "Đà Nẵng";
-		public const string ApiUrl = "https://api.chovanhan.asia/api/v1/";
+		public const string ApiUrl = "http://192.168.51.137:8089/api/v1/";
 		public const int ApiTimeout = 300; // seconds
 		public const string GetCategories = "categories/app/list";
 		public const string GetPostList = "post/app/list";
@@ -48,6 +48,7 @@
 		public const string ViewPostRequests = "Duyệt cho";
 		public const string DeletePost = "Xóa";
 		public const string ReportPost = "Báo cáo";
+		public const string CancelRequest = "Hủy yêu cầu";
 
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";
@@ -97,5 +98,6 @@
 		public static string ConfirmDeletePost = "Bạn có chắc chắn muốn xóa bài đăng này?";
 		public static string ConfirmDeleteOwnRequest = "Bạn có chắc chắn muốn hủy bỏ yêu cầu ?";
 		public static string CancelEditPostConfirmMessage = "Bạn có muốn hủy chỉnh sửa?";
+		public static string CancelRequestConfrim = "\nBạn có chắc chắn muốn bỏ yêu cầu ?\n";
 	}
 }

@@ -45,7 +45,7 @@ namespace GiveAndTake.Core.ViewModels
 			_updateImageIndexCommand ?? (_updateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index));
 
 		public IMvxCommand BackPressedCommand =>
-			_backPressedCommand ?? (_backPressedCommand = new MvxCommand(() => NavigationService.Close(this, true)));
+			_backPressedCommand ?? (_backPressedCommand = new MvxCommand(() => NavigationService.Close(this, false)));
 
 		public string CategoryName
 		{
@@ -195,6 +195,7 @@ namespace GiveAndTake.Core.ViewModels
 		private bool _isBackFromFullImage = false;
 		private string _statusChange;
 		private List<string> _myPostOptions;
+		private List<string> _otherPostOptions;
 		private bool _isLoadFirstTime = true;
 		#endregion
 
@@ -217,11 +218,15 @@ namespace GiveAndTake.Core.ViewModels
 		private async void ShowMenuView()
 		{
 			_myPostOptions = GetMyPostOptions();
-			var postOptions = _isMyPost ? _myPostOptions : OtherPostOptions;
+			_otherPostOptions = IsRequested ? GetOtherPostOptions() : OtherPostOptions;
+			var postOptions = _isMyPost ? _myPostOptions : _otherPostOptions;
 
 			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
 
-			if (string.IsNullOrEmpty(result)) return;
+			if (string.IsNullOrEmpty(result))
+			{
+				return;
+			}
 
 			if (result.Equals(_myPostOptions[0]))
 			{
@@ -239,6 +244,9 @@ namespace GiveAndTake.Core.ViewModels
 				case AppConstants.DeletePost:
 					await DeletePost();
 					break;
+				case AppConstants.CancelRequest:
+					await CancelOldRequest();
+					break;
 				case AppConstants.ReportPost:
 					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
 					break;
@@ -248,12 +256,13 @@ namespace GiveAndTake.Core.ViewModels
 		private async Task DeletePost()
 		{
 			var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmDeletePost);
-			if (userConfirmation != RequestStatus.Submitted)
+			if (userConfirmation == RequestStatus.Cancelled)
 			{
 				return;
 			}
 			await ChangeStatus(AppConstants.DeletedStatus);
-			await NavigationService.Close(this, true);
+			await Task.Delay(777); //for iOS
+			await NavigationService.Close(this, true);		
 		}
 
 		private List<string> GetMyPostOptions() => new List<string>
@@ -262,6 +271,12 @@ namespace GiveAndTake.Core.ViewModels
 			AppConstants.ModifyPost,
 			AppConstants.ViewPostRequests,
 			AppConstants.DeletePost
+		};
+
+		private List<string> GetOtherPostOptions() => new List<string>()
+		{
+			AppConstants.CancelRequest,
+			AppConstants.ReportPost,
 		};
 
 		private async Task ShowMyRequestList()
@@ -308,6 +323,7 @@ namespace GiveAndTake.Core.ViewModels
 						IsRequested = _userRequestResponse.IsRequested;
 						CommentCount = _dataModel.CurrentPost.CommentCount;
 						RequestCount = _dataModel.CurrentPost.RequestCount;
+						_dataModel.CurrentPost.IsRequested = IsRequested;
 						break;
 					}
 					catch (AppException.ApiException)
@@ -365,10 +381,9 @@ namespace GiveAndTake.Core.ViewModels
 			}
 
 			await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
-			var managementService = Mvx.Resolve<IManagementService>();
 			try
 			{
-				await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+				await ManagementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
 				//TODO MinhVan: we only need to update requestCount, but we have to fetch all data again (1 api for all data).
 				//The request count is only reloaded due to only new requestCount data received (SetProperty mechanism).
 				await LoadCurrentPostData();
