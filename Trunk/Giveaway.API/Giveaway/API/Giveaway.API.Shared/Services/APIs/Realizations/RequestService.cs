@@ -62,24 +62,34 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		public RequestPostResponse Create(RequestPostRequest requestPost)
         {
-	        if (CheckWhetherUserRequested(requestPost.PostId, requestPost.UserId))
-	        {
-		        throw new BadRequestException(CommonConstant.Error.BadRequest);
-	        }
+	        //if (CheckWhetherUserRequested(requestPost.PostId, requestPost.UserId))
+	        //{
+		       // throw new BadRequestException(CommonConstant.Error.BadRequest);
+	        //}
 
 			var request = Mapper.Map<Request>(requestPost);
 			request.Id = Guid.NewGuid();
 
-			_requestService.Create(request, out var isPostSaved);
-			if (isPostSaved == false)
-			{
-				throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-			}
+			_requestService.Create(request, out var isSaved);
 
-			var requestDb = _requestService.Include(x => x.Post).Include(x => x.Responses).FirstOrDefault(x => x.Id == request.Id);
-			var postResponse = Mapper.Map<RequestPostResponse>(requestDb);
+	        if (isSaved == false) throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
-			return postResponse;
+	        var requestDb = _requestService.Include(x => x.Post).Include(x => x.Responses).Include(x => x.User)
+		        .FirstOrDefault(x => x.Id == request.Id);
+
+			// Send a notification to an user who requested and also save it to db
+			_notificationService.Create(new Notification()
+	        {
+		        Message = $"{requestDb?.User.FirstName} {requestDb?.User.LastName} đã gửi yêu cầu cho bài đăng của bạn!",
+		        Type = NotificationType.Request,
+		        RelevantId = request.Id,
+		        SourceUserId = request.UserId,
+		        DestinationUserId = requestDb.Post.UserId
+			});
+
+	        var result = Mapper.Map<RequestPostResponse>(requestDb);
+
+	        return result;
         }
 
         public bool UpdateStatus(Guid requestId, StatusRequest statusRequest, Guid userId)
