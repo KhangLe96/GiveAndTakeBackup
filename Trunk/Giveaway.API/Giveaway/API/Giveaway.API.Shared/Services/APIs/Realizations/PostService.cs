@@ -59,41 +59,48 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		    var request = @params.ToObject<PagingQueryPostRequest>();
 
 		    if (Guid.TryParse(userId, out var id))
-		    {
-			    var posts = _postService.Include(x => x.Category)
-				    .Include(x => x.Images)
-				    .Include(x => x.ProvinceCity)
-				    .Include(x => x.User)
-				    .Include(x => x.Comments)
-				    .Include(x => x.Requests)
-				    .Where(x => x.Category.EntityStatus == EntityStatus.Activated &&
-				                x.Requests.Any(y => y.EntityStatus != EntityStatus.Deleted && y.UserId == id));
+			{
+				var posts = _postService.Include(x => x.Category)
+					.Include(x => x.Images)
+					.Include(x => x.ProvinceCity)
+					.Include(x => x.User)
+					.Include(x => x.Comments)
+					.Include(x => x.Requests)
+					.Where(x => x.Category.EntityStatus == EntityStatus.Activated &&
+								x.Requests.Any(y => y.EntityStatus != EntityStatus.Deleted && y.UserId == id && y.RequestStatus != RequestStatus.Rejected));
 
 				//filter posts by properties
-			    posts = FilterPost(request, posts);
-			    posts = SortPosts(request, posts);
+				posts = FilterPost(request, posts);
+				posts = SortPosts(request, posts);
 
-			    var result = posts.Skip(request.Limit * (request.Page - 1))
-				    .Take(request.Limit).AsEnumerable()
-				    .Select(x => GenerateRequestedPostResponse(x, id))
-				    .ToList();
+				//just get requests that have not deleted yet
+				var postList = posts.ToList();
+				foreach (var post in postList)
+				{
+					post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
+				}
+
+				var result = posts.Skip(request.Limit * (request.Page - 1))
+					.Take(request.Limit).AsEnumerable()
+					.Select(x => GenerateRequestedPostResponse(x, id))
+					.ToList();
 
 				return new PagingQueryResponse<RequestedPostResponse>
-			    {
-				    Data = result,
-				    PageInformation = new PageInformation
-				    {
-					    Total = posts.Count(),
-					    Page = request.Page,
-					    Limit = request.Limit
-				    }
-			    };
+				{
+					Data = result,
+					PageInformation = new PageInformation
+					{
+						Total = posts.Count(),
+						Page = request.Page,
+						Limit = request.Limit
+					}
+				};
 			}
 
-		    throw new BadRequestException(CommonConstant.Error.InvalidInput);
+			throw new BadRequestException(CommonConstant.Error.InvalidInput);
 	    }
 
-	    public T GetDetail(Guid postId, string userId)
+		public T GetDetail(Guid postId, string userId)
 		{
             try
             {
@@ -399,11 +406,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			posts = SortPosts(request, posts);
 
 			//just get requests that have not deleted yet
-	        var postList = posts.ToList();
-			foreach (var post in postList)
-			{
-				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
-			}
+			var postList = posts.ToList();
+	        foreach (var post in postList)
+	        {
+		        post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
+	        }
 
 			total = postList.Count();
 
@@ -477,6 +484,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             return posts;
         }
 
-        #endregion
-    }
+		#endregion
+	}
 }
