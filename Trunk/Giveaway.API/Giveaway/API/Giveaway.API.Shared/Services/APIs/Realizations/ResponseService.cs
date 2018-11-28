@@ -33,11 +33,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		public ResponseRequestResponse GetResponseById(Guid id)
 		{
-			var response = _responseService.Include(x => x.Request.User).Include(x => x.Request.Post.Images).Find(id);
+			var response = _responseService.Include(x => x.Request.Post.User).Include(x => x.Request.Post.Images).Find(id);
 			if (response != null)
 			{
 				var result = Mapper.Map<ResponseRequestResponse>(response);
-				result.User = Mapper.Map<UserRequestResponse>(response.Request.User);
+				result.User = Mapper.Map<UserRequestResponse>(response.Request.Post.User);
 				result.Post = Mapper.Map<PostRequestResponse>(response.Request.Post);
 				result.Post.Image = response.Request.Post.Images?.ElementAt(0).ResizedImage;
 
@@ -52,7 +52,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var response = Mapper.Map<Response>(responseRequest);
 			response.Id = Guid.NewGuid();
 
-			_responseService.Create(response, out var isSaved);
+			response = _responseService.Create(response, out var isSaved);
 			if (!isSaved) throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
 			var request = _requestService.Find(responseRequest.RequestId);
@@ -67,7 +67,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			// Send a notification to an user who is accepted and also save it to db
 			_notificationService.Create(new Notification()
 			{
-				Message = $"{response.Request.User.FirstName} {response.Request.User.LastName} đã chấp nhận yêu cầu của bạn!",
+				Message = $"{user.FirstName} {user.LastName} đã chấp nhận yêu cầu của bạn!",
 				Type = NotificationType.IsAccepted,
 				RelevantId = response.Id,
 				SourceUserId = userId,
@@ -75,9 +75,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			});
 
 			var result = Mapper.Map<ResponseRequestResponse>(response);
-			result.User = Mapper.Map<UserRequestResponse>(response.Request.User);
-			result.Post = Mapper.Map<PostRequestResponse>(response.Request.Post);
-
 			return result;
 		}
 	}
