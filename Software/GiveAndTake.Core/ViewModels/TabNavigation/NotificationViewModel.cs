@@ -140,6 +140,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 			else
 			{
+				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 				var popupResult = await NavigationService.Navigate<RequestDetailViewModel, Request, PopupRequestDetailResult>(request);
 				switch (popupResult)
 				{
@@ -151,21 +152,18 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 						OnRequestAccepted(request);
 						break;
 
-                    case PopupRequestDetailResult.ShowPostDetail:
-                        await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-                        var post = await ManagementService.GetPostDetail(request.Post.PostId);
-                        post.IsMyPost = true;
-
-                        await NavigationService.Navigate<PostDetailViewModel, Post>(post);
-                        break;
-
+					case PopupRequestDetailResult.ShowPostDetail:
+						var post = await ManagementService.GetPostDetail(request.Post.PostId);
+						post.IsMyPost = true;
+						await NavigationService.Navigate<PostDetailViewModel, Post>(post);
+						break;
 					default:
 						await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 						break;
-                }
+				}
 			}
 
-			await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
+			ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
 		}
 
 		private async void OnRequestRejected(Request request)
