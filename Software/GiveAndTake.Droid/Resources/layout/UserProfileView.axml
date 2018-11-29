@@ -1,12 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity ="center">
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="@dimen/MediumTextSize"
-    android:text="Giver Profile"/>
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+	<RelativeLayout
+        android:id="@+id/profileView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/profile_view_height"
+        android:background="@color/line">
+
+		<giveandtake.droid.controls.CustomMvxCachedImageView
+			android:id="@+id/imgAvatar"
+            android:layout_width="@dimen/avatar_big_size"
+            android:layout_height="@dimen/avatar_big_size"
+            android:layout_margin="@dimen/margin_normal"
+			local:MvxBind="LoadingPlaceholderImagePath 'res:default_avatar';
+							ErrorPlaceholderImagePath 'res:default_avatar';
+							Transformations AvatarTransformations;
+							ImageUrl AvatarUrl;" />
+
+		<TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/profile_margin_left"
+            android:layout_marginTop="@dimen/margin_big"
+            android:layout_toRightOf="@id/imgAvatar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/large_text_size"
+            android:textStyle="bold"
+			local:MvxBind="Text UserName"/>
+
+		<TextView
+            android:id="@+id/tvRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvUserName"
+            android:layout_below="@id/tvUserName"
+            android:layout_marginTop="@dimen/default_margin"
+            android:textColor="@color/text_normal_color"
+            android:textSize="@dimen/SmallTextSize"
+			local:MvxBind="Text RankTitle"/>
+
+		<TextView
+            android:id="@+id/tvSentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tvUserName"
+            android:layout_below="@id/tvRank"
+            android:layout_marginTop="@dimen/default_margin"
+            android:textColor="@color/text_normal_color"
+            android:textSize="@dimen/SmallTextSize"
+			local:MvxBind="Text SentTitle"/>
+
+		<TextView
+            android:id="@+id/tvUserRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvRank"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_toRightOf="@id/tvRank"
+            android:textColor="@color/white"
+			local:MvxBind="Text RankType"/>
+
+		<TextView
+            android:id="@+id/tvUserSentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tvSentCount"
+            android:layout_alignLeft="@id/tvUserRank"
+            android:layout_below="@id/tvUserRank"
+            android:textColor="@color/white"
+			local:MvxBind="Text SentCount"/>
+
+		<ImageButton
+            android:layout_width="@dimen/popup_button_height"
+            android:layout_height="@dimen/popup_button_height"
+            android:src="@drawable/chat"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/tvUserName"
+            android:layout_marginRight="@dimen/margin_17dp"
+			local:MvxBind="Click OpenConversationCommand"/>
+
+	</RelativeLayout>
+
+	<MvxSwipeRefreshLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@+id/profileView"
+		android:layout_marginLeft="@dimen/margin_short"
+		android:layout_marginRight="@dimen/margin_short"
+		local:MvxBind="Refreshing IsPostsRefreshing; RefreshCommand RefreshPostsCommand">
+
+		<MvvmCross.Droid.Support.V7.RecyclerView.MvxRecyclerView
+			android:id="@+id/rvPosts"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:scrollbars="vertical"
+			local:MvxBind="ItemsSource PostViewModels"
+			local:MvxItemTemplate="@layout/posttemplate" />
+
+	</MvxSwipeRefreshLayout>
+
+</RelativeLayout>

@@ -45,7 +45,7 @@ namespace GiveAndTake.Core.ViewModels
 			_updateImageIndexCommand ?? (_updateImageIndexCommand = new MvxCommand<int>(index => PostImageIndex = index));
 
 		public IMvxCommand BackPressedCommand =>
-			_backPressedCommand ?? (_backPressedCommand = new MvxCommand(() => NavigationService.Close(this, true)));
+			_backPressedCommand ?? (_backPressedCommand = new MvxCommand(() => NavigationService.Close(this, IsLoadInHomeView)));
 
 		public string CategoryName
 		{
@@ -154,6 +154,11 @@ namespace GiveAndTake.Core.ViewModels
 			get => _isRequested;
 			set => SetProperty(ref _isRequested, value);
 		}
+		public bool IsLoadInHomeView
+		{
+			get => _isLoadInHomeView;
+			set => SetProperty(ref _isLoadInHomeView, value);
+		}
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
@@ -204,6 +209,7 @@ namespace GiveAndTake.Core.ViewModels
 		private string _statusChange;
 		private List<string> _myPostOptions;
 		private bool _isLoadFirstTime = true;
+		private bool _isLoadInHomeView = false;
 		#endregion
 
 		#region Constructor
@@ -241,7 +247,7 @@ namespace GiveAndTake.Core.ViewModels
 						if (userConfirmation != RequestStatus.Submitted) return;
 						await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 						await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN,
-							_dataModel.LoginResponse.Token);
+							_dataModel.LoginResponse.Token);						
 						await LoadCurrentPostData();
 						await _overlay.CloseOverlay();
 					}
@@ -250,6 +256,7 @@ namespace GiveAndTake.Core.ViewModels
 						await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 						await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN,
 							_dataModel.LoginResponse.Token);
+						IsLoadInHomeView = true;
 						await LoadCurrentPostData();
 						await _overlay.CloseOverlay();
 					}
@@ -259,6 +266,7 @@ namespace GiveAndTake.Core.ViewModels
 					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 					await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivingStatusEN,
 						_dataModel.LoginResponse.Token);
+					IsLoadInHomeView = false;
 					await LoadCurrentPostData();
 					await _overlay.CloseOverlay();
 				}

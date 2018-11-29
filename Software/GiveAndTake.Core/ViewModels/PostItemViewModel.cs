@@ -1,4 +1,5 @@
-﻿using FFImageLoading.Transformations;
+﻿using System;
+using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
@@ -8,9 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using GiveAndTake.Core.Helpers;
+using GiveAndTake.Core.ViewModels.TabNavigation;
+using System.Windows.Input;
 using I18NPortable;
+using MvvmCross.UI;
 using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
@@ -110,8 +113,20 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _isRequested, value);
 	    }
 
+	    public string RequestedPostStatus
+	    {
+		    get => _requestedPostStatus;
+		    set => SetProperty(ref _requestedPostStatus, value);
+	    }
 
-		public List<ITransformation> PostTransformations => 
+	    public MvxColor RequestedPostStatusColor
+	    {
+		    get => _requestedPostStatusColor;
+		    set => SetProperty(ref _requestedPostStatusColor, value);
+		}
+
+
+	    public List<ITransformation> PostTransformations => 
 		    new List<ITransformation> { new CornersTransformation(5 , CornerTransformType.AllRounded) };
 
 	    public List<ITransformation> AvatarTransformations => 
@@ -125,8 +140,8 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public IMvxCommand ShowMenuPopupCommand =>
 		    _showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxAsyncCommand(ShowMenuView));
-		
 
+	    public Action ShowProfileTab { get; set; }
 
 	    private static readonly List<string> MyPostOptions = new List<string>
 	    {
@@ -148,6 +163,7 @@ namespace GiveAndTake.Core.ViewModels
 	    private string _postImage;
 	    private string _backgroundColor;
 	    private string _status;
+	    private string _requestedPostStatus;
 	    private int _requestCount;
 	    private int _appreciationCount;
 	    private int _commentCount;
@@ -158,18 +174,20 @@ namespace GiveAndTake.Core.ViewModels
 	    private IMvxCommand _showPostDetailCommand;
 	    private IMvxCommand _showMenuPopupCommand;
 	    private readonly Post _post;
-
-	    #endregion
+	    private MvxColor _requestedPostStatusColor;
+	    private readonly Action _doReload;
+		#endregion
 
 		#region Methods
 
-		public PostItemViewModel(Post post) 
-		{
-			_post = post;
-			Init();
-		}
+		public PostItemViewModel(Post post, Action doReload = null)
+	    {
+		    _post = post;
+		    _doReload = doReload;
+		    Init();
+	    }
 
-	    private void Init()
+		private void Init()
 	    {
 		    CategoryName = _post.Category.CategoryName;
 		    AvatarUrl = _post.User.AvatarUrl;
@@ -186,9 +204,11 @@ namespace GiveAndTake.Core.ViewModels
 	        BackgroundColor = _post.Category.BackgroundColor;
 		    Status = _post.PostStatus.Translate();
 		    IsRequested = _post.IsRequested;
+		    RequestedPostStatus = _post.RequestedPostStatus?.Translate();
+		    RequestedPostStatusColor = ColorHelper.GetStatusColor(_post.RequestedPostStatus);
+
 	    }
 
-	    
 
         private async Task ShowMenuView()
 	    {
@@ -224,13 +244,26 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task ShowPostDetailView()
 		{
-			await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
+			var result = await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
 			RequestCount = Mvx.Resolve<IDataModel>().CurrentPost.RequestCount;
+			if (result)
+			{
+				_doReload?.Invoke();
+			}
 		}
 
-		private async Task ShowGiverProfile() =>
-		    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+	    private async Task ShowGiverProfile()
+	    {
+		    if (_post.IsMyPost)
+		    {
+			    ShowProfileTab?.Invoke();
+			}
+		    else
+		    {
+			    await NavigationService.Navigate<UserProfileViewModel, User>(_post.User);
+			}
+		}
 
-	    #endregion
-    }
+		#endregion
+	}
 }
