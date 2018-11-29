@@ -11,8 +11,9 @@ namespace Giveaway.Data.EF
         public const string DefaultAdminPassword = "admin@123";
         public const string DefaultNormalUserName = "user123";
         public const string DefaultUserPassword = "user@123";
-        public const string StaticFilesFolder = "Content";
-        public const string UsernamePattern = "[a-zA-Z0-9_]{1,20}";
+        public const string StaticImagesFolder = "Content";
+	    public const string StaticFilesFolder = "File";
+		public const string UsernamePattern = "[a-zA-Z0-9_]{1,20}";
 
         public static class Jwt
         {

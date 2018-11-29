@@ -29,7 +29,7 @@ namespace Giveaway.API.Shared.Extensions
 				Directory.CreateDirectory(path);
 			}
 
-			var staticFilePath = Path.Combine(Environment.WebRootPath, Const.StaticFilesFolder);
+			var staticFilePath = Path.Combine(Environment.WebRootPath, Const.StaticImagesFolder);
 			if (!Directory.Exists(staticFilePath))
 			{
 				Directory.CreateDirectory(staticFilePath);
@@ -38,7 +38,7 @@ namespace Giveaway.API.Shared.Extensions
 			app.UseStaticFiles(new StaticFileOptions()
 			{
 				FileProvider = new PhysicalFileProvider(
-					Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot", Const.StaticFilesFolder)),
+					Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot", Const.StaticImagesFolder)),
 				RequestPath = new PathString("/images")
 			});
 		}

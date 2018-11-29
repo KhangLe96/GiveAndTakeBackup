@@ -42,7 +42,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			if (Enum.TryParse<MobilePlatform>(request.MobilePlatform, out var platform))
 			{
 				var deviceIdentity = _deviceIdentityService.FirstOrDefault(x => x.DeviceToken == request.DeviceToken && x.MobilePlatform == platform);
-				var isSaved = _deviceIdentityService.UpdateStatus(deviceIdentity.Id, EntityStatus.Deleted.ToString()) != null;
+				var isSaved = _deviceIdentityService.Delete(deviceIdentity);
 				if (isSaved)
 				{
 					return true;

@@ -116,9 +116,8 @@ namespace Giveaway.Service.Services
         public virtual bool Delete(T entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
-            var result = Repository.Delete(entity);
-            //var result = Repository.Update(OnDelete(entity));
-            return result;
+			var result = Repository.Update(OnDelete(entity));
+			return result;
         }
 
         public bool DeletePermanent(T entity)

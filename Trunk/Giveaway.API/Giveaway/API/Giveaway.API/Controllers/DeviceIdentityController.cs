@@ -32,7 +32,7 @@ namespace Giveaway.API.Controllers
 		}
 
 		[Authorize]
-		[HttpDelete("delete")]
+		[HttpPut("delete")]
 		[Produces("application/json")]
 		public bool Delete([FromBody] DeviceIdentityRequest request)
 		{
