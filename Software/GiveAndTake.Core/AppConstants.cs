@@ -5,7 +5,7 @@
     {
         public static string AppTitle = "Cho và Nhận";
         public static string DefaultLocationFilter = "Đà Nẵng";
-        public static string ApiUrl = "http://api.chovanhan.asia/api/v1/";
+        public static string ApiUrl = "http://192.168.51.137:8089/api/v1/";
         public const int ApiTimeout = 300; // seconds
         public static string GetCategories = "categories/app/list";
         public static string GetPostList = "post/app/list";
@@ -111,6 +111,7 @@
         public static string ReleaseDateValue = "24 tháng 11 năm 2018";
         public static string SupportContactLabel = "Liên hệ hỗ trợ:";
         public static string SupportContactValue = "(0236)1022";
-        public static string DevelopedBy = "Ứng dụng được phát triển bởi";
+		public static string SupportContactPhone = "02361022";
+		public static string DevelopedBy = "Ứng dụng được phát triển bởi";
     }
 }

@@ -1,14 +1,11 @@
 ﻿using System;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
-using Android.OS;
 using Android.Views;
-using GiveAndTake.Core.ViewModels;
-using GiveAndTake.Core.ViewModels.Base;
-using GiveAndTake.Droid.Views.TabNavigation;
-using MvvmCross.Binding.BindingContext;
-using MvvmCross.Commands;
-using MvvmCross.Platforms.Android.Binding.BindingContext;
+using Android.Widget;
+using GiveAndTake.Core;
+
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views.Base
@@ -18,27 +15,32 @@ namespace GiveAndTake.Droid.Views.Base
 	public class AboutView : BaseActivity
 	{
 		protected override int LayoutId => Resource.Layout.AboutView;
+
+		ImageButton btn;
+
 		protected override void InitView()
 		{
+			btn = FindViewById<ImageButton>(Resource.Id.supportContactPhone);
+
+			btn.Click += OnContactButtonClicked;
+
 		}
 
-		protected override void CreateBinding()
+		protected override void OnDestroy()
 		{
-			base.CreateBinding();
-			var bindingSet = this.CreateBindingSet<AboutView, AboutViewModel>();
-
-			//bindingSet.Bind(this)
-			//	.For(v => v.ShowInitialViewModelsCommand)
-			//	.To(vm => vm.ShowInitialViewModelsCommand);
-
-			bindingSet.Apply();
+			base.OnDestroy();
+			btn.Click -= OnContactButtonClicked;
 		}
 
-		protected override void OnCreate(Bundle bundle)
+		private void OnContactButtonClicked(object sender, EventArgs e)
 		{
-			base.OnCreate(bundle);
-
+			var hasTelephony = PackageManager.HasSystemFeature(PackageManager.FeatureTelephony);
+			if (hasTelephony)
+			{
+				var uri = Android.Net.Uri.Parse("tel:"+ AppConstants.SupportContactPhone);
+				var intent = new Intent(Intent.ActionView, uri);
+				StartActivity(intent);
+			}
 		}
-
 	}
 }
