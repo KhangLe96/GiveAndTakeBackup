@@ -115,6 +115,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxInteraction LogoutFacebook =>
 			_logoutFacebook ?? (_logoutFacebook = new MvxInteraction());
 
+		public IMvxCommand CreatePostCommand =>
+			_createPostCommand ?? (_createPostCommand = new MvxAsyncCommand(ShowNewPostView));
+
 		private string _avatarUrl;
 		private string _userName;
 		private string _rankType;
@@ -133,8 +136,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _refreshRequestedPostsCommand;
 		private IMvxCommand _showMenuPopupCommand;
 		private MvxInteraction _logoutFacebook;
+		private IMvxCommand _createPostCommand;
 		private MvxObservableCollection<PostItemViewModel> _postViewModels;
 		private MvxObservableCollection<PostItemViewModel> _requestedPostViewModels;
+		private Post _post;
 
 		private static readonly List<string> MenuSettingOptions = new List<string> 
 		{
@@ -154,7 +159,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			IsPostsList = true;
 		}
 
-		public override Task Initialize() => UpdateMyPostViewModels();
+		public override async Task Initialize()
+		{
+			await base.Initialize();
+			await UpdateMyPostViewModels();
+		}
 
 		private void ShowMyPosts()
 		{
@@ -164,6 +173,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 
 			IsPostsList = true;
+			_post.IsMyPost = IsPostsList;
 		}
 
 		private async Task ShowMyRequests()
@@ -174,6 +184,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 
 			IsPostsList = false;
+			_post.IsMyPost = IsPostsList;
 
 			if (RequestedPostViewModels == null)
 			{
@@ -291,10 +302,61 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 
+		private async void ReloadData()
+		{
+			await UpdateProfileViewModelWithOverlay();
+		}
+
+		private async Task ShowNewPostView()
+		{
+			if (_dataModel.Categories != null)
+			{
+				try
+				{
+					_dataModel.Categories.RemoveAt(0);
+					var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
+					if (result)
+					{
+						await UpdateProfileViewModelWithOverlay();
+					}
+				}
+				catch (AppException.ApiException)
+				{
+					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+						.ErrorConnectionMessage);
+				}
+			}
+		}
+
+		private async Task UpdateProfileViewModelWithOverlay()
+		{
+			try
+			{
+				await _overlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+				if (_post.IsMyPost)
+				{
+					await UpdateMyPostViewModels();
+				}
+				else
+				{
+					await UpdateMyRequestedPostViewModels();
+				}
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlayService.CloseOverlay();
+			}
+		}
+
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = IsPostsList;
-			return new PostItemViewModel(post);
+			_post = post;
+			return new PostItemViewModel(_dataModel, post, ReloadData);
 		}
 
 		private async Task ShowMenuSettingView()

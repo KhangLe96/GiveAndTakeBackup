@@ -170,7 +170,7 @@ namespace GiveAndTake.Core.ViewModels
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = false;
-			return new PostItemViewModel(post);
+			return new PostItemViewModel(_dataModel, post);
 		}
 
 		private async Task OpenConversation()

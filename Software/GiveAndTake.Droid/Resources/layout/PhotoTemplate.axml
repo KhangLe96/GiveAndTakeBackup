@@ -11,7 +11,8 @@
 		android:layout_alignParentStart="true"
 		android:layout_height="match_parent"
 		android:layout_width="match_parent"
-		local:MvxBind="ImageBase64Data ImageBase64Data"/>
+		local:riv_corner_radius="10dp"
+		local:MvxBind="ImageBase64Data ImageBase64Data; ImageUrlData ImageUrlData"/>
 	<ImageView
 		android:background="@drawable/btn_delete_photo"
 		android:id="@+id/delete_btn"

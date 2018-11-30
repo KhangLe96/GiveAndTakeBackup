@@ -31,6 +31,20 @@ namespace GiveAndTake.iOS.Views.CollectionViewCells
 			}
 		}
 
+		private string _imageUrlData;
+		public string ImageUrlData
+		{
+			get => _imageUrlData;
+			set
+			{
+				_imageUrlData = value;
+				if (!string.IsNullOrEmpty(value))
+				{
+					_photoImageView.Image = ImageHelper.FromUrl(value);
+				}
+			}
+		}
+
 
 		public PhotoItemViewCell(IntPtr handle) : base(handle)
 		{
@@ -77,6 +91,10 @@ namespace GiveAndTake.iOS.Views.CollectionViewCells
 			bindingSet.Bind(this)
 				.For(v => v.ImageBase64Data)
 				.To(vm => vm.ImageBase64Data);
+
+			bindingSet.Bind(this)
+				.For(v => v.ImageUrlData)
+				.To(vm => vm.ImageUrlData);
 
 			bindingSet.Bind(_deletePhotoButton.Tap())
 				.For(v => v.Command)

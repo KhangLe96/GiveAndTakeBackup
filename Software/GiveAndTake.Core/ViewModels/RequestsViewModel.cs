@@ -7,6 +7,7 @@ using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Exceptions;
 
 namespace GiveAndTake.Core.ViewModels
 {

@@ -94,6 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/SmallTextSize"
+					android:fontFamily="@font/sanfranciscodisplay_light"
                     local:MvxBind="Text CreatedTime" />
 
 				<TextView
@@ -103,6 +104,7 @@
                     android:layout_marginLeft="@dimen/margin_separator"
                     android:layout_marginStart="@dimen/margin_separator"
                     android:text="-"
+					android:fontFamily="@font/sanfranciscodisplay_light"
                     android:textSize="@dimen/SmallTextSize" />
 
 				<TextView
@@ -112,6 +114,7 @@
                     android:layout_marginLeft="@dimen/margin_separator"
                     android:layout_marginStart="@dimen/margin_separator"
                     android:textSize="@dimen/SmallTextSize"
+					android:fontFamily="@font/sanfranciscodisplay_light"
                     local:MvxBind="Text Address" />
 			</LinearLayout>
 
@@ -126,7 +129,9 @@
                 android:lines="3"
                 android:minLines="3"
                 android:singleLine="false"
-                android:textSize="@dimen/post_description_text_size"
+				android:textColor="@color/black"
+				android:fontFamily="@font/sanfranciscodisplay_light"
+                android:textSize="@dimen/profile_post_title_text_size"
                 local:MvxBind="Text PostTitle; Click ShowPostDetailCommand" />
 
 			<LinearLayout
@@ -158,6 +163,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/SmallTextSize"
+						android:fontFamily="@font/sanfranciscodisplay_light"
                         local:MvxBind="Text RequestCount"/>
 				</LinearLayout>
 
@@ -181,6 +187,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/SmallTextSize"
+						android:fontFamily="@font/sanfranciscodisplay_light"
                         local:MvxBind="Text AppreciationCount"/>
 				</LinearLayout>
 
@@ -204,6 +211,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/SmallTextSize"
+						android:fontFamily="@font/sanfranciscodisplay_light"
                         local:MvxBind="Text CommentCount"/>
 				</LinearLayout>
 

@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using Foundation;
+using UIKit;
 
 namespace GiveAndTake.iOS.Helpers
 {
@@ -91,6 +93,13 @@ namespace GiveAndTake.iOS.Helpers
 			BackNavigationButton = Path.Combine(BasePath, "navigateLeft");
 			Setting = Path.Combine(BasePath, "setting");
 			Chat = Path.Combine(BasePath, "chat");
+		}
+
+		public static UIImage FromUrl(string uri)
+		{
+			using (var url = new NSUrl(uri))
+			using (var data = NSData.FromUrl(url))
+				return UIImage.LoadFromData(data);
 		}
 	}
 }

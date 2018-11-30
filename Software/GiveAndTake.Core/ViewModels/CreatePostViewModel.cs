@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Services;
-using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -43,6 +42,7 @@ namespace GiveAndTake.Core.ViewModels
 		private string _postId;
 		private ViewMode _viewModelMode;
 		private bool _isSubmitBtnEnabled;
+		private bool _isLoadFirstTime = true;
 
 		public ICommand SubmitCommand => _submitCommand ?? (_submitCommand = new MvxAsyncCommand(InitSubmit));
 		public IMvxAsyncCommand ShowPhotoCollectionCommand =>
@@ -123,7 +123,6 @@ namespace GiveAndTake.Core.ViewModels
 			set => SetProperty(ref _isSubmitBtnEnabled, value);
 		}
 
-
 		public string PostDescriptionPlaceHolder { get; set; } = AppConstants.CreatePostDescriptionPlaceHolder;
 		public string PostTitlePlaceHolder { get; set; } = AppConstants.CreatePostTitlePlaceHolder;
 		public string BtnSubmitTitle { get; set; } = AppConstants.CreatePostBtnSubmitTitle;
@@ -141,10 +140,21 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async void BackPressed()
 		{
-			var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.DeleteConfirmationMessage);
-			if (result == RequestStatus.Submitted)
+			if (_viewModelMode == ViewMode.EditPost)
 			{
-				await NavigationService.Close(this, false);
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.CancelEditPostConfirmMessage);
+				if (result == RequestStatus.Submitted)
+				{
+					await NavigationService.Close(this, false);
+				}
+			}
+			else
+			{
+				var result = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.DeleteConfirmationMessage);
+				if (result == RequestStatus.Submitted)
+				{
+					await NavigationService.Close(this, false);
+				}
 			}
 		}
 
@@ -186,7 +196,9 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task ShowPhotoCollection()
 		{
-			PostImages = await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(PostImages);
+				PostImages =
+					await NavigationService.Navigate<PhotoCollectionViewModel, List<PostImage>, List<PostImage>>(
+						PostImages);
 		}
 
 		public ICommand TakePictureCommand
@@ -226,6 +238,7 @@ namespace GiveAndTake.Core.ViewModels
 				var image = new PostImage()
 				{
 					ImageData = JsonHelper.ConvertToBase64String(img),
+					ViewMode = ViewMode.CreatePost,
 				};
 				PostImages.Add(image);
 			}
@@ -236,7 +249,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		public async Task InitSubmit()
 		{
-			bool success = false;
+			var success = false;
 			try
 			{
 				await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
@@ -252,8 +265,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			catch (AppException.ApiException)
 			{
-				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
-					.ErrorConnectionMessage);
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 			}
 			finally
 			{
@@ -302,31 +314,6 @@ namespace GiveAndTake.Core.ViewModels
 
 		public void UpdateSubmitBtn() => IsSubmitBtnEnabled = !string.IsNullOrEmpty(_postTitle) && !string.IsNullOrEmpty(_postDescription);
 
-		public byte[] getImageFromUrl(string url)
-		{
-			System.Net.HttpWebRequest request = null;
-			System.Net.HttpWebResponse response = null;
-			byte[] b = null;
-
-			request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
-			response = (System.Net.HttpWebResponse)request.GetResponse();
-
-			if (request.HaveResponse)
-			{
-				if (response.StatusCode == System.Net.HttpStatusCode.OK)
-				{
-					Stream receiveStream = response.GetResponseStream();
-					using (BinaryReader br = new BinaryReader(receiveStream))
-					{
-						b = br.ReadBytes(500000);
-						br.Close();
-					}
-				}
-			}
-
-			return b;
-		}
-
 		public override void Prepare(ViewMode mode)
 		{
 			if (mode != ViewMode.EditPost) return;
@@ -338,10 +325,21 @@ namespace GiveAndTake.Core.ViewModels
 			_selectedProvinceCity.Id = _dataModel.CurrentPost.ProvinceCity.Id;
 			_postTitle = _dataModel.CurrentPost.Title;
 			_postDescription = _dataModel.CurrentPost.Description;
-			EditImageList();
 			IsSubmitBtnEnabled = true;
 
 			BtnSubmitTitle = AppConstants.SaveAPost;
+		}
+
+		public override async void ViewAppearing()
+		{
+			base.ViewAppearing();
+
+			if (_viewModelMode == ViewMode.EditPost && _isLoadFirstTime)
+			{
+				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
+			}
+
+			_isLoadFirstTime = false;
 		}
 
 		private void EditImageList()
@@ -349,16 +347,33 @@ namespace GiveAndTake.Core.ViewModels
 			var imageList = _dataModel.CurrentPost.Images;
 			foreach (var img in imageList)
 			{
-				var urlInBytes = getImageFromUrl(img.OriginalImage);
 				var image = new PostImage()
 				{
-
-					ImageData = JsonHelper.ConvertToBase64String(urlInBytes),
+					ImageData = img.OriginalImage,
+					ViewMode = ViewMode.EditPost,
 				};
 				PostImages.Add(image);
+			}
+			EnableSelectedImage = (_postImages.Count != 0);
+			InitSelectedImage();
+		}
 
-				EnableSelectedImage = (_postImages.Count != 0);
-				InitSelectedImage();
+		private async Task LoadCurrentPostDataWithOverlay(string overlayTitle)
+		{
+			try
+			{
+				await _overlay.ShowOverlay(overlayTitle);
+				EditImageList();
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await Task.Delay(777);//for iphone
+				await LoadCurrentPostDataWithOverlay(overlayTitle);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
 			}
 		}
 	}

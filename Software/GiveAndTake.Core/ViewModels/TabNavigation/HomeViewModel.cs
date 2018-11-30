@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GiveAndTake.Core.Services;
-using MvvmCross;
-using System;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -260,7 +258,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
-			return new PostItemViewModel(post, ReloadData)
+			return new PostItemViewModel(_dataModel, post, ReloadData)
 			{
 				ShowProfileTab = () => { _showProfileTab.Raise();}
 			};

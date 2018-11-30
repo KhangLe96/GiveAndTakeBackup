@@ -162,14 +162,6 @@ namespace GiveAndTake.Core.ViewModels
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
 
-		private static readonly List<string> MyPostOptions = new List<string>
-		{
-			AppConstants.ChangePostStatus,
-			AppConstants.ModifyPost,
-			AppConstants.ViewPostRequests,
-			AppConstants.DeletePost
-		};
-
 		private static readonly List<string> OtherPostOptions = new List<string> { AppConstants.ReportPost };
 
 		private readonly IDataModel _dataModel;
@@ -208,6 +200,7 @@ namespace GiveAndTake.Core.ViewModels
 		private bool _isBackFromFullImage = false;
 		private string _statusChange;
 		private List<string> _myPostOptions;
+		private List<string> _otherPostOptions;
 		private bool _isLoadFirstTime = true;
 		private bool _isLoadInHomeView = false;
 		#endregion
@@ -231,63 +224,51 @@ namespace GiveAndTake.Core.ViewModels
 		private async void ShowMenuView()
 		{
 			_myPostOptions = GetMyPostOptions();
-			var postOptions = _isMyPost ? _myPostOptions : OtherPostOptions;
+			_otherPostOptions = IsRequested ? GetOtherPostOptions() : OtherPostOptions;
+			var postOptions = _isMyPost ? _myPostOptions : _otherPostOptions;
 
 			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
 
-			if (string.IsNullOrEmpty(result)) return;
+			if (string.IsNullOrEmpty(result))
+			{
+				return;
+			}
 
 			if (result.Equals(_myPostOptions[0]))
 			{
-				if (_status == AppConstants.GivingStatus)
-				{
-					if (IsRequested)
-					{
-						var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmDeletePost);
-						if (userConfirmation != RequestStatus.Submitted) return;
-						await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-						await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN,
-							_dataModel.LoginResponse.Token);						
-						await LoadCurrentPostData();
-						await _overlay.CloseOverlay();
-					}
-					else
-					{
-						await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-						await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN,
-							_dataModel.LoginResponse.Token);
-						IsLoadInHomeView = true;
-						await LoadCurrentPostData();
-						await _overlay.CloseOverlay();
-					}
-				}
-				else
-				{
-					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-					await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivingStatusEN,
-						_dataModel.LoginResponse.Token);
-					IsLoadInHomeView = false;
-					await LoadCurrentPostData();
-					await _overlay.CloseOverlay();
-				}
+				ChangeStatusOfPost();
 			}
-			else if (result == AppConstants.ModifyPost)
+			else switch (result)
 			{
-				await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
-				await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
+				case AppConstants.ModifyPost:
+					await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
+					await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
+					break;
+				case AppConstants.ViewPostRequests:
+					await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
+					break;
+				case AppConstants.DeletePost:
+					await DeletePost();
+					break;
+				case AppConstants.CancelRequest:
+					await CancelOldRequest();
+					break;
+				case AppConstants.ReportPost:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
 			}
-			else if (result == AppConstants.ViewPostRequests)
+		}
+
+		private async Task DeletePost()
+		{
+			var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmDeletePost);
+			if (userConfirmation == RequestStatus.Cancelled)
 			{
-				await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);				
+				return;
 			}
-			else if (result == AppConstants.DeletePost)
-			{
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			}
-			else if (result == AppConstants.ReportPost)
-			{
-				await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-			}
+			await ChangeStatus(AppConstants.DeletedStatus);
+			await Task.Delay(777); //for iOS
+			await NavigationService.Close(this, true);		
 		}
 
 		private List<string> GetMyPostOptions() => new List<string>
@@ -296,6 +277,12 @@ namespace GiveAndTake.Core.ViewModels
 			AppConstants.ModifyPost,
 			AppConstants.ViewPostRequests,
 			AppConstants.DeletePost
+		};
+
+		private List<string> GetOtherPostOptions() => new List<string>()
+		{
+			AppConstants.CancelRequest,
+			AppConstants.ReportPost,
 		};
 
 		private async Task ShowMyRequestList()
@@ -342,6 +329,7 @@ namespace GiveAndTake.Core.ViewModels
 						IsRequested = _userRequestResponse.IsRequested;
 						CommentCount = _dataModel.CurrentPost.CommentCount;
 						RequestCount = _dataModel.CurrentPost.RequestCount;
+						_dataModel.CurrentPost.IsRequested = IsRequested;
 						break;
 					}
 					catch (AppException.ApiException)
@@ -357,6 +345,37 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
+		private async void ChangeStatusOfPost()
+		{
+			if (_status == AppConstants.GivingStatus)
+			{
+				if (IsRequested)
+				{
+					var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmChangeStatusOfPost);
+					if (userConfirmation != RequestStatus.Submitted)
+					{
+						return;
+					}
+				}
+				await ChangeStatus(AppConstants.GivedStatusEN);
+			}
+			else
+			{
+				await ChangeStatus(AppConstants.GivingStatusEN);
+			}
+		}
+
+		private async Task ChangeStatus(string inputStatus)
+		{
+			await _overlay.ShowOverlay(AppConstants.ProcessingDataOverLayTitle);
+			await ManagementService.ChangeStatusOfPost(_postId, inputStatus, _dataModel.LoginResponse.Token);
+			if (inputStatus != AppConstants.DeletedStatus)
+			{
+				await LoadCurrentPostData();
+			}
+			await _overlay.CloseOverlay();
+		}
+
 		private async Task CancelOldRequest()
 		{
 			var popupResult =
@@ -368,10 +387,9 @@ namespace GiveAndTake.Core.ViewModels
 			}
 
 			await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
-			var managementService = Mvx.Resolve<IManagementService>();
 			try
 			{
-				await managementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+				await ManagementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
 				//TODO MinhVan: we only need to update requestCount, but we have to fetch all data again (1 api for all data).
 				//The request count is only reloaded due to only new requestCount data received (SetProperty mechanism).
 				await LoadCurrentPostData();

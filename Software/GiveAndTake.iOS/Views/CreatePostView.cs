@@ -310,12 +310,6 @@ namespace GiveAndTake.iOS.Views
 			image?.Clear();
 		}
 
-		public override void ViewDidDisappear(bool animated)
-		{
-			base.ViewDidDisappear(animated);
-			_btnChoosePicture.TouchUpInside -= HandleSelectImage;
-		}
-
 		private void UpdateSelectedImageTextView()
 		{
 			if (_selectedImage == null || _selectedImage == AppConstants.SelectedImage)

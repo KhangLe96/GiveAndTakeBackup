@@ -46,6 +46,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UILabel _sentCountTitleLabel;
 		private UILabel _userRankLabel;
 		private UILabel _userSentCountLabel;
+		private UIButton _newPostButton;
 		private UIButton _profileSettingButton;
 		private UITableView _postsTableView;
 		private PostItemTableViewSource<MyPostItemViewCell> _postTableViewSource;
@@ -217,6 +218,18 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_myRequestedPostsButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
+			_newPostButton = UIHelper.CreateImageButton(DimensionHelper.NewPostSize, DimensionHelper.NewPostSize, ImageHelper.NewPost);
+
+			View.Add(_newPostButton);
+
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_newPostButton, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginNormal - NavigationController.NavigationBar.Frame.Size.Height),
+				NSLayoutConstraint.Create(_newPostButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginNormal)
+			});
+
 		}
 
 		protected override void CreateBinding()
@@ -227,6 +240,10 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			set.Bind(_avatarView)
 				.For(v => v.ImageUrl)
 				.To(vm => vm.AvatarUrl);
+
+			set.Bind(_newPostButton.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.CreatePostCommand);
 
 			set.Bind(_userNameLabel)
 				.To(vm => vm.UserName);
