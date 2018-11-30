@@ -1,3 +1,4 @@
+using System;
 using GiveAndTake.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,11 +22,15 @@ namespace GiveAndTake.Core.Services
 	    Task<User> GetUserProfile(string userId);
 	    List<SortFilter> GetShortFilters();
         Task<ApiRequestsResponse> GetRequestOfPost(string postId, string filterParams, string token);
+	    Task<Request> GetRequestById(Guid id, string token);
 		Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token);
 	    Task<UserRequest> CheckUserRequest(string postId, string token);
 	    Task<bool> CancelUserRequest(string postId, string token);
 	    Task CreateResponse(RequestResponse requestResponse, string token);
-	    Task InitData();
+	    Task<ApiNotificationResponse> GetNotificationList(string filterParams, string token);
+	    Task<Notification> UpdateReadStatus(string notiId, bool isRead, string token);
+	    Task<bool> CheckIfRequestProcessed(Guid requestId, string token);
+		Task InitData();
 
 	    Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token);
 	    Task Logout(string token);

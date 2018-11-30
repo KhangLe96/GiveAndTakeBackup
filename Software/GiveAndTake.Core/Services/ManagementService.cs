@@ -1,10 +1,13 @@
-﻿using GiveAndTake.Core.Exceptions;
+﻿using System;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SimpleJson;
 
 namespace GiveAndTake.Core.Services
 {
@@ -26,7 +29,67 @@ namespace GiveAndTake.Core.Services
 			_dataModel.SortFilters = _dataModel.SortFilters ?? GetShortFilters();
 		}
 
-	    public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
+	    public async Task<bool> CheckIfRequestProcessed(Guid requestId, string token)
+	    {
+		    string parameters = $"/{requestId}";
+
+		    var response = await _apiHelper.Get(AppConstants.CheckIfRequestProcessed + parameters, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<bool>(response.RawContent);
+		}
+
+		public async Task<Notification> UpdateReadStatus(string notiId, bool isRead, string token)
+	    {
+		    var status = isRead ? "{'isRead':'true'}" : "{'isRead':'false'}";
+		    var content = new StringContent(status, Encoding.UTF8, "application/json");
+		    string parameters = $"/{notiId}";
+
+		    var response = await _apiHelper.Put(AppConstants.UpdateReadStatus + parameters, content, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<Notification>(response.RawContent);
+		}
+
+		public async Task<ApiNotificationResponse> GetNotificationList(string filterParams, string token)
+	    {
+		    var url = $"{AppConstants.GetNotificationList}";
+		    url = string.Join("?", url, filterParams);
+
+		    var response = await _apiHelper.Get(url, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<ApiNotificationResponse>(response.RawContent);
+		}
+
+		public async Task<bool> ChangeStatusOfRequest(string requestId, string newStatus, string token)
 		{
 			var requestStatus = new StatusObj
 			{
@@ -70,7 +133,26 @@ namespace GiveAndTake.Core.Services
 	        return JsonHelper.Deserialize<ApiRequestsResponse>(response.RawContent);
 		}
 
-	    public async Task<CategoryResponse> GetCategories()
+	    public async Task<Request> GetRequestById(Guid id, string token)
+	    {
+		    var url = $"{AppConstants.GetRequestById}/{id}";
+
+		    var response = await _apiHelper.Get(url, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<Request>(response.RawContent);
+		}
+
+		public async Task<CategoryResponse> GetCategories()
         {
 			var response = await _apiHelper.Get(AppConstants.GetCategories);
 
