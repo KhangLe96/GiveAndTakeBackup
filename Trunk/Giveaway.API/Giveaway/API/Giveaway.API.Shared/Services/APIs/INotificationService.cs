@@ -15,5 +15,7 @@ namespace Giveaway.API.Shared.Services.APIs
 		NotificationResponse UpdateReadStatus(Guid notiId, NotificationIsReadRequest request);
 		NotificationResponse UpdateSeenStatus(Guid notiId, NotificationIsSeenRequest request);
 		void PushAndroidNotification(Notification notification);
+		void PushIosNotification(Notification notification);
+
 	}
 }
