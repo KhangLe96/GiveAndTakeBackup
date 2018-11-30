@@ -77,28 +77,31 @@
 							Transformations PostTransformations;
 							ImageUrl PostUrl;
 							Click ShowPostDetailCommand" />
-
-	<TextView
-        android:id="@+id/PopupRequestDescription"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/popup_request_description_edit_text_height"
-        android:layout_below="@+id/imgPostDelegate"
-        android:layout_marginLeft="@dimen/default_margin"
+	<ScrollView
+		android:id="@+id/RequestDescription_scrollView"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/popup_request_description_edit_text_height"
+		android:layout_below="@+id/imgPostDelegate"
+		android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
-        android:fontFamily="@font/sanfranciscodisplay_light"
-        android:gravity="top"
-        android:padding="@dimen/default_padding"
+		android:padding="@dimen/default_padding"
         android:paddingLeft="@dimen/default_padding"
+		android:gravity="top">
+		<TextView
+        android:layout_width="match_parent"
+		android:layout_height="match_parent"
+        android:fontFamily="@font/sanfranciscodisplay_light"
         android:textAllCaps="false"
         android:textColorHint="@color/default_popup_text_color"
         android:textSize="@dimen/MediumTextSize"
         local:MvxBind="Text RequestMessage; Hint PopupInputInformationPlaceHolder" />
+	</ScrollView>
 
 	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/PopupRequestDescription"
+        android:layout_below="@+id/RequestDescription_scrollView"
         android:layout_marginBottom="@dimen/default_margin">
 
 		<Button
