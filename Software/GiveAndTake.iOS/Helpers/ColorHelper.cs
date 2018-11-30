@@ -7,7 +7,8 @@ namespace GiveAndTake.iOS.Helpers
 	public static class ColorHelper
 
 	{
-		public static UIColor Blue => ToUIColor("0fbcf9");
+        public static UIColor Black => ToUIColor("191919");
+        public static UIColor Blue => ToUIColor("0fbcf9");
 		public static UIColor Default => ToUIColor("e4e4e4");
 		public static UIColor LightGray => ToUIColor("f3f3f3");
 		public static UIColor DarkBlue => ToUIColor("0d70b2");

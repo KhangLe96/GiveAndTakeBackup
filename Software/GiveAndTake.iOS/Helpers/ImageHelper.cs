@@ -23,7 +23,10 @@ namespace GiveAndTake.iOS.Helpers
 		public static string RequestOn { get; private set; }
 		public static string Splashscreen { get; private set; }
 		public static string TopLogo { get; private set; }
-		public static string AvtOff { get; private set; }
+        public static string LogoAppWithText { get; private set; }
+        public static string LogoSioux { get; private set; }
+        public static string ContactPhone{ get; private set; }
+        public static string AvtOff { get; private set; }
 		public static string AvtOn { get; private set; }
 		public static string ConversationOff { get; private set; }
 		public static string ConversationOn { get; private set; }
@@ -94,6 +97,13 @@ namespace GiveAndTake.iOS.Helpers
 			Setting = Path.Combine(BasePath, "setting");
 			Chat = Path.Combine(BasePath, "chat");
 		}
+	}
+}
+            LogoAppWithText = Path.Combine(BasePath, "logoApp_withText");
+            LogoSioux = Path.Combine(BasePath, "logoSioux");
+            ContactPhone = Path.Combine(BasePath, "contact_phone");
+        }
+		}
 
 		public static UIImage FromUrl(string uri)
 		{
@@ -101,5 +111,3 @@ namespace GiveAndTake.iOS.Helpers
 			using (var data = NSData.FromUrl(url))
 				return UIImage.LoadFromData(data);
 		}
-	}
-}

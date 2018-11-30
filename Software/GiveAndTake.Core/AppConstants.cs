@@ -108,9 +108,22 @@
 		public const string Rename = "Sửa tên";
 		public const string ChangeAvatar = "Đổi ảnh đại diện";
 		public const string SendFeedback = "Gửi phản hồi";
+		public const string About = "Thông tin ứng dụng";
 		public const string LogOut = "Đăng xuất";
 		public const int ProfileTabIndex = 3;
 		public static string CancelEditPostConfirmMessage = "Bạn có muốn hủy chỉnh sửa?";
 		public static string CancelRequestConfrim = "\nBạn có chắc chắn muốn bỏ yêu cầu ?\n";
-	}
+        public static string AppInfo = "Thông tin về ứng dụng Cho và nhận";
+        public static string Department = "Sở Văn hóa - Thông tin";
+        public static string DaNangCity = "Thành phố Đà Nẵng";
+        public static string MobileApp = "Ứng dụng di động Cho và nhận";
+        public static string AppVersionLabel = "Phiên bản ứng dụng:";
+        public static string AppVersionValue = "1.0";
+        public static string ReleaseDateLabel = "Ngày phát hành:";
+        public static string ReleaseDateValue = "24 tháng 11 năm 2018";
+        public static string SupportContactLabel = "Liên hệ hỗ trợ:";
+        public static string SupportContactValue = "(0236)1022";
+		public static string SupportContactPhone = "02361022";
+		public static string DevelopedBy = "Ứng dụng được phát triển bởi";
+    }
 }

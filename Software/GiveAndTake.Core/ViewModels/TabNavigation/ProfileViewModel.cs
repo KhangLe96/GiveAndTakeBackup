@@ -146,6 +146,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			AppConstants.Rename,
 			AppConstants.ChangeAvatar,
 			AppConstants.SendFeedback,
+            AppConstants.About,
 			AppConstants.LogOut
 		};
 
@@ -378,8 +379,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				case AppConstants.SendFeedback:
 					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
 					break;
+                case AppConstants.About:
+                    await NavigationService.Navigate<AboutViewModel>();
+                    break;
 
-				case AppConstants.LogOut:
+
+                case AppConstants.LogOut:
 					_logoutFacebook.Raise();
 					await Task.WhenAll(
 						ManagementService.Logout(_dataModel.LoginResponse.Token),
