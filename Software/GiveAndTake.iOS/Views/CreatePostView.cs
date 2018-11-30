@@ -112,7 +112,11 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.SelectedImage)
 				.To(vm => vm.SelectedImage);
 
-			bindingSet.Bind(_selectedImageTextView.Tap())
+            bindingSet.Bind(_selectedImageTextView)
+                .For(v => v.UserInteractionEnabled)
+                .To(vm => vm.EnableSelectedImage);
+
+            bindingSet.Bind(_selectedImageTextView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowPhotoCollectionCommand);
 

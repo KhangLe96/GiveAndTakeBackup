@@ -55,6 +55,10 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			PhotoTemplateViewModels.RemoveAt(position);
 			PostImages.RemoveAt(position);
+            if(PhotoTemplateViewModels.Count == 0)
+            {
+                NavigationService.Close(this);
+            }
 		}
 	}
 }
