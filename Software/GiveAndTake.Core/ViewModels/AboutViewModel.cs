@@ -19,8 +19,6 @@ namespace GiveAndTake.Core.ViewModels
     {
 
         private IMvxCommand _backPressedCommand;
-        private IMvxCommand _contactPhonePressedCommand;
-
         public string AppInfoLabel => AppConstants.AppInfo;
         public string DepartmentLabel => AppConstants.Department;
         public string DaNangCityLabel => AppConstants.DaNangCity;
@@ -35,12 +33,7 @@ namespace GiveAndTake.Core.ViewModels
 
         
         public IMvxCommand BackPressedCommand => _backPressedCommand ?? (_backPressedCommand = new MvxCommand(BackPressed));
-        public IMvxCommand ContactPhonePressedCommand => _contactPhonePressedCommand ?? (_contactPhonePressedCommand = new MvxCommand(ContactPhonePressed));
         private async void BackPressed()
-        {
-            await NavigationService.Close(this);
-        }
-        private async void ContactPhonePressed()
         {
             await NavigationService.Close(this);
         }

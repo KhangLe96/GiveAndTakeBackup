@@ -1,4 +1,5 @@
 ﻿using CoreGraphics;
+using Foundation;
 using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.Controls;
@@ -44,11 +45,25 @@ namespace GiveAndTake.iOS.Views
 
 		private UIView headerBarAbout;
 
-		private UIImageView _logoSiouxImg2;
-		private UIImageView _logoSiouxImg3;
+		private IMvxCommand _contactPhonePressedCommand;
 
 		public IMvxCommand BackPressedCommand { get; set; }
-		public IMvxCommand ContactPhonePressedCommand { get; set; }
+		public IMvxCommand ContactPhonePressedCommand => _contactPhonePressedCommand ?? (_contactPhonePressedCommand = new MvxCommand(ContactPhonePressed));
+		private void ContactPhonePressed()
+		{
+			var url = new NSUrl("tel:" + AppConstants.SupportContactPhone);
+			try
+			{
+				if (UIApplication.SharedApplication.CanOpenUrl(url))
+				{
+					UIApplication.SharedApplication.OpenUrl(url);
+				}
+			}
+			catch (Exception ex)
+			{
+				return;
+			}
+		}
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
@@ -66,7 +81,6 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_developedByLabel).To(vm => vm.DevelopedBy);
 
 			bindingSet.Bind(this).For(v => v.BackPressedCommand).To(vm => vm.BackPressedCommand);
-			bindingSet.Bind(this).For(v => v.ContactPhonePressedCommand).To(vm => vm.ContactPhonePressedCommand);
 
 			bindingSet.Apply();
 		}
