@@ -148,6 +148,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 		public void PushIosNotification(Notification notification)
 		{
+			_apnsBroker.Start();
+
 			var notificationResponse = Mapper.Map<NotificationResponse>(notification);
 			var data = new
 			{
@@ -160,7 +162,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 			var dataNotification = JsonConvert.SerializeObject(data);
 
-			var myRegistrationIds = new List<string>() { };
+			var myRegistrationIds = new List<string>() { "63f311ee61cd9ae5d2ecf97877567e56395588f07eb35fa65b96cb0fe3f557c1" };
 			foreach (var id in myRegistrationIds)
 			{
 				_apnsBroker.QueueNotification(new ApnsNotification
@@ -168,6 +170,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 					DeviceToken = id,
 					Payload = JObject.Parse(dataNotification)
 				});
+			}
+
+			if (_apnsBroker.IsCompleted)
+			{
+				_apnsBroker.Stop();
 			}
 		}
 
@@ -232,9 +239,9 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		{
 			var environment = ServiceProviderHelper.Current.GetService<IHostingEnvironment>();
 			var webRoot = environment.WebRootPath;
-			var cerFileFullPath = Path.Combine(webRoot, Const.StaticFilesFolder, "PushSharp_Push_Sandbox.p12");
+			var cerFileFullPath = Path.Combine(webRoot, Const.StaticFilesFolder, "giventake.dev.p12");
 
-			var apnsConfig = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Sandbox, cerFileFullPath, "sioux123");
+			var apnsConfig = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Sandbox, cerFileFullPath, "sioux@123");
 			//var apnsConfig = new ApnsConfiguration(ApnsConfiguration.ApnsServerEnvironment.Production, cerFileFullPath, AppleCerfiticatePassword);
 
 			_apnsBroker = new ApnsServiceBroker(apnsConfig);

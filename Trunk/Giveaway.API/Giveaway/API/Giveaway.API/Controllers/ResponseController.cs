@@ -1,10 +1,17 @@
 ﻿using System;
+using System.IO;
 using Giveaway.API.Shared.Extensions;
 using Giveaway.API.Shared.Requests.Response;
 using Giveaway.API.Shared.Responses.Response;
 using Giveaway.API.Shared.Services.APIs;
+using Giveaway.Data.EF;
+using Giveaway.Data.Enums;
+using Giveaway.Util.Utils;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using PushSharp.Apple;
+using PushSharp.Core;
 
 namespace Giveaway.API.Controllers
 {
@@ -13,10 +20,12 @@ namespace Giveaway.API.Controllers
 	public class ResponseController : BaseController
 	{
 		private readonly IResponseService _responseService;
+		private readonly INotificationService _a;
 
-		public ResponseController(IResponseService responseService)
+		public ResponseController(IResponseService responseService, INotificationService a)
 		{
 			_responseService = responseService;
+			_a = a;
 		}
 
 		[Authorize]
@@ -38,6 +47,7 @@ namespace Giveaway.API.Controllers
 		public ResponseRequestResponse Create([FromBody]ResponseRequest request)
 		{
 			var userId = User.GetUserId();
+
 			return _responseService.Create(request, userId);
 		}
 	}
