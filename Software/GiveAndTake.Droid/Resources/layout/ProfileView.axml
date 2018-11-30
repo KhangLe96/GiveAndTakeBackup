@@ -83,7 +83,8 @@
             android:scaleType="fitXY"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@id/tvUserName"
-            android:layout_marginRight="@dimen/margin_17dp"/>
+            android:layout_marginRight="@dimen/margin_17dp"
+			local:MvxBind="Click ShowMenuPopupCommand"/>
 
 	</RelativeLayout>
 
@@ -154,5 +155,15 @@
 			local:MvxBind="Text RightButtonTitle; Click ShowMyRequestsCommand; IsEnable (!IsPostsList)"/>
 
 	</LinearLayout>
+
+	<ImageButton
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:layout_margin="@dimen/margin_normal"
+		android:src="@drawable/new_post"
+		android:background="@null"
+		local:MvxBind="Click CreatePostCommand"/>
 
 </RelativeLayout>

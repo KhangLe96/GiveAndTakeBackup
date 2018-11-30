@@ -109,6 +109,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxCommand RefreshRequestedPostsCommand =>
 			_refreshRequestedPostsCommand ?? (_refreshRequestedPostsCommand = new MvxAsyncCommand(OnRefreshRequestedPosts));
 
+		public IMvxCommand ShowMenuPopupCommand =>
+			_showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxAsyncCommand(ShowMenuSettingView));
+
+		public IMvxInteraction LogoutFacebook =>
+			_logoutFacebook ?? (_logoutFacebook = new MvxInteraction());
+
+		public IMvxCommand CreatePostCommand =>
+			_createPostCommand ?? (_createPostCommand = new MvxAsyncCommand(ShowNewPostView));
+
 		private string _avatarUrl;
 		private string _userName;
 		private string _rankType;
@@ -125,8 +134,20 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _loadMoreRequestedPostsCommand;
 		private IMvxCommand _refreshPostsCommand;
 		private IMvxCommand _refreshRequestedPostsCommand;
+		private IMvxCommand _showMenuPopupCommand;
+		private MvxInteraction _logoutFacebook;
+		private IMvxCommand _createPostCommand;
 		private MvxObservableCollection<PostItemViewModel> _postViewModels;
 		private MvxObservableCollection<PostItemViewModel> _requestedPostViewModels;
+		private Post _post;
+
+		private static readonly List<string> MenuSettingOptions = new List<string> 
+		{
+			AppConstants.Rename,
+			AppConstants.ChangeAvatar,
+			AppConstants.SendFeedback,
+			AppConstants.LogOut
+		};
 
 		public ProfileViewModel(IDataModel dataModel, ILoadingOverlayService overlayService)
 		{
@@ -138,7 +159,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			IsPostsList = true;
 		}
 
-		public override Task Initialize() => UpdateMyPostViewModels();
+		public override async Task Initialize()
+		{
+			await base.Initialize();
+			await UpdateMyPostViewModels();
+		}
 
 		private void ShowMyPosts()
 		{
@@ -148,6 +173,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 
 			IsPostsList = true;
+			_post.IsMyPost = IsPostsList;
 		}
 
 		private async Task ShowMyRequests()
@@ -158,6 +184,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 
 			IsPostsList = false;
+			_post.IsMyPost = IsPostsList;
 
 			if (RequestedPostViewModels == null)
 			{
@@ -185,12 +212,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, $"page={_dataModel.ApiPostsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
+				_dataModel.ApiMyPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, $"page={_dataModel.ApiMyPostsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
 
-				if (_dataModel.ApiPostsResponse.Posts.Any())
+				if (_dataModel.ApiMyPostsResponse.Posts.Any())
 				{
 					PostViewModels.Last().IsSeparatorLineShown = true;
-					PostViewModels.AddRange(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
+					PostViewModels.AddRange(_dataModel.ApiMyPostsResponse.Posts.Select(GeneratePostViewModels));
 					PostViewModels.Last().IsSeparatorLineShown = false;
 				}
 			}
@@ -232,9 +259,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiMyPostsResponse = await ManagementService.GetMyPostList(_dataModel.LoginResponse.Profile.Id, null, _dataModel.LoginResponse.Token);
+				PostViewModels = new MvxObservableCollection<PostItemViewModel>();
 				if (_dataModel.ApiMyPostsResponse.Posts.Any())
 				{
-					PostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyPostsResponse.Posts.Select(GeneratePostViewModels));
+					PostViewModels.AddRange(_dataModel.ApiMyPostsResponse.Posts.Select(GeneratePostViewModels));
 					PostViewModels.Last().IsSeparatorLineShown = false;
 				}
 
@@ -255,13 +283,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			try
 			{
 				_dataModel.ApiMyRequestedPostResponse = await ManagementService.GetMyRequestedPosts(null, _dataModel.LoginResponse.Token);
+				RequestedPostViewModels = new MvxObservableCollection<PostItemViewModel>();
 				if (_dataModel.ApiMyRequestedPostResponse.Posts.Any())
 				{
-					RequestedPostViewModels = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiMyRequestedPostResponse.Posts.Select(GeneratePostViewModels));
+					RequestedPostViewModels.AddRange(_dataModel.ApiMyRequestedPostResponse.Posts.Select(GeneratePostViewModels));
 					RequestedPostViewModels.Last().IsSeparatorLineShown = false;
 				}
 
-				IsSearchResultNull = PostViewModels.Any();
+				IsSearchResultNull = RequestedPostViewModels.Any();
 			}
 			catch (AppException.ApiException)
 			{
@@ -273,10 +302,92 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 		}
 
+		private async void ReloadData()
+		{
+			await UpdateProfileViewModelWithOverlay();
+		}
+
+		private async Task ShowNewPostView()
+		{
+			if (_dataModel.Categories != null)
+			{
+				try
+				{
+					_dataModel.Categories.RemoveAt(0);
+					var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
+					if (result)
+					{
+						await UpdateProfileViewModelWithOverlay();
+					}
+				}
+				catch (AppException.ApiException)
+				{
+					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+						.ErrorConnectionMessage);
+				}
+			}
+		}
+
+		private async Task UpdateProfileViewModelWithOverlay()
+		{
+			try
+			{
+				await _overlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+				if (_post.IsMyPost)
+				{
+					await UpdateMyPostViewModels();
+				}
+				else
+				{
+					await UpdateMyRequestedPostViewModels();
+				}
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlayService.CloseOverlay();
+			}
+		}
+
 		private PostItemViewModel GeneratePostViewModels(Post post)
 		{
 			post.IsMyPost = IsPostsList;
-			return new PostItemViewModel(post);
+			_post = post;
+			return new PostItemViewModel(_dataModel, post, ReloadData);
 		}
+
+		private async Task ShowMenuSettingView()
+		{
+			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(MenuSettingOptions);
+
+			if (string.IsNullOrEmpty(result)) return;
+
+			switch (result)
+			{
+				case AppConstants.Rename:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.ChangeAvatar:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.SendFeedback:
+					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					break;
+
+				case AppConstants.LogOut:
+					_logoutFacebook.Raise();
+					await Task.WhenAll(
+						ManagementService.Logout(_dataModel.LoginResponse.Token),
+						NavigationService.Navigate<LoginViewModel>());
+					_dataModel.LoginResponse = null;
+					break;
+			}
+		}
+
 	}
 }

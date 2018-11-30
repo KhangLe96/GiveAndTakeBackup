@@ -1,4 +1,6 @@
-﻿using CoreAnimation;
+﻿using System;
+using CoreAnimation;
+using Facebook.LoginKit;
 using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Controls;
@@ -11,6 +13,7 @@ using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using MvvmCross.Platforms.Ios.Views;
+using MvvmCross.ViewModels;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
@@ -23,6 +26,19 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		public IMvxCommand LoadMorePostsCommand { get; set; }
 		public IMvxCommand LoadMoreRequestedPostsCommand { get; set; }
 
+		public IMvxInteraction LogoutFacebook
+		{
+			get => _logoutFacebook;
+			set
+			{
+				if (_logoutFacebook != null)
+					_logoutFacebook.Requested -= OnLogoutFacebook;
+
+				_logoutFacebook = value;
+				_logoutFacebook.Requested += OnLogoutFacebook;
+			}
+		}
+
 		private UIView _profileView;
 		private CustomMvxCachedImageView _avatarView;
 		private UILabel _userNameLabel;
@@ -30,6 +46,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private UILabel _sentCountTitleLabel;
 		private UILabel _userRankLabel;
 		private UILabel _userSentCountLabel;
+		private UIButton _newPostButton;
 		private UIButton _profileSettingButton;
 		private UITableView _postsTableView;
 		private PostItemTableViewSource<MyPostItemViewCell> _postTableViewSource;
@@ -39,6 +56,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 		private MvxUIRefreshControl _refreshRequestedPostsControl;
 		private CustomUIButton _myPostsButton;
 		private CustomUIButton _myRequestedPostsButton;
+		private IMvxInteraction _logoutFacebook;
 
 		protected override void InitView()
 		{
@@ -49,7 +67,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			View.AddConstraints(new []
 			{
 				NSLayoutConstraint.Create(_profileView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight + DimensionHelper.HeaderBarHeight + DimensionHelper.MarginShort),
+					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight + DimensionHelper.HeaderBarHeight),
 				NSLayoutConstraint.Create(_profileView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0)
 			});
@@ -200,6 +218,18 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				NSLayoutConstraint.Create(_myRequestedPostsButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View, NSLayoutAttribute.CenterX, 1, 0)
 			});
 
+			_newPostButton = UIHelper.CreateImageButton(DimensionHelper.NewPostSize, DimensionHelper.NewPostSize, ImageHelper.NewPost);
+
+			View.Add(_newPostButton);
+
+			View.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_newPostButton, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Bottom, 1, -DimensionHelper.MarginNormal - NavigationController.NavigationBar.Frame.Size.Height),
+				NSLayoutConstraint.Create(_newPostButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, View,
+					NSLayoutAttribute.Right, 1, -DimensionHelper.MarginNormal)
+			});
+
 		}
 
 		protected override void CreateBinding()
@@ -210,6 +240,10 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			set.Bind(_avatarView)
 				.For(v => v.ImageUrl)
 				.To(vm => vm.AvatarUrl);
+
+			set.Bind(_newPostButton.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.CreatePostCommand);
 
 			set.Bind(_userNameLabel)
 				.To(vm => vm.UserName);
@@ -290,7 +324,23 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				.To(vm => vm.IsPostsList)
 				.WithConversion("InvertBool");
 
+			set.Bind(_profileSettingButton.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowMenuPopupCommand);
+
+			set.Bind(this)
+				.For(view => view.LogoutFacebook)
+				.To(viewModel => viewModel.LogoutFacebook)
+				.OneWay();
+
+
 			set.Apply();
+		}
+
+		private void OnLogoutFacebook(object sender, EventArgs e)
+		{
+			new LoginManager().LogOut();
+			TabBarController.Dispose();
 		}
 	}
 }

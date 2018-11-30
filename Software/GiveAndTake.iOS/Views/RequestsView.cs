@@ -15,7 +15,6 @@ namespace GiveAndTake.iOS.Views
 		ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
 	public class RequestsView : BaseView
 	{
-		private HeaderBar _headerBar;
 		private UIView _titleArea;
 		private UILabel _title;
 		private UIButton _btnRequestNumber;
@@ -24,11 +23,9 @@ namespace GiveAndTake.iOS.Views
 		private MvxUIRefreshControl _refreshControl;
 
 		public IMvxCommand LoadMoreCommand { get; set; }
-		public IMvxCommand BackPressedCommand { get; set; }
-
 		protected override void InitView()
 		{
-			InitHeaderBar();
+			HeaderBar.BackButtonIsShown = true;
 			InitTitleArea();
 			InitRequestsTableView();
 		}
@@ -39,7 +36,7 @@ namespace GiveAndTake.iOS.Views
 
 			var bindingSet = this.CreateBindingSet<RequestsView, RequestsViewModel>();
 
-			bindingSet.Bind(this)
+			bindingSet.Bind(HeaderBar)
 				.For(v => v.BackPressedCommand)
 				.To(vm => vm.BackPressedCommand);
 
@@ -68,29 +65,6 @@ namespace GiveAndTake.iOS.Views
 
 			bindingSet.Apply();
 		}
-
-		private void InitHeaderBar()
-		{
-			_headerBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight,
-				UIColor.White, true);
-
-			_headerBar.OnBackPressed = BackPressedEvent;
-
-			View.Add(_headerBar);
-			View.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight),
-				NSLayoutConstraint.Create(_headerBar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
-					NSLayoutAttribute.Left, 1, 0)
-			});
-		}
-
-		private void BackPressedEvent()
-		{
-			BackPressedCommand?.Execute();
-		}
-
 		private void InitTitleArea()
 		{
 			_titleArea = UIHelper.CreateView(DimensionHelper.RequestTitleAreaHeight, ResolutionHelper.Width,
@@ -99,7 +73,7 @@ namespace GiveAndTake.iOS.Views
 			View.Add(_titleArea);
 			View.AddConstraints(new []
 			{
-				NSLayoutConstraint.Create(_titleArea, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _headerBar,
+				NSLayoutConstraint.Create(_titleArea, NSLayoutAttribute.Top, NSLayoutRelation.Equal, HeaderBar,
 					NSLayoutAttribute.Bottom, 1, 0),
 				NSLayoutConstraint.Create(_titleArea, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0)

@@ -5,7 +5,7 @@
 	{
 		public const string AppTitle = "Cho và Nhận";
 		public const string DefaultLocationFilter = "Đà Nẵng";
-		public const string ApiUrl = "https://api.chovanhan.asia/api/v1/";
+		public const string ApiUrl = "http://192.168.51.137:8089/api/v1/"; //TODO: change it later
 		public const int ApiTimeout = 300; // seconds
 		public const string GetCategories = "categories/app/list";
 		public const string GetPostList = "post/app/list";
@@ -13,9 +13,10 @@
 		public const string GetPostDetail = "post/app/detail";
 		public const string GetPostOfUser = "post/app/listPostOfUser";
 		public const string GetMyRequestedPosts = "post/app/listRequestedPostOfUser";
-		public const string ChangeStatusOfPost = "post/app/status";
+		public const string ChangeStatusOfPost = "post/status";
 		public const string EditPost = "post/app/update";
 		public const string LoginFacebook = "user/login/facebook";
+		public const string LogoutApp = "user/logout";
 		public const string CreatePost = "post/app/create";
 		public const string CreateRequest = "request/create";
 		public const string CheckUserRequest = "request/checkUserRequest";
@@ -27,7 +28,11 @@
 		public const string DefaultCategoryCreatePostId = "0c109358-fae2-42bd-b2f3-45cbe98a5dbd";
 		public const string GetProvinceCities = "provincecity/list";
 	    public const string GetRequestOfPost = "request/list";
-	    public const string ChangeStatusOfRequest = "request/status";
+		public const string GetRequestById = "request/getRequestById";
+		public const string ChangeStatusOfRequest = "request/status";
+		public const string CheckIfRequestProcessed = "request/checkIfRequestProcessed";
+		public const string GetNotificationList = "notification/list";
+		public const string UpdateReadStatus = "notification/updateReadStatus";
 
 		public const string ApiKey =
 			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMjMwMzc5MmItZGI1MC00YzlhLTk3MjAtN2JkMWVjN2QzM2U4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkFkbWluIEFkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJuYmYiOjE1MzM4ODY3MzMsImV4cCI6MTUzNjQ3ODczMywiaXNzIjoiR2l2ZWF3YXkiLCJhdWQiOiJFdmVyeW9uZSJ9.2A8md3WFGYT-w2Kz0OMAUAj7e20L-wTxIfKL4KyEOko";
@@ -43,16 +48,20 @@
 		public const string PopupSortFiltersTitle = "Xếp theo";
 		public const string PopupLocationFiltersTitle = "Lọc theo";
 
-		public const string ChangePostStatus = "Chuyển trạng thái sang";
+		public const string ChangePostStatus = "Chuyển trạng thái sang \" Đã cho \"";
 		public const string ModifyPost = "Chỉnh sửa";
 		public const string ViewPostRequests = "Duyệt cho";
 		public const string DeletePost = "Xóa";
 		public const string ReportPost = "Báo cáo";
+		public const string CancelRequest = "Hủy yêu cầu";
 
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";
 		public static string GivingStatusEN = "Giving";
 		public static string GivedStatusEN = "Gave";
+		public static string ActivatedStatus = "Activated";
+		public static string BlockedStatus = "Blocked";
+		public static string DeletedStatus = "Deleted";
 		public const string ErrorConnectionMessage = "Lỗi kết nối mạng, \n Xin vui lòng thử lại";
 		public static string CancelTitle = "Hủy";
 		public static string Done = "Xong";
@@ -84,13 +93,24 @@
 		public static string LoadingDataOverlayTitle= "Đang tải dữ liệu";
 		public static string UploadDataOverLayTitle = "Đang đăng bài";
 		public static string UpdateOverLayTitle = "Đang cập nhật";
+		public static string SuccessfulAcceptanceMessage = "Bạn đã chấp nhận thành công!";
+		public static string SuccessfulRejectionMessage = "Bạn đã từ chối thành công!";
 
 		public static int NumberOfRequestPerPage = 20;
 		public static string SaveAPost = "Lưu";
 		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
 		public static int NumOfFragmentViewPager = 3;
 		public static string ProcessingDataOverLayTitle = "Đang xử lý";
-		public static string ConfirmDeletePost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn xóa ?";
+		public static string ConfirmChangeStatusOfPost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn xóa ?";
+		public static string ConfirmDeletePost = "Bạn có chắc chắn muốn xóa bài đăng này?";
 		public static string ConfirmDeleteOwnRequest = "Bạn có chắc chắn muốn hủy bỏ yêu cầu ?";
+
+		public const string Rename = "Sửa tên";
+		public const string ChangeAvatar = "Đổi ảnh đại diện";
+		public const string SendFeedback = "Gửi phản hồi";
+		public const string LogOut = "Đăng xuất";
+		public const int ProfileTabIndex = 3;
+		public static string CancelEditPostConfirmMessage = "Bạn có muốn hủy chỉnh sửa?";
+		public static string CancelRequestConfrim = "\nBạn có chắc chắn muốn bỏ yêu cầu ?\n";
 	}
 }

@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Models;
+﻿using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -7,12 +8,10 @@ using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using GiveAndTake.Core.Exceptions;
-using GiveAndTake.Core.Services;
-using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class RequestsViewModel : BaseViewModel<Post, bool>
+    public class RequestsViewModel : BaseViewModel<Post, bool>
 	{
 		public string Title => "Danh sách yêu cầu";
 

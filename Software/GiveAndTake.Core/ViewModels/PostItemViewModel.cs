@@ -1,17 +1,17 @@
 ﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
+using I18NPortable;
+using MvvmCross;
 using MvvmCross.Commands;
+using MvvmCross.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using GiveAndTake.Core.Helpers;
-using I18NPortable;
-using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -110,8 +110,20 @@ namespace GiveAndTake.Core.ViewModels
 		    set => SetProperty(ref _isRequested, value);
 	    }
 
+	    public string RequestedPostStatus
+	    {
+		    get => _requestedPostStatus;
+		    set => SetProperty(ref _requestedPostStatus, value);
+	    }
 
-		public List<ITransformation> PostTransformations => 
+	    public MvxColor RequestedPostStatusColor
+	    {
+		    get => _requestedPostStatusColor;
+		    set => SetProperty(ref _requestedPostStatusColor, value);
+		}
+
+
+	    public List<ITransformation> PostTransformations => 
 		    new List<ITransformation> { new CornersTransformation(5 , CornerTransformType.AllRounded) };
 
 	    public List<ITransformation> AvatarTransformations => 
@@ -125,8 +137,8 @@ namespace GiveAndTake.Core.ViewModels
 
 	    public IMvxCommand ShowMenuPopupCommand =>
 		    _showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxAsyncCommand(ShowMenuView));
-		
 
+	    public Action ShowProfileTab { get; set; }
 
 	    private static readonly List<string> MyPostOptions = new List<string>
 	    {
@@ -136,9 +148,10 @@ namespace GiveAndTake.Core.ViewModels
 		    AppConstants.DeletePost
 	    };
 
-
-	    private static readonly List<string> OtherPostOptions = new List<string> { AppConstants.ReportPost };
-
+		private static readonly List<string> OtherPostOptions = new List<string> { AppConstants.ReportPost };
+	    private List<string> _myPostOptions;
+	    private List<string> _otherPostOptions;
+		private string _postId;
 	    private string _categoryName;
 	    private string _userName;
 	    private string _avatarUrl;
@@ -148,30 +161,45 @@ namespace GiveAndTake.Core.ViewModels
 	    private string _postImage;
 	    private string _backgroundColor;
 	    private string _status;
+	    private string _requestedPostStatus;
 	    private int _requestCount;
 	    private int _appreciationCount;
 	    private int _commentCount;
 	    private bool _hasManyPostPhotos;
 	    private bool _isSeparatorLineShown;
 	    private bool _isRequested;
-	    private IMvxCommand _showGiverProfileCommand;
+	    private string _statusChange;
+	    private UserRequest _userRequestResponse;
+		private IMvxCommand _showGiverProfileCommand;
 	    private IMvxCommand _showPostDetailCommand;
 	    private IMvxCommand _showMenuPopupCommand;
-	    private readonly Post _post;
 
-	    #endregion
+	    private readonly IDataModel _dataModel;
+
+		private readonly Post _post;
+	    private MvxColor _requestedPostStatusColor;
+	    private readonly Action _doReload;
+		#endregion
 
 		#region Methods
 
-		public PostItemViewModel(Post post) 
-		{
-			_post = post;
-			Init();
-		}
-
-	    private void Init()
+		public PostItemViewModel(IDataModel dataModel, Post post, Action doReload = null)
 	    {
-		    CategoryName = _post.Category.CategoryName;
+		    _post = post;
+		    _dataModel = dataModel;
+		    _doReload = doReload;
+		    Task.Run(async () => await Init());
+	    }
+
+	    private async Task Init()
+	    {
+		    _userRequestResponse = await ManagementService.CheckUserRequest(_post.PostId, _dataModel.LoginResponse.Token);
+		    IsRequested = _userRequestResponse.IsRequested;
+		    if (_post.IsMyPost)
+		    {
+			    _isRequested = RequestCount != 0;
+		    }
+			CategoryName = _post.Category.CategoryName;
 		    AvatarUrl = _post.User.AvatarUrl;
 		    UserName = _post.User.FullName ?? AppConstants.DefaultUserName;
 		    CreatedTime = TimeHelper.ToTimeAgo(_post.CreatedTime);
@@ -186,34 +214,48 @@ namespace GiveAndTake.Core.ViewModels
 	        BackgroundColor = _post.Category.BackgroundColor;
 		    Status = _post.PostStatus.Translate();
 		    IsRequested = _post.IsRequested;
-	    }
+		    RequestedPostStatus = _post.RequestedPostStatus?.Translate();
+		    RequestedPostStatusColor = ColorHelper.GetStatusColor(_post.RequestedPostStatus);
 
-	    
+			_postId = _post.PostId;
+		    _statusChange = Status == AppConstants.GivingStatus ? AppConstants.GivedStatus : AppConstants.GivingStatus;
+		}
+
 
         private async Task ShowMenuView()
 	    {
-			var postOptions = _post.IsMyPost ? MyPostOptions : OtherPostOptions;
+		    _myPostOptions = GetMyPostOptions();
+		    _otherPostOptions = IsRequested ? GetOtherPostOptions() : OtherPostOptions;
+		    var postOptions = _post.IsMyPost ? _myPostOptions : _otherPostOptions;
 
 			var result = await NavigationService.Navigate<PopupExtensionOptionViewModel, List<string>, string>(postOptions);
 
-			if (string.IsNullOrEmpty(result)) return;
-
-			switch (result)
+			if (string.IsNullOrEmpty(result))
 			{
-				case AppConstants.ChangePostStatus:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
+				return;
+			}
 
+		    if (result.Equals(_myPostOptions[0]))
+		    {
+				ChangeStatus();
+			}
+
+			else switch (result)
+			{
 				case AppConstants.ModifyPost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					await EditPost();
 					break;
 
 				case AppConstants.ViewPostRequests:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
 					break;
 
 				case AppConstants.DeletePost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					await DeletePost();
+					break;
+
+				case AppConstants.CancelRequest:
+					await CancelRequest();
 					break;
 
 				case AppConstants.ReportPost:
@@ -222,15 +264,98 @@ namespace GiveAndTake.Core.ViewModels
 			}
 		}
 
-		private async Task ShowPostDetailView()
-		{
-			await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
-			RequestCount = Mvx.Resolve<IDataModel>().CurrentPost.RequestCount;
+	    private List<string> GetMyPostOptions() => new List<string>
+	    {
+		    $"Chuyển trạng thái sang \"{_statusChange}\"",
+		    AppConstants.ModifyPost,
+		    AppConstants.ViewPostRequests,
+		    AppConstants.DeletePost
+	    };
+
+	    private List<string> GetOtherPostOptions() => new List<string>()
+	    {
+			AppConstants.CancelRequest,
+			AppConstants.ReportPost,
+	    };
+
+		private async Task DeletePost()
+	    {
+			var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmDeletePost);
+		    if (userConfirmation != RequestStatus.Submitted)
+		    {
+			    return;
+		    }
+		    await ManagementService.ChangeStatusOfPost(_postId, AppConstants.DeletedStatus, _dataModel.LoginResponse.Token);
+		    _doReload?.Invoke();
 		}
 
-		private async Task ShowGiverProfile() =>
-		    await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+	    private async Task EditPost()
+	    {
+		    _dataModel.CurrentPost = _post;
+		    var result = await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
+		    if (!result)
+		    {
+			    return;
+		    }
+		    _doReload?.Invoke();
+		}
 
-	    #endregion
-    }
+	    private async void ChangeStatus()
+	    {
+		    if (_status == AppConstants.GivingStatus)
+		    {
+			    if (_isRequested)
+			    {
+				    var userConfirmation = await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.ConfirmChangeStatusOfPost);
+				    if (userConfirmation != RequestStatus.Submitted)
+				    {
+					    return;
+				    }
+			    }
+			    await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivedStatusEN, _dataModel.LoginResponse.Token);
+			}
+		    else
+		    {
+			    await ManagementService.ChangeStatusOfPost(_postId, AppConstants.GivingStatusEN, _dataModel.LoginResponse.Token);
+			}
+			_doReload?.Invoke();
+		}
+
+	    private async Task CancelRequest()
+	    {
+		    var popupResult =
+			    await NavigationService.Navigate<PopupMessageViewModel, string, RequestStatus>(AppConstants.CancelRequestConfrim);
+		    if (popupResult != RequestStatus.Submitted)
+		    {
+			    return;
+		    }
+		    await ManagementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
+		    _doReload?.Invoke();
+		}
+
+	    private async Task ShowPostDetailView()
+		{
+			var result = await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_post);
+			RequestCount = Mvx.Resolve<IDataModel>().CurrentPost.RequestCount;
+			IsRequested = Mvx.Resolve<IDataModel>().CurrentPost.IsRequested;
+			if (result)
+			{
+				_doReload?.Invoke();
+			}
+		}
+
+	    private async Task ShowGiverProfile()
+	    {
+		    if (_post.IsMyPost)
+		    {
+			    ShowProfileTab?.Invoke();
+			}
+		    else
+		    {
+			    await NavigationService.Navigate<UserProfileViewModel, User>(_post.User);
+			}
+		}
+
+		#endregion
+	}
 }

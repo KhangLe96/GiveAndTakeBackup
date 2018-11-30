@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
-using GiveAndTake.Core.ViewModels.TabNavigation;
 using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels
@@ -33,11 +31,22 @@ namespace GiveAndTake.Core.ViewModels
 			PhotoTemplateViewModels = new ObservableCollection<PhotoTemplateViewModel>();
 			foreach (var postImage in postImages)
 			{
-				PhotoTemplateViewModels.Add(new PhotoTemplateViewModel()
+				if (postImage.ViewMode == ViewMode.CreatePost)
 				{
-					ImageBase64Data = postImage.ImageData,
-					ParentViewModel = this
-				});
+					PhotoTemplateViewModels.Add(new PhotoTemplateViewModel()
+					{
+						ImageBase64Data = postImage.ImageData,
+						ParentViewModel = this
+					});
+				}
+				else
+				{
+					PhotoTemplateViewModels.Add(new PhotoTemplateViewModel()
+					{
+						ImageUrlData = postImage.ImageData,
+						ParentViewModel = this
+					});
+				}
 			}
 		}
 
@@ -55,6 +64,10 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			PhotoTemplateViewModels.RemoveAt(position);
 			PostImages.RemoveAt(position);
+            if(PhotoTemplateViewModels.Count == 0)
+            {
+                NavigationService.Close(this);
+            }
 		}
 	}
 }

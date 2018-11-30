@@ -42,6 +42,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
 		public IMvxCommand ShowErrorCommand { get; set; }
+		public IMvxAsyncCommand ShowNotificationsCommand { get; set; }
 
 		#endregion
 
@@ -64,6 +65,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			bindingSet.Bind(this)
 				.For(v => v.ShowErrorCommand)
 				.To(vm => vm.ShowErrorCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.ShowNotificationsCommand)
+				.To(vm => vm.ShowNotificationsCommand);
 
 			bindingSet.Apply();
 		}
@@ -139,6 +144,13 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				};
 			}
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
+
+			//switch (e.Tab.Position)
+			//{
+			//	case 1:
+			//		ShowNotificationsCommand.Execute();
+			//		break;
+			//}
 		}
 
 		#endregion

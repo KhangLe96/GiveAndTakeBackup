@@ -97,7 +97,7 @@ namespace GiveAndTake.Droid.Views
 
 		protected override void HandleActivityCommandFromFragment()
 		{
-			((MasterView)Activity).BackPressedCommand = BackPressedCommand;
+			((MasterView)Activity).BackPressedFromCreatePostCommand = BackPressedCommand;
 		}
 
 		public override void OnDestroyView()
@@ -107,7 +107,7 @@ namespace GiveAndTake.Droid.Views
 			_title.FocusChange -= OnEditTextFocusChange;
 			_postDescriptionEditText.FocusChange -= OnEditTextFocusChange;
 			_tvImageSelected.TextChanged -= OnTextViewImageSelectedTextChanged;
-			((MasterView)Activity).BackPressedCommand = null;
+			((MasterView)Activity).BackPressedFromCreatePostCommand = null;
 		}
 
 

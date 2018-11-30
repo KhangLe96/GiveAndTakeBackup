@@ -13,6 +13,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System.Collections.Generic;
+using Android.OS;
 using GiveAndTake.Droid.Helpers;
 
 namespace GiveAndTake.Droid.Views
@@ -26,6 +27,7 @@ namespace GiveAndTake.Droid.Views
 
 		public IMvxCommand<int> ShowFullImageCommand { get; set; }
 		public IMvxCommand<int> UpdateImageIndexCommand { get; set; }
+		public IMvxCommand BackPressedCommand { get; set; }
 		protected override int LayoutId => Resource.Layout.PostDetailView;
 
 		public List<Image> PostImages
@@ -70,6 +72,22 @@ namespace GiveAndTake.Droid.Views
 				_imageViewer.SetCurrentItem(value, true);
 			}
 		}
+		public bool IsLoadInHomeView
+		{
+			get => _isLoadInHomeView;
+			set
+			{
+				_isLoadInHomeView = value;
+				if (IsLoadInHomeView)
+				{
+					((MasterView)Activity).BackPressedFromPostDetailCommand = BackPressedCommand;
+				}
+				else
+				{
+					((MasterView)Activity).BackPressedFromPostDetailCommand = null;
+				}
+			}
+		}
 
 		private ImageButton _requestButton;
 		private ViewPager _imageViewer;
@@ -78,7 +96,7 @@ namespace GiveAndTake.Droid.Views
 		private List<Image> _postImages;
 		private int _postImageIndex;
 		private bool _isRequested;
-
+		private bool _isLoadInHomeView;
 		#endregion
 
 		protected override void InitView(View view)
@@ -88,10 +106,10 @@ namespace GiveAndTake.Droid.Views
 			_requestButton = view.FindViewById<ImageButton>(Resource.Id.requestImageButton);
 
 			_imageViewer.SetClipToPadding(false);
-
 			_imageViewer.PageSelected += OnPageSelected;
-
+			
 		}
+
 
 		private void InitSetRequestIcon()
 		{
@@ -141,6 +159,14 @@ namespace GiveAndTake.Droid.Views
 			bindingSet.Bind(this)
 				.For(v => v.IsRequested)
 				.To(vm => vm.IsRequested);
+
+			bindingSet.Bind(this)
+				.For(v => v.IsLoadInHomeView)
+				.To(vm => vm.IsLoadInHomeView);
+
+			bindingSet.Bind(this)
+				.For(v => v.BackPressedCommand)
+				.To(vm => vm.BackPressedCommand);
 
 			bindingSet.Apply();
 		}
