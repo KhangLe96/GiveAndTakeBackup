@@ -13,5 +13,8 @@ namespace GiveAndTake.Core.Models
 
 		[DataMember(Name = "pagination")]
 		public Pagination Pagination { get; set; }
+
+		[DataMember(Name = "numberOfNotiNotSeen")]
+		public int NumberOfNotiNotSeen { get; set; }
 	}
 }

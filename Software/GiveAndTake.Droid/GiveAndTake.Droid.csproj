@@ -75,6 +75,7 @@
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\NotificationIconView.cs" />
     <Compile Include="Views\Popup\LoadingOverlayView.cs" />
     <Compile Include="Views\Popup\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popup\PopupListView.cs" />
@@ -701,7 +702,7 @@
     <AndroidResource Include="Resources\layout\ResponseView.axml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\NotificationIcon.axml">
+    <AndroidResource Include="Resources\layout\NotificationIconView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

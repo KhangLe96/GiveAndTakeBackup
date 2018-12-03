@@ -115,7 +115,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				
 				if (index == 1)
 				{
-					tab.SetCustomView(Resource.Layout.NotificationIcon);
+					tab.SetCustomView(Resource.Layout.NotificationIconView);
 				}
 				else
 				{
