@@ -120,7 +120,9 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat RequestNumberTextSize { get; set; }
 		public static nfloat RequestActionButtonWidth { get; set; }
 		public static nfloat RequestCellHeight { get; set; }
-        public static nfloat LogoAppAboutWidth { get; set; }
+		public static nfloat RequestActionButtonHeight { get; set; }
+		
+		public static nfloat LogoAppAboutWidth { get; set; }
         public static nfloat LogoAppAboutHeight { get; set; }
         public static nfloat ContactPhoneWidth { get; set; }
         public static nfloat ContactPhoneHeight { get; set; }
@@ -244,7 +246,8 @@ namespace GiveAndTake.iOS.Helpers
 			RequestTitleMarignLeft = 18 * Rate;
 			RequestTitleMarignTop = 15 * Rate;
 			RequestNumberTextSize = 15 * Rate;
-			RequestActionButtonWidth = 65 * Rate;
+			RequestActionButtonWidth = 85 * Rate;
+			RequestActionButtonHeight = 30 * Rate;
 
             LogoAppAboutWidth = 150 * Rate;
             LogoAppAboutHeight = 128 * Rate;
