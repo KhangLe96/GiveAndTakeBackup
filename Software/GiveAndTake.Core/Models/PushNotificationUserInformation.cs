@@ -6,12 +6,12 @@ using System.Text;
 namespace GiveAndTake.Core.Models
 {
 	[DataContract]
-	public class FireBaseUserInformation
+	public class PushNotificationUserInformation
 	{
 		[DataMember(Name = "deviceToken")]
-		public string FireBaseToken { get; set; }
+		public string DeviceToken { get; set; }
 
 		[DataMember(Name = "mobilePlatform")]
-		public string OsPlatform { get; set; }
+		public string MobilePlatform { get; set; }
 	}
 }

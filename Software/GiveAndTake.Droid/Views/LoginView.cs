@@ -62,10 +62,6 @@ namespace GiveAndTake.Droid.Views
 				.For(v => v.LoginCommand)
 				.To(vm => vm.LoginCommand);
 
-			bindingSet.Bind(this)
-				.For(v => v.FireBaseToken)
-				.To(vm => vm.FireBaseToken);
-
 			bindingSet.Apply();
 		}
 

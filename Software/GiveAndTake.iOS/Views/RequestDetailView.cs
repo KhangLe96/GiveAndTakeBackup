@@ -2,6 +2,7 @@
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Controls;
+using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Base;
@@ -30,7 +31,7 @@ namespace GiveAndTake.iOS.Views.Popups
 		protected override void InitView()
 		{
 			View.BackgroundColor = UIColor.Clear;
-
+			HeaderBar.Hidden = true;
 			InitOverlayView();
 			InitContentView();
 		}

@@ -26,7 +26,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxAsyncCommand ShowNotificationsCommand => _showNotificationsCommand ?? new MvxAsyncCommand(ShowNotifications);
 
 		public string AvatarUrl => _dataModel.LoginResponse.Profile.AvatarUrl;
-
+		public TabNavigationViewModel(IDataModel dataModel)
+		{
+			_dataModel = dataModel;
+		}
 		public override void ViewCreated()
 		{
 			base.ViewCreated();
@@ -76,12 +79,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			{
 				//background (when app is destroyed)
 				HandleNotificationClicked(DataModel.SelectedNotification);
+				//NAVIGATE
 			}
 		}
 
 		private void HandleNotificationClicked(Notification notification)
 		{
-			// Handle both background and foreground when push notification is received	
+			// Handle both background and foreground when push notification is received
+			// update badge unread notification here
 		}
 	}
 }

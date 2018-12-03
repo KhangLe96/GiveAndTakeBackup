@@ -41,8 +41,8 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				await _overlay.ShowOverlay(AppConstants.LoginProcessOverLayTitle);
 				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
-				await ManagementService.SendFireBaseUserInformation(new FireBaseUserInformation()
-					{ FireBaseToken = Mvx.Resolve<IDeviceInfo>().DeviceToken, OsPlatform = "Android" }, _dataModel.LoginResponse.Token);
+				await ManagementService.SendPushNotificationUserInformation(new PushNotificationUserInformation()
+				{ DeviceToken = Mvx.Resolve<IDeviceInfo>().DeviceToken, MobilePlatform = Mvx.Resolve<IDeviceInfo>().MobilePlatform}, _dataModel.LoginResponse.Token);
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}

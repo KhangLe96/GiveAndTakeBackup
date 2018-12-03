@@ -5,7 +5,7 @@ namespace GiveAndTake.Droid.Helpers
 {
 	public class DeviceInfo : IDeviceInfo
 	{
-		public bool IsAndroid => true;
+		public string MobilePlatform => "Android";
 		public string DeviceToken => FirebaseInstanceId.Instance.Token;
 	}
 }

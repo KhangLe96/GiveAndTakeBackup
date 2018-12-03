@@ -2,7 +2,7 @@
 {
 	public interface IDeviceInfo
 	{
-		bool IsAndroid { get; }
+		string MobilePlatform { get; }
 		string DeviceToken { get; }
 	}
 }

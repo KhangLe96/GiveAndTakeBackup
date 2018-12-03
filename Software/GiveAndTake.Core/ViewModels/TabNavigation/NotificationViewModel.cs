@@ -30,7 +30,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private readonly ILoadingOverlayService _loadingOverlayService;
 		private MvxObservableCollection<NotificationItemViewModel> _notificationItemViewModel;
 		private bool _isRefresh;
-
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
 		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
@@ -41,12 +40,19 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel = dataModel;
 			_token = _dataModel.LoginResponse.Token;
 			_loadingOverlayService = loadingOverlayService;
+			if (DataModel.SelectedNotification != null)
+			{
+				OnItemClicked(DataModel.SelectedNotification);
+				DataModel.SelectedNotification = null;
+			}
 		}
 
 		public override async Task Initialize()
 		{
 			await base.Initialize();
-			await UpdateNotificationViewModels();			
+			await UpdateNotificationViewModels();
+			DataModel.NotificationReceived += OnNotificationReceived;
+			
 		}
 
 		private async void InitNotificationViewModels()
@@ -57,7 +63,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public override void ViewCreated()
 		{
 			base.ViewCreated();
-			DataModel.NotificationReceived += OnNotificationReceived;
+			//DataModel.NotificationReceived += OnNotificationReceived;
 		}
 
 		public override void ViewDestroy(bool viewFinishing = true)
@@ -66,7 +72,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			DataModel.NotificationReceived -= OnNotificationReceived;
 		}
 
-		private void OnNotificationReceived(object sender, Notification notification)
+		public void OnNotificationReceived(object sender, Notification notification)
 		{
 			if (DataModel.SelectedNotification != null)
 			{

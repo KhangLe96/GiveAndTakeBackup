@@ -36,6 +36,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		#region Properties
 
+
 		public string AvatarUrl { get; set; }
 
 		protected override int LayoutId => Resource.Layout.TabNavigation;
@@ -112,8 +113,9 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			for (var index = 0; index < _tabLayout.TabCount; index++)
 			{
 				var tab = _tabLayout.GetTabAt(index);
-				tab.SetIcon(TabTitleIconsDictionary[tab.Text]);
-				tab.SetText("");
+				//tab.SetIcon(TabTitleIconsDictionary[tab.Text]);
+				tab.SetCustomView(Resource.Layout.TabNavigationIcon);
+				//tab.SetText("");
 			}
 
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
