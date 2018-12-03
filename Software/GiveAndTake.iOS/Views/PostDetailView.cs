@@ -309,7 +309,7 @@ namespace GiveAndTake.iOS.Views
 
 		private void InitScrollContentView()
 		{
-			_scrollView = UIHelper.CreateScrollView(0, ResolutionHelper.Width);
+			_scrollView = UIHelper.CreateScrollView(0,0);
 
 			View.AddSubview(_scrollView);
 			View.AddConstraints(new[]
@@ -556,12 +556,12 @@ namespace GiveAndTake.iOS.Views
 				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _postInformationView,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail)
 			});
-		}
 
-		public override void ViewDidAppear(bool animated)
-		{
-			base.ViewDidAppear(animated);
-			_scrollView.ContentSize = _contentView.Frame.Size;
+			_scrollView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.Bottom, 1, 0)
+			});
 		}
 
 		private void UpdatePostStatus()
