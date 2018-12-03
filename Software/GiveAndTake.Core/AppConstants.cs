@@ -110,7 +110,7 @@
 		public const string SendFeedback = "Gửi phản hồi";
 		public const string About = "Thông tin ứng dụng";
 		public const string LogOut = "Đăng xuất";
-		public const int ProfileTabIndex = 3;
+		public const int ProfileTabIndex = 2;
 		public static string CancelEditPostConfirmMessage = "Bạn có muốn hủy chỉnh sửa?";
 		public static string CancelRequestConfrim = "\nBạn có chắc chắn muốn bỏ yêu cầu ?\n";
         public static string AppInfo = "Thông tin về ứng dụng Cho và nhận";
