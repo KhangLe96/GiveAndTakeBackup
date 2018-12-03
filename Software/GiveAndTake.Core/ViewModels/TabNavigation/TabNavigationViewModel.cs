@@ -43,7 +43,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			{
 				NavigationService.Navigate<HomeViewModel>(),
 				NavigationService.Navigate<NotificationViewModel>(),
-				NavigationService.Navigate<ConversationViewModel>(),
 				NavigationService.Navigate<ProfileViewModel>(),
 			};
 

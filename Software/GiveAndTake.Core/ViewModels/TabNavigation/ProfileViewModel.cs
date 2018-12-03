@@ -143,8 +143,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private static readonly List<string> MenuSettingOptions = new List<string> 
 		{
-			AppConstants.Rename,
-			AppConstants.ChangeAvatar,
 			AppConstants.SendFeedback,
             AppConstants.About,
 			AppConstants.LogOut
@@ -368,22 +366,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			switch (result)
 			{
-				case AppConstants.Rename:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
-
-				case AppConstants.ChangeAvatar:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
-
 				case AppConstants.SendFeedback:
 					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
 					break;
                 case AppConstants.About:
                     await NavigationService.Navigate<AboutViewModel>();
                     break;
-
-
                 case AppConstants.LogOut:
 					_logoutFacebook.Raise();
 					await Task.WhenAll(

@@ -1,16 +1,15 @@
 ﻿using FFImageLoading.Transformations;
 using FFImageLoading.Work;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
 using I18NPortable;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GiveAndTake.Core.Exceptions;
-using GiveAndTake.Core.Services;
-using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -24,10 +23,6 @@ namespace GiveAndTake.Core.ViewModels
 
 		public IMvxCommand ShowMenuPopupCommand =>
 			_showMenuPopupCommand ?? (_showMenuPopupCommand = new MvxCommand(ShowMenuView));
-
-		public IMvxCommand ShowPostCommentCommand =>
-			_showPostCommentCommand ?? (_showPostCommentCommand = new MvxCommand(() =>
-				NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage)));
 
 		public IMvxCommand ShowMyRequestListCommand =>
 			_showMyRequestListCommand ?? (_showMyRequestListCommand = new MvxAsyncCommand(ShowMyRequestList));
@@ -168,7 +163,6 @@ namespace GiveAndTake.Core.ViewModels
 
 		private IMvxCommand _showGiverProfileCommand;
 		private IMvxCommand _showMenuPopupCommand;
-		private IMvxCommand _showPostCommentCommand;
 		private IMvxCommand _showMyRequestListCommand;
 		private IMvxCommand _navigateLeftCommand;
 		private IMvxCommand _navigateRightCommand;
@@ -197,12 +191,12 @@ namespace GiveAndTake.Core.ViewModels
 		private string _postId;
 		private UserRequest _userRequestResponse;
 		private readonly ILoadingOverlayService _overlay;
-		private bool _isBackFromFullImage = false;
+		private bool _isBackFromFullImage;
 		private string _statusChange;
 		private List<string> _myPostOptions;
 		private List<string> _otherPostOptions;
 		private bool _isLoadFirstTime = true;
-		private bool _isLoadInHomeView = false;
+		private bool _isLoadInHomeView;
 		#endregion
 
 		#region Constructor

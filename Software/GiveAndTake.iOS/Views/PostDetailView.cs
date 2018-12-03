@@ -2,7 +2,7 @@
 using GiveAndTake.Core;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
-using GiveAndTake.iOS.CustomControls;
+using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
@@ -10,7 +10,6 @@ using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System.Collections.Generic;
-using GiveAndTake.iOS.Controls;
 using UIKit;
 using Xamarin.iOS.iCarouselBinding;
 
@@ -188,10 +187,6 @@ namespace GiveAndTake.iOS.Views
 
 			bindingSet.Bind(_lbCommentCount)
 				.To(vm => vm.CommentCount);
-
-			bindingSet.Bind(_commentTouchView.Tap())
-				.For(v => v.Command)
-				.To(vm => vm.ShowPostCommentCommand);
 
 			bindingSet.Bind(_imgAvatar)
 				.For(v => v.ImageUrl)

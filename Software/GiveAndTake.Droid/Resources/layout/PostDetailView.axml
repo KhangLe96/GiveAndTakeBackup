@@ -204,13 +204,6 @@
 				android:layout_height="@dimen/post_detail_touch_field_size"
 				android:background="@null"
 				local:MvxBind="Click ShowMyRequestListCommand"/>
-			<View
-				android:layout_below="@+id/SliderViewPager"
-				android:layout_toLeftOf="@+id/RequestTouchView"
-				android:layout_width="@dimen/post_detail_request_touch_field_size"
-				android:layout_height="@dimen/post_detail_touch_field_size"
-				android:background="@null"
-				local:MvxBind="Click ShowPostCommentCommand"/>
 			<RelativeLayout
 				android:layout_below="@+id/commentImageButton"
 				android:layout_marginTop="@dimen/post_detail_margin_object"

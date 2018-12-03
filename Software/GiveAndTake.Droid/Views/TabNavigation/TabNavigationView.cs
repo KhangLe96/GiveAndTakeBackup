@@ -28,7 +28,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		private static readonly Dictionary<string, int> TabTitleIconsDictionary = new Dictionary<string, int>(){
 			{AppConstants.HomeTab,Resource.Drawable.tab_navigation_icon_home},
 			{AppConstants.NotificationTab,Resource.Drawable.tab_navigation_icon_notification},
-			{AppConstants.ConversationTab,Resource.Drawable.tab_navigation_icon_conversation},
 			{AppConstants.ProfileTab,Resource.Drawable.tab_navigation_icon_profile},
 		};
 
