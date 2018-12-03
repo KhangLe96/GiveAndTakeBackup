@@ -11,7 +11,7 @@ namespace GiveAndTake.Core.Services
 	    Task<ProvinceCitiesResponse> GetProvinceCities();
 	    Task<ApiPostsResponse> GetPostList(string filterParams);
 	    Task<ApiPostsResponse> GetMyPostList(string id, string filterParams, string token);
-        Task<Post> GetPostDetail(string postId);
+        Task<Post> GetPostDetail(string postId, string token);
         Task<ApiPostsResponse> GetPostOfUser(string userId);
         Task ChangeStatusOfPost(string postId, string newStatus, string token);
 	    Task<bool> EditPost(EditPost post, string postId, string token);

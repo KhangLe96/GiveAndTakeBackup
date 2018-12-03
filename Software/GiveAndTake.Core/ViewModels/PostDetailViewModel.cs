@@ -189,7 +189,6 @@ namespace GiveAndTake.Core.ViewModels
 		private Post _post;
 		private bool _isRequested;
 		private string _postId;
-		private UserRequest _userRequestResponse;
 		private readonly ILoadingOverlayService _overlay;
 		private bool _isBackFromFullImage;
 		private string _statusChange;
@@ -317,13 +316,10 @@ namespace GiveAndTake.Core.ViewModels
 					try
 					{
 						await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
-						_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
-						_userRequestResponse =
-							await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
-						IsRequested = _userRequestResponse.IsRequested;
+						_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId, _dataModel.LoginResponse.Token);
+						IsRequested = _dataModel.CurrentPost.IsRequested;
 						CommentCount = _dataModel.CurrentPost.CommentCount;
 						RequestCount = _dataModel.CurrentPost.RequestCount;
-						_dataModel.CurrentPost.IsRequested = IsRequested;
 						break;
 					}
 					catch (AppException.ApiException)
@@ -420,9 +416,8 @@ namespace GiveAndTake.Core.ViewModels
 
 		private async Task LoadCurrentPostData()
 		{
-			_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId);
-			_userRequestResponse = await ManagementService.CheckUserRequest(_postId, _dataModel.LoginResponse.Token);
-			IsRequested = _userRequestResponse.IsRequested;
+			_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId, _dataModel.LoginResponse.Token);
+			IsRequested = _dataModel.CurrentPost.IsRequested;
 			RequestCount = _dataModel.CurrentPost.RequestCount;
 			if (_isMyPost)
 			{

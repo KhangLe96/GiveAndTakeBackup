@@ -259,10 +259,10 @@ namespace GiveAndTake.Core.Services
 		    }
 	    }
 
-	    public async Task<Post> GetPostDetail(string postId)
+	    public async Task<Post> GetPostDetail(string postId, string token)
         {
 			var parameters = $"/{postId}";
-	        var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters);
+	        var response = await _apiHelper.Get(AppConstants.GetPostDetail + parameters, token);
 	        if (response.NetworkStatus != NetworkStatus.Success)
 	        {
 		        throw new AppException.ApiException(response.NetworkStatus.ToString());

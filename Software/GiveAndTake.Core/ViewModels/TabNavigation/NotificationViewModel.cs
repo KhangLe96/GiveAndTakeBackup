@@ -114,7 +114,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			
 			if (isProcessed)
 			{
-                var post = await ManagementService.GetPostDetail(request.Post.PostId);
+                var post = await ManagementService.GetPostDetail(request.Post.PostId, _dataModel.LoginResponse.Token);
                 await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
                 await NavigationService.Navigate<RequestsViewModel, Post, bool>(post);
 			}
@@ -133,7 +133,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
                     case PopupRequestDetailResult.ShowPostDetail:
                         await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-                        var post = await ManagementService.GetPostDetail(request.Post.PostId);
+                        var post = await ManagementService.GetPostDetail(request.Post.PostId, _dataModel.LoginResponse.Token);
                         post.IsMyPost = true;
 
                         await NavigationService.Navigate<PostDetailViewModel, Post>(post);
@@ -175,7 +175,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private async Task HandleLikeType(Notification notification)
 		{
 			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-			_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString());
+			_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString(), _dataModel.LoginResponse.Token);
 			_dataModel.CurrentPost.IsMyPost = true;
 			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 
