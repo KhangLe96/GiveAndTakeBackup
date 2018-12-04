@@ -72,7 +72,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var noti = _notificationService.Create(notification, out var isSaved);
 			if (isSaved)
 			{
-				//PushAndroidNotification(noti);
+				PushAndroidNotification(noti);
 				PushIosNotification(noti);
 				return Mapper.Map<Notification, NotificationResponse>(noti);
 			}
@@ -131,7 +131,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		{
 			_fcmBroker.Start();
 
-			List<string> myRegistrationIds = new List<string>() { "eGdf303fx6U:APA91bHO2pvmUilvpnbwYEZl89z_UOk3BiHqspu6igE7piUL6MuHeV57u_ZjnWS9YkUFZ26dRLDRByFi37XupZBjRe5ku9NMpgpmepycaRldicBC418vgiAciPFqgV9aRjLtuJceB1vm" };
+			List<string> myRegistrationIds = new List<string>() { "cBRLS3oNGJo:APA91bHEXqmnT-XpxaWDhknrr-xGTDy5uEfjYLDJn5mASpagiW9Zs6s6RVrq32TjMPmbI6Q7nJuQklp726SAqepAEL2jVerbdgCS7eMf_WI2ZR9-JHgBGDKAQAyeC4ZI_df55ukmIJSa" };
 			var dataNotification = JsonConvert.SerializeObject(Mapper.Map<NotificationResponse>(notification));
 
 			_fcmBroker.QueueNotification(new FcmNotification
@@ -155,7 +155,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			{
 				aps = new
 				{
-					alert = "Anh đếch cần gì ngoài em",
+					alert = notificationResponse.Message,
 				},
 				notificationResponse
 			};
