@@ -45,17 +45,17 @@ namespace Giveaway.API.Controllers
 		}
 
 		/// <summary>
-		/// Change IsSeen status
+		/// Change IsSeen status for all Notification of an User
 		/// </summary>
-		/// <param name="notiId"></param>
 		/// <param name="request"></param>
 		/// <returns></returns>
 		[Authorize]
-		[HttpPut("updateSeenStatus/{notiId}")]
+		[HttpPut("updateSeenStatus")]
 		[Produces("application/json")]
-		public NotificationResponse UpdateSeenStatus(Guid notiId, [FromBody] NotificationIsSeenRequest request)
+		public bool UpdateSeenStatus([FromBody] NotificationIsSeenRequest request)
 		{
-			return _notificationService.UpdateSeenStatus(notiId, request);
+			var userId = User.GetUserId();
+			return _notificationService.UpdateSeenStatus(userId, request);
 		}
 
 		[Authorize]

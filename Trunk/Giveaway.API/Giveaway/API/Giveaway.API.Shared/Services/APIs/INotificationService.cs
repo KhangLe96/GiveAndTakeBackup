@@ -13,7 +13,7 @@ namespace Giveaway.API.Shared.Services.APIs
 		NotificationResponse Create(Notification notification);
 		bool Delete(Guid notiId);
 		NotificationResponse UpdateReadStatus(Guid notiId, NotificationIsReadRequest request);
-		NotificationResponse UpdateSeenStatus(Guid notiId, NotificationIsSeenRequest request);
+		bool UpdateSeenStatus(Guid userId, NotificationIsSeenRequest request);
 		void PushAndroidNotification(Notification notification);
 		void PushIosNotification(Notification notification);
 

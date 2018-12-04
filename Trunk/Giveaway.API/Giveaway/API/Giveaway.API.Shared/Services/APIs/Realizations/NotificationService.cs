@@ -100,20 +100,23 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 		}
 
-		public NotificationResponse UpdateSeenStatus(Guid notiId, NotificationIsSeenRequest request)
+		public bool UpdateSeenStatus(Guid userId, NotificationIsSeenRequest request)
 		{
-			var noti = _notificationService.FirstOrDefault(
-				x => x.EntityStatus != EntityStatus.Deleted && x.Id == notiId);
-			if (noti == null)
+			var notis = _notificationService.Where(
+				x => x.EntityStatus != EntityStatus.Deleted && x.IsSeen == false && x.DestinationUserId == userId).ToList();
+			if (!notis.Any())
 			{
 				throw new BadRequestException(CommonConstant.Error.NotFound);
 			}
 
-			noti.IsSeen = request.IsSeen;
-			var isSaved = _notificationService.Update(noti);
+			_notificationService.UpdateMany(notis.Select(x =>
+			{
+				x.IsSeen = true;
+				return x;
+			}).ToList(), out var isSaved);
 			if (isSaved)
 			{
-				return GenerateNotificationResponse(noti);
+				return true;
 			}
 
 			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
