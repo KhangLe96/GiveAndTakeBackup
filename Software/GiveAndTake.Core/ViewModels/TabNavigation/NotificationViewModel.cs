@@ -7,6 +7,9 @@ using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.ViewModels.Popup;
+using MvvmCross;
+using System;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -52,12 +55,35 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			await base.Initialize();
 			await UpdateNotificationViewModels();
+			DataModel.NotificationReceived += OnNotificationReceived;
+
 		}
 
 		public override void ViewAppeared()
 		{
 			base.ViewAppeared();
 			_updateNotiCount.Raise(_notiCount);
+		}
+
+		public override void ViewCreated()
+		{
+			base.ViewCreated();
+			DataModel.NotificationReceived += OnNotificationReceived;
+		}
+
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			DataModel.NotificationReceived -= OnNotificationReceived;
+		}
+
+		public void OnNotificationReceived(object sender, Notification notification)
+		{
+			if (DataModel.SelectedNotification != null)
+			{
+				OnItemClicked(notification);
+				DataModel.SelectedNotification = null;
+			}			
 		}
 
 		public async Task UpdateNotificationViewModels()
@@ -124,7 +150,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				case "Warning":
 					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
-			}
+			}			
 		}
 
 		private async Task HandleIsAcceptedType(Notification notification)

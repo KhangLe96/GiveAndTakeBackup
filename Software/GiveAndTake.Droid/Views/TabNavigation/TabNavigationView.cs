@@ -36,6 +36,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		#region Properties
 
+
 		public string AvatarUrl { get; set; }
 
 		protected override int LayoutId => Resource.Layout.TabNavigation;
@@ -127,6 +128,20 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
 
 			_tabLayout.TabSelected += OnTabSelected;
+		}
+
+		public override void OnResume()
+		{
+			base.OnResume();
+			((MasterView)Activity).IsHomeScreen = true;
+		}
+
+
+
+		public override void OnPause()
+		{
+			base.OnPause();
+			((MasterView)Activity).IsHomeScreen = false;
 		}
 
 		#endregion

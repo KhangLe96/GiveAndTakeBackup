@@ -1,7 +1,10 @@
 ﻿using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
+using GiveAndTake.Core.ViewModels.TabNavigation;
 
 namespace GiveAndTake.iOS.Views.TabNavigation
 {
@@ -23,5 +26,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 					NSLayoutAttribute.CenterY, 1, 0)
 			});
 		}
+
+
 	}
 }

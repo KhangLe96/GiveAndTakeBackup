@@ -511,5 +511,22 @@ namespace GiveAndTake.Core.Services
 			    throw new AppException.ApiException(response.ErrorMessage);
 		    }
 		}
+
+	    public async Task SendPushNotificationUserInformation(PushNotificationUserInformation info, string token)
+	    {
+		    var responseInformationInString = JsonHelper.Serialize(info);
+		    var content = new StringContent(responseInformationInString, Encoding.UTF8, "application/json");
+		    var response = await _apiHelper.Post(AppConstants.RegisterPushNotificationUserInformation, content, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+		}
 	}
 }

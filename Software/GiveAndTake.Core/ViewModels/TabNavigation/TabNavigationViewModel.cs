@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using MvvmCross.Commands;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 	public class TabNavigationViewModel : BaseViewModel
 	{
 		private readonly IDataModel _dataModel;
-
 		public int NumberOfTab { get; set; }
 
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
@@ -26,10 +26,35 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public IMvxAsyncCommand ShowNotificationsCommand => _showNotificationsCommand ?? new MvxAsyncCommand(ShowNotifications);
 
 		public string AvatarUrl => _dataModel.LoginResponse.Profile.AvatarUrl;
-
 		public TabNavigationViewModel(IDataModel dataModel)
 		{
 			_dataModel = dataModel;
+		}
+		public override void ViewCreated()
+		{
+			base.ViewCreated();
+			DataModel.NotificationReceived += OnNotificationReceived;
+		}
+
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			DataModel.NotificationReceived -= OnNotificationReceived;
+		}
+		
+		public async void InitErrorResponseAsync()
+		{
+			var result = await NavigationService.Navigate<PopupWarningResponseViewModel, string, bool>(AppConstants.ErrorMessage);
+			if (result)
+			{
+				System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
+			}
+		}
+
+		private void OnNotificationReceived(object sender, Notification notification)
+		{
+			//foreground (when app is alive)
+			HandleNotificationClicked(notification);
 		}
 
 		private async Task ShowNotifications()
@@ -49,15 +74,19 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			NumberOfTab = tasks.Count;
 			await Task.WhenAll(tasks);
+
+			if (DataModel.SelectedNotification != null)
+			{
+				//background (when app is destroyed)
+				HandleNotificationClicked(DataModel.SelectedNotification);
+				//NAVIGATE
+			}
 		}
 
-		public async void InitErrorResponseAsync()
+		private void HandleNotificationClicked(Notification notification)
 		{
-			var result = await NavigationService.Navigate<PopupWarningResponseViewModel, string, bool>(AppConstants.ErrorMessage);
-			if (result)
-			{
-				System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
-			}
+			// Handle both background and foreground when push notification is received
+			// update badge unread notification here
 		}
 	}
 }

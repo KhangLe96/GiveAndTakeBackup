@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using GiveAndTake.Core;
+using GiveAndTake.Core.Helpers;
+using GiveAndTake.Droid.Helpers;
+using MvvmCross;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Droid.Support.V7.RecyclerView;
+using MvvmCross.Platforms.Android.Core;
 
 namespace GiveAndTake.Droid
 {
@@ -14,6 +18,11 @@ namespace GiveAndTake.Droid
 				typeof(MvxRecyclerView).Assembly
 			};
 
+		protected override void InitializeFirstChance()
+		{
+			base.InitializeFirstChance();
+			Mvx.RegisterType<IDeviceInfo,DeviceInfo>();
+		}
 		//public override MvxLogProviderType GetDefaultLogProviderType()
 		//	=> MvxLogProviderType.Serilog;
 

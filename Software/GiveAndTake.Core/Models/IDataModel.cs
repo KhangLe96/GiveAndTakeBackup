@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GiveAndTake.Core.Models
 {
 	public interface IDataModel
 	{
+		event EventHandler<Notification> NotificationReceived;
+		event EventHandler<string> BadgeNotificationUpdated;
+		bool IsLoggedIn { get; set; }
+		Notification SelectedNotification { get; set; }
 		List<Category> Categories { get; set; }
 		List<ProvinceCity> ProvinceCities { get; set; }
 		List<SortFilter> SortFilters { get; set; }
@@ -17,5 +22,7 @@ namespace GiveAndTake.Core.Models
 		int PostImageIndex { get; set; }
 		Post CurrentPost { get; set; }
 		ApiNotificationResponse ApiNotificationResponse { get; set; }
+		void RaiseNotificationReceived(Notification notification);
+		void RaiseBadgeUpdated(string badge);
 	}
 }

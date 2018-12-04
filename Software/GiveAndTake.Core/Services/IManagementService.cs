@@ -31,6 +31,7 @@ namespace GiveAndTake.Core.Services
 	    Task<Notification> UpdateReadStatus(string notiId, bool isRead, string token);
 	    Task<bool> CheckIfRequestProcessed(Guid requestId, string token);
 		Task InitData();
+	    Task SendPushNotificationUserInformation(PushNotificationUserInformation info, string token);
 
 	    Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token);
 	    Task Logout(string token);
