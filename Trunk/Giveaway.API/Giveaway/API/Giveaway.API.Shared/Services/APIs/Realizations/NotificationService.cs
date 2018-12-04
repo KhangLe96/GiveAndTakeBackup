@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Transactions;
 using Giveaway.API.Shared.Constants;
 using Giveaway.Data.EF;
 using Giveaway.Util.Utils;
@@ -127,12 +128,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			return true;
 		}
 
-		public void PushAndroidNotification(Notification notification)
+		public void PushAndroidNotification(Notification noti)
 		{
 			_fcmBroker.Start();
 
 			List<string> myRegistrationIds = new List<string>() { "cBRLS3oNGJo:APA91bHEXqmnT-XpxaWDhknrr-xGTDy5uEfjYLDJn5mASpagiW9Zs6s6RVrq32TjMPmbI6Q7nJuQklp726SAqepAEL2jVerbdgCS7eMf_WI2ZR9-JHgBGDKAQAyeC4ZI_df55ukmIJSa" };
-			var dataNotification = JsonConvert.SerializeObject(Mapper.Map<NotificationResponse>(notification));
+			var dataNotification = PreparePushNotification(noti);
 
 			_fcmBroker.QueueNotification(new FcmNotification
 			{
@@ -146,21 +147,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			}
 		}
 
-		public void PushIosNotification(Notification notification)
+		public void PushIosNotification(Notification noti)
 		{
 			_apnsBroker.Start();
 
-			var notificationResponse = Mapper.Map<NotificationResponse>(notification);
-			var data = new
-			{
-				aps = new
-				{
-					alert = notificationResponse.Message,
-				},
-				notificationResponse
-			};
-
-			var dataNotification = JsonConvert.SerializeObject(data);
+			var dataNotification = PreparePushNotification(noti);
 
 			var myRegistrationIds = new List<string>() { "63f311ee61cd9ae5d2ecf97877567e56395588f07eb35fa65b96cb0fe3f557c1" };
 			foreach (var id in myRegistrationIds)
@@ -179,6 +170,24 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		}
 
 		#region Utils
+
+		private string PreparePushNotification(Notification noti)
+		{
+			var notification = Mapper.Map<NotificationResponse>(noti);
+			var numberOfNotiNotSeen =
+				_notificationService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.DestinationUserId == noti.DestinationUserId && x.IsSeen == false).Count();
+			var data = new
+			{
+				aps = new
+				{
+					alert = notification.Message,
+					badge = numberOfNotiNotSeen
+				},
+				notification
+			};
+
+			return JsonConvert.SerializeObject(data);
+		}
 
 		private List<NotificationResponse> GetPagedNotifications(Guid userId, PagingQueryNotificationRequest request, out int total, out int numberOfNotiNotSeen)
 		{
