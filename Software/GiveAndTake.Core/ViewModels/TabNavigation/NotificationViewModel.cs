@@ -40,11 +40,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel = dataModel;
 			_token = _dataModel.LoginResponse.Token;
 			_loadingOverlayService = loadingOverlayService;
-			if (DataModel.SelectedNotification != null)
-			{
-				OnItemClicked(DataModel.SelectedNotification);
-				DataModel.SelectedNotification = null;
-			}
 		}
 
 		public override async Task Initialize()
@@ -52,7 +47,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await base.Initialize();
 			await UpdateNotificationViewModels();
 			DataModel.NotificationReceived += OnNotificationReceived;
-			
+
 		}
 
 		private async void InitNotificationViewModels()
@@ -63,7 +58,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public override void ViewCreated()
 		{
 			base.ViewCreated();
-			//DataModel.NotificationReceived += OnNotificationReceived;
+			DataModel.NotificationReceived += OnNotificationReceived;
 		}
 
 		public override void ViewDestroy(bool viewFinishing = true)

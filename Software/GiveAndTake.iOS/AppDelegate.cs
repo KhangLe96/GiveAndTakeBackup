@@ -30,7 +30,7 @@ namespace GiveAndTake.iOS
 		const string HockeyAppid = "6a9a4f2bf4154af386c07da063fcc458";
 		//private readonly string AppId = "660783364257039";
 		//private readonly string AppName = "Rio AMC";
-
+		private IDataModel _dataModel;
 		public override UIWindow Window
 		{
 			get;
@@ -51,14 +51,6 @@ namespace GiveAndTake.iOS
 			manager.Authenticator.AuthenticateInstallation();
 
 
-			//Settings.AppID = AppId;
-			//Settings.DisplayName = AppName;
-			//Profile.EnableUpdatesOnAccessTokenChange(true);
-
-			//ThreadPool.SetMaxThreads(200, 200);
-			//ThreadPool.SetMinThreads(100, 100);
-
-			//Context.SharedInstance.Configure(out var configureError);
 			//if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
 			//{
 			//	UNUserNotificationCenter.Current.Delegate = this;
@@ -77,7 +69,7 @@ namespace GiveAndTake.iOS
 			//	var settings = UIUserNotificationSettings.GetSettingsForTypes(allNotificationTypes, null);
 			//	UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
 			//}
-			//UIApplication.SharedApplication.RegisterForRemoteNotifications();	
+			//UIApplication.SharedApplication.RegisterForRemoteNotifications();
 
 			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
 			{
@@ -153,7 +145,11 @@ namespace GiveAndTake.iOS
 
 
 			new UIAlertView("DidReceiveRemoteNotification", null, null, "OK", null).Show();
-			SendNotification(userInfo);
+			if (userInfo != null)
+			{
+				SendNotification(userInfo);
+			}
+			
 		}
 
 
@@ -215,9 +211,13 @@ namespace GiveAndTake.iOS
 
 			notification = dictionary.ToObject<Notification>();
 
-			var dataModel = Mvx.Resolve<IDataModel>();
-			dataModel.SelectedNotification = notification;
-
+			bool isDataModelInitialized = Mvx.CanResolve<IDataModel>();
+			if (isDataModelInitialized)
+			{
+				_dataModel = Mvx.Resolve<IDataModel>();
+				_dataModel.SelectedNotification = notification;
+			}
+			
 			if (UIApplication.SharedApplication.ApplicationState == UIApplicationState.Active)
 			{
 				//if (UIApplication.SharedApplication.KeyWindow.RootViewController is MasterView masterView)
@@ -228,15 +228,20 @@ namespace GiveAndTake.iOS
 
 				//Foreground
 				//update badge unread notification
-				dataModel.RaiseBadgeUpdated(badgeValue);
+				//dataModel.RaiseBadgeUpdated(badgeValue);
 				new UIAlertView("From ForeGround", null, null, "OK", null).Show();
 			}
 			else
 			{
-				dataModel.RaiseNotificationReceived(notification);
-				string test = dataModel.SelectedNotification.Message;
+				if (isDataModelInitialized)
+				{
+					_dataModel.RaiseNotificationReceived(notification);
+					string test = _dataModel.SelectedNotification?.Message;
+					new UIAlertView("selected notification received: " + test, null, null, "OK", null).Show();
+				}
+				
 				new UIAlertView("From BackGround", null, null, "OK", null).Show();
-				new UIAlertView("selected notification received: " + test, null, null, "OK", null).Show();
+				
 				//dataModel.SelectedNotification = notification;
 
 				//var localNotification = new UILocalNotification
