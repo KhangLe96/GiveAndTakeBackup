@@ -12,13 +12,14 @@ namespace GiveAndTake.Core.ViewModels
 	public class MyRequestDetailViewModel : BaseViewModel<Request, PopupRequestDetailResult>
 	{
 		public string MyRequestPopupTitle => AppConstants.MyRequestsTitle;
-		private string _lbSentTo => AppConstants.RequestReceiver;
+		public string SentTo => AppConstants.RequestReceiver;
 		public string BtnReceivedTitle => AppConstants.ReceivedRequest;
-		public string CancelRequestTitle => AppConstants.CancelRequest;
+		public string BtnCancelRequestTitle => AppConstants.CancelRequest;
 
 		private string _lbGiverUserName;
 		private string _lbRequestDate;
 		private string _lbMyRequestMessage;
+		private string _requestStatus;
 
 		private Request _request;
 		private IMvxCommand _cancelRequestCommand;
@@ -54,7 +55,11 @@ namespace GiveAndTake.Core.ViewModels
 			get => _lbMyRequestMessage;
 			set => SetProperty(ref _lbMyRequestMessage, value);
 		}
-
+		public string RequestStatus
+		{
+			get => _requestStatus;
+			set => SetProperty(ref _requestStatus, value);
+		}
 
 		public override void Prepare(Request request)
 		{
@@ -66,6 +71,7 @@ namespace GiveAndTake.Core.ViewModels
 			GiverUserName = _request.User.FullName ?? AppConstants.DefaultUserName;
 			RequestDate = _request.CreatedTime.ToString("dd.MM.yyyy");
 			MyRequestMessage = _request.RequestMessage;
+			RequestStatus = _request.RequestStatus;
 			return base.Initialize();
 		}
 

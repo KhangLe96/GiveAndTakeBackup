@@ -55,6 +55,7 @@
 		public const string ReportPost = "Báo cáo";
 		public const string CancelRequest = "Hủy yêu cầu";
 		public const string ReceivedRequest = "Đã nhận vật phẩm";
+		public const string AccpetedRequest = "Đã duyệt";
 
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";
