@@ -25,6 +25,7 @@
         android:layout_toRightOf="@id/imgTaker"
         android:textColor="#000"
         android:textSize="@dimen/MediumTextSize"
+		android:fontFamily="@font/sanfranciscodisplay_medium"
         local:MvxBind="Text UserName"
         />
 
@@ -35,32 +36,10 @@
         android:layout_alignStart="@id/tvTakerFullName"
         android:layout_below="@id/tvTakerFullName"
         android:textSize="@dimen/SmallTextSize"
+		android:fontFamily="@font/sanfranciscodisplay_regular"
         local:MvxBind="Text CreatedTime"
         />
-	<Button
-	    android:id="@+id/btnAcceptance"
-	    android:layout_width="wrap_content"
-	    android:layout_height="@dimen/button_category_height"
-	    android:background="@drawable/category_bg"
-	    android:textColor="@color/white"
-		android:textSize="@dimen/category_text_size"
-	    android:layout_alignParentRight="true"
-	    android:textAllCaps="false"
-	    android:layout_marginRight="@dimen/margin_short"
-	    android:layout_marginTop="@dimen/margin_short"
-		local:MvxBind="Text Acceptance; Click AcceptCommand"/>
-    <Button
-        android:id="@+id/btnRejection"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/button_category_height"
-        android:background="@drawable/request_number_bg"
-        android:textColor="@color/colorPrimary"
-		android:textSize="@dimen/category_text_size"
-        android:textAllCaps="false"
-        android:layout_toLeftOf="@id/btnAcceptance"
-        android:layout_marginRight="@dimen/margin_short"
-        android:layout_marginTop="@dimen/margin_short"
-		local:MvxBind="Text Rejection; Click RejectCommand" />
+
 	<TextView
         android:id="@+id/tvRequestMessage"
         android:layout_width="wrap_content"
@@ -74,13 +53,46 @@
         android:singleLine="false"
         android:textSize="@dimen/post_description_text_size"
 		android:layout_below="@id/tvRequestDate"
+		android:fontFamily="@font/sanfranciscodisplay_regular"
         local:MvxBind="Text RequestMessage"
         />
+	<RelativeLayout
+		android:id="@+id/btnField"
+		android:layout_below="@id/tvRequestMessage"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/default_margin"
+		android:layout_marginBottom="@dimen/default_margin">
+		<Button
+			android:id="@+id/btnAcceptance"
+			android:layout_width="wrap_content"
+			android:layout_height="@dimen/request_action_button_height"
+			android:background="@drawable/category_bg"
+			android:textColor="@color/white"
+			android:textSize="@dimen/category_text_size"
+			android:layout_alignParentRight="true"
+			android:textAllCaps="false"
+			android:layout_marginRight="@dimen/default_margin"
+			android:fontFamily="@font/sanfranciscodisplay_medium"
+			local:MvxBind="Text Acceptance; Click AcceptCommand"/>
+		<Button
+			android:id="@+id/btnRejection"
+			android:layout_toLeftOf="@id/btnAcceptance"
+			android:layout_width="wrap_content"
+			android:layout_height="@dimen/request_action_button_height"
+			android:background="@drawable/request_number_bg"
+			android:textColor="@color/colorPrimary"
+			android:textSize="@dimen/category_text_size"
+			android:textAllCaps="false"
+			android:layout_marginRight="@dimen/default_margin"
+			android:fontFamily="@font/sanfranciscodisplay_medium"
+			local:MvxBind="Text Rejection; Click RejectCommand" />
+	</RelativeLayout>
 	<TextView
         android:id="@+id/requestSeparator"
         android:layout_width="match_parent"
 	    android:layout_height="@dimen/divider"
-        android:layout_below="@id/tvRequestMessage"
+        android:layout_below="@id/btnField"
         android:layout_margin="@dimen/margin_short"
         android:background="@color/post_line_color"
         local:MvxBind="Visibility Visibility(IsSeperatorShown)" />
