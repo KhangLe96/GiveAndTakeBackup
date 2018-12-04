@@ -6,9 +6,9 @@ namespace GiveAndTake.Core.Models
 	public class DataModel : IDataModel
 	{
 		public event EventHandler<Notification> NotificationReceived;
-		public event EventHandler<string> BadgeNotificationUpdated;
+		public event EventHandler<int> BadgeNotificationUpdated;
 		public bool IsLoggedIn { get; set; }
-		public string badge { get; set; }
+		public int Badge { get; set; }
 		public Notification SelectedNotification { get; set; }
 		public List<Category> Categories { get; set; }
 		public List<ProvinceCity> ProvinceCities { get; set; }
@@ -28,7 +28,7 @@ namespace GiveAndTake.Core.Models
 			NotificationReceived?.Invoke(this, notification);
 		}
 
-		public void RaiseBadgeUpdated(string badge)
+		public void RaiseBadgeUpdated(int badge)
 		{
 			BadgeNotificationUpdated?.Invoke(this, badge);
 		}

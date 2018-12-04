@@ -86,7 +86,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private void HandleNotificationClicked(Notification notification)
 		{
 			// Handle both background and foreground when push notification is received
-			// update badge unread notification here
+			// update Badge unread notification here
 		}
 	}
 }

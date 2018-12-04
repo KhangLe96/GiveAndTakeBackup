@@ -24,27 +24,19 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	public class NotificationView : BaseFragment
 	{
 		protected override int LayoutId => Resource.Layout.NotificationView;
+		private TabLayout _tabHost;
+		private int _notificationCount;
 
-		public IMvxInteraction<int> UpdateNotiCount
+		public int NotificationCount
 		{
-			get => _updateNotiCount;
+			get => _notificationCount;
 			set
 			{
-				if (_updateNotiCount != null)
-					_updateNotiCount.Requested -= OnUpdateNotiCountRequested;
-
-				_updateNotiCount = value;
-				_updateNotiCount.Requested += OnUpdateNotiCountRequested;
+				_notificationCount = value;
+				_tabHost = Activity.FindViewById<TabLayout>(Resource.Id.tabLayout);
+				_tabHost.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Text = value + "";
 			}
 		}
-
-		private void OnUpdateNotiCountRequested(object sender, MvxValueEventArgs<int> e)
-		{
-			var tabhost = Activity.FindViewById<TabLayout>(Resource.Id.tabLayout);
-			tabhost.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Text = e.Value + "";
-		}
-
-		private IMvxInteraction<int> _updateNotiCount;
 
 		public IMvxCommand LoadMoreCommand { get; set; }
 
@@ -76,9 +68,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				.To(vm => vm.LoadMoreCommand);
 
 			bindingSet.Bind(this)
-				.For(v => v.UpdateNotiCount)
-				.To(vm => vm.UpdateNotiCount)
-				.OneWay();
+				.For(v => v.NotificationCount)
+				.To(vm => vm.NotificationCount);
 
 			bindingSet.Apply();
 		}

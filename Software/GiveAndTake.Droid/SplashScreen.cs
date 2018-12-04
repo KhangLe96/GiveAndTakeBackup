@@ -19,6 +19,7 @@ namespace GiveAndTake.Droid
 	public class SplashScreen : MvxSplashScreenAppCompatActivity<Setup, App>
 	{
 		private Core.Models.Notification _clickedNotification;
+		private int _badgeValue;
 
 		public SplashScreen()
 			: base(Resource.Layout.SplashScreen)
@@ -28,7 +29,8 @@ namespace GiveAndTake.Droid
 		{
 			base.OnResume();
 
-			var notificationData = Intent?.Extras?.GetString("GiveAndTakeNotification");
+			var notificationData = Intent?.Extras?.GetString("NotificationModelData");
+			_badgeValue = (int) Intent?.Extras?.GetInt("BadgeData");
 			bool isDataModelInitialized = Mvx.CanResolve<IDataModel>();
 
 			if (notificationData != null)
@@ -37,6 +39,7 @@ namespace GiveAndTake.Droid
 				if (isDataModelInitialized)
 				{
 					var dataModel = Mvx.Resolve<IDataModel>();
+					dataModel.Badge = _badgeValue;
 					if (dataModel.IsLoggedIn)
 					{
 						_clickedNotification = notification;
@@ -61,11 +64,16 @@ namespace GiveAndTake.Droid
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
-			if (_clickedNotification != null)
-			{
-				var dataModel = Mvx.Resolve<IDataModel>();
-				dataModel.SelectedNotification = _clickedNotification;
-				dataModel.RaiseNotificationReceived(_clickedNotification);
+			if (Mvx.CanResolve<IDataModel>())
+			{				
+				if (_clickedNotification != null)
+				{
+					var dataModel = Mvx.Resolve<IDataModel>();
+					dataModel.SelectedNotification = _clickedNotification;
+					dataModel.Badge = _badgeValue;
+					dataModel.RaiseNotificationReceived(_clickedNotification);
+					dataModel.RaiseBadgeUpdated(_badgeValue);
+				}
 			}
 		}
 	}
