@@ -10,6 +10,7 @@ using MvvmCross.Platforms.Android.Presenters.Attributes;
 
 namespace GiveAndTake.Droid.Views.Base
 {
+	//Review ThanhVo why use activity?
 	[MvxActivityPresentation]
 	[Activity(Label = "View for AboutView", WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = ScreenOrientation.Portrait)]
 	public class AboutView : BaseActivity
@@ -32,6 +33,7 @@ namespace GiveAndTake.Droid.Views.Base
 			btn.Click -= OnContactButtonClicked;
 		}
 
+		//Review ThanhVo Handle it in the view model
 		private void OnContactButtonClicked(object sender, EventArgs e)
 		{
 			var hasTelephony = PackageManager.HasSystemFeature(PackageManager.FeatureTelephony);

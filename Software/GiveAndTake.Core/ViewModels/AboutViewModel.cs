@@ -1,4 +1,6 @@
-﻿using GiveAndTake.Core.Helpers;
+﻿//Review Thanh Vo check your created files, and remove all unused namespaces
+//You should use tab instead of space
+using GiveAndTake.Core.Helpers;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -24,6 +26,9 @@ namespace GiveAndTake.Core.ViewModels
         public string DaNangCityLabel => AppConstants.DaNangCity;
         public string MobileAppLabel => AppConstants.MobileApp;
         public string AppVersionLabel => AppConstants.AppVersionLabel;
+		//Review ThanhVo App version ios should be get from info.plist file
+		//App version should be gotten from AndroidManifest
+		//You can create ISystem to get app version info
         public string AppVersionValue => AppConstants.AppVersionValue;
         public string ReleaseDateLabel => AppConstants.ReleaseDateLabel;
         public string ReleaseDateValue => AppConstants.ReleaseDateValue;

@@ -43,12 +43,14 @@ namespace GiveAndTake.iOS.Views
 		private UILabel _supportContactValue;
 		private UILabel _developedByLabel;
 
+		//Review ThanhVo name should be followed naming conventions _headerBarAbout
 		private UIView headerBarAbout;
 
 		private IMvxCommand _contactPhonePressedCommand;
 
 		public IMvxCommand BackPressedCommand { get; set; }
 		public IMvxCommand ContactPhonePressedCommand => _contactPhonePressedCommand ?? (_contactPhonePressedCommand = new MvxCommand(ContactPhonePressed));
+		//Review Thanh Vo Should hanlde it in the view model.  Use interface injection
 		private void ContactPhonePressed()
 		{
 			var url = new NSUrl("tel:" + AppConstants.SupportContactPhone);
