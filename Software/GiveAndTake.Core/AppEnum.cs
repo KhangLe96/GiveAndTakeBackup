@@ -39,6 +39,7 @@
 	{
 		Cancelled,
 		Accepted,
+		Received,
 		Rejected,
 		ShowPostDetail
 	}

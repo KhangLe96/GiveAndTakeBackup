@@ -54,6 +54,7 @@
 		public const string DeletePost = "Xóa";
 		public const string ReportPost = "Báo cáo";
 		public const string CancelRequest = "Hủy yêu cầu";
+		public const string ReceivedRequest = "Đã nhận vật phẩm";
 
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";
