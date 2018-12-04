@@ -10,7 +10,7 @@ namespace GiveAndTake.Droid.Helpers
 	{
 		public static float FromDimensionId(int dimenId)
 		{
-			return Application.Context.Resources.GetDimension(dimenId);
+			return Android.App.Application.Context.Resources.GetDimension(dimenId);
 		}
 
 		/// <summary>
@@ -26,7 +26,7 @@ namespace GiveAndTake.Droid.Helpers
 		public static DisplayMetrics GetDefaultMetrics()
 		{
 			DisplayMetrics metrics = new DisplayMetrics();
-			IWindowManager windowManager = Application.Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
+			IWindowManager windowManager = Android.App.Application.Context.GetSystemService(Context.WindowService).JavaCast<IWindowManager>();
 			windowManager.DefaultDisplay.GetMetrics(metrics);
 
 			return metrics;

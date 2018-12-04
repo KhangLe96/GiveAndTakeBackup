@@ -125,5 +125,7 @@
         public static string SupportContactValue = "(0236)1022";
 		public static string SupportContactPhone = "02361022";
 		public static string DevelopedBy = "Ứng dụng được phát triển bởi";
-    }
+		public const string DefaultFeedbackEmail = "chovanhan@sioux.asia";
+
+	}
 }

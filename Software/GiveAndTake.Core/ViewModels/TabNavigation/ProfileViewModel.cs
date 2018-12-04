@@ -377,7 +377,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case AppConstants.SendFeedback:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+					EmailHelper.OpenFeedbackEmail();
 					break;
                 case AppConstants.About:
                     await NavigationService.Navigate<AboutViewModel>();

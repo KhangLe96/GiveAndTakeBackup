@@ -3,6 +3,7 @@ using MvvmCross;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Helpers.Interface;
 using I18NPortable;
 
 
@@ -15,6 +16,9 @@ namespace GiveAndTake.Core.ViewModels.Base
 
 		private IManagementService _managementService;
 		public IManagementService ManagementService => _managementService ?? (_managementService = Mvx.Resolve<IManagementService>());
+
+		private IEmailHelper _emailHelper;
+		public IEmailHelper EmailHelper => _emailHelper ?? (_emailHelper = Mvx.Resolve<IEmailHelper>());
 
 		public II18N Strings => I18N.Current;
 	}

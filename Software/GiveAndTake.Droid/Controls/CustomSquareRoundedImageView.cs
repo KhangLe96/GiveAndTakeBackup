@@ -37,7 +37,7 @@ namespace GiveAndTake.Droid.Controls
 			{
 				if (!string.IsNullOrEmpty(value))
 				{
-					Glide.With(Application.Context).Load(value).Into(this);
+					Glide.With(Android.App.Application.Context).Load(value).Into(this);
 				}
 			}
 		}
