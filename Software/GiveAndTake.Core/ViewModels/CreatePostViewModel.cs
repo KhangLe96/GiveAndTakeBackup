@@ -134,8 +134,8 @@ namespace GiveAndTake.Core.ViewModels
 			_debouncer = new DebouncerHelper();
 			_dataModel = dataModel;
 			_pictureChooserTask = pictureChooserTask;
-			_selectedCategory = _dataModel.Categories.FirstOrDefault(category => category.CategoryName == AppConstants.DefaultCategoryCreatePostName);
-			_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName == AppConstants.DefaultLocationFilter);
+			_selectedCategory = _dataModel.Categories.FirstOrDefault(category => category.CategoryName.Equals(AppConstants.DefaultCategoryCreatePostName));
+			_selectedProvinceCity = _selectedProvinceCity ?? _dataModel.ProvinceCities.First(p => p.ProvinceCityName.Equals(AppConstants.DefaultLocationFilter));
 		}
 
 		private async void BackPressed()
@@ -316,18 +316,19 @@ namespace GiveAndTake.Core.ViewModels
 
 		public override void Prepare(ViewMode mode)
 		{
-			if (mode != ViewMode.EditPost) return;
+			if (mode != ViewMode.EditPost)
+			{
+				return;
+			};
 			_viewModelMode = ViewMode.EditPost;
 			_postId = _dataModel.CurrentPost.PostId;
-			_selectedCategory.CategoryName = _dataModel.CurrentPost.Category.CategoryName;
-			_selectedCategory.Id = _dataModel.CurrentPost.Category.Id;
-			_selectedProvinceCity.ProvinceCityName = _dataModel.CurrentPost.ProvinceCity.ProvinceCityName;
-			_selectedProvinceCity.Id = _dataModel.CurrentPost.ProvinceCity.Id;
+			_selectedCategory = _dataModel.CurrentPost.Category;
+			_selectedProvinceCity = _dataModel.CurrentPost.ProvinceCity;
 			_postTitle = _dataModel.CurrentPost.Title;
 			_postDescription = _dataModel.CurrentPost.Description;
 			IsSubmitBtnEnabled = true;
-
 			BtnSubmitTitle = AppConstants.SaveAPost;
+			Category = _selectedCategory.CategoryName;
 		}
 
 		public override async void ViewAppearing()
