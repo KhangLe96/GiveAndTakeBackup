@@ -113,9 +113,16 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			for (var index = 0; index < _tabLayout.TabCount; index++)
 			{
 				var tab = _tabLayout.GetTabAt(index);
-				//tab.SetIcon(TabTitleIconsDictionary[tab.Text]);
-				tab.SetCustomView(Resource.Layout.TabNavigationIcon);
-				//tab.SetText("");
+				
+				if (index == 1)
+				{
+					tab.SetCustomView(Resource.Layout.NotificationIconView);
+				}
+				else
+				{
+					tab.SetIcon(TabTitleIconsDictionary[tab.Text]);
+					tab.SetText("");
+				}
 			}
 
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
@@ -160,13 +167,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				};
 			}
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
-
-			//switch (e.Tab.Position)
-			//{
-			//	case 1:
-			//		ShowNotificationsCommand.Execute();
-			//		break;
-			//}
 		}
 
 		#endregion

@@ -22,7 +22,26 @@ namespace GiveAndTake.Core.Services
 	        _dataModel = dataModel;
         }
 
-	    public async Task InitData()
+	    public async Task<Response> GetResponseById(Guid reponseId, string token)
+	    {
+		    string parameters = $"/{reponseId}";
+
+		    var response = await _apiHelper.Get(AppConstants.GetResponseById + parameters, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<Response>(response.RawContent);
+		}
+
+		public async Task InitData()
 	    {
 			_dataModel.Categories = _dataModel.Categories ?? (await GetCategories()).Categories;
 		    _dataModel.ProvinceCities = _dataModel.ProvinceCities ?? (await GetProvinceCities()).ProvinceCities;

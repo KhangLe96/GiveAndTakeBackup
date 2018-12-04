@@ -5,7 +5,7 @@ namespace GiveAndTake.Core.Models
     [DataContract]
     public class BaseUser
     {
-        [DataMember(Name = "firstName")]
+		[DataMember(Name = "firstName")]
         public string FirstName { get; set; }
 
         [DataMember(Name = "lastName")]

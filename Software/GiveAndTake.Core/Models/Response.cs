@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace GiveAndTake.Core.Models
 {
     [DataContract]
-    public class ResponseRequest
+    public class Response
     {
         [DataMember(Name = "id")]
         public Guid Id { get; set; }
@@ -17,5 +17,11 @@ namespace GiveAndTake.Core.Models
 
         [DataMember(Name = "updatedTime")]
         public DateTimeOffset UpdatedTime { get; set; }
-    }
+
+	    [DataMember(Name = "user")]
+	    public User User { get; set; }
+
+	    [DataMember(Name = "post")]
+	    public PostResponse Post { get; set; }
+	}
 }

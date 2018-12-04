@@ -34,7 +34,7 @@ namespace GiveAndTake.Core.Models
         public DateTime UpdatedTime { get; set; }
 
         [DataMember(Name = "response")]
-        public ResponseRequest Response { get; set; }
+        public Response Response { get; set; }
     }
 
 	[DataContract]
