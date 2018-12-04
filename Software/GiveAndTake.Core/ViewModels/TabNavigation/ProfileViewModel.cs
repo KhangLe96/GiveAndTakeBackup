@@ -314,6 +314,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				{
 					_dataModel.Categories.RemoveAt(0);
 					var result = await NavigationService.Navigate<CreatePostViewModel, bool>();
+					_dataModel.Categories = (await ManagementService.GetCategories()).Categories;
 					if (result)
 					{
 						await UpdateProfileViewModelWithOverlay();
