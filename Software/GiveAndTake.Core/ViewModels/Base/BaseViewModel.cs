@@ -17,6 +17,7 @@ namespace GiveAndTake.Core.ViewModels.Base
 		private IManagementService _managementService;
 		public IManagementService ManagementService => _managementService ?? (_managementService = Mvx.Resolve<IManagementService>());
 
+		//Review Thanh Vo Don't put it in base view model, just use constructor injection in view model which use it
 		private IEmailHelper _emailHelper;
 		public IEmailHelper EmailHelper => _emailHelper ?? (_emailHelper = Mvx.Resolve<IEmailHelper>());
 
