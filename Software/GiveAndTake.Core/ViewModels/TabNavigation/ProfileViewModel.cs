@@ -375,10 +375,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
                     break;
                 case AppConstants.LogOut:
 					_logoutFacebook.Raise();
+	                _dataModel.ApiPostsResponse = null;
 					await Task.WhenAll(
 						ManagementService.Logout(_dataModel.LoginResponse.Token),
 						NavigationService.Navigate<LoginViewModel>());
-					_dataModel.LoginResponse = null;
+	                _dataModel.LoginResponse = null;
 					break;
 			}
 		}

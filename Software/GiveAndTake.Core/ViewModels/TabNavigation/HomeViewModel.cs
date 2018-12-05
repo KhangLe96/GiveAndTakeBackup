@@ -1,4 +1,4 @@
-﻿using GiveAndTake.Core.Exceptions;
+using GiveAndTake.Core.Exceptions;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -142,7 +142,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task InitDataModels()
 		{
-			if (PostItemViewModelCollection == null)
+			if (_dataModel.ApiPostsResponse == null )
 			{
 				try
 				{
