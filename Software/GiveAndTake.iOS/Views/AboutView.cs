@@ -1,5 +1,4 @@
-﻿using Foundation;
-using GiveAndTake.Core;
+﻿using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
@@ -7,7 +6,6 @@ using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
-using System;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
@@ -39,29 +37,10 @@ namespace GiveAndTake.iOS.Views
 		private UILabel _supportContactValue;
 		private UILabel _developedByLabel;
 
-		//Review ThanhVo name should be followed naming conventions __headerBarAbout
 		private UIView _headerBarAbout;
 
-		private IMvxCommand _contactPhonePressedCommand;
-
 		public IMvxCommand BackPressedCommand { get; set; }
-		public IMvxCommand ContactPhonePressedCommand => _contactPhonePressedCommand ?? (_contactPhonePressedCommand = new MvxCommand(ContactPhonePressed));
-		//Review Thanh Vo Should hanlde it in the view model.  Use interface injection
-		private void ContactPhonePressed()
-		{
-			var url = new NSUrl("tel:" + AppConstants.SupportContactPhone);
-			try
-			{
-				if (UIApplication.SharedApplication.CanOpenUrl(url))
-				{
-					UIApplication.SharedApplication.OpenUrl(url);
-				}
-			}
-			catch (Exception ex)
-			{
-				return;
-			}
-		}
+		public IMvxCommand PhoneDialerPressedCommand { get; set; }
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
@@ -79,6 +58,7 @@ namespace GiveAndTake.iOS.Views
 			bindingSet.Bind(_developedByLabel).To(vm => vm.DevelopedBy);
 
 			bindingSet.Bind(this).For(v => v.BackPressedCommand).To(vm => vm.BackPressedCommand);
+			bindingSet.Bind(this).For(v => v.PhoneDialerPressedCommand).To(vm => vm.PhoneDialerCommand);
 
 			bindingSet.Apply();
 		}
@@ -150,7 +130,6 @@ namespace GiveAndTake.iOS.Views
 			});
 
 		}
-
 		private void InitContent()
 		{
 			//scroll
@@ -279,7 +258,7 @@ namespace GiveAndTake.iOS.Views
 
 			_touchFieldContactPhone.AddGestureRecognizer(new UITapGestureRecognizer(() =>
 			{
-				ContactPhonePressedCommand?.Execute();
+				PhoneDialerPressedCommand?.Execute();
 			}));
 
 			_contactPhoneImg = UIHelper.CreateImageView(DimensionHelper.ContactPhoneWidth, DimensionHelper.ContactPhoneHeight, UIColor.White);

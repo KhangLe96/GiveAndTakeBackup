@@ -180,6 +180,7 @@
 					android:layout_marginLeft="@dimen/basic_margin"
 					android:background="@color/white"
 					android:src="@drawable/phone_contact"
+					local:MvxBind="Click PhoneDialerCommand"
 					android:scaleType="fitXY" />
 				</LinearLayout>
 			</LinearLayout>
