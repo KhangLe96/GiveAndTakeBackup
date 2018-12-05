@@ -1,26 +1,20 @@
 ﻿//Review Thanh Vo check your created files, and remove all unused namespaces
 //You should use tab instead of space
 using GiveAndTake.Core.Helpers;
-using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.Base;
-using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
-using MvvmCross.Plugin.PictureChooser;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using GiveAndTake.Core.Exceptions;
-using GiveAndTake.Core.Services;
-using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+	public class AboutViewModel : BaseViewModel
     {
-
-        private IMvxCommand _backPressedCommand;
+		public AboutViewModel(ISystemHelper iSystemHelper)
+		{
+			_iSystemHelper = iSystemHelper;
+		}
+		private readonly ISystemHelper _iSystemHelper;
+		public string AppVersionValue => _iSystemHelper.GetAppVersion();
+		private IMvxCommand _backPressedCommand;
         public string AppInfoLabel => AppConstants.AppInfo;
         public string DepartmentLabel => AppConstants.Department;
         public string DaNangCityLabel => AppConstants.DaNangCity;
@@ -29,7 +23,6 @@ namespace GiveAndTake.Core.ViewModels
 		//Review ThanhVo App version ios should be get from info.plist file
 		//App version should be gotten from AndroidManifest
 		//You can create ISystem to get app version info
-        public string AppVersionValue => AppConstants.AppVersionValue;
         public string ReleaseDateLabel => AppConstants.ReleaseDateLabel;
         public string ReleaseDateValue => AppConstants.ReleaseDateValue;
         public string SupportContactLabel => AppConstants.SupportContactLabel;

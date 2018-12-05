@@ -106,7 +106,6 @@
         public static string DaNangCity = "Thành phố Đà Nẵng";
         public static string MobileApp = "Ứng dụng di động Cho và nhận";
         public static string AppVersionLabel = "Phiên bản ứng dụng:";
-        public static string AppVersionValue = "1.0";
         public static string ReleaseDateLabel = "Ngày phát hành:";
         public static string ReleaseDateValue = "24 tháng 11 năm 2018";
         public static string SupportContactLabel = "Liên hệ hỗ trợ:";

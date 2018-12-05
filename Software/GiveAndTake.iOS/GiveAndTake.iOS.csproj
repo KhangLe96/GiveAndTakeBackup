@@ -97,6 +97,7 @@
     <Compile Include="Helpers\Keys.cs" />
     <Compile Include="Helpers\MediaHelper.cs" />
     <Compile Include="Helpers\ResolutionHelper.cs" />
+    <Compile Include="Helpers\SystemHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Main.cs" />

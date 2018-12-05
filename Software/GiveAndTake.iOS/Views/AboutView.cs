@@ -1,17 +1,13 @@
-﻿using CoreGraphics;
-using Foundation;
+﻿using Foundation;
 using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
-using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
-using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using System;
-using System.Collections.Generic;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views
@@ -43,8 +39,8 @@ namespace GiveAndTake.iOS.Views
 		private UILabel _supportContactValue;
 		private UILabel _developedByLabel;
 
-		//Review ThanhVo name should be followed naming conventions _headerBarAbout
-		private UIView headerBarAbout;
+		//Review ThanhVo name should be followed naming conventions __headerBarAbout
+		private UIView _headerBarAbout;
 
 		private IMvxCommand _contactPhonePressedCommand;
 
@@ -95,13 +91,13 @@ namespace GiveAndTake.iOS.Views
 		private void InitHeaderBar()
 		{
 			//headerBar About
-			headerBarAbout = UIHelper.CreateView(DimensionHelper.HeaderBarHeight, ResolutionHelper.Width, UIColor.White);
-			View.Add(headerBarAbout);
+			_headerBarAbout = UIHelper.CreateView(DimensionHelper.HeaderBarHeight, ResolutionHelper.Width, UIColor.White);
+			View.Add(_headerBarAbout);
 			View.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(headerBarAbout, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(_headerBarAbout, NSLayoutAttribute.Top, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Top, 1, ResolutionHelper.StatusHeight),
-				NSLayoutConstraint.Create(headerBarAbout, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
+				NSLayoutConstraint.Create(_headerBarAbout, NSLayoutAttribute.Left, NSLayoutRelation.Equal, View,
 					NSLayoutAttribute.Left, 1, 0),
 			});
 			//backButton
@@ -114,47 +110,46 @@ namespace GiveAndTake.iOS.Views
 				BackPressedCommand?.Execute();
 			}));
 
-			headerBarAbout.AddSubview(_backButton);
-			headerBarAbout.AddSubview(_touchFieldBackButton);
+			_headerBarAbout.AddSubview(_backButton);
+			_headerBarAbout.AddSubview(_touchFieldBackButton);
 
-			headerBarAbout.AddConstraints(new[]
+			_headerBarAbout.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_touchFieldBackButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, headerBarAbout,
+				NSLayoutConstraint.Create(_touchFieldBackButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _headerBarAbout,
 					NSLayoutAttribute.CenterY,1 , 0),
-				NSLayoutConstraint.Create(_touchFieldBackButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, headerBarAbout,
+				NSLayoutConstraint.Create(_touchFieldBackButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _headerBarAbout,
 					NSLayoutAttribute.Left, 1, 0),
-				NSLayoutConstraint.Create(_backButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, headerBarAbout,
+				NSLayoutConstraint.Create(_backButton, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _headerBarAbout,
 					NSLayoutAttribute.CenterY,1 , 0),
-				NSLayoutConstraint.Create(_backButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, headerBarAbout,
+				NSLayoutConstraint.Create(_backButton, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _headerBarAbout,
 					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
 			});
 			//text
 			_appInfoLabel = UIHelper.CreateLabel(ColorHelper.LightBlue, DimensionHelper.BigTextSize, FontType.Medium);
 
-			headerBarAbout.AddSubview(_appInfoLabel);
-			headerBarAbout.AddConstraints(new[]
+			_headerBarAbout.AddSubview(_appInfoLabel);
+			_headerBarAbout.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_appInfoLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, headerBarAbout,
+				NSLayoutConstraint.Create(_appInfoLabel, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _headerBarAbout,
 					NSLayoutAttribute.CenterX, 1, 0),
-				NSLayoutConstraint.Create(_appInfoLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, headerBarAbout,
+				NSLayoutConstraint.Create(_appInfoLabel, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _headerBarAbout,
 					NSLayoutAttribute.CenterY, 1, 0),
 			});
 
 			_separateLine = UIHelper.CreateView(DimensionHelper.HeaderBarLogoWidth, DimensionHelper.SeperatorHeight, ColorHelper.Gray);
 
-			headerBarAbout.AddSubview(_separateLine);
-			headerBarAbout.AddConstraints(new[]
+			_headerBarAbout.AddSubview(_separateLine);
+			_headerBarAbout.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_separateLine, NSLayoutAttribute.Width, NSLayoutRelation.Equal, headerBarAbout,
+				NSLayoutConstraint.Create(_separateLine, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _headerBarAbout,
 					NSLayoutAttribute.Width,1 , 0),
 				NSLayoutConstraint.Create(_separateLine, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null,
 					NSLayoutAttribute.NoAttribute, 1 , DimensionHelper.SeparateLineHeaderHeight),
-				NSLayoutConstraint.Create(_separateLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, headerBarAbout,
+				NSLayoutConstraint.Create(_separateLine, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _headerBarAbout,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin)
 			});
 
 		}
-
 
 		private void InitContent()
 		{

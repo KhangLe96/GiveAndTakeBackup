@@ -85,6 +85,7 @@
     <Compile Include="Controls\ImageSliderAdapter.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Helpers\SytemHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
