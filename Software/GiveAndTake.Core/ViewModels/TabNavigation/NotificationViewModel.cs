@@ -32,21 +32,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			set
 			{
 				SetProperty(ref _notificationCount, value);
-				if (value == 0)
-				{
-					IsZeroBadge = false;
-				}
-				else
-				{
-					IsZeroBadge = true;
-				}
+
 			}
 		}
-		public bool IsZeroBadge
-		{
-			get => _isZeroBadge;
-			set => SetProperty(ref _isZeroBadge, value);
-		}
+
 
 		private readonly IDataModel _dataModel;
 		private readonly string _token;
@@ -54,11 +43,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private MvxObservableCollection<NotificationItemViewModel> _notificationItemViewModel;
 		private bool _isRefresh;
 		private int _notiCount;
-
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
 		private int _notificationCount;
-		private bool _isZeroBadge;
 		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
 		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
 
@@ -69,7 +56,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_loadingOverlayService = loadingOverlayService;
 			_dataModel.NotificationReceived += OnNotificationReceived;
 			_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
-			_isZeroBadge = true;
+
 		}
 
 		public override async Task Initialize()
@@ -81,14 +68,17 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private void OnBadgeReceived(object sender, int badge)
 		{
 			NotificationCount = badge;
-			Task.Run(() => { UpdateNotificationViewModels(); });
+			if (badge != 0)
+			{
+				Task.Run(() => { UpdateNotificationViewModels(); });
+			}			
 		}
 
 		public override void ViewCreated()
 		{
 			base.ViewCreated();
-			_dataModel.NotificationReceived += OnNotificationReceived;
-			_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
+			//_dataModel.NotificationReceived += OnNotificationReceived;
+			//_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
 		}
 
 		public override void ViewDestroy(bool viewFinishing = true)

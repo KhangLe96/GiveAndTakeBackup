@@ -25,6 +25,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		private CustomCircleImageView _ccimProfile;
 		private TabLayout _tabLayout;
+		private bool _isOnNotificationViewTab;
 		private static readonly Dictionary<string, int> TabTitleIconsDictionary = new Dictionary<string, int>(){
 			{AppConstants.HomeTab,Resource.Drawable.tab_navigation_icon_home},
 			{AppConstants.NotificationTab,Resource.Drawable.tab_navigation_icon_notification},
@@ -172,9 +173,16 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				};
 			}
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
+
+			if (_isOnNotificationViewTab)
+			{
+				ClearBadgeCommand.Execute();
+				_isOnNotificationViewTab = false;
+			}
 			if (e.Tab.Position == 1)
 			{
 				ClearBadgeCommand.Execute();
+				_isOnNotificationViewTab = true;
 			}
 		}
 
