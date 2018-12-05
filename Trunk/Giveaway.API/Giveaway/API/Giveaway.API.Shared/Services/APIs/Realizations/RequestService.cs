@@ -51,7 +51,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    public RequestPostResponse GetRequestById(Guid requestId)
 	    {
-		    var request = _requestService.Include(x => x.User).Include(x => x.Post).FirstOrDefault(x => x.Id == requestId);
+		    var request = _requestService.Include(x => x.User).Include(x => x.Post)
+			    .FirstOrDefault(x => x.EntityStatus != EntityStatus.Deleted && x.Id == requestId);
 		    if (request == null)
 		    {
 			    throw new BadRequestException(CommonConstant.Error.NotFound);
@@ -60,12 +61,24 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		    return Mapper.Map<RequestPostResponse>(request);
 	    }
 
+	    public RequestPostResponse GetRequestOfCurrentUserByPostId(Guid userId, Guid postId)
+	    {
+		    var request = _requestService.Include(x => x.Post.User).FirstOrDefault(x =>
+			    x.EntityStatus != EntityStatus.Deleted && x.UserId == userId && x.PostId == postId);
+		    if (request == null)
+		    {
+			    throw new BadRequestException(CommonConstant.Error.NotFound);
+		    }
+
+		    return Mapper.Map<RequestPostResponse>(request);
+		}
+
 		public RequestPostResponse Create(RequestPostRequest requestPost)
         {
-	        //if (CheckWhetherUserRequested(requestPost.PostId, requestPost.UserId))
-	        //{
-		       // throw new BadRequestException(CommonConstant.Error.BadRequest);
-	        //}
+			if (CheckWhetherUserRequested(requestPost.PostId, requestPost.UserId))
+			{
+				throw new BadRequestException(CommonConstant.Error.BadRequest);
+			}
 
 			var request = Mapper.Map<Request>(requestPost);
 			request.Id = Guid.NewGuid();

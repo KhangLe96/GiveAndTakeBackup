@@ -11,7 +11,7 @@ namespace Giveaway.API.Shared.Services.APIs
     {
 	    PagingQueryResponse<RequestPostResponse> GetRequestForPaging(string postId, IDictionary<string, string> @params);
 	    RequestPostResponse GetRequestById(Guid requestId);
-
+	    RequestPostResponse GetRequestOfCurrentUserByPostId(Guid userId, Guid postId);
 		RequestPostResponse Create(RequestPostRequest requestPost);
         bool UpdateStatus(Guid requestId, StatusRequest request, Guid userId);
         bool Delete(Guid requestId);

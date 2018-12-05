@@ -195,7 +195,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		private List<NotificationResponse> GetPagedNotifications(Guid userId, PagingQueryNotificationRequest request, out int total, out int numberOfNotiNotSeen)
 		{
 			var notifications =
-				_notificationService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.DestinationUserId == userId);
+				_notificationService.Where(x => x.EntityStatus != EntityStatus.Deleted && x.DestinationUserId == userId)
+					.OrderByDescending(x => x.CreatedTime);
 
 			numberOfNotiNotSeen = notifications.Count(x => x.IsSeen == false);
 			total = notifications.ToList().Count();

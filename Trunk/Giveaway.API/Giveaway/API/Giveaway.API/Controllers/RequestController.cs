@@ -62,6 +62,15 @@ namespace Giveaway.API.Controllers
 		    return _requestService.GetRequestById(requestId);
 	    }
 
+	    [Authorize]
+	    [HttpGet("getRequestOfCurrentUserByPostId/{postId}")]
+	    [Produces("application/json")]
+	    public RequestPostResponse GetRequestOfCurrentUserByPostId(Guid postId)
+	    {
+		    var userId = User.GetUserId();
+			return _requestService.GetRequestOfCurrentUserByPostId(userId, postId);
+	    }
+
 		/// <summary>
 		/// Create a request
 		/// </summary>
