@@ -185,9 +185,6 @@ namespace GiveAndTake.iOS.Views
 				.For(v => v.Command)
 				.To(vm => vm.ShowMyRequestListCommand);
 
-			bindingSet.Bind(_lbCommentCount)
-				.To(vm => vm.CommentCount);
-
 			bindingSet.Bind(_imgAvatar)
 				.For(v => v.ImageUrl)
 				.To(vm => vm.AvatarUrl);
@@ -450,38 +447,6 @@ namespace GiveAndTake.iOS.Views
 					NSLayoutAttribute.Right, 1, 0)
 			});
 
-			_lbCommentCount = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.PostDetailBigTextSize, FontType.Light);
-			_contentView.AddSubview(_lbCommentCount);
-			_contentView.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
-				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _imgRequest,
-					NSLayoutAttribute.Left, 1, -DimensionHelper.PostDetailBigMargin)
-			});
-		
-			_imgComment = UIHelper.CreateImageView(DimensionHelper.PostDetailCommentLogoSize, DimensionHelper.PostDetailCommentLogoSize, ImageHelper.CommentIcon);
-			_contentView.AddSubview(_imgComment);
-			_contentView.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.PostDetailCommentLogoMarginTop),
-				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _lbCommentCount,
-					NSLayoutAttribute.Left, 1, -DimensionHelper.DefaultMargin)
-			});
-
-			_commentTouchView = UIHelper.CreateView(DimensionHelper.PostDetailRequestTouchFieldHeight,
-				DimensionHelper.PostDetailRequestTouchFieldWidth, null);
-			_contentView.AddSubview(_commentTouchView);
-			_contentView.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_commentTouchView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
-					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(_commentTouchView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _requestTouchView,
-					NSLayoutAttribute.Left, 1, 0)
-			});
-
-
 			_postInformationView = UIHelper.CreateView(0, DimensionHelper.PostDetailContentViewWidth, ColorHelper.LightGray,
 				DimensionHelper.RoundCorner);
 			_postInformationView.Layer.BorderColor = ColorHelper.Gray.CGColor;
@@ -489,7 +454,7 @@ namespace GiveAndTake.iOS.Views
 			_contentView.AddSubview(_postInformationView);
 			_contentView.AddConstraints(new[]
 			{
-				NSLayoutConstraint.Create(_postInformationView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imgComment,
+				NSLayoutConstraint.Create(_postInformationView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imgRequest,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
 				NSLayoutConstraint.Create(_postInformationView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _contentView,
 					NSLayoutAttribute.Left, 1, DimensionHelper.MarginObjectPostDetail)
@@ -555,6 +520,42 @@ namespace GiveAndTake.iOS.Views
 			{
 				NSLayoutConstraint.Create(_contentView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _postInformationView,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail)
+			});
+		}
+
+		// TODO: implement it later
+		private void CommentView()
+		{
+			_lbCommentCount = UIHelper.CreateLabel(ColorHelper.Gray, DimensionHelper.PostDetailBigTextSize, FontType.Light);
+			_contentView.AddSubview(_lbCommentCount);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginObjectPostDetail),
+				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _imgRequest,
+					NSLayoutAttribute.Left, 1, -DimensionHelper.PostDetailBigMargin)
+			});
+
+			_imgComment = UIHelper.CreateImageView(DimensionHelper.PostDetailCommentLogoSize,
+				DimensionHelper.PostDetailCommentLogoSize, ImageHelper.CommentIcon);
+			_contentView.AddSubview(_imgComment);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.PostDetailCommentLogoMarginTop),
+				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _lbCommentCount,
+					NSLayoutAttribute.Left, 1, -DimensionHelper.DefaultMargin)
+			});
+
+			_commentTouchView = UIHelper.CreateView(DimensionHelper.PostDetailRequestTouchFieldHeight,
+				DimensionHelper.PostDetailRequestTouchFieldWidth, null);
+			_contentView.AddSubview(_commentTouchView);
+			_contentView.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_commentTouchView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imageView,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_commentTouchView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _requestTouchView,
+					NSLayoutAttribute.Left, 1, 0)
 			});
 		}
 

@@ -104,12 +104,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			set.Bind(_lbRequestCount)
 				.To(vm => vm.RequestCount);
 
-			set.Bind(_lbAppreciationCount)
-				.To(vm => vm.AppreciationCount);
-
-			set.Bind(_lbCommentCount)
-				.To(vm => vm.CommentCount);
-
 			set.Bind(_optionView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowMenuPopupCommand);
@@ -331,10 +325,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 			InitRequestIcon();
 			InitRequestCountLabel();
-			InitAppeciationIcon();
-			InitAppeciationCountLabel();
-			InitCommentIcon();
-			InitCommentCountLabel();
 			InitExtensionIcon();
 		}
 

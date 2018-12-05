@@ -84,7 +84,7 @@
 	<dimen name="medium_margin">10dp</dimen>
 	<dimen name="medium_padding">10dp</dimen>
 	<dimen name="request_number_button_text_size">15dp</dimen>
-
+	<dimen name="text_margin_base_line">-1dp</dimen>
 	<dimen name="about_text_height">40dp</dimen>
 	<dimen name="about_logo_app_width">90dp</dimen>
 	<dimen name="about_logo_app_height">80dp</dimen>
