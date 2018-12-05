@@ -162,6 +162,7 @@
                         android:id="@+id/tvRequestCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+						android:layout_marginBottom="@dimen/text_margin_base_line"
                         android:textSize="@dimen/SmallTextSize"
 						android:fontFamily="@font/sanfranciscodisplay_light"
                         local:MvxBind="Text RequestCount"/>
@@ -180,7 +181,8 @@
                         android:layout_height="@dimen/button_small_height"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/heart_off" />
+                        android:src="@drawable/heart_off" 
+						android:visibility="gone"/>
 
 					<TextView
                         android:id="@+id/tvAppreciationCount"
@@ -188,7 +190,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/SmallTextSize"
 						android:fontFamily="@font/sanfranciscodisplay_light"
-                        local:MvxBind="Text AppreciationCount"/>
+                        local:MvxBind="Text AppreciationCount"
+						android:visibility="gone"/>
 				</LinearLayout>
 
 				<LinearLayout
@@ -204,7 +207,8 @@
                         android:layout_height="@dimen/button_small_height"
                         android:background="@null"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/comment" />
+                        android:src="@drawable/comment"
+						android:visibility="gone"/>
 
 					<TextView
                         android:id="@+id/tvCommentCount"
@@ -212,7 +216,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/SmallTextSize"
 						android:fontFamily="@font/sanfranciscodisplay_light"
-                        local:MvxBind="Text CommentCount"/>
+                        local:MvxBind="Text CommentCount"
+						android:visibility="gone"/>
 				</LinearLayout>
 
 				<LinearLayout

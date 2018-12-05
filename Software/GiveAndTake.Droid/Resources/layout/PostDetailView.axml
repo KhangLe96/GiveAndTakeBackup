@@ -184,7 +184,8 @@
 				android:layout_height="wrap_content"
 				android:fontFamily="@font/sanfranciscodisplay_light"
 				android:textSize="@dimen/post_detail_big_text_size"
-				local:MvxBind="Text CommentCount"/>
+				local:MvxBind="Text CommentCount"
+				android:visibility="gone"/>
 			<ImageButton
 				android:layout_below="@+id/SliderViewPager"
 				android:layout_toLeftOf="@+id/tvCommentCount"
@@ -195,7 +196,8 @@
 				android:layout_marginRight="@dimen/default_margin"
 				android:background="@null"
 				android:scaleType="fitCenter"
-				android:src="@drawable/comment" />
+				android:src="@drawable/comment" 
+				android:visibility="gone"/>
 			<View
 				android:id="@+id/RequestTouchView"
 				android:layout_alignParentRight="true"
@@ -205,7 +207,7 @@
 				android:background="@null"
 				local:MvxBind="Click ShowMyRequestListCommand"/>
 			<RelativeLayout
-				android:layout_below="@+id/commentImageButton"
+				android:layout_below="@+id/requestImageButton"
 				android:layout_marginTop="@dimen/post_detail_margin_object"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
