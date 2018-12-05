@@ -82,12 +82,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			set.Bind(_lbRequestCount)
 				.To(vm => vm.RequestCount);
 
-			set.Bind(_lbAppreciationCount)
-				.To(vm => vm.AppreciationCount);
-
-			set.Bind(_lbCommentCount)
-				.To(vm => vm.CommentCount);
-
 			set.Bind(_optionView.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.ShowMenuPopupCommand);
@@ -267,54 +261,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 					NSLayoutAttribute.Right, 1, DimensionHelper.MarginText)
 			});
 
-			_imgAppreciation = UIHelper.CreateImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, ImageHelper.HeartOff);
-
-			_reactionArea.AddSubview(_imgAppreciation);
-
-			_reactionArea.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_imgAppreciation, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
-					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(_imgAppreciation, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _reactionArea,
-					NSLayoutAttribute.Right, 0.33f, 0)
-			});
-
-			_lbAppreciationCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
-
-			_reactionArea.AddSubview(_lbAppreciationCount);
-
-			_reactionArea.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_lbAppreciationCount, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
-					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(_lbAppreciationCount, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgAppreciation,
-					NSLayoutAttribute.Right, 1, DimensionHelper.MarginText)
-			});
-
-			_imgComment = UIHelper.CreateImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth, ImageHelper.CommentIcon);
-
-			_reactionArea.AddSubview(_imgComment);
-
-			_reactionArea.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
-					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _reactionArea,
-					NSLayoutAttribute.Right, 0.66f, 0)
-			});
-
-			_lbCommentCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
-
-			_reactionArea.AddSubview(_lbCommentCount);
-
-			_reactionArea.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
-					NSLayoutAttribute.Bottom, 1, 0),
-				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgComment,
-					NSLayoutAttribute.Right, 1, DimensionHelper.MarginText)
-			});
-
 			_optionView = UIHelper.CreateView(0, DimensionHelper.ButtonExtensionWidth * 4);
 
 			ContentView.AddSubview(_optionView);
@@ -339,6 +285,60 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 					NSLayoutAttribute.Bottom, 1, - DimensionHelper.MarginText - DimensionHelper.MarginShort),
 				NSLayoutConstraint.Create(_imgExtension, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _optionView,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
+			});
+		}
+
+		private void AppreciationAndComment()
+		{
+			_imgAppreciation = UIHelper.CreateImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth,
+				ImageHelper.HeartOff);
+
+			_reactionArea.AddSubview(_imgAppreciation);
+
+			_reactionArea.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_imgAppreciation, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_imgAppreciation, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Right, 0.33f, 0)
+			});
+
+			_lbAppreciationCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
+
+			_reactionArea.AddSubview(_lbAppreciationCount);
+
+			_reactionArea.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbAppreciationCount, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_lbAppreciationCount, NSLayoutAttribute.Left, NSLayoutRelation.Equal,
+					_imgAppreciation,
+					NSLayoutAttribute.Right, 1, DimensionHelper.MarginText)
+			});
+
+			_imgComment = UIHelper.CreateImageView(DimensionHelper.ButtonSmallHeight, DimensionHelper.ButtonSmallWidth,
+				ImageHelper.CommentIcon);
+
+			_reactionArea.AddSubview(_imgComment);
+
+			_reactionArea.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_imgComment, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Right, 0.66f, 0)
+			});
+
+			_lbCommentCount = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.SmallTextSize);
+
+			_reactionArea.AddSubview(_lbCommentCount);
+
+			_reactionArea.AddConstraints(new[]
+			{
+				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _reactionArea,
+					NSLayoutAttribute.Bottom, 1, 0),
+				NSLayoutConstraint.Create(_lbCommentCount, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _imgComment,
+					NSLayoutAttribute.Right, 1, DimensionHelper.MarginText)
 			});
 		}
 
