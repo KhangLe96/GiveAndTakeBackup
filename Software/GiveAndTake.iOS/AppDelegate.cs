@@ -184,8 +184,10 @@ namespace GiveAndTake.iOS
 			var notification = new Notification();
 			var notificationData = (NSDictionary)data.ObjectForKey(new NSString("notification"));
 			var notificationSystemData = (NSDictionary)data.ObjectForKey(new NSString("aps"));
-			var badgeKey = new NSString("Badge");
+			var badgeKey = new NSString("badge");
+
 			var badgeValue = int.Parse(notificationSystemData[badgeKey].ToString());
+
 			UpdateBadgeIcon(badgeValue);
 
 			var dictionary = new Dictionary<string, string>();

@@ -31,8 +31,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			get => _notificationCount;
 			set
 			{
+				//_notificationCount = value;
+				//RaisePropertyChanged(() => NotificationCount);
 				SetProperty(ref _notificationCount, value);
-
 			}
 		}
 
@@ -71,7 +72,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			if (badge != 0)
 			{
 				Task.Run(() => { UpdateNotificationViewModels(); });
-			}			
+			}
 		}
 
 		public override void ViewCreated()
