@@ -44,6 +44,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
 		public IMvxCommand ShowErrorCommand { get; set; }
 		public IMvxAsyncCommand ShowNotificationsCommand { get; set; }
+		public IMvxCommand ClearBadgeCommand { get; set; }
 
 		#endregion
 
@@ -70,6 +71,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			bindingSet.Bind(this)
 				.For(v => v.ShowNotificationsCommand)
 				.To(vm => vm.ShowNotificationsCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.ClearBadgeCommand)
+				.To(vm => vm.ClearBadgeCommand);
 
 			bindingSet.Apply();
 		}
@@ -167,6 +172,10 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				};
 			}
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
+			if (e.Tab.Position == 1)
+			{
+				ClearBadgeCommand.Execute();
+			}
 		}
 
 		#endregion

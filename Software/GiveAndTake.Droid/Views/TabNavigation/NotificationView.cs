@@ -35,6 +35,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				_notificationCount = value;
 				_tabHost = Activity.FindViewById<TabLayout>(Resource.Id.tabLayout);
 				_tabHost.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Text = value + "";
+				_tabHost.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Visibility = value == 0 ? ViewStates.Invisible : ViewStates.Visible;
 			}
 		}
 

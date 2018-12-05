@@ -29,7 +29,23 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public int NotificationCount
 		{
 			get => _notificationCount;
-			set => SetProperty(ref _notificationCount, value);
+			set
+			{
+				SetProperty(ref _notificationCount, value);
+				if (value == 0)
+				{
+					IsZeroBadge = false;
+				}
+				else
+				{
+					IsZeroBadge = true;
+				}
+			}
+		}
+		public bool IsZeroBadge
+		{
+			get => _isZeroBadge;
+			set => SetProperty(ref _isZeroBadge, value);
 		}
 
 		private readonly IDataModel _dataModel;
@@ -42,6 +58,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
 		private int _notificationCount;
+		private bool _isZeroBadge;
 		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
 		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
 
@@ -52,6 +69,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_loadingOverlayService = loadingOverlayService;
 			_dataModel.NotificationReceived += OnNotificationReceived;
 			_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
+			_isZeroBadge = true;
 		}
 
 		public override async Task Initialize()
@@ -63,6 +81,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private void OnBadgeReceived(object sender, int badge)
 		{
 			NotificationCount = badge;
+			Task.Run(() => { UpdateNotificationViewModels(); });
 		}
 
 		public override void ViewCreated()

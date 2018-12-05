@@ -17,13 +17,17 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private IMvxAsyncCommand _showInitialViewModelsCommand;
 		private ICommand _showErrorCommand;
 		public IMvxAsyncCommand _showNotificationsCommand;
+		private IMvxCommand _clearBadgeCommand;
 
 		public ICommand ShowErrorCommand => _showErrorCommand ?? (_showErrorCommand = new MvxCommand(InitErrorResponseAsync));
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
 			_showInitialViewModelsCommand ??
 			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));
-
+		
 		public IMvxAsyncCommand ShowNotificationsCommand => _showNotificationsCommand ?? new MvxAsyncCommand(ShowNotifications);
+		public IMvxCommand ClearBadgeCommand => _clearBadgeCommand ?? (_clearBadgeCommand = new MvxCommand(OnBadgeCleared));
+
+		
 
 		public string AvatarUrl => _dataModel.LoginResponse.Profile.AvatarUrl;
 		public TabNavigationViewModel(IDataModel dataModel)
@@ -82,7 +86,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				//NAVIGATE
 			}
 		}
-
+		private void OnBadgeCleared()
+		{
+			_dataModel.RaiseBadgeUpdated(0);
+		}
 		private void HandleNotificationClicked(Notification notification)
 		{
 			// Handle both background and foreground when push notification is received

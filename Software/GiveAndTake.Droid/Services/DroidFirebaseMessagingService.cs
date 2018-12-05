@@ -77,16 +77,14 @@ namespace FCMClient
 				var notificationBuilder = new NotificationCompat.Builder(this, ChannelId)
 					.SetSmallIcon(Resource.Drawable.login_logo)
 					.SetContentText(notification.Message)
+					.SetNumber(badgeValue)
 					.SetAutoCancel(true)
 					.SetWhen(Java.Lang.JavaSystem.CurrentTimeMillis())
 					.SetContentIntent(pendingIntent);
 				var notificationManager = (NotificationManager)GetSystemService(NotificationService);
 
 				if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-				{
-					// Notification channels are new in API 26 (and not a part of the
-					// support library). There is no need to create a notification
-					// channel on older versions of Android.
+				{					
 					notificationBuilder.SetChannelId(ChannelId);
 					var channel = new NotificationChannel(ChannelId,
 						ChannelName,
@@ -97,6 +95,9 @@ namespace FCMClient
 				}
 				else
 				{
+					// Notification channels are new in API 26 (and not a part of the
+					// support library). There is no need to create a notification
+					// channel on older versions of Android.
 					notificationBuilder.SetVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
 					notificationBuilder.SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification));
 				}
