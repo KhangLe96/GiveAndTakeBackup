@@ -138,27 +138,40 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
         }
 
-        public bool Delete(Guid requestId)
+	    public bool DeleteCurrentUserRequest(Guid postId, Guid userId)
+	    {
+		    var requests = _requestService.Include(x => x.User).Include(x => x.Post)
+			    .Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == postId && x.UserId == userId);
+		    if (requests.Any())
+		    {
+			    foreach (var request in requests)
+			    {
+				    if (Delete(request.Id) && request.RequestStatus == RequestStatus.Approved)
+				    {
+					    //// Send a notification to an user who requested and also save it to db
+					    //_notificationService.Create(new Notification()
+					    //{
+						   // Message = $"{request.User.FirstName} {request.User.LastName} đã hủy nhận vật phẩm của bạn!",
+						   // Type = NotificationType.,
+						   // RelevantId = request.Id,
+						   // SourceUserId = request.UserId,
+						   // DestinationUserId = request.Post.UserId
+					    //});
+					}
+				    return true;
+			    }
+		    }
+
+		    throw new BadRequestException(CommonConstant.Error.NotFound);
+	    }
+
+		public bool Delete(Guid requestId)
         {
             bool updated = _requestService.UpdateStatus(requestId, EntityStatus.Deleted.ToString()) != null;
             if (updated == false)
                 throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
             return updated;
-        }
-
-        public bool DeleteCurrentUserRequest(Guid postId, Guid userId)
-        {
-            var post = _postService.Include(x => x.Requests).Find(postId);
-            foreach (var request in post.Requests)
-            {
-                if (request.UserId == userId && request.EntityStatus != EntityStatus.Deleted)
-                {
-                    return Delete(request.Id);
-                }
-            }
-
-            return false;
         }
 
         public object CheckUserRequest(Guid postId, Guid userId)

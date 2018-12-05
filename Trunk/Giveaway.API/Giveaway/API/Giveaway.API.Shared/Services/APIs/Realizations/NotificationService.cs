@@ -73,8 +73,24 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var noti = _notificationService.Create(notification, out var isSaved);
 			if (isSaved)
 			{
-				PushAndroidNotification(noti);
-				PushIosNotification(noti);
+				List<string> androidRegistrationIds = _deviceIdentityService.Where(x =>
+					x.EntityStatus != EntityStatus.Deleted && x.UserId == notification.DestinationUserId && x.MobilePlatform == MobilePlatform.Android)
+					.Select(x => x.DeviceToken).ToList();
+
+				List<string> iosRegistrationIds = _deviceIdentityService.Where(x =>
+						x.EntityStatus != EntityStatus.Deleted && x.UserId == notification.DestinationUserId && x.MobilePlatform == MobilePlatform.Ios)
+					.Select(x => x.DeviceToken).ToList();
+
+				if (androidRegistrationIds.Any())
+				{
+					PushAndroidNotification(noti, androidRegistrationIds);
+				}
+
+				if (iosRegistrationIds.Any())
+				{
+					PushIosNotification(noti, iosRegistrationIds);
+				}
+
 				return Mapper.Map<Notification, NotificationResponse>(noti);
 			}
 
@@ -131,11 +147,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			return true;
 		}
 
-		public void PushAndroidNotification(Notification noti)
+		public void PushAndroidNotification(Notification noti, List<string> myRegistrationIds)
 		{
 			_fcmBroker.Start();
 
-			List<string> myRegistrationIds = new List<string>() { "fgiLiXDnTro:APA91bHoRKcCAZl0yDP2x2Gb5gHTUsk6s3ks7uWNCF_gcBLrYbqXNpxbJieL821WIJzKGcmddFKp2KuwIaVro17I4Zj3zvjS6B3M34AZDIrHs2rTFU-VgjOLRPU7cRhT0EtK5a-qGHJS" };
+			//List<string> myRegistrationIds = new List<string>() { "fgiLiXDnTro:APA91bHoRKcCAZl0yDP2x2Gb5gHTUsk6s3ks7uWNCF_gcBLrYbqXNpxbJieL821WIJzKGcmddFKp2KuwIaVro17I4Zj3zvjS6B3M34AZDIrHs2rTFU-VgjOLRPU7cRhT0EtK5a-qGHJS" };
 			var dataNotification = PreparePushNotification(noti);
 
 			_fcmBroker.QueueNotification(new FcmNotification
@@ -150,13 +166,13 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			}
 		}
 
-		public void PushIosNotification(Notification noti)
+		public void PushIosNotification(Notification noti, List<string> myRegistrationIds)
 		{
 			_apnsBroker.Start();
 
 			var dataNotification = PreparePushNotification(noti);
 
-			var myRegistrationIds = new List<string>() { "63f311ee61cd9ae5d2ecf97877567e56395588f07eb35fa65b96cb0fe3f557c1" };
+			//var myRegistrationIds = new List<string>() { "63f311ee61cd9ae5d2ecf97877567e56395588f07eb35fa65b96cb0fe3f557c1" };
 			foreach (var id in myRegistrationIds)
 			{
 				_apnsBroker.QueueNotification(new ApnsNotification

@@ -14,8 +14,8 @@ namespace Giveaway.API.Shared.Services.APIs
 		bool Delete(Guid notiId);
 		NotificationResponse UpdateReadStatus(Guid notiId, NotificationIsReadRequest request);
 		bool UpdateSeenStatus(Guid userId, NotificationIsSeenRequest request);
-		void PushAndroidNotification(Notification notification);
-		void PushIosNotification(Notification notification);
+		void PushAndroidNotification(Notification notification, List<string> myRegistrationIds);
+		void PushIosNotification(Notification notification, List<string> myRegistrationIds);
 
 	}
 }
