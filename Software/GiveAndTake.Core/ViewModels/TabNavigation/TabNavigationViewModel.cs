@@ -47,11 +47,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public override void ViewAppearing()
 		{
 			base.ViewAppearing();
-			if (DataModel.SelectedNotification != null)
-			{
-				DataModel.RaiseBadgeUpdated(DataModel.Badge);
-				DataModel.RaiseNotificationReceived(DataModel.SelectedNotification);
-			}
+			//if (DataModel.SelectedNotification != null)
+			//{
+			//	DataModel.RaiseBadgeUpdated(DataModel.Badge);
+			//	DataModel.RaiseNotificationReceived(DataModel.SelectedNotification);
+			//}
+		}
+
+		public override void ViewDisappearing()
+		{
+			base.ViewDisappearing();
 		}
 
 		private void OnBadgeReceived(object sender, int badge)
