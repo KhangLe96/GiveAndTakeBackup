@@ -100,6 +100,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				OnItemClicked(notification);
 				Task.Run(() => { UpdateNotificationViewModels(); });
 				//_dataModel.SelectedNotification = null;
+				Mvx.Resolve<IManagementService>().UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
 			}			
 		}
 
@@ -138,6 +139,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async void OnItemClicked(Notification notification)
 		{
+			
 			switch (notification.Type)
 			{
 				case "Like":

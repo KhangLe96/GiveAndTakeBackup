@@ -5,7 +5,9 @@ using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Popup;
+using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -126,7 +128,13 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		}
 		private void OnBadgeCleared()
 		{
+			Task.Run(() =>
+			{
+				Mvx.Resolve<IManagementService>().UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
+
+			});
 			_dataModel.RaiseBadgeUpdated(0);
+			
 		}
 		private void HandleNotificationClicked(Notification notification)
 		{

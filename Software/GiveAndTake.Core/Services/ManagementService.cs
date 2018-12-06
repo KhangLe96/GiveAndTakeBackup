@@ -88,6 +88,7 @@ namespace GiveAndTake.Core.Services
 		    return JsonHelper.Deserialize<Notification>(response.RawContent);
 		}
 
+
 		public async Task<ApiNotificationResponse> GetNotificationList(string filterParams, string token)
 	    {
 		    var url = $"{AppConstants.GetNotificationList}";
@@ -338,6 +339,24 @@ namespace GiveAndTake.Core.Services
 			{
 				throw new AppException.ApiException(response.ErrorMessage);
 			}
+		}
+
+		public async Task UpdateSeenNotificationStatus(bool isSeen, string token)
+		{
+			var status = isSeen ? "{'isSeen':'true'}" : "{'isSeen':'false'}";
+			var content = new StringContent(status, Encoding.UTF8, "application/json");
+
+			var response = await _apiHelper.Put(AppConstants.UpdateSeenStatus, content, token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
+			{
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
+
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}			
 		}
 
 		public async Task<bool> EditPost(EditPost post, string postId, string token)
