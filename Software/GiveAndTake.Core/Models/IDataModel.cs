@@ -6,8 +6,9 @@ namespace GiveAndTake.Core.Models
 	public interface IDataModel
 	{
 		event EventHandler<Notification> NotificationReceived;
-		event EventHandler<string> BadgeNotificationUpdated;
+		event EventHandler<int> BadgeNotificationUpdated;
 		bool IsLoggedIn { get; set; }
+		int Badge { get; set; }
 		Notification SelectedNotification { get; set; }
 		List<Category> Categories { get; set; }
 		List<ProvinceCity> ProvinceCities { get; set; }
@@ -23,6 +24,6 @@ namespace GiveAndTake.Core.Models
 		Post CurrentPost { get; set; }
 		ApiNotificationResponse ApiNotificationResponse { get; set; }
 		void RaiseNotificationReceived(Notification notification);
-		void RaiseBadgeUpdated(string badge);
+		void RaiseBadgeUpdated(int badge);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.Core.ViewModels.Popup;
@@ -7,9 +8,7 @@ using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
-using GiveAndTake.Core.ViewModels.Popup;
-using MvvmCross;
-using System;
+
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -27,8 +26,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			set => SetProperty(ref _notificationItemViewModel, value);
 		}
 
-		public IMvxInteraction<int> UpdateNotiCount =>
-			_updateNotiCount ?? (_updateNotiCount = new MvxInteraction<int>());
+		//public int NotificationCount
+		//{
+		//	get => _notificationCount;
+		//	set
+		//	{
+		//		//_notificationCount = value;
+		//		//RaisePropertyChanged(() => NotificationCount);
+		//		SetProperty(ref _notificationCount, value);
+		//	}
+		//}
 
 
 		private readonly IDataModel _dataModel;
@@ -36,11 +43,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private readonly ILoadingOverlayService _loadingOverlayService;
 		private MvxObservableCollection<NotificationItemViewModel> _notificationItemViewModel;
 		private bool _isRefresh;
-		private MvxInteraction<int> _updateNotiCount;
 		private int _notiCount;
-
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
+		//private int _notificationCount;
 		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
 		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
 
@@ -49,32 +55,38 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel = dataModel;
 			_token = _dataModel.LoginResponse.Token;
 			_loadingOverlayService = loadingOverlayService;
+			_dataModel.NotificationReceived += OnNotificationReceived;
+			_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
+
 		}
 
 		public override async Task Initialize()
 		{
 			await base.Initialize();
 			await UpdateNotificationViewModels();
-			DataModel.NotificationReceived += OnNotificationReceived;
-
 		}
 
-		public override void ViewAppeared()
+		private void OnBadgeReceived(object sender, int badge)
 		{
-			base.ViewAppeared();
-			_updateNotiCount.Raise(_notiCount);
+			//NotificationCount = badge;
+			if (badge != 0)
+			{
+				Task.Run(() => { UpdateNotificationViewModels(); });
+			}
 		}
 
 		public override void ViewCreated()
 		{
 			base.ViewCreated();
-			DataModel.NotificationReceived += OnNotificationReceived;
+			//_dataModel.NotificationReceived += OnNotificationReceived;
+			//_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
 		}
 
 		public override void ViewDestroy(bool viewFinishing = true)
 		{
 			base.ViewDestroy(viewFinishing);
-			DataModel.NotificationReceived -= OnNotificationReceived;
+			_dataModel.NotificationReceived -= OnNotificationReceived;
+			_dataModel.BadgeNotificationUpdated -= OnBadgeReceived;
 		}
 
 		public void OnNotificationReceived(object sender, Notification notification)
@@ -82,7 +94,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			if (DataModel.SelectedNotification != null)
 			{
 				OnItemClicked(notification);
-				DataModel.SelectedNotification = null;
+				_dataModel.SelectedNotification = null;
 			}			
 		}
 
@@ -251,7 +263,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private async void OnRefresh()
 		{
 			IsRefreshing = true;
-			_updateNotiCount.Raise(8);
 			await UpdateNotificationViewModels();
 			IsRefreshing = false;
 		}

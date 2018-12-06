@@ -11,8 +11,12 @@ using Android.Support.V4.App;
 using GiveAndTake.Core;
 using GiveAndTake.Core.Extensions;
 using GiveAndTake.Core.Helpers;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Droid;
+using GiveAndTake.Droid.Views.Base;
+using MvvmCross;
 using Newtonsoft.Json;
+using Org.Json;
 using Notification = GiveAndTake.Core.Models.Notification;
 using Resource = GiveAndTake.Droid.Resource;
 
@@ -24,66 +28,81 @@ namespace FCMClient
 	{
 		internal static readonly string ChannelId = "giveandtake_notification_channel";
 		internal static string ChannelName = "giveandtake-channel-name";
-	
 		public override void HandleIntent(Intent intent)
 		{
 			var keySet = intent?.Extras?.KeySet();
+
+			JSONObject badgeJsonObject = new JSONObject(intent.Extras.GetString(AppConstants.GcmBadgeKey));
+			JSONObject notificationJsonObject = new JSONObject(intent.Extras.GetString(AppConstants.GcmNotificationKey));
+			var badgeValue = int.Parse(badgeJsonObject.GetString("badge"));
+			
 			if (keySet != null)
 			{
+
 				var notification = new Notification();
 				var dictionary = new Dictionary<string, string>();
 				foreach (var dataMember in GetModelDataMembers(notification.GetType()))
 				{
-
-					var key = AppConstants.FcmPrefixKey + dataMember;
-
-					if (keySet.Contains(key))
+					try
 					{
-						var value = intent.Extras.GetString(key);
+						var value = notificationJsonObject.GetString(dataMember);
 						dictionary[dataMember] = value;
 					}
+					catch (JSONException e)
+					{
+					}
+
 				}
 				notification = dictionary.ToObject<Notification>();
-				SendNotification(notification);
+				SendNotification(notification, badgeValue);
 			}
 		}
 
-		void SendNotification(Notification notification)
+		private void SendNotification(Notification notification, int badgeValue)
 		{
-			var intent = new Intent(this, typeof(SplashScreen));
-			intent.AddFlags(ActivityFlags.ClearTop);
-			intent.PutExtra("GiveAndTakeNotification", JsonHelper.Serialize(notification));
-			var pendingIntent = PendingIntent.GetActivity(this,
-				GenerateUniqueInt(),
-				intent,
-				PendingIntentFlags.UpdateCurrent);
-			var notificationBuilder = new NotificationCompat.Builder(this, ChannelId)
-				.SetSmallIcon(Resource.Drawable.login_logo)
-				.SetContentText(notification.Message)
-				.SetAutoCancel(true)
-				.SetWhen(Java.Lang.JavaSystem.CurrentTimeMillis())
-				.SetContentIntent(pendingIntent);
-			var notificationManager = (NotificationManager)GetSystemService(NotificationService);
-
-			if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+			if (MasterView.IsForeground)
 			{
-				// Notification channels are new in API 26 (and not a part of the
-				// support library). There is no need to create a notification
-				// channel on older versions of Android.
-				notificationBuilder.SetChannelId(ChannelId);
-				var channel = new NotificationChannel(ChannelId,
-					ChannelName,
-					NotificationImportance.High);
-				channel.SetVibrationPattern(new long[] { 1000, 1000, 1000, 1000, 1000 });
-				channel.EnableVibration(true);
-				notificationManager.CreateNotificationChannel(channel);
+				Mvx.Resolve<IDataModel>()?.RaiseBadgeUpdated(badgeValue);
 			}
 			else
 			{
-				notificationBuilder.SetVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
-				notificationBuilder.SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification));
-			}
-			notificationManager.Notify((int)(DateTime.Now.Ticks % 10000), notificationBuilder.Build());
+				var intent = new Intent(this, typeof(SplashScreen));
+				intent.AddFlags(ActivityFlags.ClearTop);
+				intent.PutExtra("NotificationModelData", JsonHelper.Serialize(notification));
+				intent.PutExtra("BadgeData", badgeValue);
+				var pendingIntent = PendingIntent.GetActivity(this,
+					GenerateUniqueInt(),
+					intent,
+					PendingIntentFlags.UpdateCurrent);
+				var notificationBuilder = new NotificationCompat.Builder(this, ChannelId)
+					.SetSmallIcon(Resource.Drawable.login_logo)
+					.SetContentText(notification.Message)
+					.SetNumber(badgeValue)
+					.SetAutoCancel(true)
+					.SetWhen(Java.Lang.JavaSystem.CurrentTimeMillis())
+					.SetContentIntent(pendingIntent);
+				var notificationManager = (NotificationManager)GetSystemService(NotificationService);
+
+				if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+				{					
+					notificationBuilder.SetChannelId(ChannelId);
+					var channel = new NotificationChannel(ChannelId,
+						ChannelName,
+						NotificationImportance.High);
+					channel.SetVibrationPattern(new long[] { 1000, 1000, 1000, 1000, 1000 });
+					channel.EnableVibration(true);
+					notificationManager.CreateNotificationChannel(channel);
+				}
+				else
+				{
+					// Notification channels are new in API 26 (and not a part of the
+					// support library). There is no need to create a notification
+					// channel on older versions of Android.
+					notificationBuilder.SetVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+					notificationBuilder.SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification));
+				}
+				notificationManager.Notify((int)(DateTime.Now.Ticks % 10000), notificationBuilder.Build());
+			}			
 		}
 
 		private int GenerateUniqueInt()

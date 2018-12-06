@@ -124,8 +124,10 @@
     <Compile Include="Views\RequestsView.cs" />
     <Compile Include="Views\SlideViewDataSource.cs" />
     <Compile Include="Views\SlideViewDelegate.cs" />
+    <Compile Include="Views\TableViewCells\NotificationItemTableViewCell.cs" />
     <Compile Include="Views\TableViewCells\MyPostItemViewCell.cs" />
     <Compile Include="Views\TableViewCells\PopupItemViewCell.cs" />
+    <Compile Include="Views\TableViewSources\NotificationItemTableViewSource.cs" />
     <Compile Include="Views\TableViewCells\RequestItemViewCell.cs" />
     <Compile Include="Views\TableViewSources\PopupItemTableViewSource.cs" />
     <Compile Include="Views\TableViewSources\RequestItemTableViewSource.cs" />

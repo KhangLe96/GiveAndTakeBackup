@@ -21,9 +21,23 @@ namespace GiveAndTake.Droid.Views.Base
 		public IMvxCommand BackPressedFromCreatePostCommand { get; set; }
 		public IMvxCommand BackPressedFromHomeViewSearchedCommand { get; set; }
 		public IMvxCommand BackPressedFromPostDetailCommand { get; set; }
+
+		public static bool IsForeground;
 		public bool IsHomeScreen = true;
 		protected override void InitView()
 		{		
+		}
+
+		protected override void OnResume()
+		{
+			base.OnResume();
+			IsForeground = true;
+		}
+
+		protected override void OnPause()
+		{
+			base.OnPause();
+			IsForeground = false;
 		}
 
 		protected override void CreateBinding()

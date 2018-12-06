@@ -101,7 +101,7 @@ namespace GiveAndTake.iOS
 
 				//		Window.RootViewController.PresentViewController(okayAlertController, true, null);
 
-				//		// reset our badge
+				//		// reset our Badge
 				//		UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
 				//	}
 				//}
@@ -161,7 +161,7 @@ namespace GiveAndTake.iOS
 
 			//Window.RootViewController.PresentViewController(okayAlertController, true, null);
 
-			//// reset our badge
+			//// reset our Badge
 			//UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
 			new UIAlertView("ReceivedLocalNotification", null, null, "OK", null).Show();
 		}
@@ -182,10 +182,14 @@ namespace GiveAndTake.iOS
 		private void SendNotification(NSDictionary data)
 		{
 			var notification = new Notification();
-			var notificationData = (NSDictionary)data.ObjectForKey(new NSString("notificationResponse"));
+			var notificationData = (NSDictionary)data.ObjectForKey(new NSString("notification"));
 			var notificationSystemData = (NSDictionary)data.ObjectForKey(new NSString("aps"));
-			var badgeKey = new NSString("alert");//change to badge if badge is available
-			string badgeValue = notificationSystemData[badgeKey].ToString();
+			var badgeKey = new NSString("badge");
+
+			var badgeValue = int.Parse(notificationSystemData[badgeKey].ToString());
+
+			UpdateBadgeIcon(badgeValue);
+
 			var dictionary = new Dictionary<string, string>();
 
 			foreach (var dataMember in GetModelDataMembers(notification.GetType()))
@@ -210,7 +214,6 @@ namespace GiveAndTake.iOS
 			}
 
 			notification = dictionary.ToObject<Notification>();
-
 			bool isDataModelInitialized = Mvx.CanResolve<IDataModel>();
 			if (isDataModelInitialized)
 			{
@@ -223,12 +226,17 @@ namespace GiveAndTake.iOS
 				//if (UIApplication.SharedApplication.KeyWindow.RootViewController is MasterView masterView)
 				//{
 				//	//masterView.ShowNotification(notification);
-					
+
 				//}
 
 				//Foreground
-				//update badge unread notification
-				//dataModel.RaiseBadgeUpdated(badgeValue);
+				//update Badge unread notification
+				if (isDataModelInitialized)
+				{
+					_dataModel.RaiseBadgeUpdated(badgeValue);
+					//IMvxMessgenger
+				}
+				
 				new UIAlertView("From ForeGround", null, null, "OK", null).Show();
 			}
 			else
@@ -256,6 +264,15 @@ namespace GiveAndTake.iOS
 				//UIApplication.SharedApplication.ScheduleLocalNotification(localNotification);
 			}
 		}
+
+		private void UpdateBadgeIcon(int badgeValue)
+		{
+			UIUserNotificationSettings settings =
+				UIUserNotificationSettings.GetSettingsForTypes(UIUserNotificationType.Badge, null);
+			UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+			UIApplication.SharedApplication.ApplicationIconBadgeNumber = badgeValue;
+		}
+
 		private List<string> GetModelDataMembers(Type type)
 		{
 			var names = new List<string>();

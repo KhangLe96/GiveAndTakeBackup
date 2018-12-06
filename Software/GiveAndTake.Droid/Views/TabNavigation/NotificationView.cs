@@ -4,7 +4,6 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using GiveAndTake.Core;
-using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.Droid.Views.Base;
 using MvvmCross.Base;
@@ -24,27 +23,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	public class NotificationView : BaseFragment
 	{
 		protected override int LayoutId => Resource.Layout.NotificationView;
-
-		public IMvxInteraction<int> UpdateNotiCount
-		{
-			get => _updateNotiCount;
-			set
-			{
-				if (_updateNotiCount != null)
-					_updateNotiCount.Requested -= OnUpdateNotiCountRequested;
-
-				_updateNotiCount = value;
-				_updateNotiCount.Requested += OnUpdateNotiCountRequested;
-			}
-		}
-
-		private void OnUpdateNotiCountRequested(object sender, MvxValueEventArgs<int> e)
-		{
-			var tabhost = Activity.FindViewById<TabLayout>(Resource.Id.tabLayout);
-			tabhost.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Text = e.Value + "";
-		}
-
-		private IMvxInteraction<int> _updateNotiCount;
 
 		public IMvxCommand LoadMoreCommand { get; set; }
 
@@ -74,11 +52,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			bindingSet.Bind(this)
 				.For(v => v.LoadMoreCommand)
 				.To(vm => vm.LoadMoreCommand);
-
-			bindingSet.Bind(this)
-				.For(v => v.UpdateNotiCount)
-				.To(vm => vm.UpdateNotiCount)
-				.OneWay();
 
 			bindingSet.Apply();
 		}
