@@ -80,7 +80,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 					post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
 				}
 
-				var result = posts.Skip(request.Limit * (request.Page - 1))
+				var result = postList.Skip(request.Limit * (request.Page - 1))
 					.Take(request.Limit).AsEnumerable()
 					.Select(x => GenerateRequestedPostResponse(x, id))
 					.ToList();
