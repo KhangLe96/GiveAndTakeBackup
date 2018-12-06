@@ -40,6 +40,18 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			base.ViewCreated();
 			DataModel.NotificationReceived += OnNotificationReceived;
 			DataModel.BadgeNotificationUpdated += OnBadgeReceived;
+			
+
+		}
+
+		public override void ViewAppearing()
+		{
+			base.ViewAppearing();
+			if (DataModel.SelectedNotification != null)
+			{
+				DataModel.RaiseBadgeUpdated(DataModel.Badge);
+				DataModel.RaiseNotificationReceived(DataModel.SelectedNotification);
+			}
 		}
 
 		private void OnBadgeReceived(object sender, int badge)
@@ -54,6 +66,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			DataModel.BadgeNotificationUpdated -= OnBadgeReceived;
 		}
 
+		
 		public int NotificationCount
 		{
 			get => _notificationCount;
@@ -103,7 +116,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			{
 				//background (when app is destroyed)
 				HandleNotificationClicked(DataModel.SelectedNotification);
-				//NAVIGATE
+				
 			}
 		}
 		private void OnBadgeCleared()

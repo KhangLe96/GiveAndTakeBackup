@@ -1,9 +1,11 @@
 ﻿using CoreGraphics;
 using FFImageLoading;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
+using MvvmCross;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Binding.Extensions;
 using MvvmCross.Commands;
@@ -32,6 +34,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			CreateBinding();
 		}
 
+
 		private void CreateBinding()
 		{
 			var bindingSet = this.CreateBindingSet<TabNavigationView, TabNavigationViewModel>();
@@ -43,7 +46,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			bindingSet.Bind(this)
 				.For(v => v.ClearBadgeCommand)
 				.To(vm => vm.ClearBadgeCommand);
-
+			
 			bindingSet.Apply();
 		}
 
@@ -65,6 +68,15 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 					
 			}
 		}
+
+		//public override void ViewDidLoad()
+		//{
+		//	base.ViewDidLoad();
+		//	if (Mvx.Resolve<IDataModel>().SelectedNotification != null)
+		//	{
+		//		TabBar.SelectedItem = TabBar.Items[0];
+		//	}
+		//}
 
 		private async void ConfigTabBar(bool animated)
 		{
@@ -104,9 +116,15 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				tabBarItem.Title = null;
 			}
 
+			if (Mvx.Resolve<IDataModel>().SelectedNotification != null)
+			{
+				SelectedIndex = 1;
+			}
+
 			ViewControllerSelected += TabBarControllerOnViewControllerSelected;
 			NavigationController?.SetNavigationBarHidden(true, animated);
 		}
+	
 
 		private void TabBarControllerOnViewControllerSelected(object sender, UITabBarSelectionEventArgs e)
 		{
@@ -122,6 +140,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			if (SelectedIndex == 1)
 			{
 				ClearBadgeCommand.Execute();
+				UpdateBadgeIcon(0);
 				_isOnNotificationViewTab = true;
 			}
 		}

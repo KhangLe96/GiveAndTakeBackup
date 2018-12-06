@@ -66,6 +66,12 @@ namespace FCMClient
 			}
 			else
 			{
+				if (Mvx.CanResolve<IDataModel>())
+				{
+					Mvx.Resolve<IDataModel>().Badge = badgeValue;
+					Mvx.Resolve<IDataModel>().SelectedNotification = notification;
+				}
+				
 				var intent = new Intent(this, typeof(SplashScreen));
 				intent.AddFlags(ActivityFlags.ClearTop);
 				intent.PutExtra("NotificationModelData", JsonHelper.Serialize(notification));
