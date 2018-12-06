@@ -3,5 +3,7 @@
 	public interface IUrlHelper
 	{
 		void OpenUrl(string url);
+		void ShowPhoneDialer(string url);
+
 	}
 }
