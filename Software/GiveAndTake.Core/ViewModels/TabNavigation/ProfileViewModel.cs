@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Helpers.Interface;
+using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -25,6 +27,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public string RightButtonTitle => AppConstants.MyRequestsTitle;
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
+
+		private IEmailHelper _emailHelper;
+		public IEmailHelper EmailHelper => _emailHelper ?? (_emailHelper = Mvx.Resolve<IEmailHelper>());
 
 
 		public string AvatarUrl
