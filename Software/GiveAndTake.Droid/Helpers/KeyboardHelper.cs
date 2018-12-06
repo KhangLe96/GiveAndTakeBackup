@@ -14,7 +14,7 @@ namespace GiveAndTake.Droid.Helpers
 				return;
 			}
 
-			var inputMethodManager = (InputMethodManager)Application.Context.GetSystemService(Context.InputMethodService);
+			var inputMethodManager = (InputMethodManager)Android.App.Application.Context.GetSystemService(Context.InputMethodService);
 			inputMethodManager.HideSoftInputFromWindow(view.WindowToken, 0);
 		}
 
@@ -25,13 +25,13 @@ namespace GiveAndTake.Droid.Helpers
 				return;
 			}
 
-			var inputMethodManager = (InputMethodManager)Application.Context.GetSystemService(Context.InputMethodService);
+			var inputMethodManager = (InputMethodManager)Android.App.Application.Context.GetSystemService(Context.InputMethodService);
 			inputMethodManager.ShowSoftInput(view, ShowFlags.Implicit);
 		}
 
 		public static bool IsPhoneLocked()
 		{
-			var keyboardManager = (KeyguardManager)Application.Context.GetSystemService(Context.KeyguardService);
+			var keyboardManager = (KeyguardManager)Android.App.Application.Context.GetSystemService(Context.KeyguardService);
 
 			return keyboardManager.InKeyguardRestrictedInputMode();
 		}

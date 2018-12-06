@@ -27,7 +27,7 @@ namespace GiveAndTake.Droid.Controls
 				{
 					SetImageDrawable(Build.VERSION.SdkInt >= BuildVersionCodes.LollipopMr1
 						? Resources.GetDrawable(Resource.Drawable.default_avatar, null)
-						: ContextCompat.GetDrawable(Application.Context, Resource.Drawable.default_avatar));
+						: ContextCompat.GetDrawable(Android.App.Application.Context, Resource.Drawable.default_avatar));
 				}
             }
         }

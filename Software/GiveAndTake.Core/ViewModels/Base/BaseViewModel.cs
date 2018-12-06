@@ -4,6 +4,7 @@ using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
+using GiveAndTake.Core.Helpers.Interface;
 using I18NPortable;
 
 
