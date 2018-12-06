@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GiveAndTake.Core.Helpers.Interface;
-using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -27,10 +26,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public string RightButtonTitle => AppConstants.MyRequestsTitle;
 
 		public List<ITransformation> AvatarTransformations => new List<ITransformation> { new CircleTransformation() };
-
-		private IEmailHelper _emailHelper;
-		public IEmailHelper EmailHelper => _emailHelper ?? (_emailHelper = Mvx.Resolve<IEmailHelper>());
-
 
 		public string AvatarUrl
 		{
@@ -132,6 +127,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private bool _isRequestedPostsRefresh;
 		private bool _isSearchResultNull;
 		private readonly IDataModel _dataModel;
+		private readonly IEmailHelper _emailHelper;
 		private readonly ILoadingOverlayService _overlayService;
 		private IMvxCommand _showMyPostsCommand;
 		private IMvxCommand _showMyRequestsCommand;
@@ -155,10 +151,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			AppConstants.LogOut
 		};
 
-		public ProfileViewModel(IDataModel dataModel, ILoadingOverlayService overlayService)
+		public ProfileViewModel(IDataModel dataModel, ILoadingOverlayService overlayService, IEmailHelper emailHelper)
 		{
 			_dataModel = dataModel;
 			_overlayService = overlayService;
+			_emailHelper = emailHelper;
 			AvatarUrl = _dataModel.LoginResponse.Profile.AvatarUrl;
 			UserName = _dataModel.LoginResponse.Profile.FullName.ToUpper();
 			RankType = AppConstants.Member;
@@ -382,7 +379,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case AppConstants.SendFeedback:
-					EmailHelper.OpenFeedbackEmail();
+					_emailHelper.OpenFeedbackEmail();
 					break;
                 case AppConstants.About:
                     await NavigationService.Navigate<AboutViewModel>();
