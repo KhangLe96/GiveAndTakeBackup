@@ -9,7 +9,7 @@ using UIKit;
 namespace GiveAndTake.iOS
 {
 	[Register("AppDelegate")]
-	public class AppDelegate : MvxApplicationDelegate<MvxIosSetup<App>, App>
+	public class AppDelegate : MvxApplicationDelegate<Setup, App>
 	{
 		const string HockeyAppid = "6a9a4f2bf4154af386c07da063fcc458";
 

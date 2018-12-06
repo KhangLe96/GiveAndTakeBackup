@@ -73,6 +73,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application.cs" />
     <Compile Include="Controls\CustomButton.cs" />
     <Compile Include="Controls\CustomCircleImageView.cs" />
     <Compile Include="Controls\CustomImageView.cs" />
@@ -85,10 +86,12 @@
     <Compile Include="Controls\ImageSliderAdapter.cs" />
     <Compile Include="Converters\BoolToViewStatesValueConverter.cs" />
     <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Helpers\SytemHelper.cs" />
     <Compile Include="Helpers\DimensionHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\KeyboardHelper.cs" />
+    <Compile Include="Helpers\UrlHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Views\AboutView.cs" />
     <Compile Include="Views\Popup\LoadingOverlayView.cs" />

@@ -9,7 +9,7 @@ namespace GiveAndTake.Droid
 		NoHistory = true, 
 		ScreenOrientation = ScreenOrientation.Portrait,
 		Theme = "@style/SplashTheme")]
-	public class SplashScreen : MvxSplashScreenAppCompatActivity<MvxAppCompatSetup<App>, App>
+	public class SplashScreen : MvxSplashScreenAppCompatActivity<Setup, App>
 	{
 		public SplashScreen(): base(Resource.Layout.SplashScreen)
 		{
