@@ -16,7 +16,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Giveaway.Data.Models;
 using DbService = Giveaway.Service.Services;
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -77,7 +76,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				var postList = posts.ToList();
 				foreach (var post in postList)
 				{
-					post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
+					post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus != RequestStatus.Rejected).ToList();
 				}
 
 				var result = postList.Skip(request.Limit * (request.Page - 1))
@@ -107,7 +106,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 var post = _postService.Include(x => x.Category).Include(y => y.Images).Include(z => z.ProvinceCity)
                     .Include(x => x.User).Include(x => x.Requests).Include(x => x.Comments).FirstOrDefault(x => x.Id == postId);
 	            //just get requests that have not deleted yet
-				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
+				post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus != RequestStatus.Rejected).ToList();
 
 				var postResponse = Mapper.Map<T>(post);
 
@@ -410,7 +409,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			var postList = posts.ToList();
 	        foreach (var post in postList)
 	        {
-		        post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending).ToList();
+		        post.Requests = post.Requests.Where(x => x.EntityStatus != EntityStatus.Deleted && x.RequestStatus != RequestStatus.Rejected).ToList();
 	        }
 
 			total = postList.Count();
