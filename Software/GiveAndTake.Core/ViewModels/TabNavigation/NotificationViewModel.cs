@@ -64,6 +64,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			await base.Initialize();
 			await UpdateNotificationViewModels();
+			if (DataModel.SelectedNotification != null)
+			{
+				DataModel.RaiseNotificationReceived(DataModel.SelectedNotification);
+			}
 		}
 
 		private void OnBadgeReceived(object sender, int badge)
@@ -92,9 +96,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public void OnNotificationReceived(object sender, Notification notification)
 		{
 			if (DataModel.SelectedNotification != null)
-			{
+			{				
 				OnItemClicked(notification);
-				_dataModel.SelectedNotification = null;
+				Task.Run(() => { UpdateNotificationViewModels(); });
+				//_dataModel.SelectedNotification = null;
 			}			
 		}
 

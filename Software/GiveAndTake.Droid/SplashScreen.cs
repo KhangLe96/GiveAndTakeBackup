@@ -35,6 +35,7 @@ namespace GiveAndTake.Droid
 
 			if (notificationData != null)
 			{
+				
 				var notification = JsonHelper.Deserialize<Core.Models.Notification>(notificationData);
 				if (isDataModelInitialized)
 				{
