@@ -2,8 +2,9 @@
 using System.Reflection;
 using GiveAndTake.Core;
 using GiveAndTake.Core.Helpers;
-using GiveAndTake.Droid.Helpers;
+using GiveAndTake.Core.Helpers.Interface;
 using MvvmCross;
+using GiveAndTake.Droid.Helpers;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Droid.Support.V7.RecyclerView;
 
@@ -16,9 +17,10 @@ namespace GiveAndTake.Droid
 			{
 				typeof(MvxRecyclerView).Assembly
 			};
-
 		protected override void InitializeFirstChance()
 		{
+			base.InitializeFirstChance();
+			Mvx.LazyConstructAndRegisterSingleton<IUrlHelper, UrlHelper>();
 			Mvx.LazyConstructAndRegisterSingleton<ISystemHelper, SystemHelper>();
 		}
 	}

@@ -1,4 +1,6 @@
 ﻿using GiveAndTake.Core;
+using GiveAndTake.Core.Helpers.Interface;
+using GiveAndTake.iOS.Helpers;
 using MvvmCross;
 using MvvmCross.Platforms.Ios.Core;
 using MvvmCross.ViewModels;
@@ -11,6 +13,10 @@ namespace GiveAndTake.iOS
 	{
 		protected override void InitializeFirstChance()
 		{
+			//Register interface
+			//exp: Mvx.LazyConstructAndRegisterSingleton<IZipHelper, ZipHelper>();
+			base.InitializeFirstChance();
+			Mvx.LazyConstructAndRegisterSingleton<IUrlHelper, UrlHelper>();
 			Mvx.LazyConstructAndRegisterSingleton<ISystemHelper, SystemHelper>();
 		}
 
