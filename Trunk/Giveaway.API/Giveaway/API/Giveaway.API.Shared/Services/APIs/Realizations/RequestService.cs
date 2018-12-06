@@ -23,13 +23,15 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         private readonly DbService.IPostService _postService;
 	    private readonly DbService.IUserService _userService;
 		private readonly INotificationService _notificationService;
+	    private readonly DbService.INotificationService _notificationDbService;
 
 		public RequestService(DbService.IRequestService requestService, DbService.IPostService postService,
-			INotificationService notificationService, DbService.IUserService userService)
+			INotificationService notificationService, DbService.IUserService userService, DbService.INotificationService notificationDbService)
         {
             _requestService = requestService;
             _postService = postService;
 	        _notificationService = notificationService;
+	        _notificationDbService = notificationDbService;
 	        _userService = userService;
         }
 
@@ -140,24 +142,31 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    public bool DeleteCurrentUserRequest(Guid postId, Guid userId)
 	    {
+			// get a list because user can create many request with one post, it facilitate test the app easily
+			// when releasing the app, we can modify to get only 1 request to consistent with create function
 		    var requests = _requestService.Include(x => x.User).Include(x => x.Post)
 			    .Where(x => x.EntityStatus != EntityStatus.Deleted && x.PostId == postId && x.UserId == userId);
 		    if (requests.Any())
 		    {
 			    foreach (var request in requests)
 			    {
-				    if (Delete(request.Id) && request.RequestStatus == RequestStatus.Approved)
+				    if (Delete(request.Id))
 				    {
+					    _notificationDbService.Delete(x => x.RelevantId == request.Id, out var isSaved);
+					    if (isSaved == false)
+					    {
+						    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
+					    }
 					    //// Send a notification to an user who requested and also save it to db
 					    //_notificationService.Create(new Notification()
 					    //{
-						   // Message = $"{request.User.FirstName} {request.User.LastName} đã hủy nhận vật phẩm của bạn!",
-						   // Type = NotificationType.,
-						   // RelevantId = request.Id,
-						   // SourceUserId = request.UserId,
-						   // DestinationUserId = request.Post.UserId
+					    // Message = $"{request.User.FirstName} {request.User.LastName} đã hủy nhận vật phẩm của bạn!",
+					    // Type = NotificationType.,
+					    // RelevantId = request.Id,
+					    // SourceUserId = request.UserId,
+					    // DestinationUserId = request.Post.UserId
 					    //});
-					}
+				    }
 				    return true;
 			    }
 		    }
