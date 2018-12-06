@@ -234,6 +234,7 @@ namespace GiveAndTake.iOS
 				if (isDataModelInitialized)
 				{
 					_dataModel.RaiseBadgeUpdated(badgeValue);
+					//IMvxMessgenger
 				}
 				
 				new UIAlertView("From ForeGround", null, null, "OK", null).Show();

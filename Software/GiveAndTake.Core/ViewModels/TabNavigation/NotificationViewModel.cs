@@ -26,16 +26,16 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			set => SetProperty(ref _notificationItemViewModel, value);
 		}
 
-		public int NotificationCount
-		{
-			get => _notificationCount;
-			set
-			{
-				//_notificationCount = value;
-				//RaisePropertyChanged(() => NotificationCount);
-				SetProperty(ref _notificationCount, value);
-			}
-		}
+		//public int NotificationCount
+		//{
+		//	get => _notificationCount;
+		//	set
+		//	{
+		//		//_notificationCount = value;
+		//		//RaisePropertyChanged(() => NotificationCount);
+		//		SetProperty(ref _notificationCount, value);
+		//	}
+		//}
 
 
 		private readonly IDataModel _dataModel;
@@ -46,7 +46,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private int _notiCount;
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
-		private int _notificationCount;
+		//private int _notificationCount;
 		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
 		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
 
@@ -68,7 +68,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private void OnBadgeReceived(object sender, int badge)
 		{
-			NotificationCount = badge;
+			//NotificationCount = badge;
 			if (badge != 0)
 			{
 				Task.Run(() => { UpdateNotificationViewModels(); });

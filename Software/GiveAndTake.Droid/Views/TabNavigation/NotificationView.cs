@@ -24,20 +24,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 	public class NotificationView : BaseFragment
 	{
 		protected override int LayoutId => Resource.Layout.NotificationView;
-		private TabLayout _tabHost;
-		private int _notificationCount;
-
-		public int NotificationCount
-		{
-			get => _notificationCount;
-			set
-			{
-				_notificationCount = value;
-				_tabHost = Activity.FindViewById<TabLayout>(Resource.Id.tabLayout);
-				_tabHost.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Text = value + "";
-				_tabHost.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Visibility = value == 0 ? ViewStates.Invisible : ViewStates.Visible;
-			}
-		}
 
 		public IMvxCommand LoadMoreCommand { get; set; }
 
@@ -67,10 +53,6 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			bindingSet.Bind(this)
 				.For(v => v.LoadMoreCommand)
 				.To(vm => vm.LoadMoreCommand);
-
-			bindingSet.Bind(this)
-				.For(v => v.NotificationCount)
-				.To(vm => vm.NotificationCount);
 
 			bindingSet.Apply();
 		}

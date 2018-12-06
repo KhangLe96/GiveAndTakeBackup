@@ -18,6 +18,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private ICommand _showErrorCommand;
 		public IMvxAsyncCommand _showNotificationsCommand;
 		private IMvxCommand _clearBadgeCommand;
+		private int _notificationCount;
 
 		public ICommand ShowErrorCommand => _showErrorCommand ?? (_showErrorCommand = new MvxCommand(InitErrorResponseAsync));
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
@@ -32,20 +33,38 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		public string AvatarUrl => _dataModel.LoginResponse.Profile.AvatarUrl;
 		public TabNavigationViewModel(IDataModel dataModel)
 		{
-			_dataModel = dataModel;
+			_dataModel = dataModel;			
 		}
 		public override void ViewCreated()
 		{
 			base.ViewCreated();
 			DataModel.NotificationReceived += OnNotificationReceived;
+			DataModel.BadgeNotificationUpdated += OnBadgeReceived;
+		}
+
+		private void OnBadgeReceived(object sender, int badge)
+		{
+			NotificationCount = badge;
 		}
 
 		public override void ViewDestroy(bool viewFinishing = true)
 		{
 			base.ViewDestroy(viewFinishing);
 			DataModel.NotificationReceived -= OnNotificationReceived;
+			DataModel.BadgeNotificationUpdated -= OnBadgeReceived;
 		}
-		
+
+		public int NotificationCount
+		{
+			get => _notificationCount;
+			set
+			{
+				//_notificationCount = value;
+				//RaisePropertyChanged(() => NotificationCount);
+				SetProperty(ref _notificationCount, value);
+			}
+		}
+
 		public async void InitErrorResponseAsync()
 		{
 			var result = await NavigationService.Navigate<PopupWarningResponseViewModel, string, bool>(AppConstants.ErrorMessage);
@@ -60,6 +79,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			//foreground (when app is alive)
 			HandleNotificationClicked(notification);
 		}
+
 
 		private async Task ShowNotifications()
 		{

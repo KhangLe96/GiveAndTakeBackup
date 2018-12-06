@@ -38,7 +38,7 @@
             android:textColor="#FFF"
             android:textSize="10dp"
             android:textStyle="bold"
-			android:text="99"
+			android:text="0"
 			local:MvxBind="Text NumberOfNotificationNotSeen"
 			/>
     </RelativeLayout>
