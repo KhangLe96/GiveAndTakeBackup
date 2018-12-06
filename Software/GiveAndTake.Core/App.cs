@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using GiveAndTake.Core.Helpers;
+using GiveAndTake.Core.Helpers.Interface;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels;
@@ -40,6 +42,7 @@ namespace GiveAndTake.Core
 			var dataModel = new DataModel();
 			Mvx.RegisterSingleton(dataModel);
 			Mvx.RegisterSingleton<ILoadingOverlayService>(new LoadingOverlayService());
+			Mvx.LazyConstructAndRegisterSingleton<IEmailHelper, EmailHelper>();
 		}
 
 		protected void RegisterServices()

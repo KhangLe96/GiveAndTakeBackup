@@ -13,7 +13,7 @@ namespace GiveAndTake.Droid.Helpers
 
 		public static Color FromColorId(int colorId)
 		{
-			return new Color(ContextCompat.GetColor(Application.Context, colorId));
+			return new Color(ContextCompat.GetColor(Android.App.Application.Context, colorId));
 		}
 
 		public static Color ToColor(string hexString)
