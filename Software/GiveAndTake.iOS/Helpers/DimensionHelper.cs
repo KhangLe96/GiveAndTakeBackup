@@ -112,6 +112,7 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupRequestHeight { get; set; }
 		public static nfloat PopupRequestDescriptionTextViewHeight { get; set; }
 		public static nfloat PopupRequestButtonWidth { get; set; }
+		public static nfloat NotificationItemTableCellHeight { get; set; }
 		public static nfloat LoadingLineWidth { get; set; }
 		public static nfloat RequestTitleAreaHeight { get; set; }
 		public static nfloat RequestTitleTextSize { get; set; }
@@ -240,6 +241,7 @@ namespace GiveAndTake.iOS.Helpers
 			PostDetailRequestTouchFieldWidth = 80 * Rate;
 			PostDetailExtensionTouchFieldHeight = 50 * Rate;
 			PostDetailExtensionTouchFieldWidth = 50 * Rate;
+			NotificationItemTableCellHeight = 70 * Rate;
 
 			RequestTitleAreaHeight = 50 * Rate;
 			RequestTitleTextSize = 17 * Rate;

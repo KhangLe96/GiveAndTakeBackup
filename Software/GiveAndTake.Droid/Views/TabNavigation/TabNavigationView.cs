@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
 using Android.Views;
+using Android.Widget;
 using FFImageLoading.Transformations;
 using FFImageLoading.Work;
 using GiveAndTake.Core;
@@ -25,15 +26,20 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 
 		private CustomCircleImageView _ccimProfile;
 		private TabLayout _tabLayout;
+		private bool _isOnNotificationViewTab;
+
 		private static readonly Dictionary<string, int> TabTitleIconsDictionary = new Dictionary<string, int>(){
 			{AppConstants.HomeTab,Resource.Drawable.tab_navigation_icon_home},
 			{AppConstants.NotificationTab,Resource.Drawable.tab_navigation_icon_notification},
 			{AppConstants.ProfileTab,Resource.Drawable.tab_navigation_icon_profile},
 		};
 
+		private int _notificationCount;
+
 		#endregion
 
 		#region Properties
+
 
 		public string AvatarUrl { get; set; }
 
@@ -42,6 +48,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
 		public IMvxCommand ShowErrorCommand { get; set; }
 		public IMvxAsyncCommand ShowNotificationsCommand { get; set; }
+		public IMvxCommand ClearBadgeCommand { get; set; }
 
 		#endregion
 
@@ -69,9 +76,26 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 				.For(v => v.ShowNotificationsCommand)
 				.To(vm => vm.ShowNotificationsCommand);
 
+			bindingSet.Bind(this)
+				.For(v => v.ClearBadgeCommand)
+				.To(vm => vm.ClearBadgeCommand);
+
+			bindingSet.Bind(this)
+				.For(v => v.NotificationCount)
+				.To(vm => vm.NotificationCount);
+
 			bindingSet.Apply();
 		}
-
+		public int NotificationCount
+		{
+			get => _notificationCount;
+			set
+			{
+				_notificationCount = value;
+				Activity.FindViewById<TabLayout>(Resource.Id.tabLayout).GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Text = value + "";
+				Activity.FindViewById<TabLayout>(Resource.Id.tabLayout).GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Visibility = value == 0 ? ViewStates.Gone : ViewStates.Visible;
+			}
+		}
 		protected override void InitView(View view)
 		{
 			base.InitView(view);
@@ -111,13 +135,37 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			for (var index = 0; index < _tabLayout.TabCount; index++)
 			{
 				var tab = _tabLayout.GetTabAt(index);
-				tab.SetIcon(TabTitleIconsDictionary[tab.Text]);
-				tab.SetText("");
+				
+				if (index == 1)
+				{
+					tab.SetCustomView(Resource.Layout.NotificationIconView);
+				}
+				else
+				{
+					tab.SetIcon(TabTitleIconsDictionary[tab.Text]);
+					tab.SetText("");
+				}
 			}
 
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
 
+			_tabLayout.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Visibility = NotificationCount == 0 ? ViewStates.Gone : ViewStates.Visible;
+
 			_tabLayout.TabSelected += OnTabSelected;
+		}
+
+		public override void OnResume()
+		{
+			base.OnResume();
+			((MasterView)Activity).IsHomeScreen = true;
+		}
+
+
+
+		public override void OnPause()
+		{
+			base.OnPause();
+			((MasterView)Activity).IsHomeScreen = false;
 		}
 
 		#endregion
@@ -144,12 +192,16 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			}
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
 
-			//switch (e.Tab.Position)
-			//{
-			//	case 1:
-			//		ShowNotificationsCommand.Execute();
-			//		break;
-			//}
+			if (_isOnNotificationViewTab)
+			{
+				ClearBadgeCommand.Execute();
+				_isOnNotificationViewTab = false;
+			}
+			if (e.Tab.Position == 1)
+			{
+				ClearBadgeCommand.Execute();
+				_isOnNotificationViewTab = true;
+			}
 		}
 
 		#endregion

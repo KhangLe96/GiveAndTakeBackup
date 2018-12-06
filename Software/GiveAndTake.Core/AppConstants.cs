@@ -33,7 +33,10 @@ namespace GiveAndTake.Core
 		public const string CheckIfRequestProcessed = "request/checkIfRequestProcessed";
 		public const string GetNotificationList = "notification/list";
 		public const string UpdateReadStatus = "notification/updateReadStatus";
-
+		public const string GetResponseById = "response/getResponseById";
+		public const string RegisterPushNotificationUserInformation = "deviceIdentity/registerDevice";
+		public static string GcmNotificationKey = "gcm.notification.notification";
+		public static string GcmBadgeKey = "gcm.notification.aps";
 		public const string ApiKey =
 			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiMjMwMzc5MmItZGI1MC00YzlhLTk3MjAtN2JkMWVjN2QzM2U4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IkFkbWluIEFkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluIiwiVXNlciJdLCJuYmYiOjE1MzM4ODY3MzMsImV4cCI6MTUzNjQ3ODczMywiaXNzIjoiR2l2ZWF3YXkiLCJhdWQiOiJFdmVyeW9uZSJ9.2A8md3WFGYT-w2Kz0OMAUAj7e20L-wTxIfKL4KyEOko";
 
@@ -69,6 +72,7 @@ namespace GiveAndTake.Core
 		public static string SelectedImage = "Đã chọn 0 hình";
 		public static string RequestRejectingMessage = "Bạn có chắc chắn từ chối yêu cầu?";
 		public static string PopupRequestDetailTitle = "Chi tiết yêu cầu";
+		public static string PopupResponseTitle = "Thông tin phản hồi";
 		public static string ButtonRejectTitle = "Từ chối";
 		public static string ButtonAcceptTitle = "Chấp nhận";
 		public static string CreateResponse = "response/create";

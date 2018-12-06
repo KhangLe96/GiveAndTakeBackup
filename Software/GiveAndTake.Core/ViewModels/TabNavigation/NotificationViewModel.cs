@@ -1,12 +1,14 @@
-﻿using GiveAndTake.Core.Models;
+﻿using System;
+using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Services;
 using GiveAndTake.Core.ViewModels.Base;
+using GiveAndTake.Core.ViewModels.Popup;
+using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
-using GiveAndTake.Core.ViewModels.Popup;
-using MvvmCross;
+
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
 {
@@ -23,15 +25,28 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			get => _notificationItemViewModel;
 			set => SetProperty(ref _notificationItemViewModel, value);
 		}
-	
+
+		//public int NotificationCount
+		//{
+		//	get => _notificationCount;
+		//	set
+		//	{
+		//		//_notificationCount = value;
+		//		//RaisePropertyChanged(() => NotificationCount);
+		//		SetProperty(ref _notificationCount, value);
+		//	}
+		//}
+
+
 		private readonly IDataModel _dataModel;
 		private readonly string _token;
 		private readonly ILoadingOverlayService _loadingOverlayService;
 		private MvxObservableCollection<NotificationItemViewModel> _notificationItemViewModel;
 		private bool _isRefresh;
-
+		private int _notiCount;
 		private IMvxCommand _refreshCommand;
 		private IMvxCommand _loadMoreCommand;
+		//private int _notificationCount;
 		public IMvxCommand RefreshCommand => _refreshCommand = _refreshCommand ?? new MvxCommand(OnRefresh);
 		public IMvxCommand LoadMoreCommand => _loadMoreCommand = _loadMoreCommand ?? new MvxAsyncCommand(OnLoadMore);
 
@@ -40,6 +55,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel = dataModel;
 			_token = _dataModel.LoginResponse.Token;
 			_loadingOverlayService = loadingOverlayService;
+			_dataModel.NotificationReceived += OnNotificationReceived;
+			_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
+
 		}
 
 		public override async Task Initialize()
@@ -48,9 +66,50 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			await UpdateNotificationViewModels();
 		}
 
-		private async void InitNotificationViewModels()
+		private void OnBadgeReceived(object sender, int badge)
 		{
-			await UpdateNotificationViewModelOverLay();
+			//NotificationCount = badge;
+			if (badge != 0)
+			{
+				Task.Run(() => { UpdateNotificationViewModels(); });
+			}
+		}
+
+		public override void ViewCreated()
+		{
+			base.ViewCreated();
+			//_dataModel.NotificationReceived += OnNotificationReceived;
+			//_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
+		}
+
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			_dataModel.NotificationReceived -= OnNotificationReceived;
+			_dataModel.BadgeNotificationUpdated -= OnBadgeReceived;
+		}
+
+		public void OnNotificationReceived(object sender, Notification notification)
+		{
+			if (DataModel.SelectedNotification != null)
+			{
+				OnItemClicked(notification);
+				_dataModel.SelectedNotification = null;
+			}			
+		}
+
+		public async Task UpdateNotificationViewModels()
+		{
+			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList($"limit=20", _token);
+			_notiCount = _dataModel.ApiNotificationResponse.NumberOfNotiNotSeen;
+			NotificationItemViewModels = new MvxObservableCollection<NotificationItemViewModel>(_dataModel.ApiNotificationResponse.Notifications.Select(GenerateNotificationItem));
+		}
+
+		public async Task UpdateNotificationViewModelOverLay()
+		{
+			await _loadingOverlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await UpdateNotificationViewModels();
+			await _loadingOverlayService.CloseOverlay();
 		}
 
 		private async Task OnLoadMore()
@@ -89,7 +148,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					break;
 
 				case "IsAccepted":
-					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
+					await HandleIsAcceptedType(notification);
 					break;
 
 				case "IsRejected":
@@ -103,7 +162,26 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				case "Warning":
 					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
+			}			
+		}
+
+		private async Task HandleIsAcceptedType(Notification notification)
+		{
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			var response = await ManagementService.GetResponseById(notification.RelevantId, _token);
+			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+
+			var popupResult = await NavigationService.Navigate<ReponseViewModel, Response, PopupRequestDetailResult>(response);
+			if (popupResult == PopupRequestDetailResult.ShowPostDetail)
+			{
+				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+				var post = await ManagementService.GetPostDetail(response.Post.Id.ToString(), _token);
+				post.IsMyPost = true;
+
+				await NavigationService.Navigate<PostDetailViewModel, Post>(post);
 			}
+
+			await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
 		}
 
 		private async Task HandleRequestType(Notification notification)
@@ -120,6 +198,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			}
 			else
 			{
+				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 				var popupResult = await NavigationService.Navigate<RequestDetailViewModel, Request, PopupRequestDetailResult>(request);
 				switch (popupResult)
 				{
@@ -142,10 +221,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					default:
 						await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 						break;
-                }
+				}
 			}
 
-			await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
+			ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
 		}
 
 		private async void OnRequestRejected(Request request)
@@ -189,19 +268,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			IsRefreshing = true;
 			await UpdateNotificationViewModels();
 			IsRefreshing = false;
-		}
-
-		public async Task UpdateNotificationViewModels()
-		{
-			_dataModel.ApiNotificationResponse = await ManagementService.GetNotificationList($"limit=20", _token);
-			NotificationItemViewModels = new MvxObservableCollection<NotificationItemViewModel>(_dataModel.ApiNotificationResponse.Notifications.Select(GenerateNotificationItem));
-		}
-
-		public async Task UpdateNotificationViewModelOverLay()
-		{
-			await _loadingOverlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-			await UpdateNotificationViewModels();
-			await _loadingOverlayService.CloseOverlay();
 		}
 	}
 }

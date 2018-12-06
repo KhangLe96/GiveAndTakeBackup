@@ -4,6 +4,9 @@ using GiveAndTake.Core.ViewModels.TabNavigation;
 using GiveAndTake.iOS.Controls;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
+using MvvmCross.Binding.BindingContext;
+using MvvmCross.Binding.Extensions;
+using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Views;
 using UIKit;
 
@@ -12,8 +15,10 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 	public class TabNavigationView : MvxTabBarViewController<TabNavigationViewModel>
 	{
 		private CustomMvxCachedImageView _imgAvatar;
-
-
+		private int _notificationCount;
+		private UITabBarItem _tabNotification;
+		private bool _isOnNotificationViewTab;
+		public IMvxCommand ClearBadgeCommand { get; set; }
 		public TabNavigationView()
 		{
 			//InitHeaderBar();
@@ -24,9 +29,43 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			base.ViewWillAppear(animated);
 			ViewModel.ShowInitialViewModelsCommand.Execute();
 			ConfigTabBar(animated);
+			CreateBinding();
 		}
 
-		
+		private void CreateBinding()
+		{
+			var bindingSet = this.CreateBindingSet<TabNavigationView, TabNavigationViewModel>();
+
+			bindingSet.Bind(this)
+				.For(v => v.NotificationCount)
+				.To(vm => vm.NotificationCount);
+
+			bindingSet.Bind(this)
+				.For(v => v.ClearBadgeCommand)
+				.To(vm => vm.ClearBadgeCommand);
+
+			bindingSet.Apply();
+		}
+
+		public int NotificationCount
+		{
+			get => _notificationCount;
+			set
+			{
+				_notificationCount = value;
+				if (value == 0)
+				{
+					_tabNotification.BadgeValue = null;
+					UpdateBadgeIcon(0);
+				}
+				else
+				{
+					_tabNotification.BadgeValue = value.ToString();
+				}
+					
+			}
+		}
+
 		private async void ConfigTabBar(bool animated)
 		{
 			TabBar.BackgroundColor = UIColor.White;
@@ -50,7 +89,7 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 			}
 
 			TabBar.Items[TabBar.Items.Length - 1].Image = UIHelper.ConvertViewToImage(_imgAvatar);
-
+			_tabNotification = TabBar.Items[1];
 			_imgAvatar.Layer.BorderColor = ColorHelper.LightBlue.CGColor;
 			_imgAvatar.Layer.BorderWidth = DimensionHelper.BorderWidth;
 			TabBar.Items[TabBar.Items.Length - 1].SelectedImage = UIHelper.ConvertViewToImage(_imgAvatar);
@@ -65,7 +104,33 @@ namespace GiveAndTake.iOS.Views.TabNavigation
 				tabBarItem.Title = null;
 			}
 
+			ViewControllerSelected += TabBarControllerOnViewControllerSelected;
 			NavigationController?.SetNavigationBarHidden(true, animated);
+		}
+
+		private void TabBarControllerOnViewControllerSelected(object sender, UITabBarSelectionEventArgs e)
+		{
+			var selectedView = ((UINavigationController)e.ViewController).TopViewController as MvxViewController;
+
+			if (selectedView == null) return;
+
+			if (_isOnNotificationViewTab)
+			{
+				ClearBadgeCommand.Execute();
+				_isOnNotificationViewTab = false;
+			}
+			if (SelectedIndex == 1)
+			{
+				ClearBadgeCommand.Execute();
+				_isOnNotificationViewTab = true;
+			}
+		}
+		private void UpdateBadgeIcon(int badgeValue)
+		{
+			UIUserNotificationSettings settings =
+				UIUserNotificationSettings.GetSettingsForTypes(UIUserNotificationType.Badge, null);
+			UIApplication.SharedApplication.RegisterUserNotificationSettings(settings);
+			UIApplication.SharedApplication.ApplicationIconBadgeNumber = badgeValue;
 		}
 	}
 }

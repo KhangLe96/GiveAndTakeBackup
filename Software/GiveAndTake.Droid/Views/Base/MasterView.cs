@@ -18,12 +18,26 @@ namespace GiveAndTake.Droid.Views.Base
 	{
 		protected override int LayoutId => Resource.Layout.MasterView;
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
-
 		public IMvxCommand BackPressedFromCreatePostCommand { get; set; }
 		public IMvxCommand BackPressedFromHomeViewSearchedCommand { get; set; }
 		public IMvxCommand BackPressedFromPostDetailCommand { get; set; }
+
+		public static bool IsForeground;
+		public bool IsHomeScreen = true;
 		protected override void InitView()
 		{		
+		}
+
+		protected override void OnResume()
+		{
+			base.OnResume();
+			IsForeground = true;
+		}
+
+		protected override void OnPause()
+		{
+			base.OnPause();
+			IsForeground = false;
 		}
 
 		protected override void CreateBinding()
@@ -57,17 +71,23 @@ namespace GiveAndTake.Droid.Views.Base
 			{
 				BackPressedFromHomeViewSearchedCommand.Execute();
 				BackPressedFromHomeViewSearchedCommand = null;
-			}else if (BackPressedFromPostDetailCommand != null)
+			}
+			else if (BackPressedFromPostDetailCommand != null)
 			{
 				BackPressedFromPostDetailCommand.Execute();
 				BackPressedFromPostDetailCommand = null;
 			}
 			else
 			{
-				base.OnBackPressed();
-			}
+				if (IsHomeScreen)
+				{
+					MoveTaskToBack(true);
+				}
+				else
+				{
+					base.OnBackPressed();
+				}				
 		}
-
-
+		}
 	}
 }

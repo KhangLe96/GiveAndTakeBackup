@@ -3,6 +3,7 @@ using MvvmCross;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Models;
 using I18NPortable;
 
 
@@ -15,6 +16,9 @@ namespace GiveAndTake.Core.ViewModels.Base
 
 		private IManagementService _managementService;
 		public IManagementService ManagementService => _managementService ?? (_managementService = Mvx.Resolve<IManagementService>());
+
+		private IDataModel _dataModel;
+		public IDataModel DataModel => _dataModel ?? (_dataModel = Mvx.Resolve<IDataModel>());
 
 		public II18N Strings => I18N.Current;
 	}

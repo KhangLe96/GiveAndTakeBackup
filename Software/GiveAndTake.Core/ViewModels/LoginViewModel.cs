@@ -6,6 +6,8 @@ using GiveAndTake.Core.ViewModels.Popup;
 using MvvmCross.Commands;
 using System.Windows.Input;
 using GiveAndTake.Core.Services;
+using System.Threading.Tasks;
+using GiveAndTake.Core.Helpers;
 using MvvmCross;
 
 namespace GiveAndTake.Core.ViewModels
@@ -16,11 +18,13 @@ namespace GiveAndTake.Core.ViewModels
 		private readonly ILoadingOverlayService _overlay;
 		private User _user;
 		public string LoginTitle => AppConstants.LoginTitle;
+
 		public User User
 		{
 			get => _user;
 			set => SetProperty(ref _user, value);
 		}
+		public string FireBaseToken { get; set; }
 
 		private IMvxCommand _loginCommand;
 		public IMvxCommand LoginCommand => _loginCommand ?? (_loginCommand = new MvxAsyncCommand<BaseUser>(OnLoginSuccess));
@@ -37,6 +41,8 @@ namespace GiveAndTake.Core.ViewModels
 			{
 				await _overlay.ShowOverlay(AppConstants.LoginProcessOverLayTitle);
 				_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
+				await ManagementService.SendPushNotificationUserInformation(new PushNotificationUserInformation()
+				{ DeviceToken = Mvx.Resolve<IDeviceInfo>().DeviceToken, MobilePlatform = Mvx.Resolve<IDeviceInfo>().MobilePlatform}, _dataModel.LoginResponse.Token);
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}

@@ -7,6 +7,7 @@ using MvvmCross;
 using GiveAndTake.Droid.Helpers;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.Droid.Support.V7.RecyclerView;
+using MvvmCross.Platforms.Android.Core;
 
 namespace GiveAndTake.Droid
 {
@@ -22,6 +23,7 @@ namespace GiveAndTake.Droid
 			base.InitializeFirstChance();
 			Mvx.LazyConstructAndRegisterSingleton<IUrlHelper, UrlHelper>();
 			Mvx.LazyConstructAndRegisterSingleton<ISystemHelper, SystemHelper>();
+			Mvx.RegisterType<IDeviceInfo,DeviceInfo>();
 		}
 	}
 }

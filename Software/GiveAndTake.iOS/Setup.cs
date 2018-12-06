@@ -13,11 +13,10 @@ namespace GiveAndTake.iOS
 	{
 		protected override void InitializeFirstChance()
 		{
-			//Register interface
-			//exp: Mvx.LazyConstructAndRegisterSingleton<IZipHelper, ZipHelper>();
 			base.InitializeFirstChance();
 			Mvx.LazyConstructAndRegisterSingleton<IUrlHelper, UrlHelper>();
 			Mvx.LazyConstructAndRegisterSingleton<ISystemHelper, SystemHelper>();
+			Mvx.RegisterType<IDeviceInfo, DeviceInfo>();
 		}
 
 		protected override IMvxApplication CreateApp()
