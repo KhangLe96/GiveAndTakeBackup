@@ -29,6 +29,7 @@
 		public const string GetProvinceCities = "provincecity/list";
 	    public const string GetRequestOfPost = "request/list";
 		public const string GetRequestById = "request/getRequestById";
+		public const string GetRequestOfCurrentUserByPostId = "request/getRequestOfCurrentUserByPostId";
 		public const string ChangeStatusOfRequest = "request/status";
 		public const string CheckIfRequestProcessed = "request/checkIfRequestProcessed";
 		public const string GetNotificationList = "notification/list";

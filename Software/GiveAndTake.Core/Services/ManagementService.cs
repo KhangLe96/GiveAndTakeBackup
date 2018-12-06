@@ -152,6 +152,25 @@ namespace GiveAndTake.Core.Services
 		    return JsonHelper.Deserialize<Request>(response.RawContent);
 		}
 
+		public async Task<Request> GetRequestOfCurrentUserByPostId(Guid id, string token)
+		{
+			var url = $"{AppConstants.GetRequestOfCurrentUserByPostId}/{id}";
+
+			var response = await _apiHelper.Get(url, token);
+
+			if (response.NetworkStatus != NetworkStatus.Success)
+			{
+				throw new AppException.ApiException(response.NetworkStatus.ToString());
+			}
+
+			if (!string.IsNullOrEmpty(response.ErrorMessage))
+			{
+				throw new AppException.ApiException(response.ErrorMessage);
+			}
+
+			return JsonHelper.Deserialize<Request>(response.RawContent);
+		}
+
 		public async Task<CategoryResponse> GetCategories()
         {
 			var response = await _apiHelper.Get(AppConstants.GetCategories);

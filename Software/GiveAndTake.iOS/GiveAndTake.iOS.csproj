@@ -51,7 +51,7 @@
     <MtouchArch>ARM64</MtouchArch>
     <CodesignEntitlements>
     </CodesignEntitlements>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignProvision>
     </CodesignProvision>
@@ -103,6 +103,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Views\AboutView.cs" />
+    <Compile Include="Views\Base\BaseMyRequestDetailView.cs" />
     <Compile Include="Views\Base\BaseView.cs" />
     <Compile Include="Views\Base\DetailView.cs" />
     <Compile Include="Views\Base\MasterView.cs" />
@@ -112,7 +113,9 @@
     <Compile Include="Views\CreatePostView.cs" />
     <Compile Include="Views\PhotoCollectionView.cs" />
     <Compile Include="Views\Popups\LoadingOverlayView.cs" />
-    <Compile Include="Views\Popups\MyRequestDetailView.cs" />
+    <Compile Include="Views\Popups\MyRequest\MyRequestApprovedView.cs" />
+    <Compile Include="Views\Popups\MyRequest\MyRequestPendingView.cs" />
+    <Compile Include="Views\Popups\MyRequest\MyRequestReceivedView.cs" />
     <Compile Include="Views\Popups\PopupCreateRequestView.cs" />
     <Compile Include="Views\Popups\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popups\PopupListView.cs" />
