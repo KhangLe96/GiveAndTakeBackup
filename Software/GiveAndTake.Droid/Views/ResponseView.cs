@@ -13,7 +13,7 @@ namespace GiveAndTake.Droid.Views
 {
 	[MvxDialogFragmentPresentation]
 	[Register(nameof(ReponseView))]
-	public class ReponseView : MvxDialogFragment<ReponseViewModel>
+	public class ReponseView : MvxDialogFragment<ResponseViewModel>
 	{
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{

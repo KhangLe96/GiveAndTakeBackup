@@ -176,7 +176,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			var response = await ManagementService.GetResponseById(notification.RelevantId, _token);
 			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 
-			var popupResult = await NavigationService.Navigate<ReponseViewModel, Response, PopupRequestDetailResult>(response);
+			var popupResult = await NavigationService.Navigate<ResponseViewModel, Response, PopupRequestDetailResult>(response);
 			if (popupResult == PopupRequestDetailResult.ShowPostDetail)
 			{
 				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
@@ -242,7 +242,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 				if (isSaved)
 				{
-					await NavigationService.Navigate<PopupNotificationViewModel, string>(AppConstants.SuccessfulRejectionMessage);
+					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.SuccessfulRejectionMessage);
 				}
 			}
 		}
@@ -252,7 +252,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			var result = await NavigationService.Navigate<PopupResponseViewModel, Request, RequestStatus>(request);
 			if (result == RequestStatus.Submitted)
 			{
-				await NavigationService.Navigate<PopupNotificationViewModel, string>(AppConstants.SuccessfulAcceptanceMessage);
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.SuccessfulAcceptanceMessage);
 			}
 		}
 

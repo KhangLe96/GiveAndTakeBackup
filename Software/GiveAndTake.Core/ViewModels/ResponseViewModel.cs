@@ -9,7 +9,7 @@ using MvvmCross.Commands;
 
 namespace GiveAndTake.Core.ViewModels
 {
-	public class ReponseViewModel : BaseViewModel<Response, PopupRequestDetailResult>
+	public class ResponseViewModel : BaseViewModel<Response, PopupRequestDetailResult>
 	{
 		public string PopupTitle => AppConstants.PopupResponseTitle;
 

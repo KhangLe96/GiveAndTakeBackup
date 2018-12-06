@@ -1,20 +1,17 @@
 ﻿using GiveAndTake.Core;
 using GiveAndTake.Core.ViewModels;
-using GiveAndTake.Core.ViewModels.Popup;
 using GiveAndTake.iOS.Controls;
-using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
 using GiveAndTake.iOS.Views.Base;
-using MvvmCross.Base;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
 using UIKit;
 
-namespace GiveAndTake.iOS.Views.Popups
+namespace GiveAndTake.iOS.Views
 {
 	[MvxModalPresentation(ModalPresentationStyle = UIModalPresentationStyle.OverCurrentContext, ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve)]
-	public class RequestDetailView : BaseView
+	public class ResponseView : BaseView
 	{
 		private UIView _contentView;
 		private UIView _overlayView;
@@ -25,8 +22,6 @@ namespace GiveAndTake.iOS.Views.Popups
 		private UILabel _lbRequestDate;
 		private CustomMvxCachedImageView _imagePost;
 		private UILabel _lbRequestMessage;
-		private UIButton _btnReject;
-		private UIButton _btnAccept;
 		private UIScrollView _scrollView;
 		private UIView _contentScrollView;
 		protected override void InitView()
@@ -38,11 +33,12 @@ namespace GiveAndTake.iOS.Views.Popups
 		}
 		protected override void CreateBinding()
 		{
-			var bindingSet = this.CreateBindingSet<RequestDetailView, RequestDetailViewModel>();
+			var bindingSet = this.CreateBindingSet<ResponseView, ResponseViewModel>();
 
 			bindingSet.Bind(_lbPopupTitle)
 				.For(v => v.Text)
 				.To(vm => vm.PopupTitle);
+
 			bindingSet.Bind(_deletePhotoButton.Tap())
 				.For(v => v.Command)
 				.To(vm => vm.CloseCommand);
@@ -69,23 +65,7 @@ namespace GiveAndTake.iOS.Views.Popups
 
 			bindingSet.Bind(_lbRequestMessage)
 				.For(v => v.Text)
-				.To(vm => vm.RequestMessage);
-
-			bindingSet.Bind(_btnReject)
-				.For("Title")
-				.To(vm => vm.BtnRejectTitle);
-
-			bindingSet.Bind(_btnAccept)
-				.For("Title")
-				.To(vm => vm.BtnAcceptTitle);
-
-			bindingSet.Bind(_btnAccept.Tap())
-				.For(v => v.Command)
-				.To(vm => vm.AcceptCommand);
-
-			bindingSet.Bind(_btnReject.Tap())
-				.For(v => v.Command)
-				.To(vm => vm.RejectCommand);
+				.To(vm => vm.ResponseMessage);
 
 			bindingSet.Apply();
 		}
@@ -121,7 +101,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			_contentView.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_lbPopupTitle, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _contentView, NSLayoutAttribute.CenterX, 1, 0),
-				NSLayoutConstraint.Create(_lbPopupTitle, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView, NSLayoutAttribute.Top, 1, DimensionHelper.DefaultMargin)
+				NSLayoutConstraint.Create(_lbPopupTitle, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView, NSLayoutAttribute.Top, 1, DimensionHelper.AvatarMargin)
 			});
 
 			_deletePhotoButton = UIHelper.CreateImageButton(DimensionHelper.DeletePhotoButtonWidth,
@@ -130,20 +110,20 @@ namespace GiveAndTake.iOS.Views.Popups
 			_contentView.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_deletePhotoButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.Top, 1, DimensionHelper.DefaultMargin),
+					NSLayoutAttribute.Top, 1, DimensionHelper.AvatarMargin),
 				NSLayoutConstraint.Create(_deletePhotoButton, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.Right, 1, - DimensionHelper.DefaultMargin)
+					NSLayoutAttribute.Right, 1, - DimensionHelper.AvatarMargin)
 			});
 
-			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.ImageAvatarSize, DimensionHelper.ImageAvatarSize, ImageHelper.DefaultAvatar, DimensionHelper.ImageAvatarSize / 2);
+			_imgAvatar = UIHelper.CreateCustomImageView(DimensionHelper.FilterSize, DimensionHelper.FilterSize, ImageHelper.DefaultAvatar, DimensionHelper.FilterSize / 2);
 			_imgAvatar.SetPlaceHolder(ImageHelper.DefaultAvatar, ImageHelper.DefaultAvatar);
 			_contentView.AddSubview(_imgAvatar);
 			_contentView.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_imgAvatar, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbPopupTitle,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginNormal),
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.AvatarMargin),
 				NSLayoutConstraint.Create(_imgAvatar, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
+					NSLayoutAttribute.Left, 1, DimensionHelper.MarginBig)
 			});
 
 			_lbUserName = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize);
@@ -175,48 +155,21 @@ namespace GiveAndTake.iOS.Views.Popups
 				NSLayoutConstraint.Create(_imagePost, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _lbPopupTitle,
 					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginNormal),
 				NSLayoutConstraint.Create(_imagePost, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.Right, 1, - DimensionHelper.DefaultMargin)
+					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginBig)
 			});
 
-			_btnReject = UIHelper.CreateAlphaButton(DimensionHelper.PopupRequestButtonWidth,
-				DimensionHelper.CreatePostButtonHeight,
-				ColorHelper.LightBlue, ColorHelper.DarkBlue, DimensionHelper.MediumTextSize,
-				UIColor.White, UIColor.White, ColorHelper.LightBlue, ColorHelper.DarkBlue,
-				true, true, FontType.Light);
-			_contentView.Add(_btnReject);
-			_contentView.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_btnReject, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.Bottom, 1, -DimensionHelper.DefaultMargin),
-				NSLayoutConstraint.Create(_btnReject, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin)
-			});
-
-			_btnAccept = UIHelper.CreateAlphaButton(DimensionHelper.PopupRequestButtonWidth,
-				DimensionHelper.CreatePostButtonHeight,
-				UIColor.White, UIColor.White, DimensionHelper.MediumTextSize,
-				ColorHelper.LightBlue, ColorHelper.DarkBlue, ColorHelper.LightBlue, ColorHelper.DarkBlue, true, false, FontType.Light);
-			_contentView.Add(_btnAccept);
-			_contentView.AddConstraints(new[]
-			{
-				NSLayoutConstraint.Create(_btnAccept, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.Bottom, 1, -DimensionHelper.DefaultMargin),
-				NSLayoutConstraint.Create(_btnAccept, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _contentView,
-					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin)
-			});
-
-			_scrollView = UIHelper.CreateScrollView(0,0);
+			_scrollView = UIHelper.CreateScrollView(0, 0);
 			_contentView.AddSubview(_scrollView);
 			_contentView.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _imagePost,
-					NSLayoutAttribute.Bottom, 1, DimensionHelper.DefaultMargin),
+					NSLayoutAttribute.Bottom, 1, DimensionHelper.MarginBig),
 				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _contentView,
 					NSLayoutAttribute.Left, 1, 0),
 					NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _contentView,
 					NSLayoutAttribute.Right, 1, 0),
-				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _btnReject,
-					NSLayoutAttribute.Top, 1, -DimensionHelper.DefaultMargin)
+				NSLayoutConstraint.Create(_scrollView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _contentView,
+					NSLayoutAttribute.Bottom, 1, -DimensionHelper.DefaultMargin)
 
 			});
 			_contentScrollView = UIHelper.CreateView(0, DimensionHelper.PopupContentWidth, UIColor.White, 0);
@@ -227,14 +180,15 @@ namespace GiveAndTake.iOS.Views.Popups
 					NSLayoutAttribute.Top, 1, 0),
 
 			});
-			_lbRequestMessage = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.PostDescriptionTextSize);
+
+			_lbRequestMessage = UIHelper.CreateLabel(UIColor.Black, DimensionHelper.MediumTextSize);
 			_contentScrollView.Add(_lbRequestMessage);
 			_contentScrollView.AddConstraints(new[]
 			{
 				NSLayoutConstraint.Create(_lbRequestMessage, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _contentScrollView,
 					NSLayoutAttribute.Top, 1, 0),
 				NSLayoutConstraint.Create(_lbRequestMessage, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _contentScrollView,
-					NSLayoutAttribute.Left, 1, DimensionHelper.DefaultMargin),
+					NSLayoutAttribute.Left, 1, DimensionHelper.MarginBig),
 				NSLayoutConstraint.Create(_lbRequestMessage, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _contentScrollView,
 					NSLayoutAttribute.Right, 1, -DimensionHelper.DefaultMargin),
 				NSLayoutConstraint.Create(_contentScrollView, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, _lbRequestMessage,

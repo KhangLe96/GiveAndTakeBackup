@@ -12,19 +12,17 @@ namespace GiveAndTake.iOS.Views.TableViewSources
 	{
 		public Action LoadMoreEvent { get; set; }
 
-		private const string CellId = "PostItemViewCell";
-
 		private bool _isLoading;
 
 		public PostItemTableViewSource(UITableView tableView) : base(tableView)
 		{
-			tableView.RegisterClassForCellReuse(typeof(T), new NSString(CellId));
+			tableView.RegisterClassForCellReuse(typeof(T), new NSString(typeof(T).Name));
 			_isLoading = false;
 		}
 
 		protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
 		{
-			var cell = (T)tableView.DequeueReusableCell(CellId, indexPath);
+			var cell = (T)tableView.DequeueReusableCell(typeof(T).Name, indexPath);
 
 			cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 

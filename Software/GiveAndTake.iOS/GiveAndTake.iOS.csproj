@@ -128,6 +128,7 @@
     <Compile Include="Views\PostImageView.cs" />
     <Compile Include="Views\RequestDetailView.cs" />
     <Compile Include="Views\RequestsView.cs" />
+    <Compile Include="Views\ResponseView.cs" />
     <Compile Include="Views\SlideViewDataSource.cs" />
     <Compile Include="Views\SlideViewDelegate.cs" />
     <Compile Include="Views\TableViewCells\NotificationItemTableViewCell.cs" />
