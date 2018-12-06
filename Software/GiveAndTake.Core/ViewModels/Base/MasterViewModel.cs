@@ -12,21 +12,10 @@ namespace GiveAndTake.Core.ViewModels.Base
 		public IMvxAsyncCommand ShowInitialViewModelsCommand =>
 			_showInitialViewModelsCommand ??
 			(_showInitialViewModelsCommand = new MvxAsyncCommand(ShowInitialViewModels));
-
-		private bool _isGoToBackground;
 		private async Task ShowInitialViewModels()
 		{
 			DataModel.IsLoggedIn = true;
 			await NavigationService.Navigate<TabNavigationViewModel>();
-		}
-		public override void ViewAppearing()
-		{
-			base.ViewAppearing();		
-		}
-
-		public override void ViewDisappearing()
-		{
-			base.ViewDisappearing();
 		}
 	}
 }
