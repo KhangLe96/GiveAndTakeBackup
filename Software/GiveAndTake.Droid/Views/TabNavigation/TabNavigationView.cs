@@ -27,6 +27,7 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 		private CustomCircleImageView _ccimProfile;
 		private TabLayout _tabLayout;
 		private bool _isOnNotificationViewTab;
+		private TextView _badgeText;
 
 		private static readonly Dictionary<string, int> TabTitleIconsDictionary = new Dictionary<string, int>(){
 			{AppConstants.HomeTab,Resource.Drawable.tab_navigation_icon_home},
@@ -92,8 +93,8 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			set
 			{
 				_notificationCount = value;
-				Activity.FindViewById<TabLayout>(Resource.Id.tabLayout).GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Text = value + "";
-				Activity.FindViewById<TabLayout>(Resource.Id.tabLayout).GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Visibility = value == 0 ? ViewStates.Gone : ViewStates.Visible;
+				_badgeText.Text = value + "";
+				_badgeText.Visibility = value == 0 ? ViewStates.Invisible : ViewStates.Visible;
 			}
 		}
 		protected override void InitView(View view)
@@ -148,8 +149,9 @@ namespace GiveAndTake.Droid.Views.TabNavigation
 			}
 
 			_tabLayout.GetTabAt(_tabLayout.TabCount - 1).SetCustomView(_ccimProfile);
-
-			_tabLayout.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification).Visibility = NotificationCount == 0 ? ViewStates.Gone : ViewStates.Visible;
+			_badgeText = _tabLayout.GetTabAt(1).CustomView.FindViewById<TextView>(Resource.Id.badge_notification);
+			_badgeText.Text = NotificationCount + "";
+			_badgeText.Visibility = _badgeText.Text == "0" ? ViewStates.Invisible : ViewStates.Visible;
 
 			_tabLayout.TabSelected += OnTabSelected;
 		}
