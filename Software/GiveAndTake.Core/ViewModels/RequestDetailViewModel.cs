@@ -82,6 +82,7 @@ namespace GiveAndTake.Core.ViewModels
 			UserName = _request.User.FullName ?? AppConstants.DefaultUserName;
 			CreatedTime = _request.CreatedTime.ToString("dd.MM.yyyy");
 			RequestMessage = _request.RequestMessage;
+			var status = _request.RequestStatus;
 			return base.Initialize();
 		}
 

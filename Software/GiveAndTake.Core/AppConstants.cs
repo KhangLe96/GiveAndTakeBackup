@@ -29,6 +29,7 @@ namespace GiveAndTake.Core
 		public const string GetProvinceCities = "provincecity/list";
 	    public const string GetRequestOfPost = "request/list";
 		public const string GetRequestById = "request/getRequestById";
+		public const string GetRequestOfCurrentUserByPostId = "request/getRequestOfCurrentUserByPostId";
 		public const string ChangeStatusOfRequest = "request/status";
 		public const string CheckIfRequestProcessed = "request/checkIfRequestProcessed";
 		public const string GetNotificationList = "notification/list";
@@ -59,6 +60,7 @@ namespace GiveAndTake.Core
 		public const string ReportPost = "Báo cáo";
 		public const string CancelRequest = "Hủy yêu cầu";
 		public const string ReceivedRequest = "Đã nhận vật phẩm";
+		public const string AccpetedRequest = "Đã duyệt";
 
 		public static string GivingStatus = "Đang cho";
 		public static string GivedStatus = "Đã cho";

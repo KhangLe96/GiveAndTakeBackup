@@ -13,7 +13,6 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System.Collections.Generic;
-using Android.OS;
 using GiveAndTake.Droid.Helpers;
 
 namespace GiveAndTake.Droid.Views
