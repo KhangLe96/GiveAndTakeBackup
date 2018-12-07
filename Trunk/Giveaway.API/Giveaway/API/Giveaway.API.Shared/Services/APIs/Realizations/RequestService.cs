@@ -235,7 +235,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 try
                 {
                     Guid id = Guid.Parse(postId);
-                    requests = requests.Where(x => x.PostId == id && (x.RequestStatus == RequestStatus.Approved || x.RequestStatus == RequestStatus.Pending));
+                    requests = requests.Where(x => x.PostId == id && x.RequestStatus != RequestStatus.Rejected);
                 }
                 catch
                 {
