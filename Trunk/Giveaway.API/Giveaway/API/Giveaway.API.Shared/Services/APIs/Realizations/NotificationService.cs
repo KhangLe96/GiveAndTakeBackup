@@ -27,8 +27,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
 	public class NotificationService : INotificationService
 	{
-		private readonly string FcmProjectNumber = "947442486658";
-		private readonly string FcmApiKey = "AIzaSyDz4a1OFP_qeQ8BsJ3seHulWHUs2RSgklM";
+		private readonly string FcmProjectNumber = "179460394067";
+		private readonly string FcmApiKey = "AIzaSyCfzK4m0TR78drfat67wl_K5WuSRpVrDN4";
 		private FcmServiceBroker _fcmBroker;
 		private ApnsServiceBroker _apnsBroker;
 
