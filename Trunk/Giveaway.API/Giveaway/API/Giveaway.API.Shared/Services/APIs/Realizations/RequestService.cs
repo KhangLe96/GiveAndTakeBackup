@@ -65,8 +65,12 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    public RequestPostResponse GetRequestOfCurrentUserByPostId(Guid userId, Guid postId)
 	    {
-		    var request = _requestService.Include(x => x.Post.User).FirstOrDefault(x =>
-			    x.EntityStatus != EntityStatus.Deleted && x.UserId == userId && x.PostId == postId);
+		    var request = _requestService.Include(x => x.Post.User)
+			    .FirstOrDefault(x =>
+			    x.EntityStatus != EntityStatus.Deleted && 
+			    x.UserId == userId && 
+			    x.PostId == postId);
+
 		    if (request == null)
 		    {
 			    throw new BadRequestException(CommonConstant.Error.NotFound);
@@ -219,7 +223,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<RequestPostResponse> GetPagedRequests(string postId, PagingQueryRequestPostRequest request, out int total)
         {
-            var requests = _requestService.Include(x => x.Post).Include(x => x.Responses).Include(x => x.User).Where(x => x.EntityStatus != EntityStatus.Deleted);
+            var requests = _requestService.Include(x => x.Post).Include(x => x.Responses).Include(x => x.User)
+	            .Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (requests == null)
             {
                 throw new BadRequestException(CommonConstant.Error.NotFound);
@@ -230,7 +235,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 try
                 {
                     Guid id = Guid.Parse(postId);
-                    requests = requests.Where(x => x.PostId == id);
+                    requests = requests.Where(x => x.PostId == id && x.RequestStatus == RequestStatus.Approved || x.RequestStatus == RequestStatus.Pending);
                 }
                 catch
                 {
@@ -238,12 +243,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
                 }
             }
 
-            if (!string.IsNullOrEmpty(request.RequestStatus.ToString()))
-            {
-                requests = requests.Where(x => x.RequestStatus == request.RequestStatus);
-            }
-
-            requests = requests.OrderByDescending(x => x.CreatedTime);
+            requests = requests.OrderByDescending(x => x.RequestStatus).ThenByDescending(x => x.CreatedTime);
             total = requests.Count();
 
             return requests
