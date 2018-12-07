@@ -246,6 +246,7 @@ namespace GiveAndTake.iOS
 					_dataModel.RaiseNotificationReceived(notification);
 					//string test = _dataModel.SelectedNotification?.Message;
 					//new UIAlertView("selected notification received: " + test, null, null, "OK", null).Show();
+					_dataModel.RaiseBadgeUpdated(badgeValue);
 				}
 				
 				//new UIAlertView("From BackGround", null, null, "OK", null).Show();
