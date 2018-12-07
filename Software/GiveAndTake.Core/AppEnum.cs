@@ -34,12 +34,23 @@
 		Cancelled,
 		Submitted
 	}
-
+	public enum MyRequestStatus
+	{
+		Rejected,
+		Pending,
+		Approved,
+		Received,
+	}
+	public enum PopupMyRequestStatusResult
+	{
+		Cancelled,
+		Removed,
+		Received,
+	}
 	public enum PopupRequestDetailResult
 	{
 		Cancelled,
 		Accepted,
-		Received,
 		Rejected,
 		ShowPostDetail
 	}

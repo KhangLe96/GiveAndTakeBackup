@@ -10,6 +10,7 @@ using I18NPortable;
 using MvvmCross.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace GiveAndTake.Core.ViewModels
 {
@@ -232,24 +233,24 @@ namespace GiveAndTake.Core.ViewModels
 				ChangeStatusOfPost();
 			}
 			else switch (result)
-			{
-				case AppConstants.ModifyPost:
-					await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
-					await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
-					break;
-				case AppConstants.ViewPostRequests:
-					await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
-					break;
-				case AppConstants.DeletePost:
-					await DeletePost();
-					break;
-				case AppConstants.CancelRequest:
-					await CancelOldRequest();
-					break;
-				case AppConstants.ReportPost:
-					await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
-					break;
-			}
+				{
+					case AppConstants.ModifyPost:
+						await NavigationService.Navigate<CreatePostViewModel, ViewMode, bool>(ViewMode.EditPost);
+						await LoadCurrentPostDataWithOverlay(AppConstants.LoadingDataOverlayTitle);
+						break;
+					case AppConstants.ViewPostRequests:
+						await NavigationService.Navigate<RequestsViewModel, Post, bool>(_post);
+						break;
+					case AppConstants.DeletePost:
+						await DeletePost();
+						break;
+					case AppConstants.CancelRequest:
+						await CancelOldRequest();
+						break;
+					case AppConstants.ReportPost:
+						await NavigationService.Navigate<PopupWarningViewModel, string>(AppConstants.DefaultWarningMessage);
+						break;
+				}
 		}
 
 		private async Task DeletePost()
@@ -261,7 +262,7 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			await ChangeStatus(AppConstants.DeletedStatus);
 			await Task.Delay(777); //for iOS
-			await NavigationService.Close(this, true);		
+			await NavigationService.Close(this, true);
 		}
 
 		private List<string> GetMyPostOptions() => new List<string>
@@ -296,7 +297,7 @@ namespace GiveAndTake.Core.ViewModels
 				{
 					if (IsRequested)
 					{
-						await CancelOldRequest();
+						await ReviewMyRequest();
 					}
 					else
 					{
@@ -380,14 +381,76 @@ namespace GiveAndTake.Core.ViewModels
 			try
 			{
 				await ManagementService.CancelUserRequest(_postId, _dataModel.LoginResponse.Token);
-				//TODO MinhVan: we only need to update requestCount, but we have to fetch all data again (1 api for all data).
-				//The request count is only reloaded due to only new requestCount data received (SetProperty mechanism).
 				await LoadCurrentPostData();
 			}
 			catch (AppException.ApiException)
 			{
 				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
 					.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
+			}
+		}
+		private async Task ReceiveGift(string requestId)
+		{
+			await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
+			try
+			{
+				await ManagementService.ChangeStatusOfRequest(requestId, "Received", _dataModel.LoginResponse.Token);
+				await LoadCurrentPostData();
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
+			}
+		}
+		private async Task ReviewMyRequest()
+		{
+			await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
+			try
+			{
+				Guid postID = new Guid(_postId);
+				var request = await ManagementService.GetRequestOfCurrentUserByPostId(postID, _dataModel.LoginResponse.Token);
+				string requestStatus = request.RequestStatus;
+				PopupMyRequestStatusResult popupResult = PopupMyRequestStatusResult.Cancelled;
+				switch (requestStatus)
+				{
+					case "Pending":
+						popupResult = await NavigationService.Navigate<MyRequestPendingViewModel, Request, PopupMyRequestStatusResult>(request);
+						break;
+					case "Received":
+						popupResult = await NavigationService.Navigate<MyRequestReceivedViewModel, Request, PopupMyRequestStatusResult>(request);
+						break;
+					case "Approved":
+						popupResult = await NavigationService.Navigate<MyRequestApprovedViewModel, Request, PopupMyRequestStatusResult>(request);
+						break;
+					case "Rejected":
+						await CreateNewRequest();
+						break;
+				}
+				
+				switch (popupResult)
+				{
+					case PopupMyRequestStatusResult.Received:
+						await ReceiveGift(request.Id);
+						break;
+					case PopupMyRequestStatusResult.Removed:
+						await CancelOldRequest();
+						break;
+					case PopupMyRequestStatusResult.Cancelled:
+						return;
+				}
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 			}
 			finally
 			{
