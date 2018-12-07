@@ -117,7 +117,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			            var postAppResponse = postResponse as PostAppResponse;
 
 			            var request = _requestService.FirstOrDefault(x =>
-				            x.EntityStatus != EntityStatus.Deleted && x.PostId == post.Id && x.UserId == id);
+				            x.EntityStatus != EntityStatus.Deleted && x.RequestStatus != RequestStatus.Rejected && x.PostId == post.Id && x.UserId == id);
 			            if (request != null)
 			            {
 				            postAppResponse.RequestStatus = request.RequestStatus.ToString();
