@@ -450,11 +450,8 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			catch (AppException.ApiException)
 			{
-				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
-			}
-			finally
-			{
 				await _overlay.CloseOverlay();
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
 			}
 		}
 

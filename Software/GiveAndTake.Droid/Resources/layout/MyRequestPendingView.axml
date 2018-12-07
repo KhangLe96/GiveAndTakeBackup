@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_bg"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_short">
+
+	<include layout="@layout/BaseMyRequestDetailView"
+		android:id = "@+id/baseRequestView"
+		android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/baseRequestView"
+		android:gravity="center"
+        android:layout_marginBottom="@dimen/default_margin">
+		<Button
+            android:layout_width="@dimen/popup_request_button_width"
+            android:layout_height="@dimen/popup_request_button_height"
+            android:background="@drawable/cancel_button_bg"
+            android:fontFamily="@font/sanfranciscodisplay_light"
+            android:textAllCaps="false"
+            android:textColor="@drawable/cancel_button_text"
+            local:MvxBind="Text BtnRemoveRequestTitle; Click RemoveRequestCommand" />
+	</LinearLayout>
+</RelativeLayout>
