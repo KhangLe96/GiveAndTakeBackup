@@ -213,7 +213,7 @@ namespace GiveAndTake.Core.ViewModels
 		    IsSeparatorLineShown = true;
 	        BackgroundColor = _post.Category.BackgroundColor;
 		    Status = _post.PostStatus.Translate();
-		    IsRequested = _post.IsRequested;
+		    //IsRequested = _post.IsRequested;
 		    RequestedPostStatus = _post.RequestedPostStatus?.Translate();
 		    RequestedPostStatusColor = ColorHelper.GetStatusColor(_post.RequestedPostStatus);
 
