@@ -195,7 +195,8 @@ namespace GiveAndTake.Core.ViewModels
 	    {
 		    _userRequestResponse = await ManagementService.CheckUserRequest(_post.PostId, _dataModel.LoginResponse.Token);
 		    IsRequested = _userRequestResponse.IsRequested;
-		    if (_post.IsMyPost)
+		    RequestCount = _post.RequestCount;
+			if (_post.IsMyPost)
 		    {
 			    _isRequested = RequestCount != 0;
 		    }
@@ -208,12 +209,10 @@ namespace GiveAndTake.Core.ViewModels
 		    PostImage = _post.Images.FirstOrDefault()?.ResizedImage;
 			HasManyPostPhotos = _post.Images.Count > 1;
 		    AppreciationCount = _post.AppreciationCount;
-		    RequestCount = _post.RequestCount;
 		    CommentCount = _post.CommentCount;
 		    IsSeparatorLineShown = true;
 	        BackgroundColor = _post.Category.BackgroundColor;
 		    Status = _post.PostStatus.Translate();
-		    //IsRequested = _post.IsRequested;
 		    RequestedPostStatus = _post.RequestedPostStatus?.Translate();
 		    RequestedPostStatusColor = ColorHelper.GetStatusColor(_post.RequestedPostStatus);
 
