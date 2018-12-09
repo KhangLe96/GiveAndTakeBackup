@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+DEPLOY_ENVIRONMENT=pro
+DEPLOY_API_BUILD=Release
+CURRENT_PATH=$(pwd)
+TARGET_PATH="../../../Giveaway.API/Giveaway/API/Giveaway.API"
+OUTPUT_PATH="${CURRENT_PATH}/build_output/api/app"
+REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/env/${DEPLOY_ENVIRONMENT}/output/api/app
+DEPLOYMENT_REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/env/${DEPLOY_ENVIRONMENT}
+REMOTE_ID=chovanhan@13.76.45.56
+
+echo "THIS WILL DEPLOY ON: ${DEPLOY_ENVIRONMENT}"
+
+if [ -d "${TARGET_PATH}" ]; then
+	cd "${TARGET_PATH}"
+else
+	echo "target path not found"
+	exit -1
+fi
+
+echo "CHECKOUT master branch"
+git checkout master
+git pull origin master
+
+export API_BUILD_NUMBER="$(git rev-parse --abbrev-ref HEAD).$(git rev-parse --short HEAD).$(date +%d%m%Y%H%M%S)"
+
+echo "CLEANING ..."
+rm -rf "${OUTPUT_PATH}"
+
+mkdir -p "${OUTPUT_PATH}"
+
+echo "BUILDING API PACKAGE ..."
+dotnet publish Giveaway.Api.csproj -c "${DEPLOY_API_BUILD}" -o "${OUTPUT_PATH}"
+
+cd "${CURRENT_PATH}"
+
+read -r -p "Sending build to server and restart service now? [y/N] " response
+
+case "$response" in
+    [yY][eE][sS]|[yY])
+        echo "SENDING PACKAGE ..."
+        scp -C -i ./key/id_rsa -P 22 -r build_output/api/app ${REMOTE_ID}:${REMOTE_PATH}
+
+		echo "RESTART DOCKER ..."
+		export REMOTE_DOCKER_COMMAND="cd ${DEPLOYMENT_REMOTE_PATH};docker-compose up -d;"
+		ssh -i ./key/id_rsa -p 22 ${REMOTE_ID} ${REMOTE_DOCKER_COMMAND}
+        ;;
+    *)
+        echo "not sending data, service not restarted. Exiting ..."
+        ;;
+esac
+

@@ -1,0 +1,28 @@
+version: "3"
+services:
+  mysql:
+    image: "mysql:5.7"
+    restart: always
+    command:
+      [
+        mysqld,
+        --ignore-db-dir=lost+found,
+        --character-set-server=utf8mb4,
+        --collation-server=utf8mb4_unicode_ci,
+        --max_allowed_packet=1000000000,
+        --explicit_defaults_for_timestamp
+      ]
+    container_name: mysql_shared_instance
+    environment:
+      - MYSQL_ROOT_PASSWORD=abc@123
+      - TZ=Asia/Ho_Chi_Minh
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/var/data:/var/lib/mysql"
+      - "./conf/custom.cnf:/etc/mysql/conf.d/custom.cnf"
+
+networks:
+  default:
+    external:
+      name: webproxy
