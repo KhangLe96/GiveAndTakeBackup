@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+	<TextView
+        android:id="@+id/PopupMyRequestTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/popup_request_Default_Margin"
+        android:fontFamily="@font/sanfranciscodisplay_regular"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/popup_request_Title_Text_Size"
+        local:MvxBind="Text MyRequestPopupTitle"/>
+
+	<ImageButton
+        android:layout_width="@dimen/btn_normal_size"
+        android:layout_height="@dimen/btn_normal_size"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/btn_delete_photo"
+        android:tint="@color/gray" 
+		local:MvxBind="Click CloseCommand"/>
+
+	<TextView
+        android:id="@+id/tvSentTo"
+		android:layout_below="@id/PopupMyRequestTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:gravity="center"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/MediumTextSize"
+        local:MvxBind="Text SentTo" />
+	<TextView
+        android:id="@+id/tvRequestDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvSentTo"
+        android:layout_below="@id/tvSentTo"
+		android:textColor="@color/dark_gray"
+        android:textSize="@dimen/SmallTextSize"
+        local:MvxBind="Text RequestDate" />
+	<TextView
+        android:id="@+id/tvMyRequestUserFullName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvSentTo"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_toRightOf="@id/tvSentTo"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/MediumTextSize"
+        local:MvxBind="Text GiverUserName" />
+
+	<ScrollView
+		android:id="@+id/scMyRequestDescription"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/popup_request_description_edit_text_height"
+		android:layout_below="@+id/tvRequestDate"
+		android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+		android:padding="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+		android:gravity="top">
+		<TextView
+        android:layout_width="match_parent"
+		android:layout_height="match_parent"
+        android:fontFamily="@font/sanfranciscodisplay_light"
+        android:textAllCaps="false"
+        android:textColorHint="@color/default_popup_text_color"
+        android:textSize="@dimen/MediumTextSize"
+        local:MvxBind="Text MyRequestMessage" />
+	</ScrollView>
+
+</RelativeLayout>

@@ -9,20 +9,15 @@ namespace GiveAndTake.Core.ViewModels
 	{
 		public string MyRequestPopupTitle => AppConstants.MyRequestsTitle;
 		public string SentTo => AppConstants.RequestReceiver;
-		public string BtnReceivedTitle => AppConstants.ReceivedRequest;
-		public string BtnRemoveRequestTitle => AppConstants.CancelRequest;
 
 		protected string _lbGiverUserName;
 		protected string _lbRequestDate;
 		protected string _lbMyRequestMessage;
 
-		protected Request _request;
-		protected IMvxCommand _removeRequestCommand;
-		protected IMvxCommand _receivedCommand;
-		protected IMvxCommand _closeCommand;
+		private Request _request;
 
-		public IMvxCommand RemoveRequestCommand => _removeRequestCommand ?? (_removeRequestCommand = new MvxCommand(HandleOnRemoved));
-		public IMvxCommand ReceivedCommand => _receivedCommand ?? (_receivedCommand = new MvxCommand(HandleOnReceived));
+		private IMvxCommand _closeCommand;
+
 		public IMvxCommand CloseCommand => _closeCommand ?? (_closeCommand = new MvxCommand(HandleOnClosed));
 
 		public string GiverUserName
@@ -56,10 +51,6 @@ namespace GiveAndTake.Core.ViewModels
 			return base.Initialize();
 		}
 
-		protected void HandleOnRemoved() => NavigationService.Close(this, PopupMyRequestStatusResult.Removed);
-
-		protected void HandleOnReceived() => NavigationService.Close(this, PopupMyRequestStatusResult.Received);
-
-		protected void HandleOnClosed() => NavigationService.Close(this, PopupMyRequestStatusResult.Cancelled);
+		private void HandleOnClosed() => NavigationService.Close(this, PopupMyRequestStatusResult.Cancelled);
 	}
 }

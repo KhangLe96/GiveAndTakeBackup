@@ -112,7 +112,6 @@ namespace GiveAndTake.iOS.Helpers
 		public static nfloat PopupRequestHeight { get; set; }
 		public static nfloat PopupRequestDescriptionTextViewHeight { get; set; }
 		public static nfloat PopupRequestButtonWidth { get; set; }
-		public static nfloat NotificationItemTableCellHeight { get; set; }
 		public static nfloat LoadingLineWidth { get; set; }
 		public static nfloat RequestTitleAreaHeight { get; set; }
 		public static nfloat RequestTitleTextSize { get; set; }
@@ -129,7 +128,9 @@ namespace GiveAndTake.iOS.Helpers
         public static nfloat ContactPhoneHeight { get; set; }
         public static nfloat LogoSiouxWidth { get; set; }
         public static nfloat LogoSiouxHeight { get; set; }
-        public static void InitStaticVariable()
+		public static nfloat PopupRequestButtonHeight { get; set; }
+		public static nfloat NotificationItemTableCellHeight { get; set; }
+		public static void InitStaticVariable()
 		{
 			SmallTextSize = 11 * Rate;
 			ButtonTextSize = 12 * Rate;
@@ -234,9 +235,8 @@ namespace GiveAndTake.iOS.Helpers
 			PopupRequestSmallMargin = 5 * Rate;
 			PopupRequestHeight = 385 * Rate;
 			PopupRequestDescriptionTextViewHeight = 220 * Rate;
-			PopupRequestButtonWidth = PopupContentWidth / 2 - 15 * Rate ;
-			PopupRequestButtonWidth =
-			PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
+			PopupRequestButtonHeight = 35 * Rate;
+			PopupRequestButtonWidth = PopupContentWidth / 2 - DefaultMargin - DefaultMargin / 2 ;
 			PostDetailRequestTouchFieldHeight = 52 * Rate;
 			PostDetailRequestTouchFieldWidth = 80 * Rate;
 			PostDetailExtensionTouchFieldHeight = 50 * Rate;

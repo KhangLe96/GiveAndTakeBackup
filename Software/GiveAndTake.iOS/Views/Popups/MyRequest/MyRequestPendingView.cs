@@ -37,7 +37,7 @@ namespace GiveAndTake.iOS.Views.Popups
 		private void InitContentView()
 		{
 			_btnRemoveRequest = UIHelper.CreateAlphaButton(DimensionHelper.PopupRequestButtonWidth,
-					DimensionHelper.CreatePostButtonHeight,
+					DimensionHelper.PopupRequestButtonHeight,
 					ColorHelper.LightBlue, ColorHelper.DarkBlue, DimensionHelper.MediumTextSize,
 					UIColor.White, UIColor.White, ColorHelper.LightBlue, ColorHelper.DarkBlue,
 					true, true, FontType.Light);

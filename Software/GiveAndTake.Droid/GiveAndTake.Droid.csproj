@@ -96,9 +96,13 @@
     <Compile Include="Helpers\UrlHelper.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="Views\AboutView.cs" />
+    <Compile Include="Views\Base\BaseMyRequestDetailView.cs" />
     <Compile Include="Services\MyFirebaseIIDService.cs" />
     <Compile Include="Services\DroidFirebaseMessagingService.cs" />
     <Compile Include="Views\Popup\LoadingOverlayView.cs" />
+    <Compile Include="Views\Popup\MyRequest\MyRequestApprovedView.cs" />
+    <Compile Include="Views\Popup\MyRequest\MyRequestPendingView.cs" />
+    <Compile Include="Views\Popup\MyRequest\MyRequestReceivedView.cs" />
     <Compile Include="Views\Popup\PopupExtensionOptionView.cs" />
     <Compile Include="Views\Popup\PopupListView.cs" />
     <Compile Include="Views\Popup\PopupCreateRequestView.cs" />
@@ -748,6 +752,18 @@
     <AndroidResource Include="Resources\layout\PopupNotificationView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\MyRequestReceivedView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\BaseMyRequestDetailView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\MyRequestApprovedView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\MyRequestPendingView.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\ResponseView.axml" />
