@@ -56,13 +56,13 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		{
 			var set = this.CreateBindingSet<PostItemViewCell, PostItemViewModel>();
 
+			set.Bind(ContentView.Tap())
+				.For(v => v.Command)
+				.To(vm => vm.ShowPostDetailCommand);
+
 			set.Bind(_imagePost)
 				.For(v => v.ImageUrl)
 				.To(vm => vm.PostImage);
-
-			set.Bind(_imagePost.Tap())
-				.For(v => v.Command)
-				.To(vm => vm.ShowPostDetailCommand);
 
 			set.Bind(_imgMultiImages)
 				.For("Visibility")
@@ -96,10 +96,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 			set.Bind(_lbPostTitle)
 				.To(vm => vm.PostTitle);
-
-			set.Bind(_lbPostTitle.Tap())
-				.For(v => v.Command)
-				.To(vm => vm.ShowPostDetailCommand);
 
 			set.Bind(_lbRequestCount)
 				.To(vm => vm.RequestCount);
