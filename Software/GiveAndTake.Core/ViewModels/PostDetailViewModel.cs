@@ -417,25 +417,31 @@ namespace GiveAndTake.Core.ViewModels
 			try
 			{
 				Guid postID = new Guid(_postId);
-				var request = await ManagementService.GetRequestOfCurrentUserByPostId(postID, _dataModel.LoginResponse.Token);
+				var request =
+					await ManagementService.GetRequestOfCurrentUserByPostId(postID, _dataModel.LoginResponse.Token);
+				await _overlay.CloseOverlay();
+
 				string requestStatus = request.RequestStatus;
 				PopupMyRequestStatusResult popupResult = PopupMyRequestStatusResult.Cancelled;
 				switch (requestStatus)
 				{
 					case "Pending":
-						popupResult = await NavigationService.Navigate<MyRequestPendingViewModel, Request, PopupMyRequestStatusResult>(request);
+						popupResult = await NavigationService
+							.Navigate<MyRequestPendingViewModel, Request, PopupMyRequestStatusResult>(request);
 						break;
 					case "Received":
-						popupResult = await NavigationService.Navigate<MyRequestReceivedViewModel, Request, PopupMyRequestStatusResult>(request);
+						popupResult = await NavigationService
+							.Navigate<MyRequestReceivedViewModel, Request, PopupMyRequestStatusResult>(request);
 						break;
 					case "Approved":
-						popupResult = await NavigationService.Navigate<MyRequestApprovedViewModel, Request, PopupMyRequestStatusResult>(request);
+						popupResult = await NavigationService
+							.Navigate<MyRequestApprovedViewModel, Request, PopupMyRequestStatusResult>(request);
 						break;
 					case "Rejected":
 						await CreateNewRequest();
 						break;
 				}
-				
+
 				switch (popupResult)
 				{
 					case PopupMyRequestStatusResult.Received:
@@ -450,7 +456,8 @@ namespace GiveAndTake.Core.ViewModels
 			}
 			catch (AppException.ApiException)
 			{
-				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.ErrorConnectionMessage);
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
 			}
 			finally
 			{

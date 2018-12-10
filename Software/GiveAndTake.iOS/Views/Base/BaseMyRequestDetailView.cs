@@ -58,7 +58,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			bindingSet.Apply();
 		}
 
-		protected void InitOverlayView()
+		private void InitOverlayView()
 		{
 			_overlayView = UIHelper.CreateView(0, 0, UIColor.Black.ColorWithAlpha(0.7f));
 
@@ -72,7 +72,7 @@ namespace GiveAndTake.iOS.Views.Popups
 			});
 		}
 
-		protected void InitBaseContentView()
+		private void InitBaseContentView()
 		{
 			_contentView = UIHelper.CreateView(DimensionHelper.PopupRequestHeight, DimensionHelper.PopupContentWidth, UIColor.White, DimensionHelper.PopupContentRadius);
 			_contentView.AddGestureRecognizer(new UITapGestureRecognizer { CancelsTouchesInView = true });
