@@ -65,8 +65,8 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    public RequestPostResponse GetRequestOfCurrentUserByPostId(Guid userId, Guid postId)
 	    {
-		    var request = _requestService.Include(x => x.User).Include(x => x.Responses).Include(x => x.Post.User)
-			    .FirstOrDefault(x =>
+		    var request = _requestService.Include(x => x.User).Include(x => x.Responses).Include(x => x.Post.User).Include(x => x.Post.Images)
+				.FirstOrDefault(x =>
 			    x.EntityStatus != EntityStatus.Deleted && 
 			    x.UserId == userId && 
 			    x.PostId == postId);
@@ -77,7 +77,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		    }
 
 		    var requestResponse = Mapper.Map<RequestPostResponse>(request);
-		    requestResponse.Post.Image = request.Post.Images.ElementAt(0)?.ResizedImage;
+		    requestResponse.Post.Image = request.Post.Images.Count > 0 ? request.Post.Images.ElementAt(0).ResizedImage : null;
 
 			return requestResponse;
 		}
