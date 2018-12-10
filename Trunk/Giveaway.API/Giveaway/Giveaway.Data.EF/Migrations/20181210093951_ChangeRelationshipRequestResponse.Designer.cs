@@ -12,9 +12,10 @@ using System;
 namespace Giveaway.Data.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181210093951_ChangeRelationshipRequestResponse")]
+    partial class ChangeRelationshipRequestResponse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

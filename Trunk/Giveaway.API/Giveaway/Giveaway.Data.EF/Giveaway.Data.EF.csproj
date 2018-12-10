@@ -22,6 +22,7 @@
     <Compile Remove="Migrations\20181030091027_AddNotificationTable.cs" />
     <Compile Remove="Migrations\20181121084535_AddDeviceIdentityTable.cs" />
     <Compile Remove="Migrations\20181121085431_AddDeviceIdentityTable.cs" />
+    <Compile Remove="Migrations\20181210095022_AddForeignKeyToResponse.cs" />
   </ItemGroup>
 
   <ItemGroup>

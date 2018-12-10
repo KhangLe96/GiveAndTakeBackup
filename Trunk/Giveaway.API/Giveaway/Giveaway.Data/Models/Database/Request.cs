@@ -22,6 +22,6 @@ namespace Giveaway.Data.Models.Database
 
         public virtual User User { get; set; }
         public virtual Post Post { get; set; }
-        public virtual ICollection<Response> Responses { get; set; }
+        public virtual Response Response { get; set; }
     }
 }
