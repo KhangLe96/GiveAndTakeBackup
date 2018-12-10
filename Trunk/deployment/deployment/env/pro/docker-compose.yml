@@ -62,6 +62,7 @@ services:
     volumes:
       - "./output/cms:/srv/http"
       - "./volumes/nginx-cms/conf.d/:/etc/nginx/conf.d"
+      - "./volumes/config/cms/config.js:/usr/share/nginx/html/config.js"
     ports:
       - '8043'
     environment:

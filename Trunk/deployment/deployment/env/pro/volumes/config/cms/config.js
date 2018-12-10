@@ -1,3 +1,3 @@
 window.config = {
-    apiUrl: 'https://pdfdrive.cf'
+    apiUrl: 'https://cms.giveandtake.tk'
 };
