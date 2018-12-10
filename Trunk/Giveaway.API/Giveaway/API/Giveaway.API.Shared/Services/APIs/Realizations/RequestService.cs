@@ -65,7 +65,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    public RequestPostResponse GetRequestOfCurrentUserByPostId(Guid userId, Guid postId)
 	    {
-		    var request = _requestService.Include(x => x.Post.User)
+		    var request = _requestService.Include(x => x.User).Include(x => x.Post.User)
 			    .FirstOrDefault(x =>
 			    x.EntityStatus != EntityStatus.Deleted && 
 			    x.UserId == userId && 
@@ -161,17 +161,21 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 					    {
 						    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 					    }
-					    //// Send a notification to an user who requested and also save it to db
-					    //_notificationService.Create(new Notification()
-					    //{
-					    // Message = $"{request.User.FirstName} {request.User.LastName} đã hủy nhận vật phẩm của bạn!",
-					    // Type = NotificationType.,
-					    // RelevantId = request.Id,
-					    // SourceUserId = request.UserId,
-					    // DestinationUserId = request.Post.UserId
-					    //});
-				    }
-				    return true;
+
+					    if (request.RequestStatus == RequestStatus.Approved)
+					    {
+							// Send a notification to the post owner and also save it to db
+						    _notificationService.Create(new Notification()
+						    {
+							    Message = $"{request.User.FirstName} {request.User.LastName} đã hủy nhận vật phẩm của bạn!",
+							    Type = NotificationType.CancelRequest,
+							    RelevantId = request.PostId,
+							    SourceUserId = request.UserId,
+							    DestinationUserId = request.Post.UserId
+						    });
+						}
+					}
+					return true;
 			    }
 		    }
 

@@ -7,6 +7,7 @@
 		Request,
 		IsAccepted,
 		IsRejected,
+		CancelRequest,
 		BlockedPost,
 		Warning
 	}
