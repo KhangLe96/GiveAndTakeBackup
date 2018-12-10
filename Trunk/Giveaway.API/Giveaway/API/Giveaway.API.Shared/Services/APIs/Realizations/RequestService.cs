@@ -65,7 +65,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	    public RequestPostResponse GetRequestOfCurrentUserByPostId(Guid userId, Guid postId)
 	    {
-		    var request = _requestService.Include(x => x.User).Include(x => x.Responses).Include(x => x.Post.User).Include(x => x.Post.Images)
+		    var request = _requestService.Include(x => x.User).Include(x => x.Response).Include(x => x.Post.User).Include(x => x.Post.Images)
 				.FirstOrDefault(x =>
 			    x.EntityStatus != EntityStatus.Deleted && 
 			    x.UserId == userId && 
@@ -96,7 +96,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
 	        if (isSaved == false) throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
-	        var requestDb = _requestService.Include(x => x.Post).Include(x => x.Responses).Include(x => x.User)
+	        var requestDb = _requestService.Include(x => x.Post).Include(x => x.Response).Include(x => x.User)
 		        .FirstOrDefault(x => x.Id == request.Id);
 
 			// Send a notification to an user who requested and also save it to db
@@ -230,7 +230,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 
         private List<RequestPostResponse> GetPagedRequests(string postId, PagingQueryRequestPostRequest request, out int total)
         {
-            var requests = _requestService.Include(x => x.Post).Include(x => x.Responses).Include(x => x.User)
+            var requests = _requestService.Include(x => x.Post).Include(x => x.Response).Include(x => x.User)
 	            .Where(x => x.EntityStatus != EntityStatus.Deleted);
             if (requests == null)
             {
