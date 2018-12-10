@@ -16,8 +16,8 @@ else
 fi
 
 echo "CHECKOUT master branch"
-git checkout master
-git pull origin master
+git checkout develop
+git pull origin develop
 
 export API_BUILD_NUMBER="$(git rev-parse --abbrev-ref HEAD).$(git rev-parse --short HEAD).$(date +%d%m%Y%H%M%S)"
 
@@ -28,6 +28,9 @@ mkdir -p "${OUTPUT_PATH}"
 
 echo "BUILDING API PACKAGE ..."
 dotnet publish Giveaway.Api.csproj -c "${DEPLOY_API_BUILD}" -o "${OUTPUT_PATH}"
+
+echo "REPLACING CONFIG FOR: ${DEPLOY_ENVIRONMENT}"
+cp -f "${CURRENT_PATH}/output/api/appsettings.json" "${OUTPUT_PATH}"
 
 cd "${CURRENT_PATH}"
 
