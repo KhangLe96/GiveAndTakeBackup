@@ -15,7 +15,7 @@ namespace GiveAndTake.Core.ViewModels.Base
 		private async Task ShowInitialViewModels()
 		{
 			DataModel.IsLoggedIn = true;
-			await NavigationService.Navigate<TabNavigationViewModel>();
+			await Task.Run(() => NavigationService.Navigate<TabNavigationViewModel>());
 		}
 	}
 }
