@@ -72,6 +72,7 @@ namespace FCMClient
 					{
 						Mvx.Resolve<IDataModel>().Badge = badgeValue;
 						Mvx.Resolve<IDataModel>().SelectedNotification = notification;
+						Mvx.Resolve<IDataModel>()?.RaiseBadgeUpdated(badgeValue);
 					}
 				}
 				catch (Exception e)

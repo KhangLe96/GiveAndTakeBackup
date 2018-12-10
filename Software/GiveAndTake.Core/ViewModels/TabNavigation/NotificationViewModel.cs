@@ -55,8 +55,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			_dataModel = dataModel;
 			_token = _dataModel.LoginResponse.Token;
 			_loadingOverlayService = loadingOverlayService;
-			_dataModel.NotificationReceived += OnNotificationReceived;
-			_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
+			//_dataModel.NotificationReceived += OnNotificationReceived;
+			//_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
 
 		}
 
@@ -64,10 +64,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			await base.Initialize();
 			await UpdateNotificationViewModels();
-			if (DataModel.SelectedNotification != null)
-			{
-				DataModel.RaiseNotificationReceived(DataModel.SelectedNotification);
-			}
+			//if (DataModel.SelectedNotification != null)
+			//{
+			//	OnItemClicked(DataModel.SelectedNotification);
+			//	
+			//	DataModel.SelectedNotification = null;
+			//}
 		}
 
 		private void OnBadgeReceived(object sender, int badge)
@@ -78,19 +80,26 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				Task.Run(() => { UpdateNotificationViewModels(); });
 			}
 		}
-
+		
 		public override void ViewCreated()
 		{
 			base.ViewCreated();
-			//_dataModel.NotificationReceived += OnNotificationReceived;
-			//_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
+			_dataModel.NotificationReceived += OnNotificationReceived;
+			_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
+			Mvx.Resolve<IManagementService>().UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
+		}
+
+		public override void ViewDisappearing()
+		{
+			base.ViewDisappearing();
+			DataModel.SelectedNotification = null;						
 		}
 
 		public override void ViewDestroy(bool viewFinishing = true)
 		{
 			base.ViewDestroy(viewFinishing);
-			_dataModel.NotificationReceived -= OnNotificationReceived;
 			_dataModel.BadgeNotificationUpdated -= OnBadgeReceived;
+			_dataModel.NotificationReceived -= OnNotificationReceived;
 		}
 
 		public void OnNotificationReceived(object sender, Notification notification)
