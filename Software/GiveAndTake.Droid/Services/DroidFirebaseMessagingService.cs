@@ -66,11 +66,20 @@ namespace FCMClient
 			}
 			else
 			{
-				if (Mvx.CanResolve<IDataModel>())
+				try
 				{
-					Mvx.Resolve<IDataModel>().Badge = badgeValue;
-					Mvx.Resolve<IDataModel>().SelectedNotification = notification;
+					if (Mvx.CanResolve<IDataModel>())
+					{
+						Mvx.Resolve<IDataModel>().Badge = badgeValue;
+						Mvx.Resolve<IDataModel>().SelectedNotification = notification;
+						Mvx.Resolve<IDataModel>()?.RaiseBadgeUpdated(badgeValue);
+					}
 				}
+				catch (Exception e)
+				{
+
+				}
+				
 				
 				var intent = new Intent(this, typeof(SplashScreen));
 				intent.AddFlags(ActivityFlags.ClearTop);
