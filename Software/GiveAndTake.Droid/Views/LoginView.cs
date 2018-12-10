@@ -1,7 +1,11 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Gms.Common;
 using Android.Runtime;
+using Android.Util;
 using Android.Widget;
+using Firebase.Iid;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.ViewModels;
 using GiveAndTake.Droid.Views.Base;
@@ -9,16 +13,10 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Android.Presenters.Attributes;
 using System;
-using Android.Content.PM;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 using Object = Java.Lang.Object;
 using Result = Android.App.Result;
-using Android.Gms.Common;
-using Android.OS;
-using Firebase.Messaging;
-using Firebase.Iid;
-using Android.Util;
 namespace GiveAndTake.Droid.Views
 {
 	[MvxActivityPresentation]
@@ -34,8 +32,6 @@ namespace GiveAndTake.Droid.Views
 		public IMvxCommand<BaseUser> LoginCommand { get; set; }
 	    public string FireBaseToken { get; set; }
 		protected override int LayoutId => Resource.Layout.LoginView;
-
-	    
 
 	    protected override void InitView()
 	    {
@@ -121,8 +117,6 @@ namespace GiveAndTake.Droid.Views
 				AvatarUrl = GetProfilePicture(Profile.CurrentProfile.Id),
 				SocialAccountId = Profile.CurrentProfile.Id
 			});
-
-					   
 		}
 
 	    private static string GetProfilePicture(string profileId) => $"https://graph.facebook.com/{profileId}/picture?type=large";
@@ -133,7 +127,6 @@ namespace GiveAndTake.Droid.Views
 		    return resultCode == ConnectionResult.Success;
 	    }
 	}
-
 
     public class FacebookCallback<TResult> : Object, IFacebookCallback where TResult : Object
     {
@@ -157,6 +150,4 @@ namespace GiveAndTake.Droid.Views
 			HandleLogin?.Invoke();
 		}
 	}
-
-
 }
