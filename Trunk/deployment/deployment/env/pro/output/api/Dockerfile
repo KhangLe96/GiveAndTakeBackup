@@ -1,11 +1,11 @@
-FROM microsoft/aspnetcore
+FROM microsoft/aspnetcore:2.0.0
 
 RUN apt-get update && apt-get install -y gnupg apt-transport-https
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
     mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg && \
     sh -c 'echo "deb https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/dotnetdev.list' && \
-    apt-get update && apt-get install -y aspnetcore-runtime-2.1
+    apt-get update && apt-get install -y dotnet-hosting-2.0.3
 
 # update timezone
 ENV TZ 'Asia/Ho_Chi_Minh'
