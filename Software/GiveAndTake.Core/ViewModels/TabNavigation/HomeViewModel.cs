@@ -136,9 +136,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			_dataModel = dataModel;
 			_overlay = loadingOverlayService;
+			Task.Run(InitDataModels);
 		}
-
-		public override Task Initialize() => InitDataModels();
 
 		private async Task InitDataModels()
 		{
@@ -147,7 +146,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				try
 				{
 					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-					await UpdateAllPopupListDataModel();					
 					await UpdatePostViewModelCollection();
 				}
 				catch (AppException.ApiException)
@@ -174,11 +172,11 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task UpdatePostViewModelCollection()
 		{
-			_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams());
 			if (_dataModel.Categories == null || _dataModel.SortFilters == null || _dataModel.ProvinceCities == null)
 			{
 				await UpdateAllPopupListDataModel();
 			}
+			_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams());
 			PostItemViewModelCollection = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 			if (PostItemViewModelCollection.Any())
 			{

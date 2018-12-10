@@ -11,18 +11,9 @@ namespace GiveAndTake.iOS.Controls
 			get => _imageUrl;
 			set
 			{
-				_imageUrl = value;
-				if (string.IsNullOrEmpty(value))
-				{
-					Image = DefaultImage;
-				}
-				else
-				{
-					ImagePath = value;
-				}
+				_imageUrl = value ?? ErrorPlaceholderImagePath;
+				ImagePath = _imageUrl;
 			}
 		}
-
-		public UIImage DefaultImage { get; set; }
 	}
 }
