@@ -2,14 +2,12 @@
 DEPLOY_ENVIRONMENT=pro
 DEPLOY_API_BUILD=Release
 CURRENT_PATH=$(pwd)
-TARGET_PATH="../../../Giveaway.API/Giveaway/API/Giveaway.API"
+TARGET_PATH="../../../../Giveaway.API/Giveaway/API/Giveaway.API"
 OUTPUT_PATH="${CURRENT_PATH}/build_output/api/app"
-REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/env/${DEPLOY_ENVIRONMENT}/output/api/app
-DEPLOYMENT_REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/env/${DEPLOY_ENVIRONMENT}
+REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}/output/api/app
+DEPLOYMENT_REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}
 REMOTE_ID=chovanhan@13.76.45.56
-
 echo "THIS WILL DEPLOY ON: ${DEPLOY_ENVIRONMENT}"
-
 if [ -d "${TARGET_PATH}" ]; then
 	cd "${TARGET_PATH}"
 else
@@ -34,7 +32,6 @@ dotnet publish Giveaway.Api.csproj -c "${DEPLOY_API_BUILD}" -o "${OUTPUT_PATH}"
 cd "${CURRENT_PATH}"
 
 read -r -p "Sending build to server and restart service now? [y/N] " response
-
 case "$response" in
     [yY][eE][sS]|[yY])
         echo "SENDING PACKAGE ..."

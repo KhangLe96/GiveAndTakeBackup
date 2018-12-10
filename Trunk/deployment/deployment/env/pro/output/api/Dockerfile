@@ -22,4 +22,4 @@ WORKDIR /app
 
 EXPOSE 80
 
-ENTRYPOINT [ "dotnet", "PdfDrive.dll" ]
+ENTRYPOINT [ "dotnet", "Giveaway.Api.dll" ]

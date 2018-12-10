@@ -2,8 +2,8 @@
 DEPLOY_ENVIRONMENT=pro
 CURRENT_PATH=$(pwd)
 OUTPUT_PATH="${CURRENT_PATH}/build_output/cms/"
-REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/env/${DEPLOY_ENVIRONMENT}
-REMOTE_PROJECT_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/env/${DEPLOY_ENVIRONMENT}/output/cms
+REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}
+REMOTE_PROJECT_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}/output/cms
 REMOTE_ID=chovanhan@13.76.45.56
 REMOTE_PORT=22
 PROJECT_PATH=../../../Giveaway.CMS
