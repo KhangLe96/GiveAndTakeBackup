@@ -31,6 +31,19 @@ namespace Giveaway.API.Controllers
 		}
 
 		/// <summary>
+		/// get number of notifications not seen yet
+		/// </summary>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet("getUnSeenNotificationNumber")]
+		[Produces("application/json")]
+		public int GetUnSeenNotificationNumber()
+		{
+			var userId = User.GetUserId();
+			return _notificationService.GetUnSeenNotificationNumber(userId);
+		}
+
+		/// <summary>
 		/// Change IsRead status
 		/// </summary>
 		/// <param name="notiId"></param>
