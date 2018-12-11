@@ -6,6 +6,7 @@ using MvvmCross.Binding.BindingContext;
 using MvvmCross.Platforms.Ios.Binding.Views;
 using MvvmCross.Platforms.Ios.Binding.Views.Gestures;
 using System;
+using MvvmCross.Plugin.Color;
 using UIKit;
 
 namespace GiveAndTake.iOS.Views.TableViewCells
@@ -14,7 +15,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 	public class MyPostItemViewCell : MvxTableViewCell
 	{
 		private UIImageView _imgMultiImages;
-		private UIImageView _imgRequest;
+		private CustomUIImageView _imgRequest;
 		private UIImageView _imgAppreciation;
 		private UIImageView _imgExtension;
 		private UIImageView _imgComment;
@@ -66,8 +67,9 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				.To(vm => vm.Status);
 
 			set.Bind(_postStatus)
-				.For(v => v.Status)
-				.To(vm => vm.Status);
+				.For(v => v.TextColor)
+				.To(vm => vm.StatusColor)
+				.WithConversion(new MvxNativeColorValueConverter());
 
 			set.Bind(_lbPostAddress)
 				.To(vm => vm.Address);
@@ -91,6 +93,10 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				.For(v => v.BackgroundColor)
 				.To(vm => vm.BackgroundColor)
 				.WithConversion("StringToUIColor");
+
+			set.Bind(_imgRequest)
+				.For(v => v.IsActivated)
+				.To(vm => vm.IsRequestIconActivated);
 
 			set.Apply();
 		}
@@ -233,7 +239,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 			});
 
 			_imgRequest =
-				UIHelper.CreateImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, ImageHelper.RequestOff);
+				UIHelper.CreateImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, ImageHelper.RequestOff, ImageHelper.RequestOn);
 
 			_reactionArea.AddSubview(_imgRequest);
 

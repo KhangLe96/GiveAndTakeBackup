@@ -136,8 +136,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			_dataModel = dataModel;
 			_overlay = loadingOverlayService;
-			Task.Run(InitDataModels);
 		}
+
+		public override Task Initialize() => InitDataModels();
 
 		private async Task InitDataModels()
 		{
@@ -176,7 +177,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			{
 				await UpdateAllPopupListDataModel();
 			}
-			_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams());
+			_dataModel.ApiPostsResponse = await ManagementService.GetPostList(GetFilterParams(), _dataModel.LoginResponse.Token);
 			PostItemViewModelCollection = new MvxObservableCollection<PostItemViewModel>(_dataModel.ApiPostsResponse.Posts.Select(GeneratePostViewModels));
 			if (PostItemViewModelCollection.Any())
 			{
@@ -189,7 +190,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			try
 			{
-				_dataModel.ApiPostsResponse = await ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}");
+				_dataModel.ApiPostsResponse = await ManagementService.GetPostList($"{GetFilterParams()}&page={_dataModel.ApiPostsResponse.Pagination.Page + 1}", _dataModel.LoginResponse.Token);
 				if (_dataModel.ApiPostsResponse.Posts.Any())
 				{
 					PostItemViewModelCollection.Last().IsSeparatorLineShown = true;
@@ -258,7 +259,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			post.IsMyPost = post.User.Id == _dataModel.LoginResponse.Profile.Id;
 			return new PostItemViewModel(_dataModel, post, ReloadData)
 			{
-				ShowProfileTab = () => { _showProfileTab.Raise();}
+				ShowProfileTab = () => { _showProfileTab.Raise();},
+				IsStatusShown = false
 			};
 		}
 

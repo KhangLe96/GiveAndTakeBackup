@@ -318,6 +318,7 @@ namespace GiveAndTake.Core.ViewModels
 					{
 						await _overlay.ShowOverlay(AppConstants.UpdateOverLayTitle);
 						_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId, _dataModel.LoginResponse.Token);
+						_dataModel.CurrentPost.IsMyPost = _post.IsMyPost;
 						IsRequested = _dataModel.CurrentPost.IsRequested;
 						CommentCount = _dataModel.CurrentPost.CommentCount;
 						RequestCount = _dataModel.CurrentPost.RequestCount;
@@ -487,12 +488,9 @@ namespace GiveAndTake.Core.ViewModels
 		private async Task LoadCurrentPostData()
 		{
 			_dataModel.CurrentPost = await ManagementService.GetPostDetail(_postId, _dataModel.LoginResponse.Token);
-			IsRequested = _dataModel.CurrentPost.IsRequested;
+			_dataModel.CurrentPost.IsMyPost = _isMyPost;
 			RequestCount = _dataModel.CurrentPost.RequestCount;
-			if (_isMyPost)
-			{
-				IsRequested = RequestCount != 0;
-			}
+			IsRequested = _dataModel.CurrentPost.IsMyPost ? RequestCount > 0 : _dataModel.CurrentPost.IsRequested;
 			CategoryName = _dataModel.CurrentPost.Category.CategoryName;
 			AvatarUrl = _dataModel.CurrentPost.User.AvatarUrl;
 			UserName = _dataModel.CurrentPost.User.FullName ?? AppConstants.DefaultUserName;
