@@ -44,8 +44,8 @@ namespace GiveAndTake.Core.ViewModels
 				await Task.Run(async () =>
 				{
 					_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
-					await ManagementService.SendPushNotificationUserInformation(new PushNotificationUserInformation()
-						{ DeviceToken = Mvx.Resolve<IDeviceInfo>().DeviceToken, MobilePlatform = Mvx.Resolve<IDeviceInfo>().MobilePlatform }, _dataModel.LoginResponse.Token);
+					//await ManagementService.SendPushNotificationUserInformation(new PushNotificationUserInformation()
+					//	{ DeviceToken = Mvx.Resolve<IDeviceInfo>().DeviceToken, MobilePlatform = Mvx.Resolve<IDeviceInfo>().MobilePlatform }, _dataModel.LoginResponse.Token);
 				});
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();

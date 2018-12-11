@@ -171,6 +171,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					await HandleLikeType(notification);
 					break;
 
+				case "CancelRequest":
+					await HandleCancelRequestType(notification);
+					break;
+
 				case "BlockedPost":
 					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
@@ -179,6 +183,14 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 			}			
+		}
+
+		private async Task HandleCancelRequestType(Notification notification)
+		{
+			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			var post = await ManagementService.GetPostDetail(notification.RelevantId.ToString(), _token);
+			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			await NavigationService.Navigate<RequestsViewModel, Post, bool>(post);
 		}
 
 		private async Task HandleIsAcceptedType(Notification notification)
@@ -208,7 +220,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			
 			if (isProcessed)
 			{
-                var post = await ManagementService.GetPostDetail(request.Post.PostId, _dataModel.LoginResponse.Token);
+                var post = await ManagementService.GetPostDetail(request.Post.PostId, _token);
                 await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
                 await NavigationService.Navigate<RequestsViewModel, Post, bool>(post);
 			}
@@ -228,7 +240,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
                     case PopupRequestDetailResult.ShowPostDetail:
                         await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-                        var post = await ManagementService.GetPostDetail(request.Post.PostId, _dataModel.LoginResponse.Token);
+                        var post = await ManagementService.GetPostDetail(request.Post.PostId, _token);
                         post.IsMyPost = true;
 
                         await NavigationService.Navigate<PostDetailViewModel, Post>(post);
@@ -270,7 +282,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		private async Task HandleLikeType(Notification notification)
 		{
 			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-			_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString(), _dataModel.LoginResponse.Token);
+			_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString(), _token);
 			_dataModel.CurrentPost.IsMyPost = true;
 			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
 
