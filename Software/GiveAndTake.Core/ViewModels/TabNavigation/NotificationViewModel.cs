@@ -8,6 +8,7 @@ using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
+using GiveAndTake.Core.Exceptions;
 
 
 namespace GiveAndTake.Core.ViewModels.TabNavigation
@@ -40,7 +41,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private readonly IDataModel _dataModel;
 		private readonly string _token;
-		private readonly ILoadingOverlayService _loadingOverlayService;
+		private readonly ILoadingOverlayService _overlay;
 		private MvxObservableCollection<NotificationItemViewModel> _notificationItemViewModel;
 		private bool _isRefresh;
 		private int _notiCount;
@@ -54,7 +55,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			_dataModel = dataModel;
 			_token = _dataModel.LoginResponse.Token;
-			_loadingOverlayService = loadingOverlayService;
+			_overlay = loadingOverlayService;
 			//_dataModel.NotificationReceived += OnNotificationReceived;
 			//_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
 
@@ -64,12 +65,12 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			await base.Initialize();
 			await UpdateNotificationViewModels();
-			//if (DataModel.SelectedNotification != null)
-			//{
-			//	OnItemClicked(DataModel.SelectedNotification);
-			//	
-			//	DataModel.SelectedNotification = null;
-			//}
+			//for iphone when app is destroyed
+			if (DataModel.SelectedNotification != null)
+			{
+				OnItemClicked(DataModel.SelectedNotification);
+				DataModel.SelectedNotification = null;
+			}
 		}
 
 		private void OnBadgeReceived(object sender, int badge)
@@ -86,7 +87,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			base.ViewCreated();
 			_dataModel.NotificationReceived += OnNotificationReceived;
 			_dataModel.BadgeNotificationUpdated += OnBadgeReceived;
-			Mvx.Resolve<IManagementService>().UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
+			ManagementService.UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
 		}
 
 		public override void ViewDisappearing()
@@ -109,7 +110,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				OnItemClicked(notification);
 				Task.Run(() => { UpdateNotificationViewModels(); });
 				//_dataModel.SelectedNotification = null;
-				Mvx.Resolve<IManagementService>().UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
+				ManagementService.UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
 			}			
 		}
 
@@ -122,9 +123,9 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		public async Task UpdateNotificationViewModelOverLay()
 		{
-			await _loadingOverlayService.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			await UpdateNotificationViewModels();
-			await _loadingOverlayService.CloseOverlay();
+			await _overlay.CloseOverlay();
 		}
 
 		private async Task OnLoadMore()
@@ -148,28 +149,29 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async void OnItemClicked(Notification notification)
 		{
-			
-			switch (notification.Type)
+			try
 			{
-				case "Like":
-					await HandleLikeType(notification);
-					break;
+				switch (notification.Type)
+				{
+					case "Like":
+						await HandleLikeType(notification);
+						break;
 
-				case "Comment":
-					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
-					break;
+					case "Comment":
+						await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
+						break;
 
-				case "Request":
-					await HandleRequestType(notification);
-					break;
+					case "Request":
+						await HandleRequestType(notification);
+						break;
 
-				case "IsAccepted":
-					await HandleIsAcceptedType(notification);
-					break;
+					case "IsAccepted":
+						await HandleIsAcceptedType(notification);
+						break;
 
-				case "IsRejected":
-					await HandleLikeType(notification);
-					break;
+					case "IsRejected":
+						await HandleLikeType(notification);
+						break;
 
 				case "CancelRequest":
 					await HandleCancelRequestType(notification);
@@ -179,10 +181,17 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 					break;
 
-				case "Warning":
-					await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
-					break;
-			}			
+					case "Warning":
+						await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
+						break;
+				}
+				Task.Run(() => { UpdateNotificationViewModels(); });
+			}
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
+			}		
 		}
 
 		private async Task HandleCancelRequestType(Notification notification)
@@ -195,38 +204,52 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task HandleIsAcceptedType(Notification notification)
 		{
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-			var response = await ManagementService.GetResponseById(notification.RelevantId, _token);
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
-
-			var popupResult = await NavigationService.Navigate<ResponseViewModel, Response, PopupRequestDetailResult>(response);
-			if (popupResult == PopupRequestDetailResult.ShowPostDetail)
+			try
 			{
-				await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
-				var post = await ManagementService.GetPostDetail(response.Post.Id.ToString(), _token);
-				post.IsMyPost = true;
+				await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+				var response = await ManagementService.GetResponseById(notification.RelevantId, _token);
+				await _overlay.CloseOverlay();
 
-				await NavigationService.Navigate<PostDetailViewModel, Post>(post);
+				var popupResult =
+					await NavigationService.Navigate<ResponseViewModel, Response, PopupRequestDetailResult>(response);
+				if (popupResult == PopupRequestDetailResult.ShowPostDetail)
+				{
+					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+					var post = await ManagementService.GetPostDetail(response.Post.Id.ToString(), _token);
+					post.IsMyPost = true;
+
+					await NavigationService.Navigate<PostDetailViewModel, Post>(post);
+				}
+
+				await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
 			}
-
-			await ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
+			catch (AppException.ApiException)
+			{
+				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
+					.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
+			}
+			
 		}
 
 		private async Task HandleRequestType(Notification notification)
 		{
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			var isProcessed = await ManagementService.CheckIfRequestProcessed(notification.RelevantId, _token);
 			var request = await ManagementService.GetRequestById(notification.RelevantId, _token);
 			
 			if (isProcessed)
 			{
                 var post = await ManagementService.GetPostDetail(request.Post.PostId, _token);
-                await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+                await _overlay.CloseOverlay();
                 await NavigationService.Navigate<RequestsViewModel, Post, bool>(post);
 			}
 			else
 			{
-				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+				await _overlay.CloseOverlay();
 				var popupResult = await NavigationService.Navigate<RequestDetailViewModel, Request, PopupRequestDetailResult>(request);
 				switch (popupResult)
 				{
@@ -239,7 +262,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 						break;
 
                     case PopupRequestDetailResult.ShowPostDetail:
-                        await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+                        await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
                         var post = await ManagementService.GetPostDetail(request.Post.PostId, _token);
                         post.IsMyPost = true;
 
@@ -247,11 +270,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
                         break;
 
 					default:
-						await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+						await _overlay.CloseOverlay();
 						break;
 				}
 			}
-
 			ManagementService.UpdateReadStatus(notification.Id.ToString(), true, _token);
 		}
 
@@ -262,7 +284,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			if (result == RequestStatus.Submitted)
 			{
 				var isSaved = await ManagementService.ChangeStatusOfRequest(request.Id, "Rejected", _token);
-				await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+				await _overlay.CloseOverlay();
 				if (isSaved)
 				{
 					await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants.SuccessfulRejectionMessage);
@@ -281,10 +303,10 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 		private async Task HandleLikeType(Notification notification)
 		{
-			await Mvx.Resolve<ILoadingOverlayService>().ShowOverlay(AppConstants.LoadingDataOverlayTitle);
+			await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 			_dataModel.CurrentPost = await ManagementService.GetPostDetail(notification.RelevantId.ToString(), _token);
 			_dataModel.CurrentPost.IsMyPost = true;
-			await Mvx.Resolve<ILoadingOverlayService>().CloseOverlay();
+			await _overlay.CloseOverlay();
 
 			await NavigationService.Navigate<PostDetailViewModel, Post, bool>(_dataModel.CurrentPost);
 
@@ -295,6 +317,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 		{
 			IsRefreshing = true;
 			await UpdateNotificationViewModels();
+			ManagementService.UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
 			IsRefreshing = false;
 		}
 	}

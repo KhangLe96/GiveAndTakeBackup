@@ -85,10 +85,10 @@ namespace GiveAndTake.iOS
 				UIRemoteNotificationType notificationTypes = UIRemoteNotificationType.Alert | UIRemoteNotificationType.Badge | UIRemoteNotificationType.Sound;
 				UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(notificationTypes);
 			}
-			//new UIAlertView("FinishedLaunching", null, null, "OK", null).Show();
+			new UIAlertView("FinishedLaunching", null, null, "OK", null).Show();
 			if (launchOptions != null)
 			{
-				//new UIAlertView("launchOptions is true", null, null, "OK", null).Show();
+				new UIAlertView("launchOptions is true", null, null, "OK", null).Show();
 
 				//// check for a local notification
 				//if (launchOptions.ContainsKey(UIApplication.LaunchOptionsLocalNotificationKey))
@@ -126,7 +126,7 @@ namespace GiveAndTake.iOS
 	
 		public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
 		{
-			//new UIAlertView("Error registering push notifications", error.LocalizedDescription, null, "OK", null).Show();
+			new UIAlertView("Error registering push notifications", error.LocalizedDescription, null, "OK", null).Show();
 		}
 		// when app in foreground
 		public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
@@ -144,7 +144,7 @@ namespace GiveAndTake.iOS
 			//UIApplication.SharedApplication.ScheduleLocalNotification(localNotification);
 
 
-			//new UIAlertView("DidReceiveRemoteNotification", null, null, "OK", null).Show();
+			new UIAlertView("DidReceiveRemoteNotification", null, null, "OK", null).Show();
 			if (userInfo != null)
 			{
 				SendNotification(userInfo);
@@ -163,7 +163,7 @@ namespace GiveAndTake.iOS
 
 			//// reset our Badge
 			//UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
-			//new UIAlertView("ReceivedLocalNotification", null, null, "OK", null).Show();
+			new UIAlertView("ReceivedLocalNotification", null, null, "OK", null).Show();
 		}
 
 		// iOS 10, fire when recieve notification foreground
@@ -236,21 +236,21 @@ namespace GiveAndTake.iOS
 					_dataModel.RaiseBadgeUpdated(badgeValue);
 					//IMvxMessgenger
 				}
-				
-				//new UIAlertView("From ForeGround", null, null, "OK", null).Show();
+
+				new UIAlertView("From ForeGround", null, null, "OK", null).Show();
 			}
 			else
 			{
 				if (isDataModelInitialized)
 				{
 					_dataModel.RaiseNotificationReceived(notification);
-					//string test = _dataModel.SelectedNotification?.Message;
-					//new UIAlertView("selected notification received: " + test, null, null, "OK", null).Show();
+					string test = _dataModel.SelectedNotification?.Message;
+					new UIAlertView("selected notification received: " + test, null, null, "OK", null).Show();
 					_dataModel.RaiseBadgeUpdated(badgeValue);
 				}
-				
-				//new UIAlertView("From BackGround", null, null, "OK", null).Show();
-				
+
+				new UIAlertView("From BackGround", null, null, "OK", null).Show();
+
 				//dataModel.SelectedNotification = notification;
 
 				//var localNotification = new UILocalNotification

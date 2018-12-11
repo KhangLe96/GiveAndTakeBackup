@@ -1,4 +1,6 @@
 ﻿using System;
+using Foundation;
+using GiveAndTake.Core.ViewModels.Base;
 using GiveAndTake.iOS.CustomControls;
 using GiveAndTake.iOS.Helpers;
 using MvvmCross.Commands;
@@ -10,6 +12,8 @@ namespace GiveAndTake.iOS.Views.Base
 	public abstract class BaseView : MvxViewController
 	{
 		protected HeaderBar HeaderBar;
+		private NSObject _didBecomeActiveNotificationObserver;
+		private NSObject _willEnterForegroundNotificationObserver;
 		public override void ViewDidLoad()
 		{
 			View = new UIView
@@ -32,6 +36,21 @@ namespace GiveAndTake.iOS.Views.Base
 			CreateBinding();
 		}
 
+		public override void ViewDidAppear(bool animated)
+		{
+			base.ViewDidAppear(animated);
+			_didBecomeActiveNotificationObserver = NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, OnDidBecomeActive);
+			_willEnterForegroundNotificationObserver = NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidEnterBackgroundNotification, OnDidEnterBackground);
+		}
+		protected virtual void OnDidBecomeActive(NSNotification obj)
+		{
+			if (!View.Hidden) (ViewModel as BaseViewModel)?.OnActive();
+		}
+
+		protected virtual void OnDidEnterBackground(NSNotification obj)
+		{
+			if (!View.Hidden) (ViewModel as BaseViewModel)?.OnDeactive();
+		}
 		protected void CreateHeaderBar()
 		{
 			HeaderBar = UIHelper.CreateHeaderBar(ResolutionHelper.Width, DimensionHelper.HeaderBarHeight, UIColor.White);

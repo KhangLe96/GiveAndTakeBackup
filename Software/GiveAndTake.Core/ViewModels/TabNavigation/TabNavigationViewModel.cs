@@ -43,7 +43,6 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			DataModel.NotificationReceived += OnNotificationReceived;
 			DataModel.BadgeNotificationUpdated += OnBadgeReceived;
 			
-
 		}
 
 		public override void ViewAppearing()
@@ -133,7 +132,8 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 
 			});
 			_dataModel.RaiseBadgeUpdated(0);
-			
+			_dataModel.Badge = 0;
+
 		}
 		private void HandleNotificationClicked(Notification notification)
 		{

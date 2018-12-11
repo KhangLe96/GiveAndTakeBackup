@@ -1,4 +1,6 @@
-﻿using GiveAndTake.Core.ViewModels.Base;
+﻿using GiveAndTake.Core.Models;
+using GiveAndTake.Core.ViewModels.Base;
+using MvvmCross;
 using MvvmCross.Binding.BindingContext;
 using MvvmCross.Commands;
 using MvvmCross.Platforms.Ios.Presenters.Attributes;
@@ -9,9 +11,7 @@ namespace GiveAndTake.iOS.Views.Base
 	public class MasterView : BaseView
 	{
 		public IMvxAsyncCommand ShowInitialViewModelsCommand { get; set; }
-
 		protected override void InitView() { }
-
 		protected override void CreateBinding()
 		{
 			base.CreateBinding();
@@ -23,7 +23,7 @@ namespace GiveAndTake.iOS.Views.Base
 
 			set.Apply();
 		}
-
+		
 		public override void ViewDidAppear(bool animated)
 		{
 			base.ViewDidAppear(animated);
