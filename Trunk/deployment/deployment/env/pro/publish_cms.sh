@@ -2,27 +2,28 @@
 DEPLOY_ENVIRONMENT=pro
 CURRENT_PATH=$(pwd)
 OUTPUT_PATH="${CURRENT_PATH}/build_output/cms/"
-REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/env/${DEPLOY_ENVIRONMENT}
-REMOTE_PROJECT_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/env/${DEPLOY_ENVIRONMENT}/output/cms
+REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}
+REMOTE_PROJECT_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}/output/cms
 REMOTE_ID=chovanhan@13.76.45.56
 REMOTE_PORT=22
-PROJECT_PATH=../../../Giveaway.CMS
+PROJECT_PATH="../../../../Giveaway.CMS"
 DEPLOY_KEY=./key/id_rsa
+
+echo "THIS WILL DEPLOY ON: ${DEPLOY_ENVIRONMENT}"
 
 echo "MOVING to project path"
 cd ${PROJECT_PATH}
 
 echo "CHECKOUT master"
-git checkout master
-git reset --hard HEAD
-git pull origin master
+git checkout develop
+git pull origin develop
 
-cd ${PROJECT_PATH}
 echo "BUILDING"
 npm install && npm run build
 
+mkdir ${OUTPUT_PATH}
 echo "COPY TO OUTPUT $(pwd) to ${OUTPUT_PATH}"
-cp -r build/* ${OUTPUT_PATH}
+cp -r dist/* ${OUTPUT_PATH}
 
 cd "${CURRENT_PATH}"
 
