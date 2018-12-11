@@ -26,7 +26,6 @@ namespace Giveaway.API
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseKestrel()
-                .UseUrls("http://*:8089")
                 .Build();
     }
 }

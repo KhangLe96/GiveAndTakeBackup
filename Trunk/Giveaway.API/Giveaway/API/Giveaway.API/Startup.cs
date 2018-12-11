@@ -57,9 +57,9 @@ namespace Giveaway.API
             );
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Info { Title = "GiveAway.API", Version = "v1" });
+                options.SwaggerDoc("v1", new Info { Title = "Giveaway.API", Version = "v1" });
                 var basePath = PlatformServices.Default.Application.ApplicationBasePath;
-                var xmlPath = Path.Combine(basePath, "GiveAway.API.xml");
+                var xmlPath = Path.Combine(basePath, "Giveaway.API.xml");
                 options.IncludeXmlComments(xmlPath);
                 options.CustomSchemaIds(x => x.FullName);
             });

@@ -4,7 +4,7 @@ DEPLOY_API_BUILD=Release
 CURRENT_PATH=$(pwd)
 TARGET_PATH="../../../../Giveaway.API/Giveaway/API/Giveaway.API"
 OUTPUT_PATH="${CURRENT_PATH}/build_output/api/app"
-REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}/output/api/app
+REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}/output/api
 DEPLOYMENT_REMOTE_PATH=/home/chovanhan/projects/giveandtake/Trunk/deployment/deployment/env/${DEPLOY_ENVIRONMENT}
 REMOTE_ID=chovanhan@13.76.45.56
 echo "THIS WILL DEPLOY ON: ${DEPLOY_ENVIRONMENT}"
@@ -27,7 +27,7 @@ rm -rf "${OUTPUT_PATH}"
 mkdir -p "${OUTPUT_PATH}"
 
 echo "BUILDING API PACKAGE ..."
-dotnet publish Giveaway.Api.csproj -c "${DEPLOY_API_BUILD}" -o "${OUTPUT_PATH}"
+dotnet publish Giveaway.API.csproj -o "${OUTPUT_PATH}"
 
 echo "REPLACING CONFIG FOR: ${DEPLOY_ENVIRONMENT}"
 cp -f "${CURRENT_PATH}/output/api/appsettings.json" "${OUTPUT_PATH}"
