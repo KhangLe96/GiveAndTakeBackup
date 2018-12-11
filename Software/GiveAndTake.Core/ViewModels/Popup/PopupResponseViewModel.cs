@@ -102,6 +102,7 @@ namespace GiveAndTake.Core.ViewModels.Popup
 			finally
 			{
 				await _overlay.CloseOverlay();
+				await Task.Delay(777); // for iphone, dont delete. Solve issues such as: OnRequestAccepted(Request request) in NotificaitonViewModel
 				if (success)
 				{
 					await NavigationService.Close(this, RequestStatus.Submitted);

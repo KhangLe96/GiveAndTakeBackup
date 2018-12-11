@@ -45,17 +45,22 @@ namespace GiveAndTake.Core.ViewModels
 				{
 					_dataModel.LoginResponse = await ManagementService.LoginFacebook(baseUser);
 					await ManagementService.SendPushNotificationUserInformation(new PushNotificationUserInformation()
-						{ DeviceToken = Mvx.Resolve<IDeviceInfo>().DeviceToken, MobilePlatform = Mvx.Resolve<IDeviceInfo>().MobilePlatform }, _dataModel.LoginResponse.Token);
+					{
+						DeviceToken = Mvx.Resolve<IDeviceInfo>().DeviceToken,
+						MobilePlatform = Mvx.Resolve<IDeviceInfo>().MobilePlatform
+					}, _dataModel.LoginResponse.Token);
 				});
 				await NavigationService.Close(this);
 				await NavigationService.Navigate<MasterViewModel>();
 			}
 			catch (AppException.ApiException)
 			{
-				await _overlay.CloseOverlay();
-
 				await NavigationService.Navigate<PopupWarningViewModel, string, bool>(AppConstants
 					.ErrorConnectionMessage);
+			}
+			finally
+			{
+				await _overlay.CloseOverlay();
 			}
 		}
 	}

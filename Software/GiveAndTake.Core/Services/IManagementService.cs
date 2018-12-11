@@ -38,5 +38,6 @@ namespace GiveAndTake.Core.Services
 		Task<ApiPostsResponse> GetMyRequestedPosts(string param, string token);
 	    Task Logout(string token);
 	    Task<Response> GetResponseById(Guid reponseId, string token);
+	    Task<int> GetBadgeFromServer(string token);
     }
 }

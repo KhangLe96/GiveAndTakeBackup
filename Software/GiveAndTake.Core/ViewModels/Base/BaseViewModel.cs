@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using GiveAndTake.Core.Models;
 using GiveAndTake.Core.Helpers.Interface;
 using I18NPortable;
-
+using System;
 
 namespace GiveAndTake.Core.ViewModels.Base
 {
@@ -22,6 +22,16 @@ namespace GiveAndTake.Core.ViewModels.Base
 		public IDataModel DataModel => _dataModel ?? (_dataModel = Mvx.Resolve<IDataModel>());
 
 		public II18N Strings => I18N.Current;
+
+		public virtual void OnActive()
+		{
+			
+		}
+
+		public virtual void OnDeactive()
+		{
+			
+		}
 	}
 
 	public abstract class BaseViewModel<TParameter> : BaseViewModel, IMvxViewModel<TParameter>

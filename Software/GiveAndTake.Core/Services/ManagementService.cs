@@ -41,6 +41,23 @@ namespace GiveAndTake.Core.Services
 		    return JsonHelper.Deserialize<Response>(response.RawContent);
 		}
 
+	    public async Task<int> GetBadgeFromServer(string token)
+	    {		    
+		    var response = await _apiHelper.Get(AppConstants.GetBadgeFromServer, token);
+
+		    if (response.NetworkStatus != NetworkStatus.Success)
+		    {
+			    throw new AppException.ApiException(response.NetworkStatus.ToString());
+		    }
+
+		    if (!string.IsNullOrEmpty(response.ErrorMessage))
+		    {
+			    throw new AppException.ApiException(response.ErrorMessage);
+		    }
+
+		    return JsonHelper.Deserialize<int>(response.RawContent);
+	    }
+
 		public async Task InitData()
 	    {
 			_dataModel.Categories = _dataModel.Categories ?? (await GetCategories()).Categories;

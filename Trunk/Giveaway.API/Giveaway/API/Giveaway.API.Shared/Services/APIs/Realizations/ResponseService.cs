@@ -39,7 +39,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 				var result = Mapper.Map<ResponseRequestResponse>(response);
 				result.User = Mapper.Map<UserRequestResponse>(response.Request.Post.User);
 				result.Post = Mapper.Map<PostRequestResponse>(response.Request.Post);
-				result.Post.Image = response.Request.Post.Images?.ElementAt(0).ResizedImage;
 
 				return result;
 			}

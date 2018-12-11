@@ -68,6 +68,14 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			};
 		}
 
+		public int GetUnSeenNotificationNumber(Guid userId)
+		{
+			var number = _notificationService.Where(x =>
+				x.DestinationUserId == userId && x.IsSeen == false && x.EntityStatus != EntityStatus.Deleted).Count();
+
+			return number;
+		}
+
 		public NotificationResponse Create(Notification notification)
 		{
 			var noti = _notificationService.Create(notification, out var isSaved);

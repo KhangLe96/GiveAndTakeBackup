@@ -11,7 +11,7 @@ namespace GiveAndTake.Core.Models
 		[DataMember(Name = "id")]
 		public Guid Id { get; set; }
 
-		[DataMember(Name = "image")]
-		public string Image { get; set; }
+		[DataMember(Name = "images")]
+		public List<Image> Images { get; set; }
 	}
 }
