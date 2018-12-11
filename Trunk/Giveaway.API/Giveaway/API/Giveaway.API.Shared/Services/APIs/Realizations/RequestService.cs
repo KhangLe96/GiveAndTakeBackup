@@ -77,7 +77,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		    }
 
 		    var requestResponse = Mapper.Map<RequestPostResponse>(request);
-		    requestResponse.Post.Image = request.Post.Images.Count > 0 ? request.Post.Images.ElementAt(0).ResizedImage : null;
 
 			return requestResponse;
 		}

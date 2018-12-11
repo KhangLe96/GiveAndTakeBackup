@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Runtime.Serialization;
+using Giveaway.API.Shared.Responses.Image;
 using Giveaway.API.Shared.Responses.User;
 
 namespace Giveaway.API.Shared.Responses.Post
@@ -12,9 +13,9 @@ namespace Giveaway.API.Shared.Responses.Post
 		[JsonProperty(PropertyName = "id")]
 		public Guid Id { get; set; }
 
-		[DataMember(Name = "image")]
-		[JsonProperty(PropertyName = "image")]
-		public string Image { get; set; }
+		[DataMember(Name = "images")]
+		[JsonProperty(PropertyName = "images")]
+		public ImageResponse Images { get; set; }
 
 		[DataMember(Name = "user")]
 		[JsonProperty(PropertyName = "user")]
