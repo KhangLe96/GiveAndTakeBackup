@@ -72,7 +72,7 @@ namespace GiveAndTake.Core.ViewModels
 		public override Task Initialize()
 		{
 			AvatarUrl = _response.User.AvatarUrl;
-			PostUrl = _response.Post.Image;
+			PostUrl = _response.Post.Images?.ElementAt(0).ResizedImage;
 			UserName = _response.User.FullName ?? AppConstants.DefaultUserName;
 			CreatedTime = _response.CreatedTime.ToString("dd.MM.yyyy");
 			ResponseMessage = _response.ResponseMessage;
