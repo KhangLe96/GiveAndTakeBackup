@@ -11,21 +11,5 @@ namespace GiveAndTake.iOS.Helpers
 		{
 			UIApplication.SharedApplication.OpenUrl(new Uri(url), new NSDictionary(), null);
 		}
-
-		public void ShowPhoneDialer(string urlDialer)
-		{
-			var url = new NSUrl(urlDialer);
-			try
-			{
-				if (UIApplication.SharedApplication.CanOpenUrl(url))
-				{
-					UIApplication.SharedApplication.OpenUrl(url);
-				}
-			}
-			catch (Exception ex)
-			{
-				return;
-			}
-		}
 	}
 }
