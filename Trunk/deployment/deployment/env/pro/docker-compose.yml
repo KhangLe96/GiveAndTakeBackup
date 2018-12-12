@@ -48,10 +48,10 @@ services:
     volumes:
       - "./output/api/app:/app"
     environment:
-      - VIRTUAL_HOST=api.chovanhan.tk
+      - VIRTUAL_HOST=api.chovanhan.asia
       - VIRTUAL_NETWORK=nginx-proxy
       - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=api.chovanhan.tk
+      - LETSENCRYPT_HOST=api.chovanhan.asia
       - LETSENCRYPT_EMAIL=quyho@sioux.asia
     external_links:
       - mysql_shared_instance:mysql_local
@@ -66,10 +66,10 @@ services:
     ports:
       - '8043'
     environment:
-      - VIRTUAL_HOST=cms.chovanhan.tk
+      - VIRTUAL_HOST=cms.chovanhan.asia
       - VIRTUAL_NETWORK=nginx-proxy
       - VIRTUAL_PORT=8043
-      - LETSENCRYPT_HOST=cms.chovanhan.tk
+      - LETSENCRYPT_HOST=cms.chovanhan.asia
       - LETSENCRYPT_EMAIL=quyho@sioux.asia
 
 networks:
