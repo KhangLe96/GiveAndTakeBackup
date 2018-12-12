@@ -145,7 +145,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			if (_dataModel.ApiPostsResponse == null )
 			{
 				try
-				{
+				{					
 					await _overlay.ShowOverlay(AppConstants.LoadingDataOverlayTitle);
 					await UpdatePostViewModelCollection();
 				}
@@ -158,15 +158,15 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 				{
 					await _overlay.CloseOverlay();					
 				}
-			}
-			Task.Run(async () =>
-			{
-				var badge = await ManagementService.GetBadgeFromServer(DataModel.LoginResponse.Token);
-				if (badge != 0)
+				Task.Run(async () =>
 				{
-					DataModel.RaiseBadgeUpdated(badge);
-				}
-			});
+					var badge = await ManagementService.GetBadgeFromServer(DataModel.LoginResponse.Token);
+					if (badge != 0)
+					{
+						DataModel.RaiseBadgeUpdated(badge);
+					}
+				});
+			}						
 		}
 
 		private async Task UpdateAllPopupListDataModel()

@@ -108,7 +108,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 			if (DataModel.SelectedNotification != null)
 			{				
 				OnItemClicked(notification);
-				Task.Run(() => { UpdateNotificationViewModels(); });
+				Task.Run(async () => { await UpdateNotificationViewModels(); });
 				//_dataModel.SelectedNotification = null;
 				ManagementService.UpdateSeenNotificationStatus(true, DataModel.LoginResponse.Token);
 			}			
@@ -185,7 +185,7 @@ namespace GiveAndTake.Core.ViewModels.TabNavigation
 						await NavigationService.Navigate<PopupMessageViewModel, string>("Chức năng chưa hoàn thiện!");
 						break;
 				}
-				Task.Run(() => { UpdateNotificationViewModels(); });
+				Task.Run(async () => {await UpdateNotificationViewModels();});
 			}
 			catch (AppException.ApiException)
 			{
