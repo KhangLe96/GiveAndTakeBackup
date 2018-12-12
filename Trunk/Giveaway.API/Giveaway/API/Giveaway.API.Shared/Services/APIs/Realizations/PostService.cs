@@ -258,7 +258,21 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			    if (isSaved == false)
 				    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
 
-			    Task.Run(async () =>
+			    foreach (var request in requests)
+			    {
+				    var user = _userService.Find(userId);
+				    // Send a notification to an user who is rejected and also save it to db
+				    _notificationService.Create(new Notification()
+				    {
+					    Message = $"{user.FirstName} {user.LastName} đã từ chối yêu cầu của bạn!",
+					    Type = NotificationType.IsRejected,
+					    RelevantId = request.PostId,
+					    SourceUserId = userId,
+					    DestinationUserId = request.UserId
+				    });
+			    }
+
+				Task.Run(async () =>
 			    {
 				    foreach (var request in requests)
 				    {
