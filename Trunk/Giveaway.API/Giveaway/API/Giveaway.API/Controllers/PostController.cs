@@ -142,8 +142,9 @@ namespace Giveaway.API.Controllers
         [HttpPut("status/{postId}")]
         [Produces("application/json")]
         public bool ChangePostStatus(Guid postId, [FromBody]StatusRequest request)
-        {
-            return _postService.ChangePostStatus(postId, request);
+		{
+			var userId = User.GetUserId();
+            return _postService.ChangePostStatus(postId, userId, request);
         }
 
 		#region Utils

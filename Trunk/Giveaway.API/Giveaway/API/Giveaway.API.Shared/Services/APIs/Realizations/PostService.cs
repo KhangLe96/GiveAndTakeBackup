@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DbService = Giveaway.Service.Services;
 namespace Giveaway.API.Shared.Services.APIs.Realizations
 {
@@ -24,12 +25,17 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
         private readonly DbService.IPostService _postService;
         private readonly DbService.IImageService _imageService;
 	    private readonly DbService.IRequestService _requestService;
+	    private readonly INotificationService _notificationService;
+	    private readonly DbService.IUserService _userService;
 
-		public PostService(DbService.IPostService postService, DbService.IImageService imageService, DbService.IRequestService requestService)
+		public PostService(DbService.IPostService postService, DbService.IImageService imageService,
+			DbService.IRequestService requestService, INotificationService notificationService, DbService.IUserService userService)
         {
             _postService = postService;
             _imageService = imageService;
 	        _requestService = requestService;
+	        _notificationService = notificationService;
+	        _userService = userService;
         }
 
         public PagingQueryResponse<T> GetPostForPaging(IDictionary<string, string> @params, string userId, bool isListOfSingleUser)
@@ -193,7 +199,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
             }
         }
 
-		public bool ChangePostStatus(Guid postId, StatusRequest request)
+		public bool ChangePostStatus(Guid postId, Guid userId, StatusRequest request)
         {
             var post = _postService.Include(x => x.Requests).FirstOrDefault(x => x.Id == postId);
 	        bool updated = false;
@@ -210,7 +216,7 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 		        updated = _postService.Update(post);
 		        if (updated && postStatus == PostStatus.Gave)
 		        {
-			        RejectRequests(postId);
+			        RejectRequests(postId, userId);
 		        }
 			}
 	        else
@@ -233,16 +239,11 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			    var request = post.Requests.FirstOrDefault(x => x.UserId == userId && x.EntityStatus == EntityStatus.Activated);
 
 			    requestedPost.RequestedPostStatus = request?.RequestStatus.ToString();
-
-			    if (post.PostStatus == PostStatus.Received)
-			    {
-				    requestedPost.RequestedPostStatus = PostStatus.Received.ToString();
-			    }
 		    }
 		    return requestedPost;
 	    }
 
-		private void RejectRequests(Guid postId)
+		private void RejectRequests(Guid postId, Guid userId)
 	    {
 		    var requests = _requestService.Where(x =>
 			    x.PostId == postId && x.EntityStatus != EntityStatus.Deleted && x.RequestStatus == RequestStatus.Pending);
@@ -256,7 +257,24 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			    _requestService.UpdateMany(requests, out var isSaved);
 			    if (isSaved == false)
 				    throw new InternalServerErrorException(CommonConstant.Error.InternalServerError);
-			}
+
+			    Task.Run(async () =>
+			    {
+				    foreach (var request in requests)
+				    {
+					    var user = _userService.Find(userId);
+						// Send a notification to an user who is rejected and also save it to db
+						_notificationService.Create(new Notification()
+					    {
+						    Message = $"{user.FirstName} {user.LastName} đã từ chối yêu cầu của bạn!",
+						    Type = NotificationType.IsRejected,
+						    RelevantId = request.PostId,
+						    SourceUserId = userId,
+						    DestinationUserId = request.UserId
+					    });
+				    }
+			    });
+		    }
 	    }
 
 		private void CheckIfCurrentUserRequested(string userId, List<T> posts)

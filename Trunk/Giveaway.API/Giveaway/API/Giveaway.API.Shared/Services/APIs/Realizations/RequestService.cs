@@ -20,7 +20,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 	public class RequestService : IRequestService
     {
         private readonly DbService.IRequestService _requestService;
-        private readonly DbService.IPostService _postService;
 	    private readonly DbService.IUserService _userService;
 		private readonly INotificationService _notificationService;
 	    private readonly DbService.INotificationService _notificationDbService;
@@ -29,7 +28,6 @@ namespace Giveaway.API.Shared.Services.APIs.Realizations
 			INotificationService notificationService, DbService.IUserService userService, DbService.INotificationService notificationDbService)
         {
             _requestService = requestService;
-            _postService = postService;
 	        _notificationService = notificationService;
 	        _notificationDbService = notificationDbService;
 	        _userService = userService;
