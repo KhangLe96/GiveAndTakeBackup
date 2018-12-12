@@ -15,25 +15,5 @@ namespace GiveAndTake.Droid.Helpers
 			browserIntent.SetData(Uri.Parse(url));
 			Android.App.Application.Context.StartActivity(browserIntent);
 		}
-
-		public void ShowPhoneDialer(string urlDialer)
-		{
-			try
-			{
-				var applicationContext = Android.App.Application.Context;
-				bool hasTelephony = applicationContext.PackageManager.HasSystemFeature(PackageManager.FeatureTelephony);
-				if (hasTelephony)
-				{
-					var uri = Android.Net.Uri.Parse(urlDialer);
-					var intent = new Intent(Intent.ActionView, uri);
-					Android.App.Application.Context.StartActivity(intent);
-				}
-			}
-			catch (PackageManager.NameNotFoundException e)
-			{
-				//Package not found
-			}
-		}
-
 	}
 }

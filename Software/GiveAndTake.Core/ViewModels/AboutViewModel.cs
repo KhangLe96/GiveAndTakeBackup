@@ -39,7 +39,7 @@ namespace GiveAndTake.Core.ViewModels
 
 		private void ShowPhoneDialer()
 		{
-			urlHelper.ShowPhoneDialer("tel:" + AppConstants.SupportContactPhone);
+			urlHelper.OpenUrl("tel:" + AppConstants.SupportContactPhone);
 		}
 	}
 }
