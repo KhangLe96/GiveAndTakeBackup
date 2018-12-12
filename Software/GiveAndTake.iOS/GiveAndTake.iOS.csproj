@@ -80,6 +80,7 @@
     <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\CustomUIImageView.cs" />
     <Compile Include="Controls\CustomUILabel.cs" />
     <Compile Include="Controls\CustomMvxCachedImageView.cs" />
     <Compile Include="Controls\AlphaUiButton.cs" />

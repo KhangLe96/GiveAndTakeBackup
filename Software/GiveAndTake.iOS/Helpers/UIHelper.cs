@@ -162,6 +162,22 @@ namespace GiveAndTake.iOS.Helpers
 			return imageView;
 		}
 
+		public static CustomUIImageView CreateImageView(nfloat height, nfloat width, string imagePath, string activatedImagePath, nfloat cornerRadius = default(nfloat))
+		{
+			var imageView = new CustomUIImageView
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false,
+				NormalImage = new UIImage(imagePath),
+				ActivatedImage = new UIImage(activatedImagePath)
+			};
+			imageView.Layer.CornerRadius = cornerRadius;
+			imageView.ClipsToBounds = true;
+
+			AddWidthHeight(height, width, imageView);
+
+			return imageView;
+		}
+
 		public static CustomMvxCachedImageView CreateCustomImageView(nfloat height, nfloat width, string defaultImagePath, nfloat cornerRadius = default(nfloat))
 		{
 			var imageView = new CustomMvxCachedImageView

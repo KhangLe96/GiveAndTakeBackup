@@ -15,7 +15,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 	public class PostItemViewCell : MvxTableViewCell
 	{
 		private UIImageView _imgMultiImages;
-		private UIImageView _imgRequest;
+		private CustomUIImageView _imgRequest;
 		private UIImageView _imgAppeciation;
 		private UIImageView _imgExtension;
 		private UIImageView _imgComment;
@@ -34,22 +34,11 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private UIView _reactionArea;
 		private UIView _seperatorLine;
 		private UIView _optionView;
-		private bool _isRequested;
 
 		public PostItemViewCell(IntPtr handle) : base(handle)
 		{
 			InitViews();
 			CreateBinding();
-		}
-
-		public bool IsRequested
-		{
-			get => _isRequested;
-			set
-			{
-				_isRequested = value;
-				InitSetRequestIcon();
-			}
 		}
 
 		private void CreateBinding()
@@ -116,16 +105,21 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 
 			set.Bind(_requestedPostStatus)
 				.For(v => v.Text)
-				.To(vm => vm.RequestedPostStatus);
+				.To(vm => vm.Status);
 
 			set.Bind(_requestedPostStatus)
 				.For(v => v.TextColor)
-				.To(vm => vm.RequestedPostStatusColor)
+				.To(vm => vm.StatusColor)
 				.WithConversion(new MvxNativeColorValueConverter());
 
-			set.Bind(this)
-				.For(v => v.IsRequested)
-				.To(vm => vm.IsRequested);
+			set.Bind(_requestedPostStatus)
+				.For("Visibility")
+				.To(vm => vm.IsStatusShown)
+				.WithConversion("InvertBool");
+
+			set.Bind(_imgRequest)
+				.For(v => v.IsActivated)
+				.To(vm => vm.IsRequestIconActivated);
 
 			set.Apply();
 		}
@@ -327,7 +321,7 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 		private void InitRequestIcon()
 		{
 			_imgRequest =
-				UIHelper.CreateImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, ImageHelper.RequestOff);
+				UIHelper.CreateImageView(DimensionHelper.ButtonRequestHeight, DimensionHelper.ButtonRequestWidth, ImageHelper.RequestOff, ImageHelper.RequestOn);
 
 			_reactionArea.AddSubview(_imgRequest);
 
@@ -459,11 +453,6 @@ namespace GiveAndTake.iOS.Views.TableViewCells
 				NSLayoutConstraint.Create(_seperatorLine, NSLayoutAttribute.Right, NSLayoutRelation.Equal, ContentView,
 					NSLayoutAttribute.Right, 1, - DimensionHelper.MarginShort)
 			});
-		}
-
-		private void InitSetRequestIcon()
-		{
-			_imgRequest.Image = UIImage.FromBundle(IsRequested ? ImageHelper.RequestOn : ImageHelper.RequestOff);
 		}
 	}
 }

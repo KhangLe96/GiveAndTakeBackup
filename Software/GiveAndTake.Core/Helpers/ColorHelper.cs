@@ -14,9 +14,11 @@ namespace GiveAndTake.Core.Helpers
 
 		public static Dictionary<string, MvxColor> StatusColors = new Dictionary<string, MvxColor>()
 		{
-			{"Pending", Green },
-			{"Approved", Red },
-			{"Received", Brown }
+			{AppConstants.Pending, Green },
+			{AppConstants.Approved, Red },
+			{AppConstants.Received, Brown },
+			{AppConstants.Giving, Green },
+			{AppConstants.Gave, Brown }
 		};
 
 		public static MvxColor GetStatusColor(string status)

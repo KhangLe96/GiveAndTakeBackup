@@ -242,12 +242,12 @@ namespace GiveAndTake.Core.Services
 		    return JsonHelper.Deserialize<ProvinceCitiesResponse>(response.RawContent);
 		}
 
-	    public async Task<ApiPostsResponse> GetPostList(string filterParams)
+	    public async Task<ApiPostsResponse> GetPostList(string filterParams, string token)
         {
 			var url = string.IsNullOrEmpty(filterParams)
 		        ? AppConstants.GetPostList
 		        : string.Join("?", AppConstants.GetPostList, filterParams);
-	        var response = await _apiHelper.Get(url);
+	        var response = await _apiHelper.Get(url, token);
 
 	        if (response.NetworkStatus != NetworkStatus.Success)
 	        {

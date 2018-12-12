@@ -54,7 +54,9 @@ namespace GiveAndTake.Core
 		public const string PopupSortFiltersTitle = "Xếp theo";
 		public const string PopupLocationFiltersTitle = "Lọc theo";
 
-		public const string ChangePostStatus = "Chuyển trạng thái sang \" Đã cho \"";
+		public const string MarkGiven = "Chuyển trạng thái sang \" Đã cho \"";
+		public const string MarkGiving = "Chuyển trạng thái sang \" Đang cho \"";
+		public const string MarkReceived = "Chuyển trạng thái sang \" Đã nhận \"";
 		public const string ModifyPost = "Chỉnh sửa";
 		public const string ViewPostRequests = "Duyệt cho";
 		public const string DeletePost = "Xóa";
@@ -63,10 +65,19 @@ namespace GiveAndTake.Core
 		public const string ReceivedRequest = "Đã nhận vật phẩm";
 		public const string AccpetedRequest = "Đã duyệt";
 
-		public static string GivingStatus = "Đang cho";
-		public static string GivedStatus = "Đã cho";
+		public const string GivingStatus = "Đang cho";
+		public const string GivedStatus = "Đã cho";
+
+		public const string Giving = "Đang cho";
+		public const string Gave = "Đã cho";
+		public const string Pending = "Đang đợi";
+		public const string Approved = "Đã duyệt";
+		public const string Received = "Đã nhận";
+
 		public static string GivingStatusEN = "Giving";
 		public static string GivedStatusEN = "Gave";
+		public static string ReceivedStatusEN = "Received";
+
 		public static string ActivatedStatus = "Activated";
 		public static string BlockedStatus = "Blocked";
 		public static string DeletedStatus = "Deleted";
@@ -110,7 +121,7 @@ namespace GiveAndTake.Core
 		public static string LoginProcessOverLayTitle = "Tiến hành đăng nhập";
 		public static int NumOfFragmentViewPager = 3;
 		public static string ProcessingDataOverLayTitle = "Đang xử lý";
-		public static string ConfirmChangeStatusOfPost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn xóa ?";
+		public static string ConfirmChangeStatusOfPost = "Bài đăng đã có yêu cầu nhận, \nbạn có chắc chắn muốn đóng yêu cầu ?";
 		public static string ConfirmDeletePost = "Bạn có chắc chắn muốn xóa bài đăng này?";
 		public static string ConfirmDeleteOwnRequest = "Bạn có chắc chắn muốn hủy bỏ yêu cầu ?";
 

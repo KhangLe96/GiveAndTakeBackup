@@ -73,11 +73,11 @@
 					android:id="@+id/tvStatus"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginRight="@dimen/default_margin"
+					android:layout_marginRight="@dimen/margin_normal"
 					android:fontFamily="@font/sanfranciscodisplay_light"
 					android:gravity="right"
 					android:textSize="@dimen/post_detail_status_text_size"
-					local:MvxBind="Text RequestedPostStatus; TextColor NativeColor(RequestedPostStatusColor)" />
+					local:MvxBind="Text Status; TextColor NativeColor(StatusColor); Visibility Visibility(IsStatusShown)" />
 
 			</LinearLayout>
 
