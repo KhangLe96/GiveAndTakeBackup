@@ -1,0 +1,393 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Giveaway.API</name>
+    </assembly>
+    <members>
+        <member name="T:Giveaway.API.Controllers.AuthController">
+            <inheritdoc />
+            <summary>
+            Handles authentication
+            </summary>
+        </member>
+        <member name="M:Giveaway.API.Controllers.AuthController.#ctor(Giveaway.API.Shared.Services.APIs.IAuthService,Giveaway.Service.Services.IUserService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Giveaway.API.Controllers.AuthController.Register(Giveaway.Data.EF.DTOs.Requests.RegisterRequest)">
+            <summary>
+            Handles Register
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.AuthController.GetProfileById(System.Guid)">
+            <summary>
+            Get profile of user by her/his Id. Only available for Admin/SuperAdmin
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Giveaway.API.Controllers.CategoriesController">
+            <inheritdoc />
+            <summary>
+            Manage category
+            </summary>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.#ctor(Giveaway.API.Shared.Services.APIs.ICategoryService{Giveaway.API.Shared.Responses.Category.CategoryCmsResponse},Giveaway.API.Shared.Services.APIs.ICategoryService{Giveaway.API.Shared.Responses.Category.CategoryAppResponse})">
+            <inheritdoc />
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.GetListCategoryCms(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get all categories with filter  
+            </summary>
+            <returns>filtrated categories with pagination</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.GetListApp(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get all categories for app with filter  
+            </summary>
+            <returns>filtrated categories with pagination</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.DeleteCategory(System.Guid)">
+            <summary>
+            delete a category by id
+            only update EntityStatus = Deleted, the category still remain in database
+            </summary>
+            <returns>the deleted category object</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.Create(Giveaway.API.Shared.Requests.Category.CategoryRequest)">
+            <summary>
+            create a new category
+            </summary>
+            <returns>the created category object</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.FindCmsCategory(System.Guid)">
+            <summary>
+            find a category for cms by id
+            throw exception when category not found
+            </summary>
+            <returns>the detected category with id inputed </returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.FindAppCategory(System.Guid)">
+            <summary>
+            find a category for app by id
+            throw exception when category not found
+            </summary>
+            <returns>the detected category with id inputed </returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.Update(System.Guid,Giveaway.API.Shared.Requests.Category.CategoryRequest)">
+            <summary>
+            update a category's information 
+            </summary>
+            <returns>the updated category</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CategoriesController.ChangeCategoryStatus(System.Guid,Giveaway.API.Shared.Requests.StatusRequest)">
+            <summary> 
+            Change category status. Only available for admin or super admin
+            Available values : Activated, Blocked, Deleted
+            </summary> 
+            <returns>the updated user profile</returns> 
+        </member>
+        <member name="M:Giveaway.API.Controllers.CommentController.Create(Giveaway.API.Shared.Requests.Comment.CommentPostRequest)">
+            <summary>
+            Create a comment
+            </summary>
+            <param name="comment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CommentController.GetListByPostId(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get list request with params object that includes: page, limit, keyword, requestStatus
+            </summary>
+            <param name="postId"></param>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CommentController.Update(System.String,Giveaway.API.Shared.Requests.Comment.CommentPostRequest)">
+            <summary>
+            Update a comment
+            </summary>
+            <param name="commentId"></param>
+            <param name="comment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.CommentController.Delete(System.String)">
+            <summary>
+            Delete a comment
+            </summary>
+            <param name="commentId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.DeviceIdentityController.RegisterDevice(Giveaway.API.Shared.Requests.DeviceIdentity.DeviceIdentityRequest)">
+            <summary>
+            Register a device to receive notifications
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.NotificationController.GetUnSeenNotificationNumber">
+            <summary>
+            get number of notifications not seen yet
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.NotificationController.UpdateReadStatus(System.Guid,Giveaway.API.Shared.Requests.Notification.NotificationIsReadRequest)">
+            <summary>
+            Change IsRead status
+            </summary>
+            <param name="notiId"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.NotificationController.UpdateSeenStatus(Giveaway.API.Shared.Requests.Notification.NotificationIsSeenRequest)">
+            <summary>
+            Change IsSeen status for all Notification of an User
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Giveaway.API.Controllers.PostController">
+            <inheritdoc />
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.GetListPostCMS(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get list post with params object that includes: page, limit, keyword, provinceCityId, categoryId, title
+            </summary>
+            <param name="params">page, limit, keyword, provinceCityId, categoryId, title</param>
+            <returns>List post</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.GetListPostApp(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get list post with params object that includes: page, limit, provinceCityId, categoryId, title, keyword(title, Description, CategoryName, UserName, ProvinceCityName)
+            </summary>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.GetListPostOfSingleUser(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get list post of an User with userId and params object that includes: page, limit, keyword, provinceCityId, categoryId, title
+            </summary>
+            <param name="userId"></param>
+            <param name="params">page, limit, keyword, provinceCityId, categoryId, title</param>
+            <returns>List post</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.GetListRequestedPostOfUser(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get all posts that the user requested
+            </summary>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.GetDetailApp(System.Guid)">
+            <summary>
+            Get detail of a post by id 
+            </summary>
+            <param name="postId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.GetDetailCms(System.Guid)">
+            <summary>
+            Get detail of a post by id 
+            </summary>
+            <param name="postId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.Create(Giveaway.API.Shared.Requests.Post.PostRequest)">
+            <summary>
+            Create a post
+            </summary>
+            <param name="postRequest">page, limit, keyword, provinceCityId, categoryId, title</param>
+            <returns>List post</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.Update(System.Guid,Giveaway.API.Shared.Requests.Post.PostRequest)">
+            <summary>
+            Update a post
+            </summary>
+            <param name="postId"></param>
+            <param name="postRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.ChangePostStatus(System.Guid,Giveaway.API.Shared.Requests.StatusRequest)">
+            <summary>
+            Change status of a post: Giving, Gave, Received, Activated, Blocked, Deleted
+            </summary>
+            <param name="postId"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.PostController.AppreciatePost(System.Guid)">
+            <summary>
+            Appreciate a Post
+            </summary>
+            <param name="postId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.ReportController.GetList(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get list report with params object that includes: page, limit, keyword 
+            </summary>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.ReportController.Create(Giveaway.API.Shared.Requests.Report.CreateReportRequest)">
+            <summary>
+            Create post report
+            </summary>
+            <param name="reportRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.GetList(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get list request with params object that includes: page, limit, keyword, requestStatus
+            </summary>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.GetListByPostId(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get list request by postId with params object that includes: page, limit, keyword, requestStatus
+            </summary>
+            <param name="postId"></param>
+            <param name="params"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.GetRequestById(System.Guid)">
+            <summary>
+            Get a request by Id
+            </summary>
+            <param name="requestId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.Create(Giveaway.API.Shared.Requests.Request.RequestPostRequest)">
+            <summary>
+            Create a request
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.UpdateStatus(System.Guid,Giveaway.API.Shared.Requests.StatusRequest)">
+            <summary>
+            Change status of request: Approved, Pending, Rejected
+            </summary>
+            <param name="requestId"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.Delete(System.Guid)">
+            <summary>
+            Delete a request by id
+            </summary>
+            <param name="requestId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.DeleteCurrentUserRequest(System.Guid)">
+            <summary>
+            A current user deletes his request for a post
+            </summary>
+            <param name="postId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.CheckUserRequest(System.Guid)">
+            <summary>
+            Check if an user requested a post or not
+            </summary>
+            <param name="postId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.RequestController.CheckIfRequestProcessed(System.Guid)">
+            <summary>
+            Check if a request has been processed: true means request is deleted or accecpted or rejected, false means request is activated and pending
+            </summary>
+            <param name="requestId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.ResponseController.Create(Giveaway.API.Shared.Requests.Response.ResponseRequest)">
+            <summary>
+            Create a reponse
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Giveaway.API.Controllers.UserController">
+            <inheritdoc />
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.#ctor(Giveaway.API.Shared.Services.APIs.IUserService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.GetProfile">
+            <summary>
+            Get profile of current logged in user
+            </summary>
+            <returns>UserProfileResponse</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.GetProfile(System.Guid)">
+            <summary>
+            Get profile base on the id of user
+            </summary>
+            <returns>UserProfileResponse</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.All(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get list of user with pagination
+            </summary>
+            <returns>PagingQueryResponse</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.UpdateProfile(Giveaway.API.Shared.Requests.User.UserProfileRequest)">
+            <summary>
+            Update current user's profile
+            </summary>
+            <param name="request"></param>
+            <returns>updated user profile</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.Login(Giveaway.Data.EF.DTOs.Requests.LoginRequest)">
+            <summary>
+            login
+            </summary>
+            <returns>LoginResponse</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.Logout">
+            <summary>
+            logout 
+            </summary>
+            <returns>true</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.SetRole(System.Guid,Giveaway.API.Shared.Requests.RoleRequest)">
+            <summary> 
+            Set user's role. Only available for Admin/SuperAdmin 
+            </summary> 
+            <returns></returns> 
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.ChangeUserStatus(System.Guid,Giveaway.API.Shared.Requests.StatusRequest)">
+            <summary> 
+            Change user status. Only available for admin or super admin
+            Available values : Activated, Blocked, Deleted
+            </summary> 
+            <returns>the updated user profile</returns> 
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.CreateUser(Giveaway.API.Shared.Requests.User.CreateUserProfileRequest)">
+            <summary>
+            create user
+            </summary>
+            <returns>user profile</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.LoginWithFacebook(System.Collections.Generic.IDictionary{System.String,System.String},Giveaway.API.Shared.Requests.FacebookConnectRequest)">
+            <summary>
+            login with facebook
+            </summary>
+            <returns>user profile</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.Create(System.Guid)">
+            <summary>
+            Create post report
+            </summary>
+            <param name="banId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.WarningMessageController.Create(Giveaway.API.Shared.Requests.Warning.WarningRequest)">
+            <summary>
+            Create an warning message for an user
+            </summary>
+            <param name="warningRequest"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

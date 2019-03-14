@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.sioux.giveandtake",
+    "sha256_cert_fingerprints": ["CA:60:FF:A4:1D:90:A9:31:CD:9F:A0:58:9B:D2:E5:C5:13:43:98:59:B0:B3:20:67:1B:86:0B:2A:73:7C:A5:CA"]
+  }
+}]
