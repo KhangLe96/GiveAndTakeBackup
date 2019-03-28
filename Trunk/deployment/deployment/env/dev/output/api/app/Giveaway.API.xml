@@ -87,36 +87,6 @@
             </summary> 
             <returns>the updated user profile</returns> 
         </member>
-        <member name="M:Giveaway.API.Controllers.CommentController.Create(Giveaway.API.Shared.Requests.Comment.CommentPostRequest)">
-            <summary>
-            Create a comment
-            </summary>
-            <param name="comment"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Giveaway.API.Controllers.CommentController.GetListByPostId(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
-            <summary>
-            Get list request with params object that includes: page, limit, keyword, requestStatus
-            </summary>
-            <param name="postId"></param>
-            <param name="params"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Giveaway.API.Controllers.CommentController.Update(System.String,Giveaway.API.Shared.Requests.Comment.CommentPostRequest)">
-            <summary>
-            Update a comment
-            </summary>
-            <param name="commentId"></param>
-            <param name="comment"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Giveaway.API.Controllers.CommentController.Delete(System.String)">
-            <summary>
-            Delete a comment
-            </summary>
-            <param name="commentId"></param>
-            <returns></returns>
-        </member>
         <member name="M:Giveaway.API.Controllers.DeviceIdentityController.RegisterDevice(Giveaway.API.Shared.Requests.DeviceIdentity.DeviceIdentityRequest)">
             <summary>
             Register a device to receive notifications
