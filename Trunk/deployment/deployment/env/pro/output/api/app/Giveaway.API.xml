@@ -184,6 +184,13 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:Giveaway.API.Controllers.PostController.AppreciatePost(System.Guid)">
+            <summary>
+            Appreciate a Post
+            </summary>
+            <param name="postId"></param>
+            <returns></returns>
+        </member>
         <member name="M:Giveaway.API.Controllers.ReportController.GetList(System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Get list report with params object that includes: page, limit, keyword 
@@ -332,11 +339,18 @@
             </summary>
             <returns>user profile</returns>
         </member>
-        <member name="M:Giveaway.API.Controllers.UserController.LoginWithFacebook(Giveaway.API.Shared.Requests.FacebookConnectRequest)">
+        <member name="M:Giveaway.API.Controllers.UserController.LoginWithFacebook(System.Collections.Generic.IDictionary{System.String,System.String},Giveaway.API.Shared.Requests.FacebookConnectRequest)">
             <summary>
             login with facebook
             </summary>
             <returns>user profile</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.UserController.Create(System.Guid)">
+            <summary>
+            Create post report
+            </summary>
+            <param name="banId"></param>
+            <returns></returns>
         </member>
         <member name="M:Giveaway.API.Controllers.WarningMessageController.Create(Giveaway.API.Shared.Requests.Warning.WarningRequest)">
             <summary>
