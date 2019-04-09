@@ -117,12 +117,66 @@
             <param name="commentId"></param>
             <returns></returns>
         </member>
+        <member name="T:Giveaway.API.Controllers.ConversationController">
+            <inheritdoc />
+            <summary>
+            Manage Conversations
+            </summary>
+        </member>
+        <member name="M:Giveaway.API.Controllers.ConversationController.#ctor(Giveaway.API.Shared.Services.APIs.IConversationService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Giveaway.API.Controllers.ConversationController.Create(Giveaway.API.Shared.Requests.ConversationRequest)">
+            <summary>
+            Create a new conversation
+            </summary>
+            <param name="conversationRequest"></param>
+            <returns>BaseResponse</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.ConversationController.GetConversationDetail(System.Guid,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get conversations of a specific user
+            </summary>
+            <param name="id"></param>
+            <param name="params"></param>
+            <returns>BaseResponse</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.ConversationController.GetAllConversation(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Get all conversations
+            </summary>
+            <param name="params"></param>
+            <returns>BaseResponse</returns>
+        </member>
         <member name="M:Giveaway.API.Controllers.DeviceIdentityController.RegisterDevice(Giveaway.API.Shared.Requests.DeviceIdentity.DeviceIdentityRequest)">
             <summary>
             Register a device to receive notifications
             </summary>
             <param name="request"></param>
             <returns></returns>
+        </member>
+        <member name="T:Giveaway.API.Controllers.MessageController">
+            <inheritdoc />
+            <summary>
+            Manage Conversations
+            </summary>
+        </member>
+        <member name="M:Giveaway.API.Controllers.MessageController.#ctor(Giveaway.API.Shared.Services.APIs.IMessageService)">
+            <inheritdoc />
+        </member>
+        <member name="M:Giveaway.API.Controllers.MessageController.Create(Giveaway.Data.Models.Database.Message)">
+            <summary>
+            Create a new conversation
+            </summary>
+            <param name="message"></param>
+            <returns>MessageResponse</returns>
+        </member>
+        <member name="M:Giveaway.API.Controllers.MessageController.FetchMessages(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Fetch messages of a conversation
+            </summary>
+            <param name="params"></param>
+            <returns>PagingQueryResponse</returns>
         </member>
         <member name="M:Giveaway.API.Controllers.NotificationController.GetUnSeenNotificationNumber">
             <summary>
